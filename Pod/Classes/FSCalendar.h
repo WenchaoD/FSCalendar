@@ -94,6 +94,8 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 
 - (void)setEventColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
 
+- (void)reloadData;
+
 @end
 
 

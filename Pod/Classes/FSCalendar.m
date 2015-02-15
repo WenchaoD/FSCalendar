@@ -416,6 +416,14 @@ const char * flowKey;
     }
 }
 
+#pragma mark - Public
+
+- (void)reloadData
+{
+    [self updatePage:_page0 forIndex:_currentPage];
+    [self updatePage:_page1 forIndex:_currentPage + 1];
+}
+
 #pragma mark - Private
 
 - (void)updatePointer

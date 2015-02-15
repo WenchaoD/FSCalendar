@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
 
 @interface CalendarConfigViewController : UITableViewController
+
+@property (weak, nonatomic) ViewController *viewController;
 
 @end
