@@ -1,4 +1,5 @@
 # FSCalendar
+[![ScreenShot](http://makeagif.com/i/r0ft43)]
 
 [![CI Status](http://img.shields.io/travis/=/FSCalendar.svg?style=flat)](https://travis-ci.org/=/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
