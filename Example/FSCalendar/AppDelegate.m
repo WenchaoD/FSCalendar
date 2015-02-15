@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 =. All rights reserved.
 //
 
-#import "FSAppDelegate.h"
+#import "AppDelegate.h"
 
-@implementation FSAppDelegate
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

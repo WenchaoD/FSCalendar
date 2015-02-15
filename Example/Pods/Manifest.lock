@@ -1,0 +1,17 @@
+PODS:
+  - FSCalendar (0.1.0)
+  - SSLunarDate (0.0.1)
+
+DEPENDENCIES:
+  - FSCalendar (from `../`)
+  - SSLunarDate
+
+EXTERNAL SOURCES:
+  FSCalendar:
+    :path: ../
+
+SPEC CHECKSUMS:
+  FSCalendar: 30743705f10d2b4ce71c211869e3ef66c522e5bc
+  SSLunarDate: b325b0e4d6e15a9fb7bfb63e5f8e16291d5dd8d9
+
+COCOAPODS: 0.35.0

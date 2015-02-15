@@ -2,6 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'FSCalendar', :exclusive => true do
   pod "FSCalendar", :path => "../"
+  pod 'SSLunarDate'
 end
 
 target 'Tests', :exclusive => true do
