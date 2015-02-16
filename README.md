@@ -12,10 +12,8 @@
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ### 1. Simple DataSource/Delegate Pattern
-    _calendar.dataSource = self; // Must conform to FSCalendarDataSource
-    _calendar.delegate = self; // Must conform to FSCalendarDataDelegate
-    
-    Of course the dataSource and delegate property is IBOutlet supported.
+    _calendar.dataSource = self; // IBOutlet supported
+    _calendar.delegate = self; // IBOutlet supported
     
 ### 2. Page Direction Supported
     _calendar.flow = FSCalendarFlowVertical; //Change to vertical flow, default is FSCalendarFlowHorizontal
@@ -26,10 +24,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
     Look into FSCalendar.h to see more
     
 ### 4. Header
-    FSCalendarHeader *header = [[FSCalendarHeader alloc]    initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,_calendar.frame.size.height)];
-    
-    We recommend set this in storyboard: drag a UIView Object, set the custom class to "FSCalendarViewHeader" and link it to the "header" property of the "FSCalendar" Object. 
-
+    FSCalendarHeader *header = [[FSCalendarHeader alloc]    initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,_calendar.frame.size.height)]; // IBOutlet supported too
 
 ## Requirements
 ios 7.0
