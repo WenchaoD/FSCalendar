@@ -1,17 +1,16 @@
 # FSCalendar
 
+## Features
+1.Today,Selection,Infinite Scrolling
 ![screen shot 2015-02-16 at 15 12 26](https://cloud.githubusercontent.com/assets/5186464/6208172/7a4f0c90-b5ee-11e4-957e-8544b039b728.png)
 
+2.Custom Appearance
 ![screen shot 2015-02-16 at 15 12 40](https://cloud.githubusercontent.com/assets/5186464/6208173/819eca8a-b5ee-11e4-80e7-a6ae050da16b.png)
 
 ![screen shot 2015-02-16 at 15 12 52](https://cloud.githubusercontent.com/assets/5186464/6208174/87cab194-b5ee-11e4-80c9-6ea62489c6ee.png)
 
+3. Subtitle (limited characteristics)
 ![screen shot 2015-02-16 at 15 13 04](https://cloud.githubusercontent.com/assets/5186464/6208176/9274c616-b5ee-11e4-8796-01fc31887248.png)
-
-[![CI Status](http://img.shields.io/travis/=/FSCalendar.svg?style=flat)](https://travis-ci.org/=/FSCalendar)
-[![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
-[![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
-[![Platform](https://img.shields.io/cocoapods/p/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 
 ## Usage
 
