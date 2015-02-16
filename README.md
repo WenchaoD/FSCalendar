@@ -1,7 +1,7 @@
 # FSCalendar
 
 ## Features
-### 1. Today,Selection,Infinite Scrolling,Event Mark
+### 1. Today, Selection, Infinite Scrolling, Event Mark, Horizontal and Vertical Scrolling
 
 ![screen shot 2015-02-16 at 15 12 26](https://cloud.githubusercontent.com/assets/5186464/6208172/7a4f0c90-b5ee-11e4-957e-8544b039b728.png)
 
