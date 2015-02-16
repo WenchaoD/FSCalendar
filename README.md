@@ -1,23 +1,38 @@
 # FSCalendar
 
 ## Features
-### 1. Today, Selection, Infinite Scrolling, Event Mark, Horizontal and Vertical Scrolling
+### 1. Easy Appearance
+![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
 
-![screen shot 2015-02-16 at 15 12 26](https://cloud.githubusercontent.com/assets/5186464/6208172/7a4f0c90-b5ee-11e4-957e-8544b039b728.png)
-
-### 2. Custom Appearance
-![screen shot 2015-02-16 at 15 12 40](https://cloud.githubusercontent.com/assets/5186464/6208173/819eca8a-b5ee-11e4-80e7-a6ae050da16b.png)
-
-![screen shot 2015-02-16 at 15 12 52](https://cloud.githubusercontent.com/assets/5186464/6208174/87cab194-b5ee-11e4-80c9-6ea62489c6ee.png)
-
-### 3. Subtitle
-![screen shot 2015-02-16 at 15 13 04](https://cloud.githubusercontent.com/assets/5186464/6208176/9274c616-b5ee-11e4-8796-01fc31887248.png)
+### 2. Subtitle
+![subtitle1](https://cloud.githubusercontent.com/assets/5186464/6209081/54d8a4cc-b5fc-11e4-981e-d4bb21a45628.png)
 
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+### 1. Simple DataSource/Delegate Pattern
+    _calendar.dataSource = self; // Must conform to FSCalendarDataSource
+    _calendar.delegate = self; // Must conform to FSCalendarDataDelegate
+    
+    Of course the dataSource and delegate property is IBOutlet supported.
+    
+### 2. Page Direction Supported
+    _calendar.flow = FSCalendarFlowVertical; //Change to vertical flow, default is FSCalendarFlowHorizontal
+    
+### 3. Flexible Appearance Customization
+    [[FSCalendar appearance] setTodayColor: [UIColor redColor]]; //Change today circle/rectangle fill color
+    
+    Look into FSCalendar.h to see more
+    
+### 4. Header
+    FSCalendarHeader *header = [[FSCalendarHeader alloc]    initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,_calendar.frame.size.height)];
+    
+    We recommend set this in storyboard: drag a UIView Object, set the custom class to "FSCalendarViewHeader" and link it to the "header" property of the "FSCalendar" Object. 
+
+
 ## Requirements
+ios 7.0
 
 ## Installation
 
