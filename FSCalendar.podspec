@@ -10,13 +10,13 @@
 Pod::Spec.new do |s|
   s.name             = "FSCalendar"
   s.version          = "0.1.0"
-  s.summary          = "A short description of FSCalendar."
-  s.description      = <<-DESC
-                       An optional longer description of FSCalendar
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
-                       DESC
+  s.summary          = "A powerful calendar which supports Appearance, Infinite Scrolling and Subtitle"
+  #s.description      = <<-DESC
+  #                     An optional longer description of FSCalendar
+  #
+  #                      * Markdown format.
+  #                     * Don't worry about the indent, we strip it!
+  #                    DESC
   s.homepage         = "https://github.com/f33chobits/FSCalendar"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
