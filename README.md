@@ -1,7 +1,7 @@
 # FSCalendar
 
 ## Features
-### 1. Easy Appearance
+### 1. Easy appearance adjustment
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
 
 ### 2. Subtitle
