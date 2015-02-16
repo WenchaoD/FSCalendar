@@ -19,9 +19,14 @@ To run the example project, clone the repo, and run `pod install` from the Examp
     _calendar.flow = FSCalendarFlowVertical; //Change to vertical flow, default is FSCalendarFlowHorizontal
     
 ### 3. Flexible Appearance Customization
-    [[FSCalendar appearance] setTodayColor: [UIColor redColor]]; //Change today circle/rectangle fill color
-    
-    Look into FSCalendar.h to see more
+    [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];   // week symbol color
+    [[FSCalendar appearance] setHeaderTitleColor:[UIColor darkGrayColor]]; // header text color
+    [[FSCalendar appearance] setEventColor:[UIColor greenColor]]; // event mark color
+    [[FSCalendar appearance] setSelectionColor:[UIColor blueColor]]; // selection fill color
+    [[FSCalendar appearance] setHeaderDateFormat:@"yyyy-MM"]; // header date format
+    [[FSCalendar appearance] setMinDissolvedAlpha:0.5]; // change to 1.0 to make header no alpha
+    [[FSCalendar appearance] setTodayColor:[UIColor redColor]]; // today fill color
+    [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle]; // shape of today/selection fill color.Circle/Fectangle
     
 ### 4. Header (IBOutlet supported too)
     FSCalendarHeader *header = [[FSCalendarHeader alloc]    initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,_calendar.frame.size.height)];
