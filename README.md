@@ -28,7 +28,7 @@ it, simply add the following line to your Podfile:
 
 ## Author
 
-=, f33chobits@gmail.com
+Wenchao Ding, f33chobits@gmail.com
 
 ## License
 
