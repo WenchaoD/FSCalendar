@@ -51,7 +51,6 @@
                 [[FSCalendar appearance] setMinDissolvedAlpha:0.2];
                 [[FSCalendar appearance] setTodayColor:[UIColor orangeColor]];
                 [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle];
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]];
                 break;
             }
             case 1:
@@ -64,7 +63,6 @@
                 [[FSCalendar appearance] setMinDissolvedAlpha:0.5];
                 [[FSCalendar appearance] setTodayColor:[UIColor redColor]];
                 [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle];
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor darkTextColor]];
                 break;
             }
             case 2:
@@ -77,7 +75,6 @@
                 [[FSCalendar appearance] setMinDissolvedAlpha:1.0];
                 [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleRectangle];
                 [[FSCalendar appearance] setTodayColor:[UIColor orangeColor]];
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];
                 break;
             }
             default:
