@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "FSCalendar"
-  s.version          = "0.1.0"
+  s.version          = "0.0.1"
   s.summary          = "A powerful calendar which supports Appearance, Infinite Scrolling and Subtitle"
   #s.description      = <<-DESC
   #                     An optional longer description of FSCalendar
