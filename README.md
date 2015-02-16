@@ -10,7 +10,7 @@
 
 ![screen shot 2015-02-16 at 15 12 52](https://cloud.githubusercontent.com/assets/5186464/6208174/87cab194-b5ee-11e4-80c9-6ea62489c6ee.png)
 
-### 3. Subtitle (limited characteristics)
+### 3. Subtitle
 ![screen shot 2015-02-16 at 15 13 04](https://cloud.githubusercontent.com/assets/5186464/6208176/9274c616-b5ee-11e4-8796-01fc31887248.png)
 
 ## Usage
