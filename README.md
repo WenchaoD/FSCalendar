@@ -15,6 +15,15 @@ To run the example project, clone the repo, and run `pod install` from the Examp
     _calendar.dataSource = self; 
     _calendar.delegate = self;
     
+#### FSCalendarDataSource
+- (NSString *)calendar:(FSCalendar *)calendar subtitleForDay:(NSDate *)date; // set subtitle
+- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date; // set event dot
+
+#### FSCalendarDelegate
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
+- (BOOL)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
+- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar;
+    
 ### 2. Page Direction Supported
     _calendar.flow = FSCalendarFlowVertical; //Change to vertical flow, default is FSCalendarFlowHorizontal
     
