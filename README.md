@@ -1,5 +1,4 @@
 # FSCalendar
-[If you are using this library and using custom color modulation, please take a screenshot for your calendar appearance here, this will help others better matching color in their apps, thanks](#1)
 
 ## Features
 ### 1. Easy appearance adjustment
@@ -60,3 +59,4 @@ Wenchao Ding, f33chobits@gmail.com
 
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
 
+[If you are using this library and using custom color modulation, please take a screenshot for your calendar appearance here, this will help others better matching color in their apps, thanks](https://github.com/f33chobits/FSCalendar/issues/2)
