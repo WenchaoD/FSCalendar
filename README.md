@@ -1,4 +1,5 @@
 # FSCalendar
+[If you are using this library and using custom color modulation, please take a screenshot for your calendar appearance here, this will help others better matching color in their apps, thanks](#1)
 
 ## Features
 ### 1. Easy appearance adjustment
