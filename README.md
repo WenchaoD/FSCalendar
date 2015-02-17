@@ -38,7 +38,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
     [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle]; // shape of today/selection fill color.Circle/Fectangle
     
 ### 4. Header (IBOutlet supported)
-    FSCalendarHeader *header = [[FSCalendarHeader alloc]    initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,_calendar.frame.size.height)];
+    FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,44)];
     _calendar.header = header;
 
 ## Requirements
