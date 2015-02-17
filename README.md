@@ -21,7 +21,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 #### FSCalendarDelegate
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
-- (BOOL)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar;
     
 ### 2. Page Direction Supported
