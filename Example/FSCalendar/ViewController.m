@@ -11,6 +11,11 @@
 #import "SSLunarDate.h"
 #import "CalendarConfigViewController.h"
 
+#define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
+#define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
+#define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
+
+
 @implementation ViewController
 
 - (IBAction)changeFlowClicked:(id)sender
@@ -43,13 +48,13 @@
         switch (theme) {
             case 0:
             {
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]];
-                [[FSCalendar appearance] setHeaderTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]];
+                [[FSCalendar appearance] setWeekdayTextColor:kBlueText];
+                [[FSCalendar appearance] setHeaderTitleColor:kBlueText];
                 [[FSCalendar appearance] setEventColor:[UIColor cyanColor]];
-                [[FSCalendar appearance] setSelectionColor:[UIColor blackColor]];
+                [[FSCalendar appearance] setSelectionColor:kBlue];
                 [[FSCalendar appearance] setHeaderDateFormat:@"yyyy-M"];
                 [[FSCalendar appearance] setMinDissolvedAlpha:0.2];
-                [[FSCalendar appearance] setTodayColor:[UIColor orangeColor]];
+                [[FSCalendar appearance] setTodayColor:kPink];
                 [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle];
                 break;
             }

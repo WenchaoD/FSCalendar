@@ -15,6 +15,7 @@
 #import "NSDate+FSExtension.h"
 
 #define kWeekHeight roundf(self.fs_height/9)
+#define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
 const char * flowKey;
 
@@ -71,7 +72,7 @@ const char * flowKey;
         weekdayLabel.text = weekSymbols[i];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
         weekdayLabel.font = [UIFont systemFontOfSize:16];
-        weekdayLabel.textColor = self.tintColor;
+        weekdayLabel.textColor = kBlueText;
         [_weekdays addObject:weekdayLabel];
         [self addSubview:weekdayLabel];
     }

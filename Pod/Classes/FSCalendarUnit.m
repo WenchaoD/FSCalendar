@@ -12,6 +12,8 @@
 #import "UIView+FSExtension.h"
 
 #define kAnimationDuration 0.12
+#define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
+#define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 
 @interface FSCalendarUnit ()
 
@@ -51,10 +53,10 @@
         
         _unitColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _unitColors[@(FSCalendarUnitStateNormal)] = [UIColor clearColor];
-        _unitColors[@(FSCalendarUnitStateSelected)] = [UIColor blackColor];
+        _unitColors[@(FSCalendarUnitStateSelected)] = kBlue;
         _unitColors[@(FSCalendarUnitStateDisabled)] = [UIColor clearColor];
         _unitColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor clearColor];
-        _unitColors[@(FSCalendarUnitStateToday)] = [UIColor orangeColor];
+        _unitColors[@(FSCalendarUnitStateToday)] = kPink;
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _titleColors[@(FSCalendarUnitStateNormal)] = [UIColor darkTextColor];

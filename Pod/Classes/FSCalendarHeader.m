@@ -11,6 +11,8 @@
 #import "UIView+FSExtension.h"
 #import "NSDate+FSExtension.h"
 
+#define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
+
 @interface FSCalendarHeader ()
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -49,7 +51,7 @@
     _dateFormatter.dateFormat = _dateFormat;
     _minDissolveAlpha = 0.2;
     _titleFont = [UIFont systemFontOfSize:15];
-    _titleColor = [self tintColor];
+    _titleColor = kBlueText;
     _labels = [NSMutableArray arrayWithCapacity:5];
     for (int i = 0; i < 5; i++) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];

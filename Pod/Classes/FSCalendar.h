@@ -39,7 +39,7 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 
 @optional
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
-- (BOOL)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar;
 
 @end
