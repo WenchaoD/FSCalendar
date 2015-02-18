@@ -46,6 +46,5 @@ pod 'FSCalendar'
 ios 7.0
 
 ## 欢迎
-1. 提交issue
-2. 提交pull request
-3. 如果您使用了FSCalendar，请在[这里](https://github.com/f33chobits/FSCalendar/issues/2)上传您的日历的颜色搭配~
+1. 提交issue或pull request
+2. 如果您使用了FSCalendar，请在[这里](https://github.com/f33chobits/FSCalendar/issues/2)上传您的日历的颜色搭配~
