@@ -529,7 +529,7 @@ const char * flowKey;
 - (NSString *)subtitleForDate:(NSDate *)date
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:subtitleForDay:)]) {
-        return [_dataSource calendar:self subtitleForDay:date];
+        return [_dataSource calendar:self subtitleForDate:date];
     }
     return nil;
 }

@@ -47,7 +47,7 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 @protocol FSCalendarDataSource <NSObject>
 
 @optional
-- (NSString *)calendar:(FSCalendar *)calendar subtitleForDay:(NSDate *)date;
+- (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date;
 
 @end

@@ -24,7 +24,7 @@
     [[[UIAlertView alloc] initWithTitle:@"FSCalendarView" message:@[@"Horizontal", @"Vertical"][_calendar.flow] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
 }
 
-- (NSString *)calendar:(FSCalendar *)calendarView subtitleForDay:(NSDate *)date
+- (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date
 {
     return _subtitle ? [[SSLunarDate alloc] initWithDate:date].dayString : nil;
 }
