@@ -1,5 +1,6 @@
 # FSCalendar
 
+##[中文文档](https://github.com/f33chobits/FSCalendar/blob/master/README-cn.md)
 ## Features
 ### 1. Easy appearance adjustment
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
@@ -9,7 +10,10 @@
 
 ## Usage
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+`pod 'FSCalendar'`
+
+`#import FSCalendar.h`
+
 
 ### 1. Simple DataSource/Delegate Pattern (IBOutlet supported)
     _calendar.dataSource = self; 
@@ -41,6 +45,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
     FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,44)];
     _calendar.header = header;
 
+For more appearance and other usage, look into FSCalendar.h
+
 ## Requirements
 ios 7.0
 
@@ -60,4 +66,5 @@ Wenchao Ding, f33chobits@gmail.com
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
 
 ## Others
-[If you are using this library and using custom color modulation, please take a screenshot for your calendar appearance here, this will help others better matching color in their apps, thanks](https://github.com/f33chobits/FSCalendar/issues/2)
+* If FSCalendar cannot meet your requirment, welcome to submit issues or pull request
+* If you are using this library and using custom color modulation, please take a screenshot for your calendar appearance [here](https://github.com/f33chobits/FSCalendar/issues/2), this will help others better matching color in their apps, thanks
