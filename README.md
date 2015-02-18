@@ -1,5 +1,6 @@
 # FSCalendar
 
+##[中文文档](https://github.com/f33chobits/FSCalendar/README-cn.md)
 ## Features
 ### 1. Easy appearance adjustment
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
