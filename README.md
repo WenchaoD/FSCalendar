@@ -2,10 +2,13 @@
 
 ##[中文文档](https://github.com/f33chobits/FSCalendar/blob/master/README-cn.md)
 ## Features
-### 1. Easy appearance adjustment
+### 1. Smooth Scrolling
+![animate](https://cloud.githubusercontent.com/assets/5186464/6260896/de303034-b820-11e4-9f01-8d98e0ac94aa.gif)
+
+### 2. Appearance adjustment
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
 
-### 2. Subtitle
+### 3. Subtitle
 ![subtitle1](https://cloud.githubusercontent.com/assets/5186464/6209081/54d8a4cc-b5fc-11e4-981e-d4bb21a45628.png)
 
 ## Usage
