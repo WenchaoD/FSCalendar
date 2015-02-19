@@ -1,10 +1,13 @@
 # FSCalendar
 
 ## 特点
-### 1. 自定义颜色样式
+### 1. 手势+方向支持
+![animate](https://cloud.githubusercontent.com/assets/5186464/6260896/de303034-b820-11e4-9f01-8d98e0ac94aa.gif)
+
+### 2. 自定义颜色样式
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
 
-### 2. 副标题支持（方便使用农历或节日）
+### 3. 副标题（方便使用农历或节日）
 ![subtitle1](https://cloud.githubusercontent.com/assets/5186464/6209081/54d8a4cc-b5fc-11e4-981e-d4bb21a45628.png)
 
 ## 使用方法
