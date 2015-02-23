@@ -23,7 +23,7 @@
     _calendar.delegate = self;
     
 #### FSCalendarDataSource
-- (NSString *)calendar:(FSCalendar *)calendar subtitleForDay:(NSDate *)date; // set subtitle
+- (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date; // set subtitle
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date; // set event dot
 
 #### FSCalendarDelegate
