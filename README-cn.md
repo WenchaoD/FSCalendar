@@ -20,7 +20,7 @@ pod 'FSCalendar'
     _calendar.delegate = self;
     
 #### FSCalendarDataSource
-- (NSString *)calendar:(FSCalendar *)calendar subtitleForDay:(NSDate *)date; // 设置副标题，本例中为农历
+- (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date; // 设置副标题，本例中为农历
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date; // 设置事件标记
 
 #### FSCalendarDelegate
