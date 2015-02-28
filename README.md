@@ -8,7 +8,7 @@
 ### 2. Appearance adjustment
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
 
-### 3. Subtitle
+### 3. Subtitle(Provided by FSCalendarDataSource,not only Chinese)
 ![subtitle1](https://cloud.githubusercontent.com/assets/5186464/6209081/54d8a4cc-b5fc-11e4-981e-d4bb21a45628.png)
 
 ## Usage
