@@ -3,8 +3,8 @@
 ##[中文文档](https://github.com/f33chobits/FSCalendar/blob/master/README-cn.md)
 ## Features
 ### 1. Smooth Scrolling and directions(vertical/horizotal)
-![animate](https://cloud.githubusercontent.com/assets/5186464/6260896/de303034-b820-11e4-9f01-8d98e0ac94aa.gif)
-
+![animate](https://cloud.githubusercontent.com/assets/5186464/6260896/de303034-b820-11e4-9f01-8d98e0ac94aa.gif) 
+![fscalendar-click](https://cloud.githubusercontent.com/assets/5186464/6479246/6156c458-c27d-11e4-97da-52b424b45ec3.gif)
 ### 2. Appearance adjustment
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
 

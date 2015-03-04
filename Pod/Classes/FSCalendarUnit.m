@@ -98,26 +98,41 @@
     return self;
 }
 
+- (void)layoutSublayersOfLayer:(CALayer *)layer
+{
+    [super layoutSublayersOfLayer:layer];
+    if (layer == self.layer) {
+        CGFloat diameter = self.diameter;
+        _animLayer.frame = CGRectMake((self.fs_width-diameter)/2, (_titleLabel.fs_height-diameter)/2, diameter, diameter);
+        switch (self.style) {
+            case FSCalendarUnitStyleCircle:
+                _animLayer.path = [UIBezierPath bezierPathWithOvalInRect:_animLayer.bounds].CGPath;
+                break;
+            case FSCalendarUnitStyleRectangle:
+                _animLayer.path = [UIBezierPath bezierPathWithRect:_animLayer.bounds].CGPath;
+                break;
+            default:
+                break;
+        }
+        _animLayer.fillColor = [self unitColorForState:self.absoluteState].CGColor;
+        
+        
+        _eventLayer.frame = CGRectMake((_animLayer.frame.size.width-5)/2+_animLayer.frame.origin.x, CGRectGetMaxY(_animLayer.frame), 5, 5);
+        _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
+        _eventLayer.hidden = ![self.dataSource hasEventForUnit:self];
+        
+        if ([self isSelected]) {
+            [self showAnimation];
+        }
+    }
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-
     _titleLabel.frame = self.bounds;
     _titleLabel.fs_left = (self.fs_width - _titleLabel.fs_width)/2.0;
     
-    CGFloat diameter = self.diameter;
-    _animLayer.frame = CGRectMake((self.fs_width-diameter)/2, (_titleLabel.fs_height-diameter)/2, diameter, diameter);
-    switch (self.style) {
-        case FSCalendarUnitStyleCircle:
-            _animLayer.path = [UIBezierPath bezierPathWithOvalInRect:_animLayer.bounds].CGPath;
-            break;
-        case FSCalendarUnitStyleRectangle:
-            _animLayer.path = [UIBezierPath bezierPathWithRect:_animLayer.bounds].CGPath;
-            break;
-        default:
-            break;
-    }
-    _animLayer.fillColor = [self unitColorForState:self.absoluteState].CGColor;
     
     if (_date) {
         // set attribute title
@@ -141,14 +156,6 @@
         
         _titleLabel.attributedText = attributeString;
         _titleLabel.fs_top += _titleFont.lineHeight * 0.1;
-    }
-    
-    _eventLayer.frame = CGRectMake((_animLayer.frame.size.width-5)/2+_animLayer.frame.origin.x, CGRectGetMaxY(_animLayer.frame), 5, 5);
-    _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
-    _eventLayer.hidden = ![self.dataSource hasEventForUnit:self];
-    
-    if ([self isSelected]) {
-        [self showAnimation];
     }
 }
 
