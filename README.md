@@ -17,51 +17,61 @@
 * Using cocoapods:`pod 'FSCalendar'`
 * Manually: Drag all .h and .m files in FSCalendar group to your project
 
-`#import FSCalendar.h`
-
+```objective-c
+#import FSCalendar.h
+```
 
 ### 1. Simple DataSource/Delegate Pattern (IBOutlet supported)
-    _calendar.dataSource = self; 
-    _calendar.delegate = self;
-    
+```objective-c
+self.calendar.dataSource = self; 
+self.calendar.delegate = self;
+```
 #### FSCalendarDataSource
+```objective-c
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date; // set subtitle
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date; // set event dot
-
+```
 #### FSCalendarDelegate
+```objective-c
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar;
-    
+```
 ### 2. Page Direction Supported
-    _calendar.flow = FSCalendarFlowVertical; //Change to vertical flow, default is FSCalendarFlowHorizontal
-    
+```objective-c
+_calendar.flow = FSCalendarFlowVertical; //Change to vertical flow, default is FSCalendarFlowHorizontal
+```
 ### 3. Flexible Appearance Customization
-    [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];   // week symbol color
-    [[FSCalendar appearance] setHeaderTitleColor:[UIColor darkGrayColor]]; // header text color
-    [[FSCalendar appearance] setEventColor:[UIColor greenColor]]; // event mark color
-    [[FSCalendar appearance] setSelectionColor:[UIColor blueColor]]; // selection fill color
-    [[FSCalendar appearance] setHeaderDateFormat:@"yyyy-MM"]; // header date format
-    [[FSCalendar appearance] setMinDissolvedAlpha:0.5]; // change to 1.0 to make header no alpha
-    [[FSCalendar appearance] setTodayColor:[UIColor redColor]]; // today fill color
-    [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle]; // shape of today/selection fill color.Circle/Fectangle
-    
+```objective-c
+[[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];   // week symbol color
+[[FSCalendar appearance] setHeaderTitleColor:[UIColor darkGrayColor]]; // header text color
+[[FSCalendar appearance] setEventColor:[UIColor greenColor]]; // event mark color
+[[FSCalendar appearance] setSelectionColor:[UIColor blueColor]]; // selection fill color
+[[FSCalendar appearance] setHeaderDateFormat:@"yyyy-MM"]; // header date format
+[[FSCalendar appearance] setMinDissolvedAlpha:0.5]; // change to 1.0 to make header no alpha
+[[FSCalendar appearance] setTodayColor:[UIColor redColor]]; // today fill color
+[[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle]; // shape of today/selection fill color.Circle/Fectangle
+```
 ### 4. Header (IBOutlet supported)
+```objective-c
     FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,44)];
     _calendar.header = header;
-
+```
 For more appearance and other usage, look into FSCalendar.h
 
 ## Requirements
 ios 7.0
 
 ## Known issues
-1. The title size changed as we change frame size of FSCalendar:   
-    Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:  
-    `_calendar.autoAdjustTitle = NO;  
-    _calendar.titleFont = [Your custom font];   
-    _calendar.subtitleFont = [Your custom font];`    
-    `titleFont` and `subtitleFont` is also available for `UIAppearance` selector, but would not take any change if `autoAdjustTitle` value is `YES`
+1. The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:
+
+```objective-c    
+self.calendar.autoAdjustTitle = NO; 
+self.calendar.titleFont = otherTitleFont;
+self.calendar.subtitleFont = otherSubtitleFont;
+```
+
+`titleFont` and `subtitleFont` is also available for `UIAppearance` selector, but would not take any effect if `autoAdjustTitle` value is `YES`
 
 ## Author
 
