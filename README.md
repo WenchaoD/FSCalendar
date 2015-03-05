@@ -54,8 +54,8 @@ _calendar.flow = FSCalendarFlowVertical; //Change to vertical flow, default is F
 ```
 ### 4. Header (IBOutlet supported)
 ```objective-c
-    FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,44)];
-    _calendar.header = header;
+FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectMake(0,0,_calendar.frame.size.width,44)];
+_calendar.header = header;
 ```
 For more appearance and other usage, look into FSCalendar.h
 
