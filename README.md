@@ -56,12 +56,11 @@ For more appearance and other usage, look into FSCalendar.h
 ios 7.0
 
 ## Known issues
-1. The title size changed as we change frame size of FSCalendar
-    Automatically adjusting font size based on the frame size is default behavior of FSCalendadr, to disable it:
-    _calendar.autoAdjustTitle = NO;
-    _calendar.titleFont = [Your custom font]
-    _calendar.subtitleFont = [Your custom font]
-
+1. The title size changed as we change frame size of FSCalendar:   
+    Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:  
+    _calendar.autoAdjustTitle = NO;  
+    _calendar.titleFont = [Your custom font];  
+    _calendar.subtitleFont = [Your custom font];  
     `titleFont` and `subtitleFont` is also available for UIAppearance selector, but would not take any change if autoAdjustTitle value is `YES`
 
 ## Author
