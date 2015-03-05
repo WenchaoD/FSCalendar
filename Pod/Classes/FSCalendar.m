@@ -39,6 +39,8 @@ const char * flowKey;
 - (BOOL)hasEventForDate:(NSDate *)date;
 - (NSString *)subtitleForDate:(NSDate *)date;
 
+- (void)adjustTitleIfNecessary;
+
 @end
 
 @implementation FSCalendar
@@ -65,13 +67,18 @@ const char * flowKey;
 
 - (void)initialize
 {
+    _titleFont = [UIFont systemFontOfSize:16];
+    _subtitleFont = [UIFont systemFontOfSize:11];
+    _weekdayFont = [UIFont systemFontOfSize:16];
+    _headerTitleFont = [UIFont systemFontOfSize:16];
+    
     NSArray *weekSymbols = [[NSCalendar currentCalendar] shortStandaloneWeekdaySymbols];
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
     for (int i = 0; i < weekSymbols.count; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.text = weekSymbols[i];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
-        weekdayLabel.font = [UIFont systemFontOfSize:16];
+        weekdayLabel.font = _weekdayFont;
         weekdayLabel.textColor = kBlueText;
         [_weekdays addObject:weekdayLabel];
         [self addSubview:weekdayLabel];
@@ -106,11 +113,9 @@ const char * flowKey;
     [_page1.subviews setValue:self forKeyPath:@"dataSource"];
     [_page1.subviews setValue:self forKeyPath:@"delegate"];
     
-    _titleFont = [UIFont systemFontOfSize:16];
-    _subtitleFont = [UIFont systemFontOfSize:11];
-    
     _unitStyle = FSCalendarUnitStyleCircle;
 
+    _autoAdjustTitleSize = YES;
 }
 
 - (void)layoutSubviews
@@ -123,7 +128,6 @@ const char * flowKey;
             _scrollView.frame = CGRectMake(0, kWeekHeight, self.fs_width, self.fs_height-kWeekHeight);
             _scrollView.contentInset = UIEdgeInsetsZero;
             _scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-            self.autoAdjustTitleSize = YES;
             
             [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 CGFloat width = self.fs_width/_weekdays.count;
@@ -139,7 +143,7 @@ const char * flowKey;
         _scrollView.contentSize = self.flowSize;
         _scrollView.tag = 0;
     }
-    
+    [self adjustTitleIfNecessary];   
 }
 
 - (void)dealloc
@@ -206,7 +210,8 @@ const char * flowKey;
 
 - (void)setWeekdayFont:(UIFont *)weekdayFont
 {
-    if (!_autoAdjustTitleSize) {
+    if (_weekdayFont != weekdayFont) {
+        _weekdayFont = weekdayFont;
         [_weekdays setValue:weekdayFont forKeyPath:@"font"];
     }
 }
@@ -242,7 +247,10 @@ const char * flowKey;
 
 - (void)setHeaderTitleFont:(UIFont *)font
 {
-    _header.titleFont = font;
+    if (_headerTitleFont != font) {
+        _headerTitleFont = font;
+        _header.titleFont = font;
+    }
 }
 
 - (void)setHeaderTitleColor:(UIColor *)color
@@ -387,11 +395,11 @@ const char * flowKey;
 
 - (void)setTitleFont:(UIFont *)font
 {
-    if (_autoAdjustTitleSize) {
-        return;
-    }
     if (_titleFont != font) {
         _titleFont = font;
+        if (_autoAdjustTitleSize) {
+            return;
+        }
         [_page0.subviews setValue:_titleFont forKeyPath:@"titleFont"];
         [_page1.subviews setValue:_titleFont forKeyPath:@"titleFont"];
     }
@@ -399,11 +407,11 @@ const char * flowKey;
 
 - (void)setSubtitleFont:(UIFont *)font
 {
-    if (_autoAdjustTitleSize) {
-        return;
-    }
     if (_subtitleFont != font) {
         _subtitleFont = font;
+        if (_autoAdjustTitleSize) {
+            return;
+        }
         [_page0.subviews setValue:_subtitleFont forKeyPath:@"subtitleFont"];
         [_page1.subviews setValue:_subtitleFont forKeyPath:@"subtitleFont"];
     }
@@ -426,6 +434,28 @@ const char * flowKey;
 }
 
 #pragma mark - Private
+
+- (void)adjustTitleIfNecessary
+{
+    UIFont *titleFont = _titleFont;
+    UIFont *subtitleFont = _subtitleFont;
+    UIFont *headerFont = _headerTitleFont;
+    UIFont *weekdayFont = _weekdayFont;
+    if (_autoAdjustTitleSize) {
+        titleFont = [titleFont fontWithSize:_scrollView.fs_height/3/6];
+        subtitleFont = [subtitleFont fontWithSize:_scrollView.fs_height/4.3/6];
+        headerFont = titleFont;
+        weekdayFont = titleFont;
+    }
+    [_page0.subviews setValue:titleFont forKeyPath:@"titleFont"];
+    [_page1.subviews setValue:titleFont forKeyPath:@"titleFont"];
+    [_page0.subviews setValue:subtitleFont forKeyPath:@"subtitleFont"];
+    [_page1.subviews setValue:subtitleFont forKeyPath:@"subtitleFont"];
+    [_weekdays setValue:weekdayFont forKey:@"font"];
+    if (_header) {
+        [_header setTitleFont:headerFont];
+    }
+}
 
 - (void)updatePointer
 {
@@ -546,14 +576,7 @@ const char * flowKey;
 {
     if (_autoAdjustTitleSize != autoAdjustTitleSize) {
         _autoAdjustTitleSize = autoAdjustTitleSize;
-        if (autoAdjustTitleSize) {
-            _titleFont = [_titleFont fontWithSize:_scrollView.fs_height/3/6];
-            _subtitleFont = [_subtitleFont fontWithSize:_scrollView.fs_height/4.3/6];
-            [_page0.subviews setValue:_titleFont forKeyPath:@"titleFont"];
-            [_page1.subviews setValue:_titleFont forKeyPath:@"titleFont"];
-            [_page0.subviews setValue:_subtitleFont forKeyPath:@"subtitleFont"];
-            [_page1.subviews setValue:_subtitleFont forKeyPath:@"subtitleFont"];
-        }
+        [self setNeedsLayout];
     }
 }
 
@@ -618,16 +641,20 @@ const char * flowKey;
                 subviews = _page1.subviews;
             }
             NSInteger index = [subviews indexOfObject:unit];
+            CGPoint destOffset;
             if (index <= 7) {
-                [_scrollView setContentOffset:CGPointMake(_scrollView.contentOffset.x-[self flowOffset].x, _scrollView.contentOffset.y-self.flowOffset.y) animated:YES];
+                destOffset = CGPointMake(_scrollView.contentOffset.x-[self flowOffset].x, _scrollView.contentOffset.y-self.flowOffset.y);
             } else {
-                [_scrollView setContentOffset:CGPointMake(_scrollView.contentOffset.x+[self flowOffset].x, _scrollView.contentOffset.y+self.flowOffset.y) animated:YES];
+                destOffset = CGPointMake(_scrollView.contentOffset.x+[self flowOffset].x, _scrollView.contentOffset.y+self.flowOffset.y);
             }
+            [_scrollView setContentOffset:destOffset animated:YES];
         }
         self.selectedDate = unit.date;
-        [_page0.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        [_page1.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [self didSelectDate:unit.date];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [_page0.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
+            [_page1.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        });
     }
 }
 

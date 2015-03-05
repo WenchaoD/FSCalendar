@@ -18,6 +18,12 @@
 
 @implementation ViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    //_calendar.autoAdjustTitleSize = NO;
+}
+
 - (IBAction)changeFlowClicked:(id)sender
 {
     _calendar.flow = 1 - _calendar.flow;

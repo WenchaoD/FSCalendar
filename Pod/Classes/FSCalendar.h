@@ -64,16 +64,17 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 
 @property (assign, nonatomic) FSCalendarFlow flow;
 
-@property (assign, nonatomic) BOOL autoAdjustTitleSize UI_APPEARANCE_SELECTOR;
+@property (assign, nonatomic) BOOL autoAdjustTitleSize;
+
 @property (assign, nonatomic) CGFloat minDissolvedAlpha UI_APPEARANCE_SELECTOR;
 @property (assign, nonatomic) FSCalendarUnitStyle unitStyle UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont *titleFont UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont *subtitleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont *weekdayFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont *headerTitleFont UI_APPEARANCE_SELECTOR;
 
-- (void)setWeekdayFont:(UIFont *)weekdayFont UI_APPEARANCE_SELECTOR;
 - (void)setWeekdayTextColor:(UIColor *)weekdayTextColor UI_APPEARANCE_SELECTOR;
 
-- (void)setHeaderTitleFont:(UIFont *)font UI_APPEARANCE_SELECTOR;
 - (void)setHeaderTitleColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
 - (void)setHeaderDateFormat:(NSString *)dateFormat UI_APPEARANCE_SELECTOR;
 

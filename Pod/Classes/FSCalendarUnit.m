@@ -15,12 +15,14 @@
 #define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
 #define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 
+#define kTitleHeight self.fs_height*5.0/6.0
+#define kDiameter MIN(self.fs_height*5.0/6.0,self.fs_width)
+
 @interface FSCalendarUnit ()
 
 @property (strong, nonatomic) UILabel *titleLabel;
 
 @property (readonly, nonatomic) FSCalendarUnitState absoluteState;
-@property (readonly, nonatomic) CGFloat diameter;
 
 @property (strong, nonatomic) NSMutableDictionary *unitColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
@@ -35,7 +37,7 @@
 
 @implementation FSCalendarUnit
 
-@synthesize titleFont = _titleFont, diameter = _diameter;
+@synthesize titleFont = _titleFont;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -101,9 +103,12 @@
 - (void)layoutSublayersOfLayer:(CALayer *)layer
 {
     [super layoutSublayersOfLayer:layer];
+    
     if (layer == self.layer) {
-        CGFloat diameter = self.diameter;
-        _animLayer.frame = CGRectMake((self.fs_width-diameter)/2, (_titleLabel.fs_height-diameter)/2, diameter, diameter);
+        
+        CGFloat diameter = kDiameter;
+        _animLayer.frame = CGRectMake((self.fs_width-diameter)/2, (kTitleHeight-diameter)/2, diameter, diameter);
+        
         switch (self.style) {
             case FSCalendarUnitStyleCircle:
                 _animLayer.path = [UIBezierPath bezierPathWithOvalInRect:_animLayer.bounds].CGPath;
@@ -116,8 +121,8 @@
         }
         _animLayer.fillColor = [self unitColorForState:self.absoluteState].CGColor;
         
-        
-        _eventLayer.frame = CGRectMake((_animLayer.frame.size.width-5)/2+_animLayer.frame.origin.x, CGRectGetMaxY(_animLayer.frame), 5, 5);
+        CGFloat eventSize = _animLayer.frame.size.height/6.0;
+        _eventLayer.frame = CGRectMake((_animLayer.frame.size.width-eventSize)/2+_animLayer.frame.origin.x, CGRectGetMaxY(_animLayer.frame)+eventSize*0.2, eventSize*0.8, eventSize*0.8);
         _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
         _eventLayer.hidden = ![self.dataSource hasEventForUnit:self];
         
@@ -130,9 +135,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _titleLabel.frame = self.bounds;
-    _titleLabel.fs_left = (self.fs_width - _titleLabel.fs_width)/2.0;
-    
+    _titleLabel.frame = CGRectMake(0, 0, self.fs_width, kTitleHeight);
     
     if (_date) {
         // set attribute title
@@ -141,21 +144,23 @@
         NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", @(_date.fs_day)] attributes:
                                                       @{NSForegroundColorAttributeName:[self titleColorForState:self.absoluteState],NSFontAttributeName:_titleFont}];
         NSString *subtitle = [_dataSource subtitleForUnit:self];
-        if (subtitle && ![subtitle isEqualToString:@""]) {
+        if (subtitle && subtitle.length) {
+            // set subtitle
             _titleLabel.numberOfLines = 2;
             NSAttributedString *subtitleString = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSForegroundColorAttributeName:[self subtitleColorForState:self.absoluteState], NSFontAttributeName: _subtitleFont}];
             [attributeString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
             [attributeString appendAttributedString:subtitleString];
+            // adjust line height
+            NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+            paragraph.lineSpacing = 0;
+            paragraph.alignment = NSTextAlignmentCenter;
+            paragraph.maximumLineHeight = _titleFont.lineHeight * 0.6;
+            [attributeString addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, attributeString.length)];
+            _titleLabel.fs_top += _titleFont.lineHeight * 0.1;
+        } else {
+            _titleLabel.fs_top -= 1;
         }
-        
-        NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-        paragraph.lineSpacing = 0;
-        paragraph.alignment = NSTextAlignmentCenter;
-        paragraph.maximumLineHeight = _titleFont.lineHeight * 0.6;
-        [attributeString addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, attributeString.length)];
-        
         _titleLabel.attributedText = attributeString;
-        _titleLabel.fs_top += _titleFont.lineHeight * 0.1;
     }
 }
 
@@ -227,7 +232,6 @@
 {
     if (_titleFont != titleFont) {
         _titleFont = titleFont;
-        _diameter = [@"1\n1" boundingRectWithSize:self.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:_titleFont} context:nil].size.height + 1;
         [self setNeedsLayout];
     }
 }
@@ -266,14 +270,6 @@
 }
 
 #pragma mark - Private
-
-- (CGFloat)diameter
-{
-    if (!_diameter) {
-        _diameter = [@"1\n1" boundingRectWithSize:self.frame.size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:_titleFont} context:nil].size.height;
-    }
-    return _diameter;
-}
 
 - (BOOL)isSelected
 {

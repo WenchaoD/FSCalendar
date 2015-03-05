@@ -4,16 +4,17 @@
 ### 1. 手势+方向支持
 ![animate](https://cloud.githubusercontent.com/assets/5186464/6260896/de303034-b820-11e4-9f01-8d98e0ac94aa.gif) 
 ![fscalendar-click](https://cloud.githubusercontent.com/assets/5186464/6479246/6156c458-c27d-11e4-97da-52b424b45ec3.gif)
-
 ### 2. 自定义颜色样式
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
-
 ### 3. 副标题（方便使用农历或节日）
 ![subtitle1](https://cloud.githubusercontent.com/assets/5186464/6209081/54d8a4cc-b5fc-11e4-981e-d4bb21a45628.png)
+### 4. iPad兼容
+![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/6502151/b4ce3092-c35b-11e4-827a-498d73579d78.jpg)
 
 ## 使用方法
-pod 'FSCalendar'
-并且
+* cocoapods安装:`pod 'FSCalendar'`
+* 手动安装: 将‘FSCalendar’ Group下的所有.h和.m文件拖到项目中
+
 "#import "FSCalendar.h"
 
 ### 1. 原生DataSource/Delegate模式 (可以用IBOutlet连接)
@@ -48,6 +49,17 @@ pod 'FSCalendar'
 
 ## 系统版本
 ios 7.0
+
+## 已知问题
+1. 字体大小随着FSCalendar的Frame大小儿改变
+    FSCalendar默认情况下根据Frame的大小改变字体的大小，下面是禁用此功能的方式
+    _calendar.autoAdjustTitle = NO; 
+    _calendar.titleFont = [Your custom font]
+    _calendar.subtitleFont = [Your custom font]
+
+    `titleFont` 和 `subtitleFont` 也可以用UIAppearance来设置，但是只要autoAdjustTitle的值为`YES`就不会起任何作用
+
+
 
 ## 欢迎
 1. 提交issue或pull request

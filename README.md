@@ -7,13 +7,15 @@
 ![fscalendar-click](https://cloud.githubusercontent.com/assets/5186464/6479246/6156c458-c27d-11e4-97da-52b424b45ec3.gif)
 ### 2. Appearance adjustment
 ![appearance](https://cloud.githubusercontent.com/assets/5186464/6208969/20ee842a-b5fb-11e4-8875-132d42893b9e.png)
-
 ### 3. Subtitle(Provided by FSCalendarDataSource,not only Chinese)
 ![subtitle1](https://cloud.githubusercontent.com/assets/5186464/6209081/54d8a4cc-b5fc-11e4-981e-d4bb21a45628.png)
+### 4. iPad compatible
+![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/6502151/b4ce3092-c35b-11e4-827a-498d73579d78.jpg)
 
 ## Usage
 
-`pod 'FSCalendar'`
+* Using cocoapods:`pod 'FSCalendar'`
+* Manually: Drag all .h and .m files in FSCalendar group to your project
 
 `#import FSCalendar.h`
 
@@ -53,12 +55,14 @@ For more appearance and other usage, look into FSCalendar.h
 ## Requirements
 ios 7.0
 
-## Installation
+## Known issues
+1. The title size changed as we change frame size of FSCalendar
+    Automatically adjusting font size based on the frame size is default behavior of FSCalendadr, to disable it:
+    _calendar.autoAdjustTitle = NO;
+    _calendar.titleFont = [Your custom font]
+    _calendar.subtitleFont = [Your custom font]
 
-FSCalendar is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-    pod "FSCalendar"
+    `titleFont` and `subtitleFont` is also available for UIAppearance selector, but would not take any change if autoAdjustTitle value is `YES`
 
 ## Author
 

@@ -41,7 +41,7 @@
                                 <rect key="frame" x="0.0" y="104" width="600" height="280"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="280" id="OZ4-2l-44O"/>
+                                    <constraint firstAttribute="height" constant="280" id="tCx-JJ-MHR"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="L73-rf-0E3"/>
@@ -67,17 +67,10 @@
                                 <action selector="changeFlowClicked:" destination="vXZ-lx-hvc" id="wIx-cs-C3H"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Obq-x1-ev2">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ofE-ai-4WY">
-                                <rect key="frame" x="233" y="7" width="98" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="change theme">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="5IA-Lj-ace" kind="show" id="D5s-Fh-zfW"/>
-                                </connections>
-                            </button>
+                        <barButtonItem key="rightBarButtonItem" title="change theme" id="HoQ-e7-orX">
+                            <connections>
+                                <segue destination="5IA-Lj-ace" kind="show" id="cSQ-tn-VVw"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
