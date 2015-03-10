@@ -1,6 +1,10 @@
 # FSCalendar
 
 ##[中文文档](https://github.com/f33chobits/FSCalendar/blob/master/README-cn.md)
+[![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
+[![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
+[![Platform](https://img.shields.io/cocoapods/p/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
+
 ## Features
 ### 1. Smooth Scrolling and directions(vertical/horizotal)
 ![animate](https://cloud.githubusercontent.com/assets/5186464/6260896/de303034-b820-11e4-9f01-8d98e0ac94aa.gif) 
