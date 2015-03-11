@@ -20,7 +20,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //_calendar.autoAdjustTitleSize = NO;
+//    _calendar.autoAdjustTitleSize = NO;
 }
 
 - (IBAction)changeFlowClicked:(id)sender
@@ -31,9 +31,7 @@
 
 - (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date
 {
-//    return _subtitle ? [[SSLunarDate alloc] initWithDate:date].dayString : nil;
-    return @"123";
-//    return nil;
+    return _subtitle ? [[SSLunarDate alloc] initWithDate:date].dayString : nil;
 }
 
 - (BOOL)calendar:(FSCalendar *)calendarView hasEventForDate:(NSDate *)date

@@ -21,8 +21,8 @@
 @property (assign, nonatomic) FSCalendarUnitAnimation animation;
 @property (assign, nonatomic) FSCalendarUnitStyle style;
 
-@property (strong, nonatomic) UIFont *subtitleFont;
-@property (strong, nonatomic) UIFont *titleFont;
+@property (nonatomic) UIFont *subtitleFont;
+@property (nonatomic) UIFont *titleFont;
 @property (strong, nonatomic) UIColor *eventColor;
 
 @property (nonatomic, readonly, getter = isSelected) BOOL selected;

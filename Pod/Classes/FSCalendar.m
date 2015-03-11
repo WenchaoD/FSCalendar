@@ -167,9 +167,7 @@ const char * flowKey;
         }
         _page0.frame = CGRectMake(0, 0, _scrollView.fs_width, _scrollView.fs_height);
         _page1.frame = CGRectOffset(_page0.frame, self.flowOffset.x, self.flowOffset.y);
-        [self updatePage:_page0 forIndex:_currentPage];
-        [self updatePage:_page1 forIndex:_currentPage + 1];
-        
+        [self reloadData];
         _scrollView.contentSize = self.flowSize;
         _scrollView.tag = 0;
     }

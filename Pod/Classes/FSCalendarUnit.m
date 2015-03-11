@@ -10,6 +10,8 @@
 #import "FSCalendarPage.h"
 #import "NSDate+FSExtension.h"
 #import "UIView+FSExtension.h"
+#import "CALayer+FSExtension.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kAnimationDuration 0.12
 
@@ -37,21 +39,15 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.layer.borderWidth = 1.0;
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.numberOfLines = 1;
-        _titleLabel.font = [UIFont systemFontOfSize:16];
+        _titleLabel.font = [UIFont systemFontOfSize:15];
         [self addSubview:_titleLabel];
-
+        
         _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _subtitleLabel.textAlignment = NSTextAlignmentCenter;
-        _subtitleLabel.numberOfLines = 1;
-        _subtitleLabel.font = [UIFont systemFontOfSize:11];
+        _subtitleLabel.font = [UIFont systemFontOfSize:10];
         [self addSubview:_subtitleLabel];
-
-        _titleFont = _titleLabel.font;
-        _subtitleFont = _subtitleLabel.font;
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tapGesture.numberOfTapsRequired = 1;
@@ -112,25 +108,33 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _titleLabel.frame = CGRectMake(0, 0, self.fs_width, kTitleHeight);
     
     if (_date) {
         // set attribute title
         NSString *subtitle = [_dataSource subtitleForUnit:self];
         UIColor *titleColor = [self.dataSource titleColorForUnit:self];
+        NSString *title = [NSString stringWithFormat:@"%@", @(_date.fs_day)];
+        _titleLabel.text = title;
         _titleLabel.textColor = titleColor;
-        _titleLabel.text = [NSString stringWithFormat:@"%@", @(_date.fs_day)];
+        CGFloat titleHeight = [title sizeWithAttributes:@{NSFontAttributeName:self.titleFont}].height;
         if (subtitle) {
             _subtitleLabel.hidden = NO;
             _subtitleLabel.text = subtitle;
-            [_titleLabel sizeToFit];
-            [_subtitleLabel sizeToFit];
-            CGFloat totalTextSize = _titleLabel.fs_height + _subtitleLabel.fs_height;
-            _titleLabel.frame = CGRectMake(0, (self.fs_height-totalTextSize) * 0.5, self.fs_width, _titleLabel.fs_height);
-            _subtitleLabel.fs_bottom = _titleLabel.fs_top;
+            CGFloat subtitleHeight = [subtitle sizeWithAttributes:@{NSFontAttributeName:self.subtitleFont}].height;
+            
+            CGFloat height = titleHeight + subtitleHeight;
+            _titleLabel.frame = CGRectMake(0,
+                                           (kTitleHeight-height)*0.5,
+                                           self.fs_width,
+                                           titleHeight);
+            
+            _subtitleLabel.frame = CGRectMake(0,
+                                              height-subtitleHeight,
+                                              self.fs_width,
+                                              subtitleHeight);
             _subtitleLabel.textColor = [self.dataSource subtitleColorForUnit:self];
         } else {
-            _titleLabel.fs_top -= 1;
+            _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(kTitleHeight));
             _subtitleLabel.hidden = YES;
         }
     }
@@ -148,18 +152,26 @@
 
 - (void)setTitleFont:(UIFont *)titleFont
 {
-    if (_titleFont != titleFont) {
-        _titleFont = titleFont;
-        [self setNeedsLayout];
+    if (_titleLabel.font != titleFont) {
+        _titleLabel.font = titleFont;
     }
+}
+
+- (UIFont *)titleFont
+{
+    return _titleLabel.font;
 }
 
 - (void)setSubtitleFont:(UIFont *)subtitleFont
 {
-    if (_subtitleFont != subtitleFont) {
-        _subtitleFont = subtitleFont;
-        [self setNeedsLayout];
+    if (_subtitleLabel.font != subtitleFont) {
+        _subtitleLabel.font = subtitleFont;
     }
+}
+
+- (UIFont *)subtitleFont
+{
+    return _subtitleLabel.font;
 }
 
 - (void)setEventColor:(UIColor *)eventColor
