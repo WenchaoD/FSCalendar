@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name             = "FSCalendar"
-  s.version          = "0.1.0"
+  s.version          = "0.2.0"
   s.summary          = "A powerful calendar which supports Appearance, Infinite Scrolling and Subtitle"
   
   s.homepage         = "https://github.com/f33chobits/FSCalendar"
@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
+  s.framework    = 'UIKit', 'QuartzCore'
   s.source_files = 'Pod/Classes/**/*'
 
 end

@@ -10,7 +10,6 @@
 #import "FSCalendarPage.h"
 #import "NSDate+FSExtension.h"
 #import "UIView+FSExtension.h"
-#import "CALayer+FSExtension.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kAnimationDuration 0.12
