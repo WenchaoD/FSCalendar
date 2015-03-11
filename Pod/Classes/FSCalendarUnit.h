@@ -30,16 +30,9 @@
 @property (nonatomic, readonly, getter = isToday) BOOL today;
 @property (nonatomic, readonly, getter = isWeekend) BOOL weekend;
 
+@property (nonatomic, readonly) FSCalendarUnitState absoluteState;
+
 @property (strong, nonatomic) NSDate *date;
-
-- (void)setUnitColor:(UIColor *)unitColor forState:(FSCalendarUnitState)state;
-- (UIColor *)unitColorForState:(FSCalendarUnitState)state;
-
-- (void)setTitleColor:(UIColor *)titleColor forState:(FSCalendarUnitState)state;
-- (UIColor *)titleColorForState:(FSCalendarUnitState)state;
-
-- (void)setSubtitleColor:(UIColor *)subtitleColor forState:(FSCalendarUnitState)state;
-- (UIColor *)subtitleColorForState:(FSCalendarUnitState)state;
 
 @end
 
@@ -51,6 +44,10 @@
 
 - (NSString *)subtitleForUnit:(FSCalendarUnit *)unit;
 - (BOOL)hasEventForUnit:(FSCalendarUnit *)unit;
+
+- (UIColor *)unitColorForUnit:(FSCalendarUnit *)unit;
+- (UIColor *)titleColorForUnit:(FSCalendarUnit *)unit;
+- (UIColor *)subtitleColorForUnit:(FSCalendarUnit *)unit;
 
 @end
 

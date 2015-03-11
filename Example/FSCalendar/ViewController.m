@@ -15,7 +15,6 @@
 #define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
-
 @implementation ViewController
 
 - (void)viewDidLoad
@@ -32,7 +31,9 @@
 
 - (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date
 {
-    return _subtitle ? [[SSLunarDate alloc] initWithDate:date].dayString : nil;
+//    return _subtitle ? [[SSLunarDate alloc] initWithDate:date].dayString : nil;
+    return @"123";
+//    return nil;
 }
 
 - (BOOL)calendar:(FSCalendar *)calendarView hasEventForDate:(NSDate *)date

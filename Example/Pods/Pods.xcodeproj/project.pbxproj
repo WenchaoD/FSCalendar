@@ -28,6 +28,7 @@
 		4FD6E939AE65BB0AE03EB217 /* SSHolidayUS.h in Headers */ = {isa = PBXBuildFile; fileRef = 1754C9EE0857D9A893A33EFC /* SSHolidayUS.h */; };
 		5029DA571AA8111F00712B83 /* UIScrollView+FSExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 5029DA551AA8111F00712B83 /* UIScrollView+FSExtension.h */; };
 		5029DA581AA8111F00712B83 /* UIScrollView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5029DA561AA8111F00712B83 /* UIScrollView+FSExtension.m */; };
+		5056E8821AB04B1D00550681 /* CALayer+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 5056E8811AB04B1D00550681 /* CALayer+FSExtension.m */; };
 		54B9A49CD681332E0AC96ACB /* SSHolidayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 994C4E5A9ADBA9E195ED3178 /* SSHolidayManager.m */; };
 		5BCDC7864F306CA125751EF5 /* FSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CF2B5A08202EC5C784DA2EE /* FSCalendar.h */; };
 		60934D965DDDD69787765519 /* SSHolidayUK.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DE6656C02C82877B52AE19 /* SSHolidayUK.m */; };
@@ -125,6 +126,8 @@
 		4E33EC3A0C38A7AC4F8FBCB2 /* SSHolidayUS.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SSHolidayUS.m; path = SSLunarDate/SSHolidayUS.m; sourceTree = "<group>"; };
 		5029DA551AA8111F00712B83 /* UIScrollView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+FSExtension.h"; path = "Pod/Classes/UIScrollView+FSExtension.h"; sourceTree = "<group>"; };
 		5029DA561AA8111F00712B83 /* UIScrollView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+FSExtension.m"; path = "Pod/Classes/UIScrollView+FSExtension.m"; sourceTree = "<group>"; };
+		5056E8801AB04B1D00550681 /* CALayer+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CALayer+FSExtension.h"; path = "Pod/Classes/CALayer+FSExtension.h"; sourceTree = "<group>"; };
+		5056E8811AB04B1D00550681 /* CALayer+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CALayer+FSExtension.m"; path = "Pod/Classes/CALayer+FSExtension.m"; sourceTree = "<group>"; };
 		507253B2398C97027677F2D4 /* Pods-FSCalendar-SSLunarDate-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-FSCalendar-SSLunarDate-prefix.pch"; sourceTree = "<group>"; };
 		54F8D017A120281736F206D6 /* UIView+FSExtension.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIView+FSExtension.h"; path = "Pod/Classes/UIView+FSExtension.h"; sourceTree = "<group>"; };
 		592634D55D346607A4B7530F /* FSCalendarPage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FSCalendarPage.m; path = Pod/Classes/FSCalendarPage.m; sourceTree = "<group>"; };
@@ -275,6 +278,8 @@
 				2AF241AFE2CAC20B7AE30AD0 /* NSDate+FSExtension.m */,
 				54F8D017A120281736F206D6 /* UIView+FSExtension.h */,
 				8ABD412B8358CA722FC65E56 /* UIView+FSExtension.m */,
+				5056E8801AB04B1D00550681 /* CALayer+FSExtension.h */,
+				5056E8811AB04B1D00550681 /* CALayer+FSExtension.m */,
 				5029DA551AA8111F00712B83 /* UIScrollView+FSExtension.h */,
 				5029DA561AA8111F00712B83 /* UIScrollView+FSExtension.m */,
 				D2F28E91854D59AA3E5E6865 /* Support Files */,
@@ -616,6 +621,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5056E8821AB04B1D00550681 /* CALayer+FSExtension.m in Sources */,
 				969FDB3DE912C57F822E2420 /* Pods-FSCalendar-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

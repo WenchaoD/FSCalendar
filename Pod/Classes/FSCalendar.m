@@ -16,6 +16,8 @@
 
 #define kWeekHeight roundf(self.fs_height/9)
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
+#define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
+#define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 
 const char * flowKey;
 
@@ -25,6 +27,10 @@ const char * flowKey;
 @property (strong, nonatomic) NSMutableArray *weekdays;
 @property (strong, nonatomic) FSCalendarPage *page0;
 @property (strong, nonatomic) FSCalendarPage *page1;
+
+@property (strong, nonatomic) NSMutableDictionary *unitColors;
+@property (strong, nonatomic) NSMutableDictionary *titleColors;
+@property (strong, nonatomic) NSMutableDictionary *subtitleColors;
 
 @property (assign, nonatomic) NSInteger currentPage;
 @property (assign, nonatomic) CGFloat baseOffset;
@@ -40,6 +46,7 @@ const char * flowKey;
 - (NSString *)subtitleForDate:(NSDate *)date;
 
 - (void)adjustTitleIfNecessary;
+- (void)reloadUnits;
 
 @end
 
@@ -113,8 +120,31 @@ const char * flowKey;
     [_page1.subviews setValue:self forKeyPath:@"dataSource"];
     [_page1.subviews setValue:self forKeyPath:@"delegate"];
     
+    
+    _unitColors = [NSMutableDictionary dictionaryWithCapacity:4];
+    _unitColors[@(FSCalendarUnitStateNormal)] = [UIColor clearColor];
+    _unitColors[@(FSCalendarUnitStateSelected)] = kBlue;
+    _unitColors[@(FSCalendarUnitStateDisabled)] = [UIColor clearColor];
+    _unitColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor clearColor];
+    _unitColors[@(FSCalendarUnitStateToday)] = kPink;
+    
+    _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
+    _titleColors[@(FSCalendarUnitStateNormal)] = [UIColor darkTextColor];
+    _titleColors[@(FSCalendarUnitStateWeekend)] = [UIColor darkTextColor];
+    _titleColors[@(FSCalendarUnitStateSelected)] = [UIColor whiteColor];
+    _titleColors[@(FSCalendarUnitStateDisabled)] = [UIColor grayColor];
+    _titleColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor lightGrayColor];
+    _titleColors[@(FSCalendarUnitStateToday)] = [UIColor whiteColor];
+    
+    _subtitleColors = [NSMutableDictionary dictionaryWithCapacity:4];
+    _subtitleColors[@(FSCalendarUnitStateNormal)] = [UIColor darkGrayColor];
+    _subtitleColors[@(FSCalendarUnitStateWeekend)] = [UIColor darkGrayColor];
+    _subtitleColors[@(FSCalendarUnitStateSelected)] = [UIColor whiteColor];
+    _subtitleColors[@(FSCalendarUnitStateDisabled)] = [UIColor lightGrayColor];
+    _subtitleColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor lightGrayColor];
+    _subtitleColors[@(FSCalendarUnitStateToday)] = [UIColor whiteColor];
+    
     _unitStyle = FSCalendarUnitStyleCircle;
-
     _autoAdjustTitleSize = YES;
 }
 
@@ -265,122 +295,122 @@ const char * flowKey;
 
 - (void)setTitleDefaultColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateNormal];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateNormal];
-    }];
+    if (color) {
+        _titleColors[@(FSCalendarUnitStateNormal)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarUnitStateNormal)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setTitleSelectionColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateSelected];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateSelected];
-    }];
+    if (color) {
+        _titleColors[@(FSCalendarUnitStateSelected)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarUnitStateSelected)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setTitleTodayColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateToday];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateToday];
-    }];
+    if (color) {
+        _titleColors[@(FSCalendarUnitStateToday)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarUnitStateToday)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setTitlePlaceholderColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStatePlaceholder];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStatePlaceholder];
-    }];
+    if (color) {
+        _titleColors[@(FSCalendarUnitStatePlaceholder)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarUnitStatePlaceholder)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setTitleWeekendColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateWeekend];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setTitleColor:color forState:FSCalendarUnitStateWeekend];
-    }];
+    if (color) {
+        _titleColors[@(FSCalendarUnitStateWeekend)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarUnitStateWeekend)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setSubtitleDefaultColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateNormal];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateNormal];
-    }];
+    if (color) {
+        _subtitleColors[@(FSCalendarUnitStateNormal)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateNormal)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setSubtitleSelectionColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateSelected];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateSelected];
-    }];
+    if (color) {
+        _subtitleColors[@(FSCalendarUnitStateSelected)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateSelected)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setSubtitleTodayColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateToday];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateToday];
-    }];
+    if (color) {
+        _subtitleColors[@(FSCalendarUnitStateToday)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateToday)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setSubtitlePlaceholderColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStatePlaceholder];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStatePlaceholder];
-    }];
+    if (color) {
+        _subtitleColors[@(FSCalendarUnitStatePlaceholder)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarUnitStatePlaceholder)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setSubtitleWeekendColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateWeekend];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setSubtitleColor:color forState:FSCalendarUnitStateWeekend];
-    }];
+    if (color) {
+        _subtitleColors[@(FSCalendarUnitStateWeekend)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateWeekend)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setSelectionColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setUnitColor:color forState:FSCalendarUnitStateSelected];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setUnitColor:color forState:FSCalendarUnitStateSelected];
-    }];
+    if (color) {
+        _unitColors[@(FSCalendarUnitStateSelected)] = color;
+    } else {
+        [_unitColors removeObjectForKey:@(FSCalendarUnitStateSelected)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setTodayColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setUnitColor:color forState:FSCalendarUnitStateToday];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setUnitColor:color forState:FSCalendarUnitStateToday];
-    }];
+    if (color) {
+        _unitColors[@(FSCalendarUnitStateToday)] = color;
+    } else {
+        [_unitColors removeObjectForKey:@(FSCalendarUnitStateToday)];
+    }
+    [self reloadUnits];
 }
 
 - (void)setEventColor:(UIColor *)color
@@ -455,6 +485,12 @@ const char * flowKey;
     if (_header) {
         [_header setTitleFont:headerFont];
     }
+}
+
+- (void)reloadUnits
+{
+    [_page0.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
+    [_page1.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 
 - (void)updatePointer
@@ -626,6 +662,21 @@ const char * flowKey;
     selected &= unit.date.fs_month == self.selectedDate.fs_month;
     selected &= unit.date.fs_day == self.selectedDate.fs_day;
     return selected;
+}
+
+- (UIColor *)unitColorForUnit:(FSCalendarUnit *)unit
+{
+    return _unitColors[@(unit.absoluteState)];
+}
+
+- (UIColor *)titleColorForUnit:(FSCalendarUnit *)unit
+{
+    return _titleColors[@(unit.absoluteState)];
+}
+
+- (UIColor *)subtitleColorForUnit:(FSCalendarUnit *)unit
+{
+    return _subtitleColors[@(unit.absoluteState)];
 }
 
 #pragma mark - Unit Delegate
