@@ -10,10 +10,9 @@
 #import "FSCalendarPage.h"
 #import "NSDate+FSExtension.h"
 #import "UIView+FSExtension.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define kAnimationDuration 0.12
-#define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
-#define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 
 #define kTitleHeight self.fs_height*5.0/6.0
 #define kDiameter MIN(self.fs_height*5.0/6.0,self.fs_width)
@@ -21,12 +20,7 @@
 @interface FSCalendarUnit ()
 
 @property (strong, nonatomic) UILabel *titleLabel;
-
-@property (readonly, nonatomic) FSCalendarUnitState absoluteState;
-
-@property (strong, nonatomic) NSMutableDictionary *unitColors;
-@property (strong, nonatomic) NSMutableDictionary *titleColors;
-@property (strong, nonatomic) NSMutableDictionary *subtitleColors;
+@property (strong, nonatomic) UILabel *subtitleLabel;
 
 @property (strong, nonatomic) CAShapeLayer *animLayer;
 @property (strong, nonatomic) CAShapeLayer *eventLayer;
@@ -46,35 +40,13 @@
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.numberOfLines = 1;
-        _titleLabel.font = [UIFont systemFontOfSize:16];
+        _titleLabel.font = [UIFont systemFontOfSize:15];
         [self addSubview:_titleLabel];
-
-        _titleFont = _titleLabel.font;
-        _subtitleFont = [_titleFont fontWithSize:11];
         
-        _unitColors = [NSMutableDictionary dictionaryWithCapacity:4];
-        _unitColors[@(FSCalendarUnitStateNormal)] = [UIColor clearColor];
-        _unitColors[@(FSCalendarUnitStateSelected)] = kBlue;
-        _unitColors[@(FSCalendarUnitStateDisabled)] = [UIColor clearColor];
-        _unitColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor clearColor];
-        _unitColors[@(FSCalendarUnitStateToday)] = kPink;
-        
-        _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
-        _titleColors[@(FSCalendarUnitStateNormal)] = [UIColor darkTextColor];
-        _titleColors[@(FSCalendarUnitStateWeekend)] = [UIColor darkTextColor];
-        _titleColors[@(FSCalendarUnitStateSelected)] = [UIColor whiteColor];
-        _titleColors[@(FSCalendarUnitStateDisabled)] = [UIColor grayColor];
-        _titleColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor lightGrayColor];
-        _titleColors[@(FSCalendarUnitStateToday)] = [UIColor whiteColor];
-        
-        _subtitleColors = [NSMutableDictionary dictionaryWithCapacity:4];
-        _subtitleColors[@(FSCalendarUnitStateNormal)] = [UIColor darkGrayColor];
-        _subtitleColors[@(FSCalendarUnitStateWeekend)] = [UIColor darkGrayColor];
-        _subtitleColors[@(FSCalendarUnitStateSelected)] = [UIColor whiteColor];
-        _subtitleColors[@(FSCalendarUnitStateDisabled)] = [UIColor lightGrayColor];
-        _subtitleColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor lightGrayColor];
-        _subtitleColors[@(FSCalendarUnitStateToday)] = [UIColor whiteColor];
+        _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _subtitleLabel.textAlignment = NSTextAlignmentCenter;
+        _subtitleLabel.font = [UIFont systemFontOfSize:10];
+        [self addSubview:_subtitleLabel];
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         tapGesture.numberOfTapsRequired = 1;
@@ -119,7 +91,7 @@
             default:
                 break;
         }
-        _animLayer.fillColor = [self unitColorForState:self.absoluteState].CGColor;
+        _animLayer.fillColor = [self.dataSource unitColorForUnit:self].CGColor;
         
         CGFloat eventSize = _animLayer.frame.size.height/6.0;
         _eventLayer.frame = CGRectMake((_animLayer.frame.size.width-eventSize)/2+_animLayer.frame.origin.x, CGRectGetMaxY(_animLayer.frame)+eventSize*0.2, eventSize*0.8, eventSize*0.8);
@@ -135,32 +107,35 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _titleLabel.frame = CGRectMake(0, 0, self.fs_width, kTitleHeight);
     
     if (_date) {
         // set attribute title
-        _titleLabel.numberOfLines = 1;
-        
-        NSMutableAttributedString *attributeString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", @(_date.fs_day)] attributes:
-                                                      @{NSForegroundColorAttributeName:[self titleColorForState:self.absoluteState],NSFontAttributeName:_titleFont}];
         NSString *subtitle = [_dataSource subtitleForUnit:self];
-        if (subtitle && subtitle.length) {
-            // set subtitle
-            _titleLabel.numberOfLines = 2;
-            NSAttributedString *subtitleString = [[NSAttributedString alloc] initWithString:subtitle attributes:@{NSForegroundColorAttributeName:[self subtitleColorForState:self.absoluteState], NSFontAttributeName: _subtitleFont}];
-            [attributeString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-            [attributeString appendAttributedString:subtitleString];
-            // adjust line height
-            NSMutableParagraphStyle *paragraph = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-            paragraph.lineSpacing = 0;
-            paragraph.alignment = NSTextAlignmentCenter;
-            paragraph.maximumLineHeight = _titleFont.lineHeight * 0.6;
-            [attributeString addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, attributeString.length)];
-            _titleLabel.fs_top += _titleFont.lineHeight * 0.1;
+        UIColor *titleColor = [self.dataSource titleColorForUnit:self];
+        NSString *title = [NSString stringWithFormat:@"%@", @(_date.fs_day)];
+        _titleLabel.text = title;
+        _titleLabel.textColor = titleColor;
+        CGFloat titleHeight = [title sizeWithAttributes:@{NSFontAttributeName:self.titleFont}].height;
+        if (subtitle) {
+            _subtitleLabel.hidden = NO;
+            _subtitleLabel.text = subtitle;
+            CGFloat subtitleHeight = [subtitle sizeWithAttributes:@{NSFontAttributeName:self.subtitleFont}].height;
+            
+            CGFloat height = titleHeight + subtitleHeight;
+            _titleLabel.frame = CGRectMake(0,
+                                           (kTitleHeight-height)*0.5,
+                                           self.fs_width,
+                                           titleHeight);
+            
+            _subtitleLabel.frame = CGRectMake(0,
+                                              height-subtitleHeight,
+                                              self.fs_width,
+                                              subtitleHeight);
+            _subtitleLabel.textColor = [self.dataSource subtitleColorForUnit:self];
         } else {
-            _titleLabel.fs_top -= 1;
+            _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(kTitleHeight));
+            _subtitleLabel.hidden = YES;
         }
-        _titleLabel.attributedText = attributeString;
     }
 }
 
@@ -174,74 +149,28 @@
     [self setNeedsLayout];
 }
 
-- (void)setUnitColor:(UIColor *)backgroundColor forState:(FSCalendarUnitState)state
-{
-    if ([[self unitColorForState:state] isEqual:backgroundColor]) {
-        return;
-    }
-    if (backgroundColor) {
-        _unitColors[@(state)] = backgroundColor;
-    } else {
-        [_unitColors removeObjectForKey:@(state)];
-    }
-    [self setNeedsLayout];
-}
-
-- (UIColor *)unitColorForState:(FSCalendarUnitState)state
-{
-    return _unitColors[@(state)];
-}
-
-- (void)setTitleColor:(UIColor *)titleColor forState:(FSCalendarUnitState)state
-{
-    if ([[self titleColorForState:state] isEqual:titleColor]) {
-        return;
-    }
-    if (titleColor) {
-        _titleColors[@(state)] = titleColor;
-    } else {
-        [_titleColors removeObjectForKey:@(state)];
-    }
-    [self setNeedsLayout];
-}
-
-- (UIColor *)titleColorForState:(FSCalendarUnitState)state
-{
-    return _titleColors[@(state)];
-}
-
-- (void)setSubtitleColor:(UIColor *)subtitleColor forState:(FSCalendarUnitState)state
-{
-    if ([[self subtitleColorForState:state] isEqual:subtitleColor]) {
-        return;
-    }
-    if (subtitleColor) {
-        _subtitleColors[@(state)] = subtitleColor;
-    } else {
-        [_subtitleColors removeObjectForKey:@(state)];
-    }
-    [self setNeedsLayout];
-}
-
-- (UIColor *)subtitleColorForState:(FSCalendarUnitState)state
-{
-    return _subtitleColors[@(state)];
-}
-
 - (void)setTitleFont:(UIFont *)titleFont
 {
-    if (_titleFont != titleFont) {
-        _titleFont = titleFont;
-        [self setNeedsLayout];
+    if (_titleLabel.font != titleFont) {
+        _titleLabel.font = titleFont;
     }
+}
+
+- (UIFont *)titleFont
+{
+    return _titleLabel.font;
 }
 
 - (void)setSubtitleFont:(UIFont *)subtitleFont
 {
-    if (_subtitleFont != subtitleFont) {
-        _subtitleFont = subtitleFont;
-        [self setNeedsLayout];
+    if (_subtitleLabel.font != subtitleFont) {
+        _subtitleLabel.font = subtitleFont;
     }
+}
+
+- (UIFont *)subtitleFont
+{
+    return _subtitleLabel.font;
 }
 
 - (void)setEventColor:(UIColor *)eventColor

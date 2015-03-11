@@ -15,13 +15,12 @@
 #define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
-
 @implementation ViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //_calendar.autoAdjustTitleSize = NO;
+//    _calendar.autoAdjustTitleSize = NO;
 }
 
 - (IBAction)changeFlowClicked:(id)sender
