@@ -11,8 +11,8 @@
 @class FSCalendar, FSCalendarUnit, FSCalendarHeader;
 
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
-    FSCalendarFlowHorizontal = 0,
-    FSCalendarFlowVertical   = 1
+    FSCalendarFlowHorizontal = UICollectionViewScrollDirectionHorizontal,
+    FSCalendarFlowVertical   = UICollectionViewScrollDirectionVertical
 };
 
 typedef NS_OPTIONS(NSInteger, FSCalendarUnitAnimation) {
@@ -60,8 +60,8 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 
 @property (copy, nonatomic) NSDate *currentDate;
 @property (copy, nonatomic) NSDate *selectedDate;
-@property (copy, nonatomic) NSDate *currentMonth;
 
+@property (readonly, nonatomic) NSDate *currentMonth;
 @property (assign, nonatomic) FSCalendarFlow flow;
 
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;

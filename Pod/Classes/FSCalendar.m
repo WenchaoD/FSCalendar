@@ -13,32 +13,27 @@
 #import "FSCalendarHeader.h"
 #import "UIView+FSExtension.h"
 #import "NSDate+FSExtension.h"
+#import "NSCalendar+FSExtension.h"
+#import "FSCalendarCell.h"
 
 #define kWeekHeight roundf(self.fs_height/9)
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 #define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
 #define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 
-const char * flowKey;
+#define kNumberOfPages 61 // From 1970 to 2040
 
-@interface FSCalendar ()<UIScrollViewDelegate, FSCalendarUnitDataSource, FSCalendarUnitDelegate>
+@interface FSCalendar ()<UIScrollViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (strong, nonatomic) UIScrollView *scrollView;
+@property (strong, nonatomic) UICollectionView *collectionView;
+@property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+
 @property (strong, nonatomic) NSMutableArray *weekdays;
-@property (strong, nonatomic) FSCalendarPage *page0;
-@property (strong, nonatomic) FSCalendarPage *page1;
-
-@property (strong, nonatomic) NSMutableDictionary *unitColors;
+@property (strong, nonatomic) NSMutableDictionary *backgroundColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
 @property (strong, nonatomic) NSMutableDictionary *subtitleColors;
 
-@property (assign, nonatomic) NSInteger currentPage;
-@property (assign, nonatomic) CGFloat baseOffset;
-
-@property (readonly, nonatomic) CGSize flowSize;
-@property (readonly, nonatomic) CGPoint flowOffset;
-@property (readonly, nonatomic) CGFloat flowSide;
-@property (readonly, nonatomic) CGFloat flowScrollOffset;
+@property (readonly, nonatomic) NSInteger currentPage;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
@@ -46,7 +41,8 @@ const char * flowKey;
 - (NSString *)subtitleForDate:(NSDate *)date;
 
 - (void)adjustTitleIfNecessary;
-- (void)reloadUnits;
+
+- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -91,42 +87,36 @@ const char * flowKey;
         [self addSubview:weekdayLabel];
     }
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
-    _scrollView.delegate = self;
-    _scrollView.backgroundColor = [UIColor clearColor];
-    _scrollView.bounces = YES;
-    _scrollView.opaque = NO;
-    _scrollView.pagingEnabled = YES;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.tag = -1;
-    _scrollView.delaysContentTouches = NO;
-    _scrollView.canCancelContentTouches = YES;
-    [self addSubview:_scrollView];
+    _collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    _collectionViewFlowLayout.minimumInteritemSpacing = 0;
+    _collectionViewFlowLayout.minimumLineSpacing = 0;
     
-    _page0 = [[FSCalendarPage alloc] initWithFrame:CGRectZero];
-    _page0.tag = 0;
-    [_scrollView addSubview:_page0];
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                         collectionViewLayout:_collectionViewFlowLayout];
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
+    _collectionView.backgroundColor = [UIColor clearColor];
+    _collectionView.bounces = YES;
+    _collectionView.pagingEnabled = YES;
+    _collectionView.showsHorizontalScrollIndicator = NO;
+    _collectionView.showsVerticalScrollIndicator = NO;
+    _collectionView.delaysContentTouches = NO;
+    _collectionView.canCancelContentTouches = YES;
+    [_collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:@"cell"];
+    [self addSubview:_collectionView];
     
-    _page1 = [[FSCalendarPage alloc] initWithFrame:CGRectZero];
-    _page1.tag = 1;
-    [_scrollView addSubview:_page1];
+    _collectionView.collectionViewLayout = _collectionViewFlowLayout;
     
     _currentDate = [NSDate date];
     _currentMonth = [_currentDate copy];
     
-    [_page0.subviews setValue:self forKeyPath:@"dataSource"];
-    [_page0.subviews setValue:self forKeyPath:@"delegate"];
-    [_page1.subviews setValue:self forKeyPath:@"dataSource"];
-    [_page1.subviews setValue:self forKeyPath:@"delegate"];
-    
-    
-    _unitColors = [NSMutableDictionary dictionaryWithCapacity:4];
-    _unitColors[@(FSCalendarUnitStateNormal)] = [UIColor clearColor];
-    _unitColors[@(FSCalendarUnitStateSelected)] = kBlue;
-    _unitColors[@(FSCalendarUnitStateDisabled)] = [UIColor clearColor];
-    _unitColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor clearColor];
-    _unitColors[@(FSCalendarUnitStateToday)] = kPink;
+    _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:4];
+    _backgroundColors[@(FSCalendarUnitStateNormal)] = [UIColor clearColor];
+    _backgroundColors[@(FSCalendarUnitStateSelected)] = kBlue;
+    _backgroundColors[@(FSCalendarUnitStateDisabled)] = [UIColor clearColor];
+    _backgroundColors[@(FSCalendarUnitStatePlaceholder)] = [UIColor clearColor];
+    _backgroundColors[@(FSCalendarUnitStateToday)] = kPink;
     
     _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
     _titleColors[@(FSCalendarUnitStateNormal)] = [UIColor darkTextColor];
@@ -151,89 +141,72 @@ const char * flowKey;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    if (_scrollView.tag == -1) {
-        if (CGRectEqualToRect(_scrollView.frame, CGRectZero)) {
-            // make sure this is called only at initialing
-            _scrollView.frame = CGRectMake(0, kWeekHeight, self.fs_width, self.fs_height-kWeekHeight);
-            _scrollView.contentInset = UIEdgeInsetsZero;
-            _scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-            
-            [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                CGFloat width = self.fs_width/_weekdays.count;
-                CGFloat height = kWeekHeight;
-                [obj setFrame:CGRectMake(idx*width, 0, width, height)];
-            }];
-        }
-        _page0.frame = CGRectMake(0, 0, _scrollView.fs_width, _scrollView.fs_height);
-        _page1.frame = CGRectOffset(_page0.frame, self.flowOffset.x, self.flowOffset.y);
-        [self reloadData];
-        _scrollView.contentSize = self.flowSize;
-        _scrollView.tag = 0;
-    }
-    [self adjustTitleIfNecessary];   
+    CGFloat padding = _collectionView.fs_height * 0.01;
+    _collectionView.frame = CGRectMake(0, kWeekHeight, self.fs_width, self.fs_height-kWeekHeight);
+    _collectionViewFlowLayout.itemSize = CGSizeMake(_collectionView.fs_width/7,
+                                                    (_collectionView.fs_height-padding*2)/6);
+    _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
+    [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        CGFloat width = self.fs_width/_weekdays.count;
+        CGFloat height = kWeekHeight;
+        [obj setFrame:CGRectMake(idx*width, 0, width, height)];
+    }];
+    [self adjustTitleIfNecessary];
 }
 
-- (void)dealloc
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    _scrollView.delegate = nil;
+    return kNumberOfPages;
 }
 
-#pragma mark - UIScrollView Delegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    CGFloat offset = self.flowScrollOffset;
-    if (offset > self.flowSide) {
-        _scrollView.bounds = CGRectOffset(_scrollView.bounds, -self.flowOffset.x, -self.flowOffset.y);
-        _page1.frame = CGRectOffset(_page1.frame, -self.flowOffset.x, -self.flowOffset.y);
-        _page0.frame = CGRectOffset(_page1.frame, self.flowOffset.x, self.flowOffset.y);
-        _baseOffset += self.flowOffset.x + self.flowOffset.y;
-        offset -= (self.flowOffset.x + self.flowOffset.y);
-        [self updatePointer];
-        [self updatePage:_page1 forIndex:self.currentPage + 1];
-    } else if (offset < 0) {
-        _scrollView.bounds = CGRectOffset(_scrollView.bounds, self.flowOffset.x, self.flowOffset.y);
-        _page0.frame = CGRectOffset(_page0.frame, self.flowOffset.x, self.flowOffset.y);
-        _page1.frame = CGRectOffset(_page0.frame, -self.flowOffset.x, -self.flowOffset.y);
-        _baseOffset -= (self.flowOffset.x + self.flowOffset.y);
-        offset += (self.flowOffset.x + self.flowOffset.y);
-        [self updatePointer];
-        [self updatePage:_page0 forIndex:self.currentPage - 1];
+    return 42;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    cell.titleColors = self.titleColors;
+    cell.subtitleColors = self.subtitleColors;
+    cell.backgroundColors = self.backgroundColors;
+    cell.month = [[NSCalendar fs_sharedCalendar] dateByAddingUnit:NSMonthCalendarUnit
+                                                            value:indexPath.section
+                                                           toDate:[NSDate dateWithTimeIntervalSince1970:1]
+                                                          options:0];
+    cell.date = [self dateForIndexPath:indexPath];
+    if (!_autoAdjustTitleSize) {
+        cell.titleLabel.font = _titleFont;
+        cell.subtitleLabel.font = _subtitleFont;
     }
-    self.currentPage = (roundf(offset/self.flowSide)*self.flowSide+self.baseOffset)/self.flowSide;
-    if (_header) {
-        _header.scrollOffset = (self.baseOffset+offset)/self.flowSide;
-    }
+    NSLog(@"%@::%@",@(indexPath.row),@(cell.date.fs_day));
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     
 }
 
 #pragma mark - Setter & Getter
 
-- (void)setCurrentPage:(NSInteger)currentPage
+- (NSInteger)currentPage
 {
-    if (_currentPage != currentPage) {
-        _currentPage = currentPage;
-        self.currentMonth = [_currentDate fs_dateByAddingMonths:currentPage];
-        if (_delegate && [_delegate respondsToSelector:@selector(calendarCurrentMonthDidChange:)]) {
-            [_delegate calendarCurrentMonthDidChange:self];
-        }
+    if (self.flow == FSCalendarFlowHorizontal) {
+        return round(_collectionView.contentOffset.x)/_collectionView.fs_width;
+    } else {
+        return round(_collectionView.contentOffset.y)/_collectionView.fs_height;
     }
 }
 
 - (void)setFlow:(FSCalendarFlow)flow
 {
-    if (self.flow != flow) {
-        objc_setAssociatedObject(self, &flowKey, @(flow), OBJC_ASSOCIATION_COPY_NONATOMIC);
-        _scrollView.tag = -1;
-        _baseOffset = _currentPage * self.flowSide;
-        [self setNeedsLayout];
-    }
+    _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
 }
 
 - (FSCalendarFlow)flow
 {
-    return [objc_getAssociatedObject(self, &flowKey) integerValue];
+    return (FSCalendarFlow)_collectionViewFlowLayout.scrollDirection;
 }
 
 - (void)setWeekdayFont:(UIFont *)weekdayFont
@@ -264,8 +237,7 @@ const char * flowKey;
     if (![_currentDate isEqualToDate:currentDate]) {
         _currentDate = [currentDate copy];
         _currentMonth = [_currentDate copy];
-        [self updatePage:_page0 forIndex:0];
-        [self updatePage:_page1 forIndex:1];
+        
         if (_header) {
             _header.calendar = nil;
             _header.calendar = self;
@@ -298,7 +270,7 @@ const char * flowKey;
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarUnitStateNormal)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setTitleSelectionColor:(UIColor *)color
@@ -308,7 +280,7 @@ const char * flowKey;
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarUnitStateSelected)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setTitleTodayColor:(UIColor *)color
@@ -318,7 +290,7 @@ const char * flowKey;
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarUnitStateToday)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setTitlePlaceholderColor:(UIColor *)color
@@ -328,7 +300,7 @@ const char * flowKey;
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarUnitStatePlaceholder)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setTitleWeekendColor:(UIColor *)color
@@ -338,7 +310,7 @@ const char * flowKey;
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarUnitStateWeekend)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setSubtitleDefaultColor:(UIColor *)color
@@ -348,7 +320,7 @@ const char * flowKey;
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateNormal)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setSubtitleSelectionColor:(UIColor *)color
@@ -358,7 +330,7 @@ const char * flowKey;
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateSelected)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setSubtitleTodayColor:(UIColor *)color
@@ -368,7 +340,7 @@ const char * flowKey;
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateToday)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setSubtitlePlaceholderColor:(UIColor *)color
@@ -378,7 +350,7 @@ const char * flowKey;
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarUnitStatePlaceholder)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setSubtitleWeekendColor:(UIColor *)color
@@ -388,37 +360,32 @@ const char * flowKey;
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarUnitStateWeekend)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setSelectionColor:(UIColor *)color
 {
     if (color) {
-        _unitColors[@(FSCalendarUnitStateSelected)] = color;
+        _backgroundColors[@(FSCalendarUnitStateSelected)] = color;
     } else {
-        [_unitColors removeObjectForKey:@(FSCalendarUnitStateSelected)];
+        [_backgroundColors removeObjectForKey:@(FSCalendarUnitStateSelected)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setTodayColor:(UIColor *)color
 {
     if (color) {
-        _unitColors[@(FSCalendarUnitStateToday)] = color;
+        _backgroundColors[@(FSCalendarUnitStateToday)] = color;
     } else {
-        [_unitColors removeObjectForKey:@(FSCalendarUnitStateToday)];
+        [_backgroundColors removeObjectForKey:@(FSCalendarUnitStateToday)];
     }
-    [self reloadUnits];
+    [self reloadData];
 }
 
 - (void)setEventColor:(UIColor *)color
 {
-    [_page0.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setEventColor:color];
-    }];
-    [_page1.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [(FSCalendarUnit *)obj setEventColor:color];
-    }];
+    
 }
 
 - (void)setTitleFont:(UIFont *)font
@@ -428,8 +395,6 @@ const char * flowKey;
         if (_autoAdjustTitleSize) {
             return;
         }
-        [_page0.subviews setValue:_titleFont forKeyPath:@"titleFont"];
-        [_page1.subviews setValue:_titleFont forKeyPath:@"titleFont"];
     }
 }
 
@@ -440,8 +405,6 @@ const char * flowKey;
         if (_autoAdjustTitleSize) {
             return;
         }
-        [_page0.subviews setValue:_subtitleFont forKeyPath:@"subtitleFont"];
-        [_page1.subviews setValue:_subtitleFont forKeyPath:@"subtitleFont"];
     }
 }
 
@@ -453,15 +416,21 @@ const char * flowKey;
     }
 }
 
-#pragma mark - Public
-
-- (void)reloadData
-{
-    [self updatePage:_page0 forIndex:_currentPage];
-    [self updatePage:_page1 forIndex:_currentPage + 1];
-}
-
 #pragma mark - Private
+
+- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDate *currentMonth = [calendar dateByAddingUnit:NSMonthCalendarUnit
+                                                value:indexPath.section
+                                               toDate:[NSDate dateWithTimeIntervalSince1970:1]
+                                              options:0];
+    NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentMonth.fs_year month:currentMonth.fs_month day:1];
+    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday - 1) ? : 7;
+    NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev-1];
+    NSDate *dateForRow = [firstDateOfPage fs_dateByAddingDays:7*(indexPath.row%6)+indexPath.row/6];
+    return dateForRow;
+}
 
 - (void)adjustTitleIfNecessary
 {
@@ -469,110 +438,16 @@ const char * flowKey;
     UIFont *subtitleFont = _subtitleFont;
     UIFont *headerFont = _headerTitleFont;
     UIFont *weekdayFont = _weekdayFont;
-    if (_autoAdjustTitleSize) {
-        titleFont = [titleFont fontWithSize:_scrollView.fs_height/3/6];
-        subtitleFont = [subtitleFont fontWithSize:_scrollView.fs_height/4.3/6];
-        headerFont = titleFont;
-        weekdayFont = titleFont;
-    }
-    [_page0.subviews setValue:titleFont forKeyPath:@"titleFont"];
-    [_page1.subviews setValue:titleFont forKeyPath:@"titleFont"];
-    [_page0.subviews setValue:subtitleFont forKeyPath:@"subtitleFont"];
-    [_page1.subviews setValue:subtitleFont forKeyPath:@"subtitleFont"];
+//    if (_autoAdjustTitleSize) {
+//        titleFont = [titleFont fontWithSize:_scrollView.fs_height/3/6];
+//        subtitleFont = [subtitleFont fontWithSize:_scrollView.fs_height/4.3/6];
+//        headerFont = titleFont;
+//        weekdayFont = titleFont;
+//    }
     [_weekdays setValue:weekdayFont forKey:@"font"];
     if (_header) {
         [_header setTitleFont:headerFont];
     }
-}
-
-- (void)reloadUnits
-{
-    [_page0.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
-    [_page1.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
-}
-
-- (void)updatePointer
-{
-    switch (self.flow) {
-        case FSCalendarFlowHorizontal:
-            if (_page0.fs_left > _page1.fs_left) {
-                id temp0 = _page0;
-                self.page0 = _page1;
-                self.page1 = temp0;
-            }
-            break;
-        case FSCalendarFlowVertical:
-            if (_page0.fs_top > _page1.fs_top) {
-                id temp0 = _page0;
-                self.page0 = _page1;
-                self.page1 = temp0;
-            }
-            break;
-        default:
-            break;
-    }
-}
-
-- (CGSize)flowSize
-{
-    switch (self.flow) {
-        case FSCalendarFlowHorizontal:
-            return CGSizeMake(_scrollView.fs_width * 2, _scrollView.fs_height);
-            break;
-        case FSCalendarFlowVertical:
-            return CGSizeMake(_scrollView.fs_width, _scrollView.fs_height * 2);
-            break;
-        default:
-            break;
-    }
-}
-
-- (CGPoint)flowOffset
-{
-    switch (self.flow) {
-        case FSCalendarFlowHorizontal:
-            return CGPointMake(_scrollView.fs_width, 0);
-            break;
-        case FSCalendarFlowVertical:
-            return CGPointMake(0, _scrollView.fs_height);
-            break;
-        default:
-            break;
-    }
-}
-
-- (CGFloat)flowSide
-{
-    switch (self.flow) {
-        case FSCalendarFlowHorizontal:
-            return _scrollView.fs_width;
-            break;
-        case FSCalendarFlowVertical:
-            return _scrollView.fs_height;
-            break;
-        default:
-            break;
-    }
-}
-
-- (CGFloat)flowScrollOffset
-{
-    switch (self.flow) {
-        case FSCalendarFlowHorizontal:
-            return _scrollView.contentOffset.x;
-            break;
-        case FSCalendarFlowVertical:
-            return _scrollView.contentOffset.y;
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)updatePage:(FSCalendarPage *)page forIndex:(NSInteger)index
-{
-    NSDate *destDate = [_currentDate fs_dateByAddingMonths:index];
-    page.date = destDate;
 }
 
 - (BOOL)shouldSelectDate:(NSDate *)date
@@ -618,8 +493,8 @@ const char * flowKey;
 {
     if (_unitStyle != unitStyle) {
         _unitStyle = unitStyle;
-        [_page0.subviews setValue:@(unitStyle) forKeyPath:@"style"];
-        [_page1.subviews setValue:@(unitStyle) forKeyPath:@"style"];
+//        [_page0.subviews setValue:@(unitStyle) forKeyPath:@"style"];
+//        [_page1.subviews setValue:@(unitStyle) forKeyPath:@"style"];
     }
 }
 
@@ -664,7 +539,7 @@ const char * flowKey;
 
 - (UIColor *)unitColorForUnit:(FSCalendarUnit *)unit
 {
-    return _unitColors[@(unit.absoluteState)];
+    return _backgroundColors[@(unit.absoluteState)];
 }
 
 - (UIColor *)titleColorForUnit:(FSCalendarUnit *)unit
@@ -677,34 +552,11 @@ const char * flowKey;
     return _subtitleColors[@(unit.absoluteState)];
 }
 
-#pragma mark - Unit Delegate
+#pragma mark - Public
 
-- (void)handleUnitTap:(FSCalendarUnit *)unit
+- (void)reloadData
 {
-    if ([self shouldSelectDate:unit.date] && !unit.isSelected) {
-        if (unit.isPlaceholder) {
-            NSArray *subviews;
-            if ([_page0.subviews containsObject:unit]) {
-                subviews = _page0.subviews;
-            } else {
-                subviews = _page1.subviews;
-            }
-            NSInteger index = [subviews indexOfObject:unit];
-            CGPoint destOffset;
-            if (index <= 7) {
-                destOffset = CGPointMake(_scrollView.contentOffset.x-[self flowOffset].x, _scrollView.contentOffset.y-self.flowOffset.y);
-            } else {
-                destOffset = CGPointMake(_scrollView.contentOffset.x+[self flowOffset].x, _scrollView.contentOffset.y+self.flowOffset.y);
-            }
-            [_scrollView setContentOffset:destOffset animated:YES];
-        }
-        self.selectedDate = unit.date;
-        [self didSelectDate:unit.date];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [_page0.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
-            [_page1.subviews makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        });
-    }
+    [_collectionView reloadData];
 }
 
 @end

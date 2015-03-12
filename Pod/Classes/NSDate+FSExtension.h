@@ -15,13 +15,16 @@
 @property (readonly, nonatomic) NSInteger fs_day;
 @property (readonly, nonatomic) NSInteger fs_weekday;
 
-@property (readonly, nonatomic) NSInteger numberOfDaysInMonth;
+@property (readonly, nonatomic) NSInteger fs_numberOfDaysInMonth;
 
 - (NSDate *)fs_dateByAddingMonths:(NSInteger)months;
 - (NSDate *)fs_dateBySubtractingMonths:(NSInteger)months;
 - (NSDate *)fs_dateByAddingDays:(NSInteger)days;
 - (NSDate *)fs_dateBySubtractingDays:(NSInteger)days;
 - (NSString *)fs_stringWithFormat:(NSString *)format;
+
+- (NSInteger)fs_yearsFrom:(NSDate *)date;
+- (NSInteger)fs_monthsFrom:(NSDate *)date;
 
 + (instancetype)fs_dateFromString:(NSString *)string format:(NSString *)format;
 + (instancetype)fs_dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day;

@@ -7,40 +7,41 @@
 //
 
 #import "NSDate+FSExtension.h"
+#import "NSCalendar+FSExtension.h"
 
 @implementation NSDate (FSExtension)
 
 - (NSInteger)fs_year
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *component = [calendar components:NSYearCalendarUnit fromDate:self];
     return component.year;
 }
 
 - (NSInteger)fs_month
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *component = [calendar components:NSMonthCalendarUnit fromDate:self];
     return component.month;
 }
 
 - (NSInteger)fs_day
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *component = [calendar components:NSDayCalendarUnit fromDate:self];
     return component.day;
 }
 
 - (NSInteger)fs_weekday
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *component = [calendar components:NSWeekdayCalendarUnit fromDate:self];
     return component.weekday;
 }
 
-- (NSInteger)numberOfDaysInMonth
+- (NSInteger)fs_numberOfDaysInMonth
 {
-    NSCalendar *c = [NSCalendar currentCalendar];
+    NSCalendar *c = [NSCalendar fs_sharedCalendar];
     NSRange days = [c rangeOfUnit:NSDayCalendarUnit
                            inUnit:NSMonthCalendarUnit
                           forDate:self];
@@ -56,7 +57,7 @@
 
 - (NSDate *)fs_dateByAddingMonths:(NSInteger)months
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     [components setMonth:months];
     
@@ -70,7 +71,7 @@
 
 - (NSDate *)fs_dateByAddingDays:(NSInteger)days
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     [components setDay:days];
     return [calendar dateByAddingComponents:components toDate:self options:0];
@@ -79,6 +80,26 @@
 - (NSDate *)fs_dateBySubtractingDays:(NSInteger)days
 {
     return [self fs_dateByAddingDays:-days];
+}
+
+- (NSInteger)fs_monthsFrom:(NSDate *)date
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [calendar components:NSMonthCalendarUnit
+                                               fromDate:date
+                                                 toDate:self
+                                                options:0];
+    return components.month;
+}
+
+- (NSInteger)fs_yearsFrom:(NSDate *)date
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [calendar components:NSMonthCalendarUnit
+                                               fromDate:date
+                                                 toDate:self
+                                                options:0];
+    return components.year;
 }
 
 + (instancetype)fs_dateFromString:(NSString *)string format:(NSString *)format
@@ -90,7 +111,7 @@
 
 + (instancetype)fs_dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     components.year = year;
     components.month = month;

@@ -57,7 +57,7 @@
 - (void)updateDateForUnits
 {
     NSMutableArray *dates = [NSMutableArray arrayWithCapacity:42];
-    for (int i = 0; i < _date.numberOfDaysInMonth; i++) {
+    for (int i = 0; i < _date.fs_numberOfDaysInMonth; i++) {
         [dates addObject:[NSDate fs_dateWithYear:_date.fs_year month:_date.fs_month day:i+1]];
     }
     NSInteger numberOfPlaceholders = 42 - dates.count;

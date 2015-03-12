@@ -120,7 +120,6 @@
             _subtitleLabel.hidden = NO;
             _subtitleLabel.text = subtitle;
             CGFloat subtitleHeight = [subtitle sizeWithAttributes:@{NSFontAttributeName:self.subtitleFont}].height;
-            
             CGFloat height = titleHeight + subtitleHeight;
             _titleLabel.frame = CGRectMake(0,
                                            (kTitleHeight-height)*0.5,
@@ -264,7 +263,6 @@
     }
     return FSCalendarUnitStateNormal;
 }
-
 
 @end
 
