@@ -26,6 +26,11 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitStyle) {
     FSCalendarUnitStyleRectangle      = 1
 };
 
+typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
+    FSCalendarCellStyleCircle         = 0,
+    FSCalendarCellStyleRectangle      = 1
+};
+
 typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
     FSCalendarUnitStateNormal       = 0,
     FSCalendarUnitStateSelected     = 1,
@@ -68,10 +73,11 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 
 @property (assign, nonatomic) CGFloat minDissolvedAlpha UI_APPEARANCE_SELECTOR;
 @property (assign, nonatomic) FSCalendarUnitStyle unitStyle UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont *titleFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont *subtitleFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont *weekdayFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont *headerTitleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont  *titleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont  *subtitleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont  *weekdayFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont  *headerTitleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor *eventColor UI_APPEARANCE_SELECTOR;
 
 - (void)setWeekdayTextColor:(UIColor *)weekdayTextColor UI_APPEARANCE_SELECTOR;
 
@@ -92,8 +98,6 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 
 - (void)setSelectionColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
 - (void)setTodayColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-
-- (void)setEventColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
 
 - (void)reloadData;
 

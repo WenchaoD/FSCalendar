@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FSCalendar.h"
 
 @interface FSCalendarCell : UICollectionViewCell
 
@@ -20,6 +21,15 @@
 @property (copy, nonatomic) NSDate *date;
 @property (copy, nonatomic) NSDate *month;
 
-@property (assign, nonatomic) FSCalendarCellStyle *style;
+@property (assign, nonatomic) FSCalendarCellStyle style;
+@property (assign, nonatomic) BOOL hasEvent;
+
+@property (nonatomic, readonly, getter = isPlaceholder) BOOL placeholder;
+@property (nonatomic, readonly, getter = isToday) BOOL today;
+@property (nonatomic, readonly, getter = isWeekend) BOOL weekend;
+
+- (void)showAnimation;
+- (void)hideAnimation;
+- (void)configureCell;
 
 @end

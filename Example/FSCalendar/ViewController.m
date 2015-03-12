@@ -39,6 +39,11 @@
     return date.fs_day == 3;
 }
 
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+{
+    return date.fs_day != 3;
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.destinationViewController isKindOfClass:[CalendarConfigViewController class]]) {
