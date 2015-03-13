@@ -21,23 +21,18 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitAnimation) {
     FSCalendarUnitAnimationShade = 2
 };
 
-typedef NS_OPTIONS(NSInteger, FSCalendarUnitStyle) {
-    FSCalendarUnitStyleCircle         = 0,
-    FSCalendarUnitStyleRectangle      = 1
-};
-
 typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
     FSCalendarCellStyleCircle         = 0,
     FSCalendarCellStyleRectangle      = 1
 };
 
-typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
-    FSCalendarUnitStateNormal       = 0,
-    FSCalendarUnitStateSelected     = 1,
-    FSCalendarUnitStatePlaceholder  = 1 << 1,
-    FSCalendarUnitStateDisabled     = 1 << 2,
-    FSCalendarUnitStateToday        = 1 << 3,
-    FSCalendarUnitStateWeekend      = 1 << 4
+typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
+    FSCalendarCellStateNormal       = 0,
+    FSCalendarCellStateSelected     = 1,
+    FSCalendarCellStatePlaceholder  = 1 << 1,
+    FSCalendarCellStateDisabled     = 1 << 2,
+    FSCalendarCellStateToday        = 1 << 3,
+    FSCalendarCellStateWeekend      = 1 << 4
 };
 
 @protocol FSCalendarDelegate <NSObject>
@@ -65,14 +60,14 @@ typedef NS_OPTIONS(NSInteger, FSCalendarUnitState) {
 
 @property (copy, nonatomic) NSDate *currentDate;
 @property (copy, nonatomic) NSDate *selectedDate;
+@property (copy, nonatomic) NSDate *currentMonth;
 
-@property (readonly, nonatomic) NSDate *currentMonth;
 @property (assign, nonatomic) FSCalendarFlow flow;
+@property (assign, nonatomic) FSCalendarCellStyle cellStyle UI_APPEARANCE_SELECTOR;
 
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;
 
 @property (assign, nonatomic) CGFloat minDissolvedAlpha UI_APPEARANCE_SELECTOR;
-@property (assign, nonatomic) FSCalendarUnitStyle unitStyle UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont  *titleFont UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont  *subtitleFont UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont  *weekdayFont UI_APPEARANCE_SELECTOR;

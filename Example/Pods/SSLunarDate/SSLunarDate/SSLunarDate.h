@@ -28,6 +28,8 @@
 
 @interface SSLunarDate : NSObject
 
+@property (strong, nonatomic) NSDate *date;
+
 // init the solar date by [NSDate date];
 - (id) init;
 

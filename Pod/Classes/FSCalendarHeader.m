@@ -18,10 +18,6 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *labels;
 
-@property (readonly, nonatomic) BOOL needUpdate;
-
-@property (assign, nonatomic) CGFloat lastOffset;
-
 @end
 
 @implementation FSCalendarHeader
@@ -76,8 +72,8 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    int width = self.fs_width/2;
-    int height = self.fs_height;
+    int width = self.bounds.size.width/2;
+    int height = self.bounds.size.height;
     int top = 0;
     [_labels enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         UILabel *label = obj;
@@ -91,7 +87,6 @@
         CGFloat alpha = 1.0 - ABS(center-width)/width*(1-_minDissolveAlpha);
         label.alpha = alpha;
     }];
-    
 }
 
 #pragma mark - KVO
@@ -122,7 +117,6 @@
 - (void)setScrollOffset:(CGFloat)scrollOffset
 {
     if (_scrollOffset != scrollOffset) {
-        _lastOffset = _scrollOffset;
         _scrollOffset = scrollOffset;
         [self setNeedsLayout];
     }

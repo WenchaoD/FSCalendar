@@ -34,7 +34,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         });
     } else if (indexPath.section == 1) {
-        self.viewController.subtitle = YES;
+        self.viewController.subtitle = !self.viewController.subtitle;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.navigationController popViewControllerAnimated:YES];
         });

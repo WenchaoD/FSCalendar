@@ -21,7 +21,7 @@
 @property (copy, nonatomic) NSDate *date;
 @property (copy, nonatomic) NSDate *month;
 
-@property (assign, nonatomic) FSCalendarCellStyle style;
+@property (assign, nonatomic) FSCalendarCellStyle cellStyle;
 @property (assign, nonatomic) BOOL hasEvent;
 
 @property (nonatomic, readonly, getter = isPlaceholder) BOOL placeholder;

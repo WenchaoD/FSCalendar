@@ -21,14 +21,16 @@
 - (NSInteger)fs_month
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *component = [calendar components:NSMonthCalendarUnit fromDate:self];
+    NSDateComponents *component = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit
+                                              fromDate:self];
     return component.month;
 }
 
 - (NSInteger)fs_day
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *component = [calendar components:NSDayCalendarUnit fromDate:self];
+    NSDateComponents *component = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+                                              fromDate:self];
     return component.day;
 }
 

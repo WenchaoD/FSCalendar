@@ -73,9 +73,6 @@
     CGFloat eventSize = _backgroundLayer.frame.size.height/6.0;
     _eventLayer.frame = CGRectMake((_backgroundLayer.frame.size.width-eventSize)/2+_backgroundLayer.frame.origin.x, CGRectGetMaxY(_backgroundLayer.frame)+eventSize*0.2, eventSize*0.8, eventSize*0.8);
     _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
-    _backgroundLayer.path = _style == FSCalendarCellStyleCircle ?
-    [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
-    [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
 }
 
 #pragma mark - Setters
@@ -94,6 +91,28 @@
         _hasEvent = hasEvent;
         _eventLayer.hidden = !hasEvent;
     }
+}
+
+- (void)showAnimation
+{
+    _backgroundLayer.hidden = NO;
+    _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
+    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
+    _backgroundLayer.anchorPoint = CGPointMake(0.5, 0.5);
+    CAAnimationGroup *group = [CAAnimationGroup animation];
+    CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    zoomOut.fromValue = @0.3;
+    zoomOut.toValue = @1.2;
+    zoomOut.duration = kAnimationDuration/4*3;
+    CABasicAnimation *zoomIn = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    zoomIn.fromValue = @1.2;
+    zoomIn.toValue = @1.0;
+    zoomIn.beginTime = kAnimationDuration/4*3;
+    zoomIn.duration = kAnimationDuration/4;
+    group.duration = kAnimationDuration;
+    group.animations = @[zoomOut, zoomIn];
+    [_backgroundLayer addAnimation:group forKey:@"bounce"];
+    [self configureCell];
 }
 
 - (void)hideAnimation
@@ -148,7 +167,10 @@
         _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(self.contentView.fs_height*5.0/6.0));
         _subtitleLabel.hidden = YES;
     }
-    _backgroundLayer.hidden = !self.selected;
+    _backgroundLayer.hidden = !self.selected && !self.isToday;
+    _backgroundLayer.path = _cellStyle == FSCalendarCellStyleCircle ?
+    [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
+    [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
 }
 
 - (BOOL)isPlaceholder
@@ -166,43 +188,21 @@
     return self.date.fs_weekday == 1 || self.date.fs_weekday == 7;
 }
 
-- (void)showAnimation
-{
-    _backgroundLayer.hidden = NO;
-    _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
-    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
-    _backgroundLayer.anchorPoint = CGPointMake(0.5, 0.5);
-    CAAnimationGroup *group = [CAAnimationGroup animation];
-    CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    zoomOut.fromValue = @0.3;
-    zoomOut.toValue = @1.2;
-    zoomOut.duration = kAnimationDuration/4*3;
-    CABasicAnimation *zoomIn = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    zoomIn.fromValue = @1.2;
-    zoomIn.toValue = @1.0;
-    zoomIn.beginTime = kAnimationDuration/4*3;
-    zoomIn.duration = kAnimationDuration/4;
-    group.duration = kAnimationDuration;
-    group.animations = @[zoomOut, zoomIn];
-    [_backgroundLayer addAnimation:group forKey:@"bounce"];
-    [self configureCell];
-}
-
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
     if (self.isSelected) {
-        return dictionary[@(FSCalendarUnitStateSelected)];
+        return dictionary[@(FSCalendarCellStateSelected)];
     }
     if (self.isToday) {
-        return dictionary[@(FSCalendarUnitStateToday)];
+        return dictionary[@(FSCalendarCellStateToday)];
     }
     if (self.isPlaceholder) {
-        return dictionary[@(FSCalendarUnitStatePlaceholder)];
+        return dictionary[@(FSCalendarCellStatePlaceholder)];
     }
     if (self.isWeekend) {
-        return dictionary[@(FSCalendarUnitStateWeekend)];
+        return dictionary[@(FSCalendarCellStateWeekend)];
     }
-    return dictionary[@(FSCalendarUnitStateNormal)];
+    return dictionary[@(FSCalendarCellStateNormal)];
 }
 
 @end

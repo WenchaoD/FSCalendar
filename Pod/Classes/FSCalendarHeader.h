@@ -15,10 +15,10 @@
 @property (assign, nonatomic) CGFloat minDissolveAlpha;
 @property (copy,   nonatomic) NSString *dateFormat;
 
-@property (strong, nonatomic) UIFont  *titleFont ;
-@property (strong, nonatomic) UIColor *titleColor ;
+@property (strong, nonatomic) UIFont  *titleFont;
+@property (strong, nonatomic) UIColor *titleColor;
 @property (assign, nonatomic) CGFloat scrollOffset;
 
-@property (assign, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) FSCalendar *calendar;
 
 @end
