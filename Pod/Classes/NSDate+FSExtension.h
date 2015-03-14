@@ -25,6 +25,7 @@
 
 - (NSInteger)fs_yearsFrom:(NSDate *)date;
 - (NSInteger)fs_monthsFrom:(NSDate *)date;
+- (NSInteger)fs_daysFrom:(NSDate *)date;
 
 + (instancetype)fs_dateFromString:(NSString *)string format:(NSString *)format;
 + (instancetype)fs_dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day;

@@ -50,7 +50,11 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    return date.fs_day != 3;
+    BOOL shouldSelect = date.fs_day != 3;
+    if (!shouldSelect) {
+        NSLog(@"date %@ should not be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    }
+    return shouldSelect;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
@@ -83,38 +87,38 @@
         switch (theme) {
             case 0:
             {
-                [[FSCalendar appearance] setWeekdayTextColor:kBlueText];
-                [[FSCalendar appearance] setHeaderTitleColor:kBlueText];
-                [[FSCalendar appearance] setEventColor:[UIColor cyanColor]];
-                [[FSCalendar appearance] setSelectionColor:kBlue];
-                [[FSCalendar appearance] setHeaderDateFormat:@"yyyy-M"];
-                [[FSCalendar appearance] setMinDissolvedAlpha:0.2];
-                [[FSCalendar appearance] setTodayColor:kPink];
-                [[FSCalendar appearance] setCellStyle:FSCalendarCellStyleCircle];
+                [_calendar setWeekdayTextColor:kBlueText];
+                [_calendar setHeaderTitleColor:kBlueText];
+                [_calendar setEventColor:[UIColor cyanColor]];
+                [_calendar setSelectionColor:kBlue];
+                [_calendar setHeaderDateFormat:@"yyyy-M"];
+                [_calendar setMinDissolvedAlpha:0.2];
+                [_calendar setTodayColor:kPink];
+                [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
             case 1:
             {
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];
-                [[FSCalendar appearance] setHeaderTitleColor:[UIColor darkGrayColor]];
-                [[FSCalendar appearance] setEventColor:[UIColor greenColor]];
-                [[FSCalendar appearance] setSelectionColor:[UIColor blueColor]];
-                [[FSCalendar appearance] setHeaderDateFormat:@"yyyy-MM"];
-                [[FSCalendar appearance] setMinDissolvedAlpha:0.5];
-                [[FSCalendar appearance] setTodayColor:[UIColor redColor]];
-                [[FSCalendar appearance] setCellStyle:FSCalendarCellStyleCircle];
+                [_calendar setWeekdayTextColor:[UIColor redColor]];
+                [_calendar setHeaderTitleColor:[UIColor darkGrayColor]];
+                [_calendar setEventColor:[UIColor greenColor]];
+                [_calendar setSelectionColor:[UIColor blueColor]];
+                [_calendar setHeaderDateFormat:@"yyyy-MM"];
+                [_calendar setMinDissolvedAlpha:0.5];
+                [_calendar setTodayColor:[UIColor redColor]];
+                [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
             case 2:
             {
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];
-                [[FSCalendar appearance] setHeaderTitleColor:[UIColor redColor]];
-                [[FSCalendar appearance] setEventColor:[UIColor greenColor]];
-                [[FSCalendar appearance] setSelectionColor:[UIColor blueColor]];
-                [[FSCalendar appearance] setHeaderDateFormat:@"yyyy/MM"];
-                [[FSCalendar appearance] setMinDissolvedAlpha:1.0];
-                [[FSCalendar appearance] setCellStyle:FSCalendarCellStyleRectangle];
-                [[FSCalendar appearance] setTodayColor:[UIColor orangeColor]];
+                [_calendar setWeekdayTextColor:[UIColor redColor]];
+                [_calendar setHeaderTitleColor:[UIColor redColor]];
+                [_calendar setEventColor:[UIColor greenColor]];
+                [_calendar setSelectionColor:[UIColor blueColor]];
+                [_calendar setHeaderDateFormat:@"yyyy/MM"];
+                [_calendar setMinDissolvedAlpha:1.0];
+                [_calendar setCellStyle:FSCalendarCellStyleRectangle];
+                [_calendar setTodayColor:[UIColor orangeColor]];
                 break;
             }
             default:

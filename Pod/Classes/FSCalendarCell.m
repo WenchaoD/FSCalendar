@@ -15,9 +15,6 @@
 
 @interface FSCalendarCell ()
 
-@property (readonly, nonatomic) UICollectionView *collectionView;
-@property (readonly, nonatomic) FSCalendar *calendar;
-
 @property (strong, nonatomic) CAShapeLayer *backgroundLayer;
 @property (strong, nonatomic) CAShapeLayer *eventLayer;
 
@@ -123,28 +120,10 @@
 
 #pragma mark - Private
 
-- (UICollectionView *)collectionView
-{
-    UIView *superview = self.superview;
-    while (superview && ![superview isKindOfClass:[UICollectionView class]]) {
-        superview = superview.superview;
-    }
-    return (UICollectionView *)superview;
-}
-
-- (FSCalendar *)calendar
-{
-    return (FSCalendar *)self.collectionView.superview;
-}
-
 - (void)configureCell
 {
     _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
-    if (self.calendar.dataSource && [self.calendar.dataSource respondsToSelector:@selector(calendar:subtitleForDate:)]) {
-        _subtitleLabel.text = [self.calendar.dataSource calendar:self.calendar subtitleForDate:_date];
-    } else {
-        _subtitleLabel.text = nil;
-    }
+    _subtitleLabel.text = _subtitle;
     _titleLabel.textColor = [self colorForCurrentStateInDictionary:_titleColors];
     _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_subtitleColors];
     _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
@@ -180,7 +159,7 @@
 
 - (BOOL)isToday
 {
-    return _date.fs_year == self.calendar.currentDate.fs_year && _date.fs_month == self.calendar.currentDate.fs_month && _date.fs_day == self.calendar.currentDate.fs_day;
+    return _date.fs_year == self.currentDate.fs_year && _date.fs_month == self.currentDate.fs_month && _date.fs_day == self.currentDate.fs_day;
 }
 
 - (BOOL)isWeekend
