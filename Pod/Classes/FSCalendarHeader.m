@@ -17,10 +17,11 @@
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSMutableArray *labels;
 
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+
+- (void)updateAlpha;
 
 @end
 
@@ -50,8 +51,6 @@
     _dateFormatter = [[NSDateFormatter alloc] init];
     _dateFormatter.dateFormat = _dateFormat;
     _minDissolveAlpha = 0.2;
-    _titleFont = [UIFont systemFontOfSize:17];
-    _titleColor = kBlueText;
     
     _collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -108,10 +107,15 @@
         titleLabel.textAlignment = NSTextAlignmentCenter;
         [cell.contentView addSubview:titleLabel];
     }
-    titleLabel.font = self.titleFont;
-    titleLabel.textColor = self.titleColor;
+    titleLabel.font = self.calendar.headerTitleFont;
+    titleLabel.textColor = self.calendar.headerTitleColor;
     NSDate *date = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.item];
     titleLabel.text = [_dateFormatter stringFromDate:date];
+    
+    CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
+    CGFloat center = CGRectGetMidX(self.bounds);
+    cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.width;
+    
     return cell;
 }
 
@@ -122,16 +126,7 @@
     if (_scrollOffset != scrollOffset) {
         _scrollOffset = scrollOffset;
         _collectionView.contentOffset = CGPointMake((_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width, 0);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSArray *cells = _collectionView.visibleCells;
-            [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                UICollectionViewCell *cell = obj;
-                CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
-                CGFloat center = CGRectGetMidX(self.bounds);
-                cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.width;
-            }];
-        });
+        [self updateAlpha];
     }
 }
 
@@ -139,39 +134,16 @@
 {
     if (_calendar != calendar) {
         _calendar = calendar;
-        [_collectionView reloadData];
-    }
-}
-
-#pragma mark - Appearance
-
-- (void)setTitleFont:(UIFont *)titleFont
-{
-    if (![_titleFont isEqual:titleFont]) {
-        _titleFont = titleFont;
-        [_collectionView reloadData];
-    }
-}
-
-- (void)setTitleColor:(UIColor *)titleColor
-{
-    if (![_titleColor isEqual:titleColor]) {
-        _titleColor = titleColor;
-        [_collectionView reloadData];
+        [self reloadData];
     }
 }
 
 - (void)setDateFormat:(NSString *)dateFormat
 {
     if (![_dateFormat isEqualToString:dateFormat]) {
-        [_labels enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            _dateFormatter.dateFormat = _dateFormat;
-            NSDate *currentDate = [_dateFormatter dateFromString:[obj text]];
-            _dateFormatter.dateFormat = dateFormat;
-            [obj setText: [_dateFormatter stringFromDate:currentDate]];
-        }];
         _dateFormat = [dateFormat copy];
         _dateFormatter.dateFormat = dateFormat;
+        [self reloadData];
     }
 }
 
@@ -179,8 +151,30 @@
 {
     if (_minDissolveAlpha != minDissolveAlpha) {
         _minDissolveAlpha = minDissolveAlpha;
-        [_collectionView reloadData];
+        [self reloadData];
     }
+}
+
+#pragma mark - Public
+
+- (void)reloadData
+{
+    [_collectionView reloadData];
+}
+
+#pragma mark - Private
+
+- (void)updateAlpha
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *cells = _collectionView.visibleCells;
+        [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            UICollectionViewCell *cell = obj;
+            CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
+            CGFloat center = CGRectGetMidX(self.bounds);
+            cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.width;
+        }];
+    });
 }
 
 @end

@@ -38,7 +38,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i44-Ll-ELi" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="104" width="600" height="280"/>
+                                <rect key="frame" x="0.0" y="103" width="600" height="280"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="280" id="tCx-JJ-MHR"/>
@@ -54,25 +54,19 @@
                         <constraints>
                             <constraint firstItem="Jwg-SK-ZNq" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="1ZF-Ho-KZV"/>
                             <constraint firstItem="Jwg-SK-ZNq" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="B8n-Un-0ox"/>
-                            <constraint firstItem="i44-Ll-ELi" firstAttribute="top" secondItem="Jwg-SK-ZNq" secondAttribute="bottom" id="Lv0-iC-NSW"/>
-                            <constraint firstItem="i44-Ll-ELi" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="104" id="Pni-Rc-lvF"/>
+                            <constraint firstItem="i44-Ll-ELi" firstAttribute="top" secondItem="Jwg-SK-ZNq" secondAttribute="bottom" constant="-1" id="Lv0-iC-NSW"/>
+                            <constraint firstItem="i44-Ll-ELi" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="103" id="Pni-Rc-lvF"/>
                             <constraint firstItem="Jwg-SK-ZNq" firstAttribute="trailing" secondItem="i44-Ll-ELi" secondAttribute="trailing" id="byt-1t-7df"/>
                             <constraint firstAttribute="trailing" secondItem="i44-Ll-ELi" secondAttribute="trailing" id="cPY-R4-0f2"/>
                             <constraint firstItem="Jwg-SK-ZNq" firstAttribute="leading" secondItem="i44-Ll-ELi" secondAttribute="leading" id="qMP-aO-pM2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="FSCalendar" id="XvH-Gc-dEi">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="KjZ-i0-wGD">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bfy-wz-6RJ">
-                                <rect key="frame" x="552" y="6" width="40" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="icon_setting">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="5IA-Lj-ace" kind="show" id="Wvm-dW-oUK"/>
-                                </connections>
-                            </button>
+                        <barButtonItem key="rightBarButtonItem" image="icon_setting" id="Syi-J8-9Kw">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="5IA-Lj-ace" kind="show" id="lM9-4x-Te6"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -145,7 +139,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZA6-Ho-27f" id="tfM-ed-fKZ">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="lunar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cll-gl-Oyc">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Lunar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cll-gl-Oyc">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -203,6 +197,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon_setting" width="32" height="32"/>
+        <image name="icon_setting" width="24" height="24"/>
     </resources>
 </document>

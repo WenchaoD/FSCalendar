@@ -55,7 +55,11 @@
 {
     BOOL shouldSelect = date.fs_day != 7;
     if (!shouldSelect) {
-        NSLog(@"date %@ should not be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
     }
     return shouldSelect;
 }
@@ -90,9 +94,9 @@
             {
                 [_calendar setWeekdayTextColor:kBlueText];
                 [_calendar setHeaderTitleColor:kBlueText];
-                [_calendar setEventColor:[UIColor cyanColor]];
+                [_calendar setEventColor:[kBlueText colorWithAlphaComponent:0.75]];
                 [_calendar setSelectionColor:kBlue];
-                [_calendar setHeaderDateFormat:@"yyyy-M"];
+                [_calendar setHeaderDateFormat:@"MMMM yyyy"];
                 [_calendar setMinDissolvedAlpha:0.2];
                 [_calendar setTodayColor:kPink];
                 [_calendar setCellStyle:FSCalendarCellStyleCircle];
@@ -105,7 +109,7 @@
                 [_calendar setEventColor:[UIColor greenColor]];
                 [_calendar setSelectionColor:[UIColor blueColor]];
                 [_calendar setHeaderDateFormat:@"yyyy-MM"];
-                [_calendar setMinDissolvedAlpha:0.5];
+                [_calendar setMinDissolvedAlpha:1.0];
                 [_calendar setTodayColor:[UIColor redColor]];
                 [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;

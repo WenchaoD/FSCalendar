@@ -82,6 +82,7 @@
     _subtitleFont = [UIFont systemFontOfSize:10];
     _weekdayFont = [UIFont systemFontOfSize:15];
     _headerTitleFont = [UIFont systemFontOfSize:15];
+    _headerTitleColor = kBlueText;
     
     NSArray *weekSymbols = [[NSCalendar currentCalendar] shortStandaloneWeekdaySymbols];
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
@@ -322,6 +323,7 @@
 {
     if (_header != header) {
         _header = header;
+        _topBorderLayer.hidden = header != nil;
         if (header) {
             header.calendar = self;
         }
@@ -345,18 +347,16 @@
 {
     if (_headerTitleFont != font) {
         _headerTitleFont = font;
-        _header.titleFont = font;
+        [_header reloadData];
     }
 }
 
 - (void)setHeaderTitleColor:(UIColor *)color
 {
-    _header.titleColor = color;
-}
-
-- (UIColor *)headerTitleColor
-{
-    return _header.titleColor;
+    if (![_headerTitleColor isEqual:color]) {
+        _headerTitleColor = color;
+        [_header reloadData];
+    }
 }
 
 - (void)setHeaderDateFormat:(NSString *)dateFormat
@@ -603,6 +603,7 @@
     NSIndexPath *selectedPath = [_collectionView indexPathsForSelectedItems].lastObject;
     [_collectionView reloadData];
     [_collectionView selectItemAtIndexPath:selectedPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    [_header reloadData];
 }
 
 #pragma mark - Private
@@ -664,7 +665,7 @@
     if (_autoAdjustTitleSize) {
         _titleFont = [_titleFont fontWithSize:_collectionView.fs_height/3/6];
         _subtitleFont = [_subtitleFont fontWithSize:_collectionView.fs_height/4.5/6];
-        _headerTitleFont = _titleFont;
+        _headerTitleFont = [_titleFont fontWithSize:_titleFont.pointSize+3];
         _weekdayFont = _titleFont;
         [self reloadData];
     }
@@ -735,9 +736,6 @@
         [self reloadData];
     }
     [_weekdays setValue:_weekdayFont forKey:@"font"];
-    if (_header) {
-        [_header setTitleFont:_headerTitleFont];
-    }
 }
 
 @end
