@@ -21,7 +21,7 @@
             </objects>
             <point key="canvasLocation" x="-450" y="240.8450704225352"/>
         </scene>
-        <!--View Controller-->
+        <!--FSCalendar-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
@@ -50,7 +50,7 @@
                                 </connections>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.90980392160000001" green="0.91372549020000005" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Jwg-SK-ZNq" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="1ZF-Ho-KZV"/>
                             <constraint firstItem="Jwg-SK-ZNq" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="B8n-Un-0ox"/>
@@ -61,16 +61,18 @@
                             <constraint firstItem="Jwg-SK-ZNq" firstAttribute="leading" secondItem="i44-Ll-ELi" secondAttribute="leading" id="qMP-aO-pM2"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="XvH-Gc-dEi">
-                        <barButtonItem key="leftBarButtonItem" title="change flow" id="G8w-uB-sXY">
-                            <connections>
-                                <action selector="changeFlowClicked:" destination="vXZ-lx-hvc" id="wIx-cs-C3H"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="change theme" id="HoQ-e7-orX">
-                            <connections>
-                                <segue destination="5IA-Lj-ace" kind="show" id="cSQ-tn-VVw"/>
-                            </connections>
+                    <navigationItem key="navigationItem" title="FSCalendar" id="XvH-Gc-dEi">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="KjZ-i0-wGD">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bfy-wz-6RJ">
+                                <rect key="frame" x="552" y="6" width="40" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="icon_setting">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="5IA-Lj-ace" kind="show" id="Wvm-dW-oUK"/>
+                                </connections>
+                            </button>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -79,16 +81,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="465" y="240.8450704225352"/>
+            <point key="canvasLocation" x="465" y="240"/>
         </scene>
-        <!--Themes-->
+        <!--Configuration-->
         <scene sceneID="nFi-cp-YQl">
             <objects>
                 <tableViewController id="5IA-Lj-ace" customClass="CalendarConfigViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="jT2-lU-gLR">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="jT2-lU-gLR">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection headerTitle="Theme" id="lLy-fn-2TE">
                                 <cells>
@@ -143,7 +145,39 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZA6-Ho-27f" id="tfM-ed-fKZ">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cll-gl-Oyc">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="lunar" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cll-gl-Oyc">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Flow" id="kMU-Xw-8pq">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" textLabel="l29-05-Mps" style="IBUITableViewCellStyleDefault" id="wu7-0W-ztL">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wu7-0W-ztL" id="BN9-nu-Rd8">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Horizontal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l29-05-Mps">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="wSk-45-sYI" style="IBUITableViewCellStyleDefault" id="jrr-g8-vMH">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jrr-g8-vMH" id="u7e-hb-Fi8">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Vertical" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wSk-45-sYI">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -160,7 +194,7 @@
                             <outlet property="delegate" destination="5IA-Lj-ace" id="duD-eq-1Ft"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Themes" id="h0j-eU-XkL"/>
+                    <navigationItem key="navigationItem" title="Configuration" id="h0j-eU-XkL"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HRM-6a-tFh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -168,4 +202,7 @@
             <point key="canvasLocation" x="1211.25" y="240.8450704225352"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon_setting" width="32" height="32"/>
+    </resources>
 </document>

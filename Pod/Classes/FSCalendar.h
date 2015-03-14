@@ -11,8 +11,8 @@
 @class FSCalendar, FSCalendarUnit, FSCalendarHeader;
 
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
-    FSCalendarFlowHorizontal = UICollectionViewScrollDirectionHorizontal,
-    FSCalendarFlowVertical   = UICollectionViewScrollDirectionVertical
+    FSCalendarFlowVertical   = UICollectionViewScrollDirectionVertical,
+    FSCalendarFlowHorizontal = UICollectionViewScrollDirectionHorizontal
 };
 
 typedef NS_OPTIONS(NSInteger, FSCalendarUnitAnimation) {
@@ -68,30 +68,30 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;
 
-@property (strong, nonatomic) UIFont  *titleFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont  *subtitleFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont  *weekdayFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont  *headerTitleFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor *eventColor UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor *weekdayTextColor UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor *headerTitleColor UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont   *titleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont   *subtitleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont   *weekdayFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont   *headerTitleFont UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *eventColor UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *weekdayTextColor UI_APPEARANCE_SELECTOR;
 
-- (void)setHeaderDateFormat:(NSString *)dateFormat UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleDefaultColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleSelectionColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleTodayColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titlePlaceholderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleWeekendColor UI_APPEARANCE_SELECTOR;
 
-- (void)setTitleDefaultColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setTitleSelectionColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setTitleTodayColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setTitlePlaceholderColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setTitleWeekendColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleDefaultColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleSelectionColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleTodayColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitlePlaceholderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleWeekendColor UI_APPEARANCE_SELECTOR;
 
-- (void)setSubtitleDefaultColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setSubtitleSelectionColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setSubtitleTodayColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setSubtitlePlaceholderColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setSubtitleWeekendColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *selectionColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *todayColor UI_APPEARANCE_SELECTOR;
 
-- (void)setSelectionColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
-- (void)setTodayColor:(UIColor *)color UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor  *headerTitleColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSString *headerDateFormat UI_APPEARANCE_SELECTOR;
 
 - (void)reloadData;
 

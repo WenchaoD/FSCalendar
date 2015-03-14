@@ -42,6 +42,8 @@
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
 @property (strong, nonatomic) NSMutableDictionary *subtitleColors;
 
+@property (strong, nonatomic) CALayer *topBorderLayer;
+@property (strong, nonatomic) CALayer *bottomBorderLayer;
 
 - (void)adjustTitleIfNecessary;
 
@@ -138,9 +140,17 @@
     _subtitleColors[@(FSCalendarCellStateDisabled)] = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStateToday)] = [UIColor whiteColor];
-    
+
+    _eventColor = [kBlue colorWithAlphaComponent:0.75];
     _cellStyle = FSCalendarCellStyleCircle;
     _autoAdjustTitleSize = YES;
+    
+    _topBorderLayer = [CALayer layer];
+    _topBorderLayer.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2].CGColor;
+    [self.layer addSublayer:_topBorderLayer];
+    _bottomBorderLayer = [CALayer layer];
+    _bottomBorderLayer.backgroundColor = _topBorderLayer.backgroundColor;
+    [self.layer addSublayer:_bottomBorderLayer];
 }
 
 -(void)layoutSubviews
@@ -158,6 +168,15 @@
         [obj setFrame:CGRectMake(idx*width, 0, width, height)];
     }];
     [self adjustTitleIfNecessary];
+}
+
+- (void)layoutSublayersOfLayer:(CALayer *)layer
+{
+    [super layoutSublayersOfLayer:layer];
+    if (layer == self.layer) {
+        _topBorderLayer.frame = CGRectMake(0, -1, self.fs_width, 1);
+        _bottomBorderLayer.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -186,17 +205,14 @@
     cell.titleColors = self.titleColors;
     cell.subtitleColors = self.subtitleColors;
     cell.backgroundColors = self.backgroundColors;
+    cell.eventColor = self.eventColor;
     cell.month = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.section];
     cell.cellStyle = self.cellStyle;
     cell.currentDate = self.currentDate;
     cell.subtitle = [self subtitleForDate:cell.date];
+    cell.titleLabel.font = _titleFont;
+    cell.subtitleLabel.font = _subtitleFont;
     cell.date = [self dateForIndexPath:indexPath];
-    if (_autoAdjustTitleSize) {
-        
-    } else {
-        cell.titleLabel.font = _titleFont;
-        cell.subtitleLabel.font = _subtitleFont;
-    }
     cell.hasEvent = [self hasEventForDate:cell.date];
     return cell;
 }
@@ -348,6 +364,11 @@
     _header.dateFormat = dateFormat;
 }
 
+- (NSString *)headerDateFormat
+{
+    return _header.dateFormat;
+}
+
 - (void)setTitleDefaultColor:(UIColor *)color
 {
     if (color) {
@@ -356,6 +377,11 @@
         [_titleColors removeObjectForKey:@(FSCalendarCellStateNormal)];
     }
     [self reloadData];
+}
+
+- (UIColor *)titleDefaultColor
+{
+    return _titleColors[@(FSCalendarCellStateNormal)];
 }
 
 - (void)setTitleSelectionColor:(UIColor *)color
@@ -368,6 +394,11 @@
     [self reloadData];
 }
 
+- (UIColor *)titleSelectionColor
+{
+    return _titleColors[@(FSCalendarCellStateSelected)];
+}
+
 - (void)setTitleTodayColor:(UIColor *)color
 {
     if (color) {
@@ -376,6 +407,11 @@
         [_titleColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
     [self reloadData];
+}
+
+- (UIColor *)titleTodayColor
+{
+    return _titleColors[@(FSCalendarCellStateToday)];
 }
 
 - (void)setTitlePlaceholderColor:(UIColor *)color
@@ -388,6 +424,11 @@
     [self reloadData];
 }
 
+- (UIColor *)titlePlaceholderColor
+{
+    return _titleColors[@(FSCalendarCellStatePlaceholder)];
+}
+
 - (void)setTitleWeekendColor:(UIColor *)color
 {
     if (color) {
@@ -396,6 +437,11 @@
         [_titleColors removeObjectForKey:@(FSCalendarCellStateWeekend)];
     }
     [self reloadData];
+}
+
+- (UIColor *)titleWeekendColor
+{
+    return _titleColors[@(FSCalendarCellStateWeekend)];
 }
 
 - (void)setSubtitleDefaultColor:(UIColor *)color
@@ -408,6 +454,11 @@
     [self reloadData];
 }
 
+-(UIColor *)subtitleDefaultColor
+{
+    return _subtitleColors[@(FSCalendarCellStateNormal)];
+}
+
 - (void)setSubtitleSelectionColor:(UIColor *)color
 {
     if (color) {
@@ -416,6 +467,11 @@
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
     [self reloadData];
+}
+
+- (UIColor *)subtitleSelectionColor
+{
+    return _subtitleColors[@(FSCalendarCellStateSelected)];
 }
 
 - (void)setSubtitleTodayColor:(UIColor *)color
@@ -428,6 +484,11 @@
     [self reloadData];
 }
 
+- (UIColor *)subtitleTodayColor
+{
+    return _subtitleColors[@(FSCalendarCellStateToday)];
+}
+
 - (void)setSubtitlePlaceholderColor:(UIColor *)color
 {
     if (color) {
@@ -436,6 +497,11 @@
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
     }
     [self reloadData];
+}
+
+- (UIColor *)subtitlePlaceholderColor
+{
+    return _subtitleColors[@(FSCalendarCellStatePlaceholder)];
 }
 
 - (void)setSubtitleWeekendColor:(UIColor *)color
@@ -448,6 +514,11 @@
     [self reloadData];
 }
 
+- (UIColor *)subtitleWeekendColor
+{
+    return _subtitleColors[@(FSCalendarCellStateWeekend)];
+}
+
 - (void)setSelectionColor:(UIColor *)color
 {
     if (color) {
@@ -458,6 +529,11 @@
     [self reloadData];
 }
 
+- (UIColor *)selectionColor
+{
+    return _backgroundColors[@(FSCalendarCellStateSelected)];
+}
+
 - (void)setTodayColor:(UIColor *)color
 {
     if (color) {
@@ -466,6 +542,11 @@
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
     [self reloadData];
+}
+
+- (UIColor *)todayColor
+{
+    return _backgroundColors[@(FSCalendarCellStateToday)];
 }
 
 - (void)setEventColor:(UIColor *)eventColor
@@ -582,11 +663,11 @@
 {
     if (_autoAdjustTitleSize) {
         _titleFont = [_titleFont fontWithSize:_collectionView.fs_height/3/6];
-        _subtitleFont = [_subtitleFont fontWithSize:_collectionView.fs_height/4.3/6];
+        _subtitleFont = [_subtitleFont fontWithSize:_collectionView.fs_height/4.5/6];
         _headerTitleFont = _titleFont;
         _weekdayFont = _titleFont;
+        [self reloadData];
     }
-    [self reloadData];
 }
 
 - (BOOL)shouldSelectDate:(NSDate *)date
@@ -647,7 +728,9 @@
 {
     if (selection) {
         [_collectionView reloadData];
-        [_collectionView selectItemAtIndexPath:selection animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        [_collectionView selectItemAtIndexPath:selection
+                                      animated:NO
+                                scrollPosition:UICollectionViewScrollPositionNone];
     } else {
         [self reloadData];
     }

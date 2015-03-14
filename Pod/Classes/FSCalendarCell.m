@@ -60,9 +60,9 @@
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    CGFloat titleHeight = bounds.size.height*5.0/6.0;
-    CGFloat diameter = MIN(bounds.size.height*5.0/6.0,bounds.size.width);
-    _backgroundLayer.frame = CGRectMake((bounds.size.width-diameter)/2,
+    CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
+    CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
+    _backgroundLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
                                         (titleHeight-diameter)/2,
                                         diameter,
                                         diameter);
@@ -71,6 +71,7 @@
     _eventLayer.frame = CGRectMake((_backgroundLayer.frame.size.width-eventSize)/2+_backgroundLayer.frame.origin.x, CGRectGetMaxY(_backgroundLayer.frame)+eventSize*0.2, eventSize*0.8, eventSize*0.8);
     _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
 }
+
 
 #pragma mark - Setters
 
@@ -134,12 +135,12 @@
         CGFloat subtitleHeight = [_subtitleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.subtitleLabel.font}].height;
         CGFloat height = titleHeight + subtitleHeight;
         _titleLabel.frame = CGRectMake(0,
-                                       (self.contentView.fs_height*5.0/6.0-height)*0.5-1,
+                                       (self.contentView.fs_height*5.0/6.0-height)*0.5,
                                        self.fs_width,
                                        titleHeight);
         
         _subtitleLabel.frame = CGRectMake(0,
-                                          height-subtitleHeight-1,
+                                          _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize),
                                           self.fs_width,
                                           subtitleHeight);
     } else {
@@ -150,6 +151,7 @@
     _backgroundLayer.path = _cellStyle == FSCalendarCellStyleCircle ?
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
+    _eventLayer.fillColor = _eventColor.CGColor;
 }
 
 - (BOOL)isPlaceholder

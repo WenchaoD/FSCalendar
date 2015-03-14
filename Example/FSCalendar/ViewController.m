@@ -18,28 +18,31 @@
 @interface ViewController ()
 
 @property (strong, nonatomic) NSCalendar *currentCalendar;
-@property (strong, nonatomic) SSLunarDate *lunar;
+@property (strong, nonatomic) SSLunarDate *lunarDate;
 
 @end
 
 @implementation ViewController
 
+#pragma mark - Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     _currentCalendar = [NSCalendar currentCalendar];
-}
-
-- (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date
-{
-    if (!_subtitle) {
-        return nil;
-    }
-    _lunar = [[SSLunarDate alloc] initWithDate:date calendar:_currentCalendar];
-    return _lunar.dayString;
+    _flow = _calendar.flow;
 }
 
 #pragma mark - FSCalendarDataSource
+
+- (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date
+{
+    if (!_lunar) {
+        return nil;
+    }
+    _lunarDate = [[SSLunarDate alloc] initWithDate:date calendar:_currentCalendar];
+    return _lunarDate.dayString;
+}
 
 - (BOOL)calendar:(FSCalendar *)calendarView hasEventForDate:(NSDate *)date
 {
@@ -50,7 +53,7 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    BOOL shouldSelect = date.fs_day != 3;
+    BOOL shouldSelect = date.fs_day != 7;
     if (!shouldSelect) {
         NSLog(@"date %@ should not be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
     }
@@ -67,11 +70,7 @@
     NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"yyyy/MM"]);
 }
 
-- (IBAction)changeFlowClicked:(id)sender
-{
-    _calendar.flow = 1 - _calendar.flow;
-    [[[UIAlertView alloc] initWithTitle:@"FSCalendarView" message:@[@"Horizontal", @"Vertical"][_calendar.flow] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
-}
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -79,6 +78,8 @@
         [segue.destinationViewController setValue:self forKey:@"viewController"];
     }
 }
+
+#pragma mark - Setter
 
 - (void)setTheme:(NSInteger)theme
 {
@@ -128,11 +129,24 @@
     }
 }
 
-- (void)setSubtitle:(BOOL)subtitle
+- (void)setLunar:(BOOL)lunar
 {
-    if (_subtitle != subtitle) {
-        _subtitle = subtitle;
+    if (_lunar != lunar) {
+        _lunar = lunar;
         [_calendar reloadData];
+    }
+}
+
+- (void)setFlow:(FSCalendarFlow)flow
+{
+    if (_flow != flow) {
+        _flow = flow;
+        _calendar.flow = flow;
+        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertical", @"Horizontal"][_calendar.flow]]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
     }
 }
 

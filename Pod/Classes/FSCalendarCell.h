@@ -27,6 +27,8 @@
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle;
 @property (assign, nonatomic) BOOL hasEvent;
 
+@property (strong, nonatomic) UIColor *eventColor;
+
 @property (nonatomic, readonly, getter = isPlaceholder) BOOL placeholder;
 @property (nonatomic, readonly, getter = isToday) BOOL today;
 @property (nonatomic, readonly, getter = isWeekend) BOOL weekend;

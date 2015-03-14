@@ -46,11 +46,11 @@
 
 - (void)initialize
 {
-    _dateFormat = @"yyyy-M";
+    _dateFormat = @"MMMM yyyy";
     _dateFormatter = [[NSDateFormatter alloc] init];
     _dateFormatter.dateFormat = _dateFormat;
     _minDissolveAlpha = 0.2;
-    _titleFont = [UIFont systemFontOfSize:15];
+    _titleFont = [UIFont systemFontOfSize:17];
     _titleColor = kBlueText;
     
     _collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
