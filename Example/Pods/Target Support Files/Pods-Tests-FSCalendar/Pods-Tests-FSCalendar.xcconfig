@@ -1,0 +1,1 @@
+PODS_TESTS_FSCALENDAR_OTHER_LDFLAGS = -framework "QuartzCore" -framework "UIKit"

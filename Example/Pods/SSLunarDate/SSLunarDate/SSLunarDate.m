@@ -76,6 +76,14 @@
     return self;
 }
 
+- (void)setDate:(NSDate *)date
+{
+    if ([_date isEqualToDate:date]) {
+        _date = [date copy];
+        [self setupAndDoConvert:date calendar:_calendar];
+    }
+}
+
 - (void) setupAndDoConvert:(NSDate *) solarDate calendar:(NSCalendar *) cal
 {
     _calendar = cal;

@@ -1,5 +1,5 @@
 PODS:
-  - FSCalendar (0.0.5)
+  - FSCalendar (0.2.0)
   - SSLunarDate (0.0.1)
 
 DEPENDENCIES:
@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  FSCalendar: b5a4e7b89cf1c63076aed38b4aa32f66219a50c3
+  FSCalendar: 63a5be91ec4b7dae2584f38df2e8157dd577e055
   SSLunarDate: b325b0e4d6e15a9fb7bfb63e5f8e16291d5dd8d9
 
 COCOAPODS: 0.35.0

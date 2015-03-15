@@ -10,11 +10,11 @@
 #import "FSCalendar.h"
 
 @interface ViewController : UIViewController<UIScrollViewDelegate, FSCalendarDataSource, FSCalendarDelegate>
+
 @property (weak, nonatomic) IBOutlet FSCalendar *calendar;
 
 @property (assign, nonatomic) NSInteger theme;
-@property (assign, nonatomic) BOOL subtitle;
-
-- (IBAction)changeFlowClicked:(id)sender;
+@property (assign, nonatomic) FSCalendarFlow flow;
+@property (assign, nonatomic) BOOL lunar;
 
 @end

@@ -15,29 +15,66 @@
 #define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
+@interface ViewController ()
+
+@property (strong, nonatomic) NSCalendar *currentCalendar;
+@property (strong, nonatomic) SSLunarDate *lunarDate;
+
+@end
+
 @implementation ViewController
+
+#pragma mark - Life Cycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    _calendar.autoAdjustTitleSize = NO;
+    _currentCalendar = [NSCalendar currentCalendar];
+    _flow = _calendar.flow;
 }
 
-- (IBAction)changeFlowClicked:(id)sender
-{
-    _calendar.flow = 1 - _calendar.flow;
-    [[[UIAlertView alloc] initWithTitle:@"FSCalendarView" message:@[@"Horizontal", @"Vertical"][_calendar.flow] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
-}
+#pragma mark - FSCalendarDataSource
 
 - (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date
 {
-    return _subtitle ? [[SSLunarDate alloc] initWithDate:date].dayString : nil;
+    if (!_lunar) {
+        return nil;
+    }
+    _lunarDate = [[SSLunarDate alloc] initWithDate:date calendar:_currentCalendar];
+    return _lunarDate.dayString;
 }
 
 - (BOOL)calendar:(FSCalendar *)calendarView hasEventForDate:(NSDate *)date
 {
     return date.fs_day == 3;
 }
+
+#pragma mark - FSCalendarDelegate
+
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+{
+    BOOL shouldSelect = date.fs_day != 7;
+    if (!shouldSelect) {
+        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
+    }
+    return shouldSelect;
+}
+
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+{
+    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+}
+
+- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
+{
+    NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"yyyy/MM"]);
+}
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -46,6 +83,8 @@
     }
 }
 
+#pragma mark - Setter
+
 - (void)setTheme:(NSInteger)theme
 {
     if (_theme != theme) {
@@ -53,38 +92,38 @@
         switch (theme) {
             case 0:
             {
-                [[FSCalendar appearance] setWeekdayTextColor:kBlueText];
-                [[FSCalendar appearance] setHeaderTitleColor:kBlueText];
-                [[FSCalendar appearance] setEventColor:[UIColor cyanColor]];
-                [[FSCalendar appearance] setSelectionColor:kBlue];
-                [[FSCalendar appearance] setHeaderDateFormat:@"yyyy-M"];
-                [[FSCalendar appearance] setMinDissolvedAlpha:0.2];
-                [[FSCalendar appearance] setTodayColor:kPink];
-                [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle];
+                [_calendar setWeekdayTextColor:kBlueText];
+                [_calendar setHeaderTitleColor:kBlueText];
+                [_calendar setEventColor:[kBlueText colorWithAlphaComponent:0.75]];
+                [_calendar setSelectionColor:kBlue];
+                [_calendar setHeaderDateFormat:@"MMMM yyyy"];
+                [_calendar setMinDissolvedAlpha:0.2];
+                [_calendar setTodayColor:kPink];
+                [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
             case 1:
             {
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];
-                [[FSCalendar appearance] setHeaderTitleColor:[UIColor darkGrayColor]];
-                [[FSCalendar appearance] setEventColor:[UIColor greenColor]];
-                [[FSCalendar appearance] setSelectionColor:[UIColor blueColor]];
-                [[FSCalendar appearance] setHeaderDateFormat:@"yyyy-MM"];
-                [[FSCalendar appearance] setMinDissolvedAlpha:0.5];
-                [[FSCalendar appearance] setTodayColor:[UIColor redColor]];
-                [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleCircle];
+                [_calendar setWeekdayTextColor:[UIColor redColor]];
+                [_calendar setHeaderTitleColor:[UIColor darkGrayColor]];
+                [_calendar setEventColor:[UIColor greenColor]];
+                [_calendar setSelectionColor:[UIColor blueColor]];
+                [_calendar setHeaderDateFormat:@"yyyy-MM"];
+                [_calendar setMinDissolvedAlpha:1.0];
+                [_calendar setTodayColor:[UIColor redColor]];
+                [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
             case 2:
             {
-                [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];
-                [[FSCalendar appearance] setHeaderTitleColor:[UIColor redColor]];
-                [[FSCalendar appearance] setEventColor:[UIColor greenColor]];
-                [[FSCalendar appearance] setSelectionColor:[UIColor blueColor]];
-                [[FSCalendar appearance] setHeaderDateFormat:@"yyyy/MM"];
-                [[FSCalendar appearance] setMinDissolvedAlpha:1.0];
-                [[FSCalendar appearance] setUnitStyle:FSCalendarUnitStyleRectangle];
-                [[FSCalendar appearance] setTodayColor:[UIColor orangeColor]];
+                [_calendar setWeekdayTextColor:[UIColor redColor]];
+                [_calendar setHeaderTitleColor:[UIColor redColor]];
+                [_calendar setEventColor:[UIColor greenColor]];
+                [_calendar setSelectionColor:[UIColor blueColor]];
+                [_calendar setHeaderDateFormat:@"yyyy/MM"];
+                [_calendar setMinDissolvedAlpha:1.0];
+                [_calendar setCellStyle:FSCalendarCellStyleRectangle];
+                [_calendar setTodayColor:[UIColor orangeColor]];
                 break;
             }
             default:
@@ -94,11 +133,24 @@
     }
 }
 
-- (void)setSubtitle:(BOOL)subtitle
+- (void)setLunar:(BOOL)lunar
 {
-    if (_subtitle != subtitle) {
-        _subtitle = subtitle;
+    if (_lunar != lunar) {
+        _lunar = lunar;
         [_calendar reloadData];
+    }
+}
+
+- (void)setFlow:(FSCalendarFlow)flow
+{
+    if (_flow != flow) {
+        _flow = flow;
+        _calendar.flow = flow;
+        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertical", @"Horizontal"][_calendar.flow]]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
     }
 }
 
