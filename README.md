@@ -1,5 +1,5 @@
 
-![fscalendar](https://cloud.githubusercontent.com/assets/5186464/6655324/213a814a-cb36-11e4-9add-f80515a83291.png)<br/>
+![fscalendar](https://cloud.githubusercontent.com/assets/5186464/6655324/213a814a-cb36-11e4-9add-f80515a83291.png)<br/><br/>
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/cocoapods/p/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
@@ -21,10 +21,11 @@
 
 ### Use Interface Builder (Recommended)
 
-1. Drag two UIView objects to ViewController Scene, change the `Custom Class` to `FSCalendarHeader` and `FSCalendar`
+1. Drag two UIView objects to ViewController Scene, change the `Custom Class` to `FSCalendarHeader` and `FSCalendar`<br/>
 ![fscalendar-storyboard1](https://cloud.githubusercontent.com/assets/5186464/6655136/a3cc77b4-cb2a-11e4-8dc2-886e61d2abdb.png) <br />
 ![fscalendar-storyboard2](https://cloud.githubusercontent.com/assets/5186464/6655137/a86c1bb2-cb2a-11e4-9a0d-15b28a72e1eb.png)
-2. After adjust the position and frame, link `header` property of the calendar to the header, and the `dataSource` and `delegate` to the ViewController
+<br/>
+2. After adjust the position and frame, link `header` property of the calendar to the header, and the `dataSource` and `delegate` to the ViewController <br/>
 ![fscalendar-storyboard3](https://cloud.githubusercontent.com/assets/5186464/6655159/ac02925a-cb2b-11e4-885e-a287ad5c7769.png)
 3. Implement `FSCalendarDataSource` and `FSCalendarDelegate` in ViewController.m
 
