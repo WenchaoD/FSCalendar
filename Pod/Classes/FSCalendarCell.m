@@ -180,7 +180,7 @@
     if (self.isPlaceholder) {
         return dictionary[@(FSCalendarCellStatePlaceholder)];
     }
-    if (self.isWeekend) {
+    if (self.isWeekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];

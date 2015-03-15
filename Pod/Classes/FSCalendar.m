@@ -38,6 +38,9 @@
 
 @property (strong, nonatomic) NSMutableArray *weekdays;
 
+@property (strong, nonatomic) NSDate *currentMonth;
+@property (strong, nonatomic) NSDate *selectedDate;
+
 @property (strong, nonatomic) NSMutableDictionary *backgroundColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
 @property (strong, nonatomic) NSMutableDictionary *subtitleColors;
@@ -55,6 +58,8 @@
 @end
 
 @implementation FSCalendar
+
+@synthesize flow = _flow;
 
 #pragma mark - Life Cycle && Initialize
 
@@ -100,6 +105,7 @@
     _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     _collectionViewFlowLayout.minimumInteritemSpacing = 0;
     _collectionViewFlowLayout.minimumLineSpacing = 0;
+    _flow = FSCalendarFlowHorizontal;
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
                                          collectionViewLayout:_collectionViewFlowLayout];
@@ -128,7 +134,6 @@
     
     _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
     _titleColors[@(FSCalendarCellStateNormal)] = [UIColor darkTextColor];
-    _titleColors[@(FSCalendarCellStateWeekend)] = [UIColor darkTextColor];
     _titleColors[@(FSCalendarCellStateSelected)] = [UIColor whiteColor];
     _titleColors[@(FSCalendarCellStateDisabled)] = [UIColor grayColor];
     _titleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
@@ -136,7 +141,6 @@
     
     _subtitleColors = [NSMutableDictionary dictionaryWithCapacity:4];
     _subtitleColors[@(FSCalendarCellStateNormal)] = [UIColor darkGrayColor];
-    _subtitleColors[@(FSCalendarCellStateWeekend)] = [UIColor darkGrayColor];
     _subtitleColors[@(FSCalendarCellStateSelected)] = [UIColor whiteColor];
     _subtitleColors[@(FSCalendarCellStateDisabled)] = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
@@ -233,11 +237,10 @@
         NSIndexPath *indexPath = [self indexPathForDate:cell.date];
         [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         [_collectionView setContentOffset:destOffset animated:YES];
-    } else {
-        [cell showAnimation];
-        self.selectedDate = cell.date;
-        [self didSelectDate:cell.date];
     }
+    [cell showAnimation];
+    self.selectedDate = cell.date;
+    [self didSelectDate:cell.date];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath

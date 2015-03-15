@@ -46,7 +46,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="L73-rf-0E3"/>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="U5e-UL-pjD"/>
-                                    <outlet property="header" destination="Jwg-SK-ZNq" id="FjG-mT-75b"/>
+                                    <outlet property="header" destination="Jwg-SK-ZNq" id="QA3-Sv-PjL"/>
                                 </connections>
                             </view>
                         </subviews>

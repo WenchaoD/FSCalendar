@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FSCalendarHeader.h"
 
-@class FSCalendar, FSCalendarUnit, FSCalendarHeader;
+@class FSCalendar;
 
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
-    FSCalendarFlowVertical   = UICollectionViewScrollDirectionVertical,
-    FSCalendarFlowHorizontal = UICollectionViewScrollDirectionHorizontal
+    FSCalendarFlowVertical ,
+    FSCalendarFlowHorizontal
 };
 
 typedef NS_OPTIONS(NSInteger, FSCalendarUnitAnimation) {
@@ -58,9 +59,9 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (weak, nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 @property (weak, nonatomic) IBOutlet FSCalendarHeader *header;
 
-@property (copy, nonatomic) NSDate *currentDate;
-@property (copy, nonatomic) NSDate *selectedDate;
-@property (copy, nonatomic) NSDate *currentMonth;
+@property (copy,     nonatomic) NSDate *currentDate;
+@property (readonly, nonatomic) NSDate *currentMonth;
+@property (readonly, nonatomic) NSDate *selectedDate;
 
 @property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle UI_APPEARANCE_SELECTOR;
