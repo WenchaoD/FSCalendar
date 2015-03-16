@@ -32,10 +32,6 @@
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        _calendar.selectedDate = [[NSDate date] fs_dateByAddingMonths:1];
-    });
-    
 }
 
 #pragma mark - FSCalendarDataSource
@@ -152,7 +148,7 @@
         _flow = flow;
         _calendar.flow = flow;
         [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertical", @"Horizontal"][_calendar.flow]]
+                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][_calendar.flow]]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil, nil] show];
