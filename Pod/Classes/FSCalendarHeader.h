@@ -14,10 +14,12 @@
 
 @property (assign, nonatomic) CGFloat minDissolveAlpha;
 @property (copy,   nonatomic) NSString *dateFormat;
-
 @property (assign, nonatomic) CGFloat scrollOffset;
 
-@property (weak, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) UIColor *titleColor;
+@property (weak, nonatomic) UIFont *titleFont;
+
+@property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
 
 - (void)reloadData;
 

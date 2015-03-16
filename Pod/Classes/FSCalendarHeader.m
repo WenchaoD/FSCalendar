@@ -21,7 +21,7 @@
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
-- (void)updateAlpha;
+- (void)updateAlphaForCell:(UICollectionViewCell *)cell;
 
 @end
 
@@ -56,6 +56,7 @@
     _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     _collectionViewFlowLayout.minimumInteritemSpacing = 0;
     _collectionViewFlowLayout.minimumLineSpacing = 0;
+    _scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_collectionViewFlowLayout];
     [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
@@ -107,14 +108,12 @@
         titleLabel.textAlignment = NSTextAlignmentCenter;
         [cell.contentView addSubview:titleLabel];
     }
-    titleLabel.font = self.calendar.headerTitleFont;
-    titleLabel.textColor = self.calendar.headerTitleColor;
+    titleLabel.font = self.titleFont;
+    titleLabel.textColor = self.titleColor;
     NSDate *date = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.item];
     titleLabel.text = [_dateFormatter stringFromDate:date];
     
-    CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
-    CGFloat center = CGRectGetMidX(self.bounds);
-    cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.width;
+    [self updateAlphaForCell:cell];
     
     return cell;
 }
@@ -125,16 +124,17 @@
 {
     if (_scrollOffset != scrollOffset) {
         _scrollOffset = scrollOffset;
-        _collectionView.contentOffset = CGPointMake((_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width, 0);
-        [self updateAlpha];
-    }
-}
-
-- (void)setCalendar:(FSCalendar *)calendar
-{
-    if (_calendar != calendar) {
-        _calendar = calendar;
-        [self reloadData];
+        if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+            _collectionView.contentOffset = CGPointMake((_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width, 0);
+        } else {
+            _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSArray *cells = _collectionView.visibleCells;
+            [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                [self updateAlphaForCell:obj];
+            }];
+        });
     }
 }
 
@@ -155,6 +155,25 @@
     }
 }
 
+- (void)setScrollDirection:(UICollectionViewScrollDirection)scrollDirection
+{
+    if (_scrollDirection != scrollDirection) {
+        _scrollDirection = scrollDirection;
+        _collectionViewFlowLayout.scrollDirection = scrollDirection;
+        CGPoint newOffset = CGPointMake(
+                                        scrollDirection == UICollectionViewScrollDirectionHorizontal ? (_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width : 0,
+                                        scrollDirection == UICollectionViewScrollDirectionVertical ? _scrollOffset * _collectionViewFlowLayout.itemSize.height : 0
+                                        );
+        _collectionView.contentOffset = newOffset;
+        if (scrollDirection == UICollectionViewScrollDirectionVertical) {
+            _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, self.fs_width*0.25, 0, self.fs_width*0.25);
+        } else {
+            _collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
+        }
+        [_collectionView reloadData];
+    }
+}
+
 #pragma mark - Public
 
 - (void)reloadData
@@ -164,17 +183,17 @@
 
 #pragma mark - Private
 
-- (void)updateAlpha
+- (void)updateAlphaForCell:(UICollectionViewCell *)cell
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSArray *cells = _collectionView.visibleCells;
-        [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            UICollectionViewCell *cell = obj;
-            CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
-            CGFloat center = CGRectGetMidX(self.bounds);
-            cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.width;
-        }];
-    });
+    if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+        CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
+        CGFloat center = CGRectGetMidX(self.bounds);
+        cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.width;
+    } else {
+        CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].y;
+        CGFloat center = CGRectGetMidY(self.bounds);
+        cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.height;
+    }
 }
 
 @end

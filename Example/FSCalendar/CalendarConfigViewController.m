@@ -43,7 +43,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         });
     } else if (indexPath.section == 2) {
-        self.viewController.flow = !self.viewController.flow;
+        self.viewController.flow = (FSCalendarFlow)(1-indexPath.row);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.navigationController popViewControllerAnimated:YES];
         });

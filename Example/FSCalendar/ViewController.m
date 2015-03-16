@@ -31,6 +31,7 @@
     [super viewDidLoad];
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
+    
 }
 
 #pragma mark - FSCalendarDataSource
@@ -147,7 +148,7 @@
         _flow = flow;
         _calendar.flow = flow;
         [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertical", @"Horizontal"][_calendar.flow]]
+                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][_calendar.flow]]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil, nil] show];

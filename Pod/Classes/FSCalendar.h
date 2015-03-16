@@ -60,8 +60,8 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (weak, nonatomic) IBOutlet FSCalendarHeader *header;
 
 @property (copy,     nonatomic) NSDate *currentDate;
+@property (copy,     nonatomic) NSDate *selectedDate;
 @property (readonly, nonatomic) NSDate *currentMonth;
-@property (readonly, nonatomic) NSDate *selectedDate;
 
 @property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle UI_APPEARANCE_SELECTOR;
@@ -72,7 +72,6 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (strong, nonatomic) UIFont   *titleFont UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont   *subtitleFont UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont   *weekdayFont UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont   *headerTitleFont UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIColor  *eventColor UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIColor  *weekdayTextColor UI_APPEARANCE_SELECTOR;
 
@@ -91,8 +90,9 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (nonatomic) UIColor *selectionColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic) UIColor *todayColor UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic) UIColor  *headerTitleColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic) NSString *headerDateFormat UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *headerTitleColor UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) NSString *headerDateFormat UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont   *headerTitleFont UI_APPEARANCE_SELECTOR;
 
 - (void)reloadData;
 
