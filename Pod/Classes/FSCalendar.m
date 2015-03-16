@@ -39,7 +39,7 @@
 @property (strong, nonatomic) NSMutableArray *weekdays;
 
 @property (strong, nonatomic) NSDate *currentMonth;
-@property (strong, nonatomic) NSDate *selectedDate;
+//@property (strong, nonatomic) NSDate *selectedDate;
 
 @property (strong, nonatomic) NSMutableDictionary *backgroundColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
@@ -53,7 +53,7 @@
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
 
-- (void)scrollToCurrentDate;
+- (void)scrollToDate:(NSDate *)date;
 
 @end
 
@@ -187,7 +187,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentSize"]) {
-        [self scrollToCurrentDate];
+        [self scrollToDate:_currentDate];
         [_collectionView removeObserver:self forKeyPath:@"contentSize"];
     }
 }
@@ -239,7 +239,7 @@
         [_collectionView setContentOffset:destOffset animated:YES];
     }
     [cell showAnimation];
-    self.selectedDate = cell.date;
+    _selectedDate = cell.date;
     [self didSelectDate:cell.date];
 }
 
@@ -265,11 +265,6 @@
     _header.scrollOffset = scrollOffset;
     NSDate *currentMonth = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:round(scrollOffset)];
     self.currentMonth = currentMonth;
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    
 }
 
 #pragma mark - Setter & Getter
@@ -311,6 +306,15 @@
     return (FSCalendarFlow)_collectionViewFlowLayout.scrollDirection;
 }
 
+- (void)setSelectedDate:(NSDate *)selectedDate
+{
+    if (![_selectedDate isEqualToDate:selectedDate]) {
+        _selectedDate = [selectedDate copy];
+        [self scrollToDate:_selectedDate];
+        [_collectionView selectItemAtIndexPath:[self indexPathForDate:_selectedDate] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    }
+}
+
 - (void)setWeekdayFont:(UIFont *)weekdayFont
 {
     if (_weekdayFont != weekdayFont) {
@@ -340,7 +344,7 @@
     if (![_currentDate isEqualToDate:currentDate]) {
         _currentDate = [currentDate copy];
         _currentMonth = [currentDate copy];
-        [self scrollToCurrentDate];
+        [self scrollToDate:_currentDate];
     }
 }
 
@@ -607,16 +611,16 @@
 
 #pragma mark - Private
 
-- (void)scrollToCurrentDate
+- (void)scrollToDate:(NSDate *)date
 {
-    NSInteger scrollOffset = [_currentDate fs_monthsFrom:[NSDate dateWithTimeIntervalSince1970:0]];
-    scrollOffset += _currentDate.fs_day == 1;
+    NSInteger scrollOffset = [date fs_monthsFrom:[NSDate dateWithTimeIntervalSince1970:0]];
+    scrollOffset += date.fs_day == 1;
     if (self.flow == FSCalendarFlowHorizontal) {
-        _collectionView.bounds = CGRectOffset(_collectionView.bounds,
+        _collectionView.bounds = CGRectOffset(self.bounds,
                                               scrollOffset * _collectionView.fs_width,
                                               0);
     } else if (self.flow == FSCalendarFlowVertical) {
-        _collectionView.bounds = CGRectOffset(_collectionView.bounds,
+        _collectionView.bounds = CGRectOffset(self.bounds,
                                               0,
                                               scrollOffset * _collectionView.fs_height);
     }

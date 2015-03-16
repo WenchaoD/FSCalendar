@@ -31,6 +31,11 @@
     [super viewDidLoad];
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        _calendar.selectedDate = [[NSDate date] fs_dateByAddingMonths:1];
+    });
+    
 }
 
 #pragma mark - FSCalendarDataSource
