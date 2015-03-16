@@ -161,8 +161,8 @@
         _scrollDirection = scrollDirection;
         _collectionViewFlowLayout.scrollDirection = scrollDirection;
         CGPoint newOffset = CGPointMake(
-                                        scrollDirection == UICollectionViewScrollDirectionHorizontal ? _scrollOffset * _collectionView.fs_width : 0,
-                                        scrollDirection == UICollectionViewScrollDirectionVertical ? _scrollOffset * _collectionView.fs_height : 0
+                                        scrollDirection == UICollectionViewScrollDirectionHorizontal ? (_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width : 0,
+                                        scrollDirection == UICollectionViewScrollDirectionVertical ? _scrollOffset * _collectionViewFlowLayout.itemSize.height : 0
                                         );
         _collectionView.contentOffset = newOffset;
         if (scrollDirection == UICollectionViewScrollDirectionVertical) {

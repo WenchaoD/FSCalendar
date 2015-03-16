@@ -602,13 +602,7 @@
 - (void)reloadData
 {
     NSIndexPath *selectedPath = [_collectionView indexPathsForSelectedItems].lastObject;
-    [_collectionView reloadData];
-    [_collectionView selectItemAtIndexPath:selectedPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-    
-    _header.titleFont = self.headerTitleFont;
-    _header.titleColor = self.headerTitleColor;
-    _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
-    [_header reloadData];
+    [self reloadData:selectedPath];
 }
 
 #pragma mark - Private
@@ -732,15 +726,15 @@
 
 - (void)reloadData:(NSIndexPath *)selection
 {
-    if (selection) {
-        [_collectionView reloadData];
-        [_collectionView selectItemAtIndexPath:selection
-                                      animated:NO
-                                scrollPosition:UICollectionViewScrollPositionNone];
-    } else {
-        [self reloadData];
-    }
+    [_collectionView reloadData];
+    [_collectionView selectItemAtIndexPath:selection animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    
     [_weekdays setValue:_weekdayFont forKey:@"font"];
+    
+    _header.titleFont = self.headerTitleFont;
+    _header.titleColor = self.headerTitleColor;
+    _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
+    [_header reloadData];
 }
 
 @end
