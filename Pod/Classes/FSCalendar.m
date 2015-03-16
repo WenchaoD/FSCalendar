@@ -267,6 +267,11 @@
     self.currentMonth = currentMonth;
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    
+}
+
 #pragma mark - Setter & Getter
 
 - (void)setFlow:(FSCalendarFlow)flow
@@ -327,9 +332,6 @@
     if (_header != header) {
         _header = header;
         _topBorderLayer.hidden = header != nil;
-        if (header) {
-            header.calendar = self;
-        }
     }
 }
 
@@ -339,10 +341,6 @@
         _currentDate = [currentDate copy];
         _currentMonth = [currentDate copy];
         [self scrollToCurrentDate];
-        if (_header) {
-            _header.calendar = nil;
-            _header.calendar = self;
-        }
     }
 }
 
@@ -606,6 +604,10 @@
     NSIndexPath *selectedPath = [_collectionView indexPathsForSelectedItems].lastObject;
     [_collectionView reloadData];
     [_collectionView selectItemAtIndexPath:selectedPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    
+    _header.titleFont = self.headerTitleFont;
+    _header.titleColor = self.headerTitleColor;
+    _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
     [_header reloadData];
 }
 
@@ -668,7 +670,7 @@
     if (_autoAdjustTitleSize) {
         _titleFont = [_titleFont fontWithSize:_collectionView.fs_height/3/6];
         _subtitleFont = [_subtitleFont fontWithSize:_collectionView.fs_height/4.5/6];
-        _headerTitleFont = [_titleFont fontWithSize:_titleFont.pointSize+3];
+        _headerTitleFont = [_headerTitleFont fontWithSize:_titleFont.pointSize+3];
         _weekdayFont = _titleFont;
         [self reloadData];
     }
