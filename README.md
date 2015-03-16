@@ -50,12 +50,12 @@ self.calendar = calendar;
 ```objective-c
 @property (weak, nonatomic) IBOutlet id<FSCalendarDelegate> delegate;
 ```
-A delegate object to handle common user tap/scroll event, see `FSCalendarDelegate` for details.
+A delegate object to handle common user tap/scroll event, see [FSCalendarDelegate](###FSCalendarDelegate) for details.
 
 ```objective-c
 @property (weak, nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 ```
-A dataSource object to provide subtitle, event dot or other sources, see `FSCalendarDataSource` for details.
+A dataSource object to provide subtitle, event dot or other sources, see [FSCalendarDataSource](###FSCalendarDataSource) for details.
 
 ```objective-c
 @property (weak, nonatomic) IBOutlet FSCalendarHeader *header;
@@ -192,7 +192,7 @@ The `text color` for `FSCalendarHeader`.
 ```
 The `date format` for `FSCalendarHeader`.
 
-#### FSCalendarDataSource
+### FSCalendarDataSource
 
 ```objective-c
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
@@ -204,7 +204,7 @@ To provide a subtitle right below the `day` digit.
 ```
 To provide an event dot below the day cell.
 
-#### FSCalendarDelegate
+### FSCalendarDelegate
 
 ```objective-c
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
