@@ -39,7 +39,6 @@
 @property (strong, nonatomic) NSMutableArray *weekdays;
 
 @property (strong, nonatomic) NSDate *currentMonth;
-//@property (strong, nonatomic) NSDate *selectedDate;
 
 @property (strong, nonatomic) NSMutableDictionary *backgroundColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
@@ -166,7 +165,6 @@
     _collectionViewFlowLayout.itemSize = CGSizeMake(_collectionView.fs_width/7,
                                                     (_collectionView.fs_height-padding*2)/6);
     _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
-    _collectionView.collectionViewLayout = _collectionViewFlowLayout;
     [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         CGFloat width = self.fs_width/_weekdays.count;
         CGFloat height = kWeekHeight;
@@ -239,8 +237,8 @@
         [_collectionView setContentOffset:destOffset animated:YES];
     }
     [cell showAnimation];
-    _selectedDate = cell.date;
-    [self didSelectDate:cell.date];
+    _selectedDate = [self dateForIndexPath:indexPath];
+    [self didSelectDate:_selectedDate];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -257,9 +255,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (!_header) {
-        return;
-    }
     CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
                                scrollView.contentOffset.y/scrollView.fs_height);
     _header.scrollOffset = scrollOffset;
@@ -308,10 +303,14 @@
 
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
-    if (![_selectedDate isEqualToDate:selectedDate]) {
-        _selectedDate = [selectedDate copy];
-        [self scrollToDate:_selectedDate];
-        [_collectionView selectItemAtIndexPath:[self indexPathForDate:_selectedDate] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
+    if (![_selectedDate isEqualToDate:selectedDate] && [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
+        [self scrollToDate:selectedDate];
+        NSIndexPath *currentIndex = [_collectionView indexPathsForSelectedItems].lastObject;
+        [_collectionView deselectItemAtIndexPath:currentIndex animated:NO];
+        [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndex];
+        [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
     }
 }
 
@@ -616,14 +615,17 @@
     NSInteger scrollOffset = [date fs_monthsFrom:[NSDate dateWithTimeIntervalSince1970:0]];
     scrollOffset += date.fs_day == 1;
     if (self.flow == FSCalendarFlowHorizontal) {
-        _collectionView.bounds = CGRectOffset(self.bounds,
-                                              scrollOffset * _collectionView.fs_width,
-                                              0);
+        _collectionView.bounds = CGRectMake(scrollOffset * _collectionView.fs_width,
+                                            0,
+                                            _collectionView.fs_width,
+                                            _collectionView.fs_height);
     } else if (self.flow == FSCalendarFlowVertical) {
-        _collectionView.bounds = CGRectOffset(self.bounds,
-                                              0,
-                                              scrollOffset * _collectionView.fs_height);
+        _collectionView.bounds = CGRectMake(0,
+                                            scrollOffset * _collectionView.fs_height,
+                                            _collectionView.fs_width,
+                                            _collectionView.fs_height);
     }
+    _currentMonth = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:scrollOffset];
     if (_header) {
         _header.scrollOffset = scrollOffset;
     }

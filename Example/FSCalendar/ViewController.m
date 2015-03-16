@@ -31,7 +31,6 @@
     [super viewDidLoad];
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
-    
 }
 
 #pragma mark - FSCalendarDataSource

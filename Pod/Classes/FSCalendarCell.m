@@ -72,6 +72,11 @@
     _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [CATransaction setDisableActions:YES];
+}
 
 #pragma mark - Setters
 
@@ -96,7 +101,6 @@
     _backgroundLayer.hidden = NO;
     _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
     _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
-    _backgroundLayer.anchorPoint = CGPointMake(0.5, 0.5);
     CAAnimationGroup *group = [CAAnimationGroup animation];
     CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     zoomOut.fromValue = @0.3;

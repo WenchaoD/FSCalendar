@@ -59,9 +59,9 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (weak, nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 @property (weak, nonatomic) IBOutlet FSCalendarHeader *header;
 
-@property (copy,     nonatomic) NSDate *currentDate;
-@property (copy,     nonatomic) NSDate *selectedDate;
-@property (readonly, nonatomic) NSDate *currentMonth;
+@property (copy,      nonatomic) NSDate *currentDate;
+@property (readwrite, nonatomic) NSDate *selectedDate;
+@property (readonly,  nonatomic) NSDate *currentMonth;
 
 @property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle UI_APPEARANCE_SELECTOR;
