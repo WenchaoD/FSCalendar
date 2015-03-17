@@ -14,7 +14,6 @@
 @property (readonly, nonatomic) NSInteger fs_month;
 @property (readonly, nonatomic) NSInteger fs_day;
 @property (readonly, nonatomic) NSInteger fs_weekday;
-
 @property (readonly, nonatomic) NSInteger fs_numberOfDaysInMonth;
 
 - (NSDate *)fs_dateByAddingMonths:(NSInteger)months;

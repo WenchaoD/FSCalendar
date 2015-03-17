@@ -30,17 +30,20 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.font = [UIFont systemFontOfSize:15];
-        _titleLabel.textColor = [UIColor darkTextColor];
-        [self.contentView addSubview:_titleLabel];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.font = [UIFont systemFontOfSize:15];
+        titleLabel.textColor = [UIColor darkTextColor];
+        [self.contentView addSubview:titleLabel];
+        self.titleLabel = titleLabel;
         
-        _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _subtitleLabel.textAlignment = NSTextAlignmentCenter;
-        _subtitleLabel.font = [UIFont systemFontOfSize:10];
-        _subtitleLabel.textColor = [UIColor lightGrayColor];
-        [self.contentView addSubview:_subtitleLabel];
+        UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        subtitleLabel.textAlignment = NSTextAlignmentCenter;
+        subtitleLabel.font = [UIFont systemFontOfSize:10];
+        subtitleLabel.textColor = [UIColor lightGrayColor];
+        [self.contentView addSubview:subtitleLabel];
+        self.subtitleLabel = subtitleLabel;
         
         _backgroundLayer = [CAShapeLayer layer];
         _backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
