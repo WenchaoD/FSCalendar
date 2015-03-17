@@ -304,7 +304,7 @@
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
-    if (![_selectedDate isEqualToDate:selectedDate] && [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
+    if (![_selectedDate fs_isEqualToDateForDay:selectedDate] && [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
         [self scrollToDate:selectedDate];
         NSIndexPath *currentIndex = [_collectionView indexPathsForSelectedItems].lastObject;
         [_collectionView deselectItemAtIndexPath:currentIndex animated:NO];
@@ -593,8 +593,7 @@
 
 - (void)setCurrentMonth:(NSDate *)currentMonth
 {
-    if (!(_currentMonth.fs_year == currentMonth.fs_year
-          && _currentMonth.fs_month == currentMonth.fs_month)) {
+    if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
         _currentMonth = [currentMonth copy];
         [self currentMonthDidChange];
     }

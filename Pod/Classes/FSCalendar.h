@@ -61,7 +61,7 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 
 @property (copy,      nonatomic) NSDate *currentDate;
 @property (readwrite, nonatomic) NSDate *selectedDate;
-@property (readonly,  nonatomic) NSDate *currentMonth;
+@property (readonly , nonatomic) NSDate *currentMonth;
 
 @property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle UI_APPEARANCE_SELECTOR;

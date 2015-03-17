@@ -160,12 +160,12 @@
 
 - (BOOL)isPlaceholder
 {
-    return !(_date.fs_year == _month.fs_year && _date.fs_month == _month.fs_month);
+    return ![_date fs_isEqualToDateForMonth:_month];
 }
 
 - (BOOL)isToday
 {
-    return _date.fs_year == self.currentDate.fs_year && _date.fs_month == self.currentDate.fs_month && _date.fs_day == self.currentDate.fs_day;
+    return [_date fs_isEqualToDateForDay:_currentDate];
 }
 
 - (BOOL)isWeekend

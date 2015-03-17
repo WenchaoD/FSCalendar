@@ -13,4 +13,6 @@
 
 @property (weak, nonatomic) ViewController *viewController;
 
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+
 @end

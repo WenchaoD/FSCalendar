@@ -114,6 +114,17 @@
     return components.day;
 }
 
+- (BOOL)fs_isEqualToDateForMonth:(NSDate *)date
+{
+    return self.fs_year == date.fs_year && self.fs_month == date.fs_month;
+}
+
+- (BOOL)fs_isEqualToDateForDay:(NSDate *)date
+{
+    return self.fs_year == date.fs_year && self.fs_month == date.fs_month && self.fs_day == date.fs_day;
+}
+
+
 + (instancetype)fs_dateFromString:(NSString *)string format:(NSString *)format
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

@@ -16,5 +16,6 @@
 @property (assign, nonatomic) NSInteger theme;
 @property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) BOOL lunar;
+@property (strong, nonatomic) NSDate *selectedDate;
 
 @end

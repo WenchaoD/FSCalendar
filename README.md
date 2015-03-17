@@ -6,7 +6,15 @@
 
 ## Example
 ![fscalendar1](https://cloud.githubusercontent.com/assets/5186464/6652191/f11d5242-caa1-11e4-9cc2-8a7c0cc9ef02.gif)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-![fscalendar2](https://cloud.githubusercontent.com/assets/5186464/6652193/19e7f92a-caa2-11e4-92af-0639dc0c2d79.gif)
+
+## Horizontal flow
+![fscalendar-horizontal](https://cloud.githubusercontent.com/assets/5186464/6679663/2afae1c4-cc86-11e4-9a44-26560a16d81d.gif)
+
+## Vertical flow
+![fscalendar-vertical](https://cloud.githubusercontent.com/assets/5186464/6679667/3856a2ae-cc86-11e4-96c2-313e9dcf0ac1.gif)
+
+## Select a date Manually
+![fscalendar-selected-date](https://cloud.githubusercontent.com/assets/5186464/6680012/4af05080-cc8c-11e4-863a-59cd3507192d.gif)
 
 ## Installation
 
@@ -223,6 +231,9 @@ This method would execute when calendar month page is changed.
 
 ## Requirements
 ios 7.0
+
+## Compatibility
+`FSCalendar` is also tested on iPad device, see the demo for details.
 
 ## Known issues
 1. The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:

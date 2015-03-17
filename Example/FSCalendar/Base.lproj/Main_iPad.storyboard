@@ -182,6 +182,50 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Select a date" id="xA9-Gh-5Ce">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="163" id="SML-br-VXA">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SML-br-VXA" id="9M5-iL-PJ4">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Pq4-BY-I72">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="162"/>
+                                                    <date key="date" timeIntervalSinceReferenceDate="448248004.37374699">
+                                                        <!--2015-03-17 01:20:04 +0000-->
+                                                    </date>
+                                                    <date key="minimumDate" timeIntervalSinceReferenceDate="-3187256743">
+                                                        <!--1900-01-01 10:54:17 +0000-->
+                                                    </date>
+                                                    <date key="maximumDate" timeIntervalSinceReferenceDate="3124090800">
+                                                        <!--2099-12-31 11:00:00 +0000-->
+                                                    </date>
+                                                </datePicker>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Pq4-BY-I72" secondAttribute="bottom" id="7hd-kN-zQJ"/>
+                                                <constraint firstAttribute="trailing" secondItem="Pq4-BY-I72" secondAttribute="trailing" id="RkP-jl-xTf"/>
+                                                <constraint firstItem="Pq4-BY-I72" firstAttribute="leading" secondItem="9M5-iL-PJ4" secondAttribute="leading" id="T1c-bH-A9I"/>
+                                                <constraint firstItem="Pq4-BY-I72" firstAttribute="top" secondItem="9M5-iL-PJ4" secondAttribute="top" id="uSF-6X-T6f"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="HjD-E2-C7p" style="IBUITableViewCellStyleDefault" id="Z09-5u-nxi">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z09-5u-nxi" id="cx9-0N-7bb">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Click to select" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HjD-E2-C7p">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="Ybt-lW-NMk" id="zRc-df-CRT"/>
@@ -190,6 +234,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Configuration" id="KhY-7T-be3"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="datePicker" destination="Pq4-BY-I72" id="NSq-xx-qTN"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ySk-Jt-Eqp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
