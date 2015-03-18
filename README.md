@@ -245,7 +245,7 @@ ios 7.0
 * Add some performace improvements and code optimization.
 
 ### Version 0.4
-* Make `selectedDate` writable. `FSCalendar` will select `selectedDate` and scroll to month of `selectedDate`
+* Make `selectedDate` writable. `FSCalendar` will select `selectedDate` and show the corresponding month
 
 ### Version 0.3
 * Improve scrolling performance
