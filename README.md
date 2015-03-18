@@ -25,25 +25,6 @@
 #import "FSCalendar.h"
 ```
 
-### Version notes
-
-#### 0.5
-* Make `currentMonth` writable. `FSCalendar` will show `currentMonth` after it is set.
-* Add `firstWeekday` property. If you want the first day of week to be Monday, just set this property to `2`, just like `NSCalendar`.
-* Add some performace improvements and code optimization.
-
-#### 0.4
-* Make `selectedDate` writable. `FSCalendar` will select `selectedDate` and scroll to month of `selectedDate`
-
-#### 0.3
-* Improve scrolling performance
-
-#### 0.2
-* Improve cell rendering performance
-
-#### 0.1
-* The first release
-
 ## Setup
 
 ### Use Interface Builder (Recommended)
@@ -253,6 +234,27 @@ ios 7.0
 
 ## Compatibility
 `FSCalendar` is also tested on iPad device, see the demo for details.
+
+
+
+## Version notes
+
+### Version 0.5
+* Make `currentMonth` writable. `FSCalendar` will show `currentMonth` after it is set.
+* Add `firstWeekday` property. If you want the first day of week to be Monday, just set this property to `2`, just like `NSCalendar`.
+* Add some performace improvements and code optimization.
+
+### Version 0.4
+* Make `selectedDate` writable. `FSCalendar` will select `selectedDate` and scroll to month of `selectedDate`
+
+### Version 0.3
+* Improve scrolling performance
+
+### Version 0.2
+* Improve cell rendering performance
+
+### Version 0.1
+* The first release
 
 ## Known issues
 1. The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:
