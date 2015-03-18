@@ -14,11 +14,9 @@
 #import "FSCalendarCell.h"
 
 #define kWeekHeight roundf(self.fs_height/9)
-#define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
-#define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
-#define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
-
-#define kNumberOfPages (2100-1970+1)*12 // From 1970 to 2100
+#define kBlueText   [UIColor colorWithRed:14/255.0  green:69/255.0  blue:221/255.0    alpha:1.0]
+#define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
+#define kBlue       [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:1.0]
 
 @interface FSCalendar (DataSourceAndDelegate)
 
@@ -33,19 +31,19 @@
 
 @interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (strong, nonatomic) UICollectionView *collectionView;
-@property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+@property (strong, nonatomic) NSMutableArray             *weekdays;
 
-@property (strong, nonatomic) NSMutableArray *weekdays;
+@property (strong, nonatomic) NSMutableDictionary        *backgroundColors;
+@property (strong, nonatomic) NSMutableDictionary        *titleColors;
+@property (strong, nonatomic) NSMutableDictionary        *subtitleColors;
 
-@property (strong, nonatomic) NSDate *currentMonth;
+@property (weak,   nonatomic) CALayer                    *topBorderLayer;
+@property (weak,   nonatomic) CALayer                    *bottomBorderLayer;
+@property (weak,   nonatomic) UICollectionView           *collectionView;
+@property (weak,   nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
-@property (strong, nonatomic) NSMutableDictionary *backgroundColors;
-@property (strong, nonatomic) NSMutableDictionary *titleColors;
-@property (strong, nonatomic) NSMutableDictionary *subtitleColors;
-
-@property (strong, nonatomic) CALayer *topBorderLayer;
-@property (strong, nonatomic) CALayer *bottomBorderLayer;
+@property (copy,   nonatomic) NSDate                     *minimumDate;
+@property (copy,   nonatomic) NSDate                     *maximumDate;
 
 - (void)adjustTitleIfNecessary;
 
@@ -58,7 +56,7 @@
 
 @implementation FSCalendar
 
-@synthesize flow = _flow;
+@synthesize flow = _flow, firstWeekday = _firstWeekday;
 
 #pragma mark - Life Cycle && Initialize
 
@@ -82,13 +80,13 @@
 
 - (void)initialize
 {
-    _titleFont = [UIFont systemFontOfSize:15];
-    _subtitleFont = [UIFont systemFontOfSize:10];
-    _weekdayFont = [UIFont systemFontOfSize:15];
-    _headerTitleFont = [UIFont systemFontOfSize:15];
+    _titleFont        = [UIFont systemFontOfSize:15];
+    _subtitleFont     = [UIFont systemFontOfSize:10];
+    _weekdayFont      = [UIFont systemFontOfSize:15];
+    _headerTitleFont  = [UIFont systemFontOfSize:15];
     _headerTitleColor = kBlueText;
     
-    NSArray *weekSymbols = [[NSCalendar currentCalendar] shortStandaloneWeekdaySymbols];
+    NSArray *weekSymbols = [[NSCalendar fs_sharedCalendar] shortStandaloneWeekdaySymbols];
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
     for (int i = 0; i < weekSymbols.count; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -100,50 +98,55 @@
         [self addSubview:weekdayLabel];
     }
     
-    _collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    _collectionViewFlowLayout.minimumInteritemSpacing = 0;
-    _collectionViewFlowLayout.minimumLineSpacing = 0;
-    _flow = FSCalendarFlowHorizontal;
+    _flow         = FSCalendarFlowHorizontal;
+    _firstWeekday = [[NSCalendar fs_sharedCalendar] firstWeekday];
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
-                                         collectionViewLayout:_collectionViewFlowLayout];
-    _collectionView.dataSource = self;
-    _collectionView.delegate = self;
-    _collectionView.backgroundColor = [UIColor clearColor];
-    _collectionView.bounces = YES;
-    _collectionView.pagingEnabled = YES;
-    _collectionView.showsHorizontalScrollIndicator = NO;
-    _collectionView.showsVerticalScrollIndicator = NO;
-    _collectionView.delaysContentTouches = NO;
-    _collectionView.canCancelContentTouches = YES;
-    [_collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:@"cell"];
-    [self addSubview:_collectionView];
-    [_collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    collectionViewFlowLayout.minimumInteritemSpacing = 0;
+    collectionViewFlowLayout.minimumLineSpacing = 0;
+    self.collectionViewFlowLayout = collectionViewFlowLayout;
+    
+    
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                          collectionViewLayout:collectionViewFlowLayout];
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.bounces = YES;
+    collectionView.pagingEnabled = YES;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.delaysContentTouches = NO;
+    collectionView.canCancelContentTouches = YES;
+    [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:@"cell"];
+    [self addSubview:collectionView];
+    [collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    self.collectionView = collectionView;
     
     _currentDate = [NSDate date];
     _currentMonth = [_currentDate copy];
     
     _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:4];
-    _backgroundColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
-    _backgroundColors[@(FSCalendarCellStateSelected)] = kBlue;
-    _backgroundColors[@(FSCalendarCellStateDisabled)] = [UIColor clearColor];
+    _backgroundColors[@(FSCalendarCellStateNormal)]      = [UIColor clearColor];
+    _backgroundColors[@(FSCalendarCellStateSelected)]    = kBlue;
+    _backgroundColors[@(FSCalendarCellStateDisabled)]    = [UIColor clearColor];
     _backgroundColors[@(FSCalendarCellStatePlaceholder)] = [UIColor clearColor];
-    _backgroundColors[@(FSCalendarCellStateToday)] = kPink;
-    
+    _backgroundColors[@(FSCalendarCellStateToday)]       = kPink;
+
     _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
-    _titleColors[@(FSCalendarCellStateNormal)] = [UIColor darkTextColor];
-    _titleColors[@(FSCalendarCellStateSelected)] = [UIColor whiteColor];
-    _titleColors[@(FSCalendarCellStateDisabled)] = [UIColor grayColor];
+    _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];
+    _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
+    _titleColors[@(FSCalendarCellStateDisabled)]    = [UIColor grayColor];
     _titleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
-    _titleColors[@(FSCalendarCellStateToday)] = [UIColor whiteColor];
+    _titleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
     
     _subtitleColors = [NSMutableDictionary dictionaryWithCapacity:4];
-    _subtitleColors[@(FSCalendarCellStateNormal)] = [UIColor darkGrayColor];
-    _subtitleColors[@(FSCalendarCellStateSelected)] = [UIColor whiteColor];
-    _subtitleColors[@(FSCalendarCellStateDisabled)] = [UIColor lightGrayColor];
+    _subtitleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkGrayColor];
+    _subtitleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
+    _subtitleColors[@(FSCalendarCellStateDisabled)]    = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
-    _subtitleColors[@(FSCalendarCellStateToday)] = [UIColor whiteColor];
+    _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
 
     _eventColor = [kBlue colorWithAlphaComponent:0.75];
     _cellStyle = FSCalendarCellStyleCircle;
@@ -155,6 +158,9 @@
     _bottomBorderLayer = [CALayer layer];
     _bottomBorderLayer.backgroundColor = _topBorderLayer.backgroundColor;
     [self.layer addSublayer:_bottomBorderLayer];
+    
+    _minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
+    _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
 }
 
 -(void)layoutSubviews
@@ -194,7 +200,7 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return kNumberOfPages;
+    return [_maximumDate fs_monthsFrom:_minimumDate] + 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -209,8 +215,8 @@
     cell.subtitleColors = self.subtitleColors;
     cell.backgroundColors = self.backgroundColors;
     cell.eventColor = self.eventColor;
-    cell.month = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.section];
     cell.cellStyle = self.cellStyle;
+    cell.month = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.section];
     cell.currentDate = self.currentDate;
     cell.subtitle = [self subtitleForDate:cell.date];
     cell.titleLabel.font = _titleFont;
@@ -259,7 +265,11 @@
                                scrollView.contentOffset.y/scrollView.fs_height);
     _header.scrollOffset = scrollOffset;
     NSDate *currentMonth = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:round(scrollOffset)];
-    self.currentMonth = currentMonth;
+    
+    if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
+        _currentMonth = [currentMonth copy];
+        [self currentMonthDidChange];
+    }
 }
 
 #pragma mark - Setter & Getter
@@ -273,15 +283,15 @@
         if (_collectionView.indexPathsForSelectedItems && _collectionView.indexPathsForSelectedItems.count) {
             NSIndexPath *indexPath = _collectionView.indexPathsForSelectedItems.lastObject;
             if (flow == FSCalendarFlowVertical) {
-                NSInteger index = indexPath.item;
-                NSInteger row = index%6;
-                NSInteger column = index/6;
+                NSInteger index  = indexPath.item;
+                NSInteger row    = index % 6;
+                NSInteger column = index / 6;
                 newIndexPath = [NSIndexPath indexPathForRow:column+row*7
                                                                inSection:indexPath.section];
             } else if (flow == FSCalendarFlowHorizontal) {
-                NSInteger index = indexPath.item;
-                NSInteger row = index/7;
-                NSInteger column = index%7;
+                NSInteger index  = indexPath.item;
+                NSInteger row    = index / 7;
+                NSInteger column = index % 7;
                 newIndexPath = [NSIndexPath indexPathForRow:row+column*6
                                                                inSection:indexPath.section];
             }
@@ -301,6 +311,15 @@
     return (FSCalendarFlow)_collectionViewFlowLayout.scrollDirection;
 }
 
+- (void)setFirstWeekday:(NSUInteger)firstWeekday
+{
+    if (_firstWeekday != firstWeekday) {
+        _firstWeekday = firstWeekday;
+        [[NSCalendar fs_sharedCalendar] setFirstWeekday:firstWeekday];
+        [self reloadData];
+    }
+}
+
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
@@ -311,6 +330,24 @@
         [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndex];
         [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
+    }
+}
+
+- (void)setCurrentDate:(NSDate *)currentDate
+{
+    if (![_currentDate isEqualToDate:currentDate]) {
+        _currentDate = [currentDate copy];
+        _currentMonth = [currentDate copy];
+        [self scrollToDate:_currentDate];
+    }
+}
+
+- (void)setCurrentMonth:(NSDate *)currentMonth
+{
+    if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
+        _currentMonth = [currentMonth copy];
+        [self scrollToDate:_currentMonth];
+        [self currentMonthDidChange];
     }
 }
 
@@ -335,15 +372,6 @@
     if (_header != header) {
         _header = header;
         _topBorderLayer.hidden = header != nil;
-    }
-}
-
-- (void)setCurrentDate:(NSDate *)currentDate
-{
-    if (![_currentDate isEqualToDate:currentDate]) {
-        _currentDate = [currentDate copy];
-        _currentMonth = [currentDate copy];
-        [self scrollToDate:_currentDate];
     }
 }
 
@@ -591,14 +619,6 @@
     }
 }
 
-- (void)setCurrentMonth:(NSDate *)currentMonth
-{
-    if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
-        _currentMonth = [currentMonth copy];
-        [self currentMonthDidChange];
-    }
-}
-
 #pragma mark - Public
 
 - (void)reloadData
@@ -611,7 +631,7 @@
 
 - (void)scrollToDate:(NSDate *)date
 {
-    NSInteger scrollOffset = [date fs_monthsFrom:[NSDate dateWithTimeIntervalSince1970:0]];
+    NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate];
     scrollOffset += date.fs_day == 1;
     if (self.flow == FSCalendarFlowHorizontal) {
         _collectionView.bounds = CGRectMake(scrollOffset * _collectionView.fs_width,
@@ -624,7 +644,6 @@
                                             _collectionView.fs_width,
                                             _collectionView.fs_height);
     }
-    _currentMonth = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:scrollOffset];
     if (_header) {
         _header.scrollOffset = scrollOffset;
     }
@@ -632,13 +651,17 @@
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *currentMonth = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.section];
-    NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentMonth.fs_year month:currentMonth.fs_month day:1];
-    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday - 1) ? : 7;
+    NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:indexPath.section];
+    NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentMonth.fs_year
+                                                month:currentMonth.fs_month
+                                                  day:1];
+    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday + (_firstWeekday-1)%7 - 1) ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSDate *date;
     if (self.flow == FSCalendarFlowHorizontal) {
-        date = [firstDateOfPage fs_dateByAddingDays:7*(indexPath.item%6)+indexPath.item/6];
+        NSUInteger    rows = indexPath.item % 6;
+        NSUInteger columns = indexPath.item / 6;
+        date = [firstDateOfPage fs_dateByAddingDays:7 * rows + columns];
     } else {
         date = [firstDateOfPage fs_dateByAddingDays:indexPath.item];
     }
@@ -647,10 +670,10 @@
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
 {
-    NSInteger section = [date fs_monthsFrom:[NSDate dateWithTimeIntervalSince1970:0]];
+    NSInteger section = [date fs_monthsFrom:_minimumDate];
     section += date.fs_day == 1;
     NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:date.fs_year month:date.fs_month day:1];
-    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday - 1) ? : 7;
+    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday + (_firstWeekday-1)%7 - 1) ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSInteger item = 0;
     if (self.flow == FSCalendarFlowHorizontal) {
@@ -667,10 +690,10 @@
 - (void)adjustTitleIfNecessary
 {
     if (_autoAdjustTitleSize) {
-        _titleFont = [_titleFont fontWithSize:_collectionView.fs_height/3/6];
-        _subtitleFont = [_subtitleFont fontWithSize:_collectionView.fs_height/4.5/6];
+        _titleFont       = [_titleFont fontWithSize:_collectionView.fs_height/3/6];
+        _subtitleFont    = [_subtitleFont fontWithSize:_collectionView.fs_height/4.5/6];
         _headerTitleFont = [_headerTitleFont fontWithSize:_titleFont.pointSize+3];
-        _weekdayFont = _titleFont;
+        _weekdayFont     = _titleFont;
         [self reloadData];
     }
 }
@@ -736,10 +759,19 @@
     
     [_weekdays setValue:_weekdayFont forKey:@"font"];
     
-    _header.titleFont = self.headerTitleFont;
-    _header.titleColor = self.headerTitleColor;
+    _header.titleFont       = self.headerTitleFont;
+    _header.titleColor      = self.headerTitleColor;
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
     [_header reloadData];
+    
+    [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UILabel *weekdayLabel = obj;
+        NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
+        weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
+                                        0,
+                                        weekdayLabel.fs_width,
+                                        weekdayLabel.fs_height);
+    }];
 }
 
 @end

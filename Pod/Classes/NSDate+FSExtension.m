@@ -59,7 +59,7 @@
 
 - (NSDate *)fs_dateByAddingMonths:(NSInteger)months
 {
-    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
     [components setMonth:months];
     

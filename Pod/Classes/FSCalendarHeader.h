@@ -12,12 +12,12 @@
 
 @interface FSCalendarHeader : UIView
 
-@property (assign, nonatomic) CGFloat minDissolveAlpha;
-@property (copy,   nonatomic) NSString *dateFormat;
-@property (assign, nonatomic) CGFloat scrollOffset;
+@property (assign, nonatomic) CGFloat                         minDissolveAlpha;
+@property (assign, nonatomic) CGFloat                         scrollOffset;
+@property (copy,   nonatomic) NSString                        *dateFormat;
 
-@property (weak, nonatomic) UIColor *titleColor;
-@property (weak, nonatomic) UIFont *titleFont;
+@property (weak,   nonatomic) UIColor                         *titleColor;
+@property (weak,   nonatomic) UIFont                          *titleFont;
 
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
 

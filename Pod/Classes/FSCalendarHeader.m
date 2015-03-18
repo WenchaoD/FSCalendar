@@ -16,10 +16,10 @@
 
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (copy, nonatomic) NSDateFormatter            *dateFormatter;
 
-@property (strong, nonatomic) UICollectionView *collectionView;
-@property (strong, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+@property (weak, nonatomic) UICollectionView           *collectionView;
+@property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 - (void)updateAlphaForCell:(UICollectionViewCell *)cell;
 
@@ -47,27 +47,29 @@
 
 - (void)initialize
 {
-    _dateFormat = @"MMMM yyyy";
-    _dateFormatter = [[NSDateFormatter alloc] init];
+    _dateFormat               = @"MMMM yyyy";
+    _dateFormatter            = [[NSDateFormatter alloc] init];
     _dateFormatter.dateFormat = _dateFormat;
-    _minDissolveAlpha = 0.2;
+    _minDissolveAlpha         = 0.2;
+    _scrollDirection          = UICollectionViewScrollDirectionHorizontal;
+
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    collectionViewFlowLayout.minimumInteritemSpacing = 0;
+    collectionViewFlowLayout.minimumLineSpacing = 0;
+    self.collectionViewFlowLayout = collectionViewFlowLayout;
     
-    _collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    _collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    _collectionViewFlowLayout.minimumInteritemSpacing = 0;
-    _collectionViewFlowLayout.minimumLineSpacing = 0;
-    _scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_collectionViewFlowLayout];
+    collectionView.scrollEnabled = NO;
+    collectionView.userInteractionEnabled = NO;
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    [self addSubview:collectionView];
+    [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    [collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    self.collectionView = collectionView;
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_collectionViewFlowLayout];
-    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-    _collectionView.scrollEnabled = NO;
-    _collectionView.userInteractionEnabled = NO;
-    _collectionView.backgroundColor = [UIColor clearColor];
-    _collectionView.dataSource = self;
-    _collectionView.delegate = self;
-    [self addSubview:_collectionView];
-    
-    [_collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

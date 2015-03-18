@@ -11,27 +11,25 @@
 
 @interface FSCalendarCell : UICollectionViewCell
 
-@property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UILabel *subtitleLabel;
+@property (weak,   nonatomic) NSDictionary        *titleColors;
+@property (weak,   nonatomic) NSDictionary        *subtitleColors;
+@property (weak,   nonatomic) NSDictionary        *backgroundColors;
 
-@property (weak, nonatomic) NSDictionary *titleColors;
-@property (weak, nonatomic) NSDictionary *subtitleColors;
-@property (weak, nonatomic) NSDictionary *backgroundColors;
+@property (weak,   nonatomic) UIColor             *eventColor;
 
-@property (copy, nonatomic) NSDate *date;
-@property (copy, nonatomic) NSDate *month;
-@property (weak, nonatomic) NSDate *currentDate;
+@property (copy,   nonatomic) NSDate              *date;
+@property (copy,   nonatomic) NSDate              *month;
+@property (weak,   nonatomic) NSDate              *currentDate;
 
-@property (copy, nonatomic) NSString *subtitle;
+@property (copy,   nonatomic) NSString            *subtitle;
+
+@property (weak,   nonatomic) UILabel             *titleLabel;
+@property (weak,   nonatomic) UILabel             *subtitleLabel;
 
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle;
-@property (assign, nonatomic) BOOL hasEvent;
+@property (assign, nonatomic) BOOL                hasEvent;
 
-@property (weak, nonatomic) UIColor *eventColor;
-
-@property (nonatomic, readonly, getter = isPlaceholder) BOOL placeholder;
-@property (nonatomic, readonly, getter = isToday) BOOL today;
-@property (nonatomic, readonly, getter = isWeekend) BOOL weekend;
+@property (readonly, getter = isPlaceholder)      BOOL placeholder;
 
 - (void)showAnimation;
 - (void)hideAnimation;
