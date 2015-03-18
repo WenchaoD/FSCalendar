@@ -18,8 +18,6 @@
 #define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
 #define kBlue       [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:1.0]
 
-#define kNumberOfPages (2100-1970+1)*12 // From 1970 to 2100
-
 @interface FSCalendar (DataSourceAndDelegate)
 
 - (BOOL)hasEventForDate:(NSDate *)date;
@@ -33,7 +31,6 @@
 
 @interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
-
 @property (strong, nonatomic) NSMutableArray             *weekdays;
 
 @property (strong, nonatomic) NSMutableDictionary        *backgroundColors;
@@ -44,6 +41,9 @@
 @property (weak,   nonatomic) CALayer                    *bottomBorderLayer;
 @property (weak,   nonatomic) UICollectionView           *collectionView;
 @property (weak,   nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+
+@property (copy,   nonatomic) NSDate                     *minimumDate;
+@property (copy,   nonatomic) NSDate                     *maximumDate;
 
 - (void)adjustTitleIfNecessary;
 
@@ -56,7 +56,7 @@
 
 @implementation FSCalendar
 
-@synthesize flow = _flow;
+@synthesize flow = _flow, firstWeekday = _firstWeekday;
 
 #pragma mark - Life Cycle && Initialize
 
@@ -86,7 +86,7 @@
     _headerTitleFont  = [UIFont systemFontOfSize:15];
     _headerTitleColor = kBlueText;
     
-    NSArray *weekSymbols = [[NSCalendar currentCalendar] shortStandaloneWeekdaySymbols];
+    NSArray *weekSymbols = [[NSCalendar fs_sharedCalendar] shortStandaloneWeekdaySymbols];
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
     for (int i = 0; i < weekSymbols.count; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -98,7 +98,8 @@
         [self addSubview:weekdayLabel];
     }
     
-    _flow = FSCalendarFlowHorizontal;
+    _flow         = FSCalendarFlowHorizontal;
+    _firstWeekday = [[NSCalendar fs_sharedCalendar] firstWeekday];
     
     UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -157,6 +158,9 @@
     _bottomBorderLayer = [CALayer layer];
     _bottomBorderLayer.backgroundColor = _topBorderLayer.backgroundColor;
     [self.layer addSublayer:_bottomBorderLayer];
+    
+    _minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
+    _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
 }
 
 -(void)layoutSubviews
@@ -196,7 +200,7 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return kNumberOfPages;
+    return [_maximumDate fs_monthsFrom:_minimumDate] + 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -305,6 +309,15 @@
 - (FSCalendarFlow)flow
 {
     return (FSCalendarFlow)_collectionViewFlowLayout.scrollDirection;
+}
+
+- (void)setFirstWeekday:(NSUInteger)firstWeekday
+{
+    if (_firstWeekday != firstWeekday) {
+        _firstWeekday = firstWeekday;
+        [[NSCalendar fs_sharedCalendar] setFirstWeekday:firstWeekday];
+        [self reloadData];
+    }
 }
 
 - (void)setSelectedDate:(NSDate *)selectedDate
@@ -618,7 +631,7 @@
 
 - (void)scrollToDate:(NSDate *)date
 {
-    NSInteger scrollOffset = [date fs_monthsFrom:[NSDate dateWithTimeIntervalSince1970:0]];
+    NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate];
     scrollOffset += date.fs_day == 1;
     if (self.flow == FSCalendarFlowHorizontal) {
         _collectionView.bounds = CGRectMake(scrollOffset * _collectionView.fs_width,
@@ -638,13 +651,17 @@
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *currentMonth = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.section];
-    NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentMonth.fs_year month:currentMonth.fs_month day:1];
-    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday - 1) ? : 7;
+    NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:indexPath.section];
+    NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentMonth.fs_year
+                                                month:currentMonth.fs_month
+                                                  day:1];
+    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday + (_firstWeekday-1)%7 - 1) ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSDate *date;
     if (self.flow == FSCalendarFlowHorizontal) {
-        date = [firstDateOfPage fs_dateByAddingDays:7*(indexPath.item%6)+indexPath.item/6];
+        NSUInteger    rows = indexPath.item % 6;
+        NSUInteger columns = indexPath.item / 6;
+        date = [firstDateOfPage fs_dateByAddingDays:7 * rows + columns];
     } else {
         date = [firstDateOfPage fs_dateByAddingDays:indexPath.item];
     }
@@ -653,10 +670,10 @@
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
 {
-    NSInteger section = [date fs_monthsFrom:[NSDate dateWithTimeIntervalSince1970:0]];
+    NSInteger section = [date fs_monthsFrom:_minimumDate];
     section += date.fs_day == 1;
     NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:date.fs_year month:date.fs_month day:1];
-    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday - 1) ? : 7;
+    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday + (_firstWeekday-1)%7 - 1) ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSInteger item = 0;
     if (self.flow == FSCalendarFlowHorizontal) {
@@ -746,6 +763,15 @@
     _header.titleColor      = self.headerTitleColor;
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
     [_header reloadData];
+    
+    [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UILabel *weekdayLabel = obj;
+        NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
+        weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
+                                        0,
+                                        weekdayLabel.fs_width,
+                                        weekdayLabel.fs_height);
+    }];
 }
 
 @end

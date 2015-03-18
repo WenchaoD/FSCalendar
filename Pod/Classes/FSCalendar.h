@@ -16,12 +16,6 @@ typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowHorizontal
 };
 
-typedef NS_OPTIONS(NSInteger, FSCalendarUnitAnimation) {
-    FSCalendarUnitAnimationNone    = 0,
-    FSCalendarUnitAnimationScale   = 1,
-    FSCalendarUnitAnimationShade   = 2
-};
-
 typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
     FSCalendarCellStyleCircle      = 0,
     FSCalendarCellStyleRectangle   = 1
@@ -65,6 +59,7 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (copy,   nonatomic) NSDate *currentMonth;
 
 @property (assign, nonatomic) FSCalendarFlow       flow;
+@property (assign, nonatomic) NSUInteger           firstWeekday;
 @property (assign, nonatomic) BOOL                 autoAdjustTitleSize;
 
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle         UI_APPEARANCE_SELECTOR;
