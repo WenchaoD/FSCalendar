@@ -25,6 +25,25 @@
 #import "FSCalendar.h"
 ```
 
+### Version notes
+
+#### 0.5
+* Make `currentMonth` writable. `FSCalendar` will show `currentMonth` after it is set.
+* Add `firstWeekday` property. If you want the first day of week to be Monday, just set this property to `2`, just like `NSCalendar`.
+* Add some performace improvements and code optimization.
+
+#### 0.4
+* Make `selectedDate` writable. `FSCalendar` will select `selectedDate` and scroll to month of `selectedDate`
+
+#### 0.3
+* Improve scrolling performance
+
+#### 0.2
+* Improve cell rendering performance
+
+#### 0.1
+* The first release
+
 ## Setup
 
 ### Use Interface Builder (Recommended)
