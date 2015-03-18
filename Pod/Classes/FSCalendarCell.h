@@ -29,9 +29,7 @@
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle;
 @property (assign, nonatomic) BOOL                hasEvent;
 
-@property (nonatomic, readonly, getter = isPlaceholder) BOOL placeholder;
-@property (nonatomic, readonly, getter = isToday)       BOOL today;
-@property (nonatomic, readonly, getter = isWeekend)     BOOL weekend;
+@property (readonly, getter = isPlaceholder)      BOOL placeholder;
 
 - (void)showAnimation;
 - (void)hideAnimation;

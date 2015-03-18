@@ -15,8 +15,11 @@
 
 @interface FSCalendarCell ()
 
-@property (strong, nonatomic) CAShapeLayer *backgroundLayer;
-@property (strong, nonatomic) CAShapeLayer *eventLayer;
+@property (strong,   nonatomic) CAShapeLayer *backgroundLayer;
+@property (strong,   nonatomic) CAShapeLayer *eventLayer;
+@property (readonly, nonatomic) BOOL         today;
+@property (readonly, nonatomic) BOOL         weekend;
+
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 

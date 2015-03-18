@@ -31,7 +31,7 @@
     [super viewDidLoad];
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
-    _calendar.firstWeekday = 2;
+//    _calendar.firstWeekday = 2;
 }
 
 #pragma mark - FSCalendarDataSource
