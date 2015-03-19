@@ -31,9 +31,10 @@
     [super viewDidLoad];
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
+    _firstWeekday = _calendar.firstWeekday;
 //    _calendar.firstWeekday = 2;
 //    _calendar.flow = FSCalendarFlowVertical;
-//    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:1 day:1];
+//    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:3 day:8];
 }
 
 #pragma mark - FSCalendarDataSource
@@ -162,6 +163,14 @@
     if (![_selectedDate fs_isEqualToDateForDay:selectedDate]) {
         _selectedDate = [selectedDate copy];
         _calendar.selectedDate = selectedDate;
+    }
+}
+
+- (void)setFirstWeekday:(NSUInteger)firstWeekday
+{
+    if (_firstWeekday != firstWeekday) {
+        _firstWeekday = firstWeekday;
+        _calendar.firstWeekday = firstWeekday;
     }
 }
 

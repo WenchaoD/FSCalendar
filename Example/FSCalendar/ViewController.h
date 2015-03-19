@@ -17,5 +17,6 @@
 @property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) BOOL           lunar;
 @property (copy,   nonatomic) NSDate         *selectedDate;
+@property (assign, nonatomic) NSUInteger     firstWeekday;
 
 @end

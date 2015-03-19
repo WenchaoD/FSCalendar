@@ -295,8 +295,8 @@
                                                                inSection:indexPath.section];
             }
         }
-        [self reloadData:newIndexPath];
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
+        [self reloadData:newIndexPath];
         CGFloat scrollOffset = MAX(_collectionView.contentOffset.x/_collectionView.fs_width,
                                    _collectionView.contentOffset.y/_collectionView.fs_height);
         if (scrollOffset > 0) {

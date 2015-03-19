@@ -11,13 +11,29 @@
 
 @implementation CalendarConfigViewController
 
-- (void)viewWillAppear:(BOOL)animated
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    [self.tableView.visibleCells setValue:@(UITableViewCellAccessoryNone) forKeyPath:@"accessoryType"];
+//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.viewController.theme inSection:0]] setAccessoryType:UITableViewCellAccessoryCheckmark];
+//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] setAccessoryType:self.viewController.lunar?UITableViewCellAccessoryCheckmark:UITableViewCellAccessoryNone];
+//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 - self.viewController.flow inSection:2]] setAccessoryType:UITableViewCellAccessoryCheckmark];
+//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.viewController.firstWeekday - 1 inSection:4]] setAccessoryType:UITableViewCellAccessoryCheckmark];
+//}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super viewWillAppear:animated];
-    [self.tableView.visibleCells setValue:@(UITableViewCellAccessoryNone) forKeyPath:@"accessoryType"];
-    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.viewController.theme inSection:0]] setAccessoryType:UITableViewCellAccessoryCheckmark];
-    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] setAccessoryType:self.viewController.lunar?UITableViewCellAccessoryCheckmark:UITableViewCellAccessoryNone];
-    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 - self.viewController.flow inSection:2]] setAccessoryType:UITableViewCellAccessoryCheckmark];
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.section == 0) {
+        cell.accessoryType = self.viewController.theme == indexPath.row ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    } else if (indexPath.section == 1) {
+        cell.accessoryType = self.viewController.lunar ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    } else if (indexPath.section == 2) {
+        cell.accessoryType = indexPath.row == 1 - self.viewController.flow ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    } else if (indexPath.section == 4) {
+        cell.accessoryType = indexPath.row == self.viewController.firstWeekday - 1 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    }
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -34,26 +50,25 @@
             return;
         }
         self.viewController.theme = indexPath.row;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.navigationController popViewControllerAnimated:YES];
-        });
     } else if (indexPath.section == 1) {
         self.viewController.lunar = !self.viewController.lunar;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.navigationController popViewControllerAnimated:YES];
-        });
     } else if (indexPath.section == 2) {
+        if (self.viewController.flow == 1 - indexPath.row) {
+            return;
+        }
         self.viewController.flow = (FSCalendarFlow)(1-indexPath.row);
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.navigationController popViewControllerAnimated:YES];
-        });
     } else if (indexPath.section == 3) {
         self.viewController.selectedDate = _datePicker.date;
         [[tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.navigationController popViewControllerAnimated:YES];
-        });
+    } else if (indexPath.section == 4) {
+        if (self.viewController.firstWeekday == indexPath.row + 1) {
+            return;
+        }
+        self.viewController.firstWeekday = indexPath.row + 1;
     }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+    });
 }
 
 @end

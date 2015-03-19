@@ -9,7 +9,7 @@
 // FSCalendar
 #define COCOAPODS_POD_AVAILABLE_FSCalendar
 #define COCOAPODS_VERSION_MAJOR_FSCalendar 0
-#define COCOAPODS_VERSION_MINOR_FSCalendar 4
+#define COCOAPODS_VERSION_MINOR_FSCalendar 5
 #define COCOAPODS_VERSION_PATCH_FSCalendar 0
 
 // SSLunarDate
