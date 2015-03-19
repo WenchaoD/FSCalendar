@@ -191,7 +191,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentSize"]) {
-        [self scrollToDate:_currentDate];
+        [self scrollToDate:_currentMonth];
         [_collectionView removeObserver:self forKeyPath:@"contentSize"];
     }
 }
@@ -278,8 +278,7 @@
 {
     if (self.flow != flow) {
         NSIndexPath *newIndexPath;
-        CGFloat scrollOffset = MAX(_collectionView.contentOffset.x/_collectionView.fs_width,
-                                   _collectionView.contentOffset.y/_collectionView.fs_height);
+
         if (_collectionView.indexPathsForSelectedItems && _collectionView.indexPathsForSelectedItems.count) {
             NSIndexPath *indexPath = _collectionView.indexPathsForSelectedItems.lastObject;
             if (flow == FSCalendarFlowVertical) {
@@ -296,13 +295,17 @@
                                                                inSection:indexPath.section];
             }
         }
-        _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
         [self reloadData:newIndexPath];
-        CGPoint newOffset = CGPointMake(
-                                        flow == FSCalendarFlowHorizontal ? scrollOffset * _collectionView.fs_width : 0,
-                                        flow == FSCalendarFlowVertical ? scrollOffset * _collectionView.fs_height : 0
-                                        );
-        _collectionView.contentOffset = newOffset;
+        _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
+        CGFloat scrollOffset = MAX(_collectionView.contentOffset.x/_collectionView.fs_width,
+                                   _collectionView.contentOffset.y/_collectionView.fs_height);
+        if (scrollOffset > 0) {
+            CGPoint newOffset = CGPointMake(
+                                            flow == FSCalendarFlowHorizontal ? scrollOffset * _collectionView.fs_width : 0,
+                                            flow == FSCalendarFlowVertical ? scrollOffset * _collectionView.fs_height : 0
+                                            );
+            _collectionView.contentOffset = newOffset;
+        }
     }
 }
 
@@ -335,10 +338,13 @@
 
 - (void)setCurrentDate:(NSDate *)currentDate
 {
-    if (![_currentDate isEqualToDate:currentDate]) {
+    if (![_currentDate fs_isEqualToDateForDay:currentDate]) {
         _currentDate = [currentDate copy];
         _currentMonth = [currentDate copy];
-        [self scrollToDate:_currentDate];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self scrollToDate:_currentDate];
+            [self currentMonthDidChange];
+        });
     }
 }
 
@@ -346,8 +352,10 @@
 {
     if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
         _currentMonth = [currentMonth copy];
-        [self scrollToDate:_currentMonth];
-        [self currentMonthDidChange];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self scrollToDate:_currentMonth];
+            [self currentMonthDidChange];
+        });
     }
 }
 

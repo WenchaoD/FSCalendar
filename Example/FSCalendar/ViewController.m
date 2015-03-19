@@ -32,6 +32,8 @@
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
 //    _calendar.firstWeekday = 2;
+//    _calendar.flow = FSCalendarFlowVertical;
+//    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:1 day:1];
 }
 
 #pragma mark - FSCalendarDataSource
