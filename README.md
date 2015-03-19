@@ -239,6 +239,11 @@ ios 7.0
 
 ## Version notes
 
+### Version 0.5.1
+* Fix issue for different timeZone #14
+* Fix date-calculation problem while changing `firstWeekday`
+* Fix problem about setting `flow` in `viewDidLoad` #15
+
 ### Version 0.5
 * Make `currentMonth` writable. `FSCalendar` will show `currentMonth` after it is set.
 * Add `firstWeekday` property. If you want the first day of week to be Monday, just set this property to `2`, just like `NSCalendar`.
