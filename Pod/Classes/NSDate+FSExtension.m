@@ -21,7 +21,7 @@
 - (NSInteger)fs_month
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *component = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit
+    NSDateComponents *component = [calendar components:NSMonthCalendarUnit
                                               fromDate:self];
     return component.month;
 }
@@ -29,7 +29,7 @@
 - (NSInteger)fs_day
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *component = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
+    NSDateComponents *component = [calendar components:NSDayCalendarUnit
                                               fromDate:self];
     return component.day;
 }
@@ -39,6 +39,30 @@
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *component = [calendar components:NSWeekdayCalendarUnit fromDate:self];
     return component.weekday;
+}
+
+- (NSInteger)fs_hour
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *component = [calendar components:NSHourCalendarUnit
+                                              fromDate:self];
+    return component.hour;
+}
+
+- (NSInteger)fs_minute
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *component = [calendar components:NSMinuteCalendarUnit
+                                              fromDate:self];
+    return component.minute;
+}
+
+- (NSInteger)fs_second
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *component = [calendar components:NSSecondCalendarUnit
+                                              fromDate:self];
+    return component.second;
 }
 
 - (NSInteger)fs_numberOfDaysInMonth
@@ -100,7 +124,7 @@
     NSDateComponents *components = [calendar components:NSMonthCalendarUnit
                                                fromDate:date
                                                  toDate:self
-                                                options:0];
+                                                    options:0];
     return components.month;
 }
 

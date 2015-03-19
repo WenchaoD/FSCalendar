@@ -10,16 +10,18 @@
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
 #import "NSDate+FSExtension.h"
+#import "NSCalendar+FSExtension.h"
 
-#define kNumberOfItems (2100-1970+1)*12 // From 1970 to 2100
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (copy, nonatomic) NSDateFormatter            *dateFormatter;
-
 @property (weak, nonatomic) UICollectionView           *collectionView;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+
+@property (copy, nonatomic) NSDate                     *minimumDate;
+@property (copy, nonatomic) NSDate                     *maximumDate;
 
 - (void)updateAlphaForCell:(UICollectionViewCell *)cell;
 
@@ -52,6 +54,8 @@
     _dateFormatter.dateFormat = _dateFormat;
     _minDissolveAlpha         = 0.2;
     _scrollDirection          = UICollectionViewScrollDirectionHorizontal;
+    _minimumDate              = [NSDate fs_dateWithYear:1970 month:1 day:1];
+    _maximumDate              = [NSDate fs_dateWithYear:2099 month:12 day:31];
 
     UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -97,7 +101,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return kNumberOfItems;
+    return [_maximumDate fs_monthsFrom:_minimumDate] + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -112,7 +116,7 @@
     }
     titleLabel.font = self.titleFont;
     titleLabel.textColor = self.titleColor;
-    NSDate *date = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.item];
+    NSDate *date = [_minimumDate fs_dateByAddingMonths:indexPath.item];
     titleLabel.text = [_dateFormatter stringFromDate:date];
     
     [self updateAlphaForCell:cell];

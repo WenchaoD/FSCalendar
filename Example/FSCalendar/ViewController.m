@@ -34,7 +34,8 @@
     _firstWeekday = _calendar.firstWeekday;
 //    _calendar.firstWeekday = 2;
 //    _calendar.flow = FSCalendarFlowVertical;
-//    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:3 day:8];
+//    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:2 day:1];
+    
 }
 
 #pragma mark - FSCalendarDataSource
@@ -75,7 +76,7 @@
 
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"yyyy/MM"]);
+    NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"MMMM yyyy"]);
 }
 
 #pragma mark - Navigation

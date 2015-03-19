@@ -159,7 +159,7 @@
     _bottomBorderLayer.backgroundColor = _topBorderLayer.backgroundColor;
     [self.layer addSublayer:_bottomBorderLayer];
     
-    _minimumDate = [NSDate dateWithTimeIntervalSince1970:0];
+    _minimumDate = [NSDate fs_dateWithYear:1970 month:1 day:1];
     _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
 }
 
@@ -216,7 +216,7 @@
     cell.backgroundColors = self.backgroundColors;
     cell.eventColor = self.eventColor;
     cell.cellStyle = self.cellStyle;
-    cell.month = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:indexPath.section];
+    cell.month = [_minimumDate fs_dateByAddingMonths:indexPath.section];
     cell.currentDate = self.currentDate;
     cell.subtitle = [self subtitleForDate:cell.date];
     cell.titleLabel.font = _titleFont;
@@ -238,9 +238,10 @@
             destOffset = CGPointMake(_collectionView.contentOffset.x?_collectionView.contentOffset.x-_collectionView.fs_width:0,
                                              _collectionView.contentOffset.y?_collectionView.contentOffset.y-_collectionView.fs_height:0);
         }
-        NSIndexPath *indexPath = [self indexPathForDate:cell.date];
-        [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        indexPath = [self indexPathForDate:cell.date];
+        cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
         [_collectionView setContentOffset:destOffset animated:YES];
+        [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
     [cell showAnimation];
     _selectedDate = [self dateForIndexPath:indexPath];
@@ -264,8 +265,7 @@
     CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
                                scrollView.contentOffset.y/scrollView.fs_height);
     _header.scrollOffset = scrollOffset;
-    NSDate *currentMonth = [[NSDate dateWithTimeIntervalSince1970:0] fs_dateByAddingMonths:round(scrollOffset)];
-    
+    NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:round(scrollOffset)];
     if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
         _currentMonth = [currentMonth copy];
         [self currentMonthDidChange];
@@ -327,11 +327,11 @@
 {
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
     if (![_selectedDate fs_isEqualToDateForDay:selectedDate] && [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
-        [self scrollToDate:selectedDate];
         NSIndexPath *currentIndex = [_collectionView indexPathsForSelectedItems].lastObject;
         [_collectionView deselectItemAtIndexPath:currentIndex animated:NO];
         [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndex];
         [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        [self scrollToDate:selectedDate];
         [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
     }
 }
@@ -343,7 +343,6 @@
         _currentMonth = [currentDate copy];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self scrollToDate:_currentDate];
-            [self currentMonthDidChange];
         });
     }
 }
@@ -640,7 +639,6 @@
 - (void)scrollToDate:(NSDate *)date
 {
     NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate];
-    scrollOffset += date.fs_day == 1;
     if (self.flow == FSCalendarFlowHorizontal) {
         _collectionView.bounds = CGRectMake(scrollOffset * _collectionView.fs_width,
                                             0,
@@ -663,7 +661,7 @@
     NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentMonth.fs_year
                                                 month:currentMonth.fs_month
                                                   day:1];
-    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday + (_firstWeekday-1)%7 - 1) ? : 7;
+    NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSDate *date;
     if (self.flow == FSCalendarFlowHorizontal) {
@@ -679,9 +677,8 @@
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
 {
     NSInteger section = [date fs_monthsFrom:_minimumDate];
-    section += date.fs_day == 1;
     NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:date.fs_year month:date.fs_month day:1];
-    NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday + (_firstWeekday-1)%7 - 1) ? : 7;
+    NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSInteger item = 0;
     if (self.flow == FSCalendarFlowHorizontal) {
