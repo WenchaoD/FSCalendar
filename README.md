@@ -19,7 +19,7 @@
 ## Installation
 
 * Using cocoapods:`pod 'FSCalendar'` 
-* Manually: Drag all .h and .m files in FSCalendar group to your project
+* Manually: Unzip downloaded zip file, drag all files under `FSCalendar-master/Pod/Classes` to your project, make sure `copy items if needed` is checked.
 
 ```objective-c
 #import "FSCalendar.h"
