@@ -218,11 +218,12 @@
     cell.cellStyle = self.cellStyle;
     cell.month = [_minimumDate fs_dateByAddingMonths:indexPath.section];
     cell.currentDate = self.currentDate;
-    cell.subtitle = [self subtitleForDate:cell.date];
     cell.titleLabel.font = _titleFont;
     cell.subtitleLabel.font = _subtitleFont;
     cell.date = [self dateForIndexPath:indexPath];
+    cell.subtitle = [self subtitleForDate:cell.date];
     cell.hasEvent = [self hasEventForDate:cell.date];
+    [cell configureCell];
     return cell;
 }
 

@@ -84,23 +84,7 @@
     [CATransaction setDisableActions:YES];
 }
 
-#pragma mark - Setters
-
-- (void)setDate:(NSDate *)date
-{
-    if (![_date isEqualToDate:date]) {
-        _date = date;
-    }
-    [self configureCell];
-}
-
-- (void)setHasEvent:(BOOL)hasEvent
-{
-    if (_hasEvent != hasEvent) {
-        _hasEvent = hasEvent;
-        _eventLayer.hidden = !hasEvent;
-    }
-}
+#pragma mark - Public
 
 - (void)showAnimation
 {
@@ -162,6 +146,7 @@
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
     _eventLayer.fillColor = _eventColor.CGColor;
+    _eventLayer.hidden = !_hasEvent;
 }
 
 - (BOOL)isPlaceholder
