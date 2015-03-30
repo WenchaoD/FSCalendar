@@ -71,19 +71,8 @@
     collectionView.delegate = self;
     [self addSubview:collectionView];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
-    [collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     self.collectionView = collectionView;
     
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (object == _collectionView && [keyPath isEqualToString:@"contentSize"]) {
-        [_collectionView removeObserver:self forKeyPath:@"contentSize"];
-        CGFloat scrollOffset = self.scrollOffset;
-        _scrollOffset = 0;
-        self.scrollOffset = scrollOffset;
-    }
 }
 
 - (void)layoutSubviews
@@ -92,6 +81,9 @@
     _collectionViewFlowLayout.itemSize = CGSizeMake(self.fs_width * 0.5,
                                                     self.fs_height);
     _collectionView.frame = self.bounds;
+    CGFloat scrollOffset = self.scrollOffset;
+    _scrollOffset = 0;
+    self.scrollOffset = scrollOffset;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -114,6 +106,7 @@
         titleLabel.textAlignment = NSTextAlignmentCenter;
         [cell.contentView addSubview:titleLabel];
     }
+    titleLabel.frame = cell.contentView.bounds;
     titleLabel.font = self.titleFont;
     titleLabel.textColor = self.titleColor;
     NSDate *date = [_minimumDate fs_dateByAddingMonths:indexPath.item];

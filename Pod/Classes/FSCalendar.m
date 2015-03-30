@@ -29,7 +29,7 @@
 
 @end
 
-@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
+@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (strong, nonatomic) NSMutableArray             *weekdays;
 
@@ -44,6 +44,8 @@
 
 @property (copy,   nonatomic) NSDate                     *minimumDate;
 @property (copy,   nonatomic) NSDate                     *maximumDate;
+
+@property (assign, nonatomic) BOOL                       supressEvent;
 
 - (void)adjustTitleIfNecessary;
 
@@ -121,7 +123,6 @@
     collectionView.canCancelContentTouches = YES;
     [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:@"cell"];
     [self addSubview:collectionView];
-    [collectionView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     self.collectionView = collectionView;
     
     _currentDate = [NSDate date];
@@ -166,17 +167,22 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    _supressEvent = YES;
     CGFloat padding = self.fs_height * 0.01;
     _collectionView.frame = CGRectMake(0, kWeekHeight, self.fs_width, self.fs_height-kWeekHeight);
-    _collectionViewFlowLayout.itemSize = CGSizeMake(_collectionView.fs_width/7,
-                                                    (_collectionView.fs_height-padding*2)/6);
+    _collectionViewFlowLayout.itemSize = CGSizeMake(
+                                                    _collectionView.fs_width/7-(_flow == FSCalendarFlowVertical)*0.1,
+                                                    (_collectionView.fs_height-padding*2)/6
+                                                    );
     _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
+
     [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         CGFloat width = self.fs_width/_weekdays.count;
         CGFloat height = kWeekHeight;
         [obj setFrame:CGRectMake(idx*width, 0, width, height)];
     }];
     [self adjustTitleIfNecessary];
+    [self scrollToDate:_currentMonth];
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer
@@ -185,14 +191,6 @@
     if (layer == self.layer) {
         _topBorderLayer.frame = CGRectMake(0, -1, self.fs_width, 1);
         _bottomBorderLayer.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"contentSize"]) {
-        [self scrollToDate:_currentMonth];
-        [_collectionView removeObserver:self forKeyPath:@"contentSize"];
     }
 }
 
@@ -211,18 +209,18 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.titleColors = self.titleColors;
-    cell.subtitleColors = self.subtitleColors;
-    cell.backgroundColors = self.backgroundColors;
-    cell.eventColor = self.eventColor;
-    cell.cellStyle = self.cellStyle;
-    cell.month = [_minimumDate fs_dateByAddingMonths:indexPath.section];
-    cell.currentDate = self.currentDate;
-    cell.titleLabel.font = _titleFont;
+    cell.titleColors        = self.titleColors;
+    cell.subtitleColors     = self.subtitleColors;
+    cell.backgroundColors   = self.backgroundColors;
+    cell.eventColor         = self.eventColor;
+    cell.cellStyle          = self.cellStyle;
+    cell.month              = [_minimumDate fs_dateByAddingMonths:indexPath.section];
+    cell.currentDate        = self.currentDate;
+    cell.titleLabel.font    = _titleFont;
     cell.subtitleLabel.font = _subtitleFont;
-    cell.date = [self dateForIndexPath:indexPath];
-    cell.subtitle = [self subtitleForDate:cell.date];
-    cell.hasEvent = [self hasEventForDate:cell.date];
+    cell.date               = [self dateForIndexPath:indexPath];
+    cell.subtitle           = [self subtitleForDate:cell.date];
+    cell.hasEvent           = [self hasEventForDate:cell.date];
     [cell configureCell];
     return cell;
 }
@@ -233,11 +231,15 @@
     if (cell.isPlaceholder) {
         CGPoint destOffset = CGPointZero;
         if ([cell.date fs_daysFrom:_currentMonth] > 0) {
-            destOffset = CGPointMake(_collectionView.contentOffset.x?_collectionView.contentOffset.x+_collectionView.fs_width:0,
-                                             _collectionView.contentOffset.y?_collectionView.contentOffset.y+_collectionView.fs_height:0);
+            destOffset = CGPointMake(
+                                     _collectionView.contentOffset.x?_collectionView.contentOffset.x+_collectionView.fs_width:0,
+                                     _collectionView.contentOffset.y?_collectionView.contentOffset.y+_collectionView.fs_height:0
+                                     );
         } else {
-            destOffset = CGPointMake(_collectionView.contentOffset.x?_collectionView.contentOffset.x-_collectionView.fs_width:0,
-                                             _collectionView.contentOffset.y?_collectionView.contentOffset.y-_collectionView.fs_height:0);
+            destOffset = CGPointMake(
+                                     _collectionView.contentOffset.x?_collectionView.contentOffset.x-_collectionView.fs_width:0,
+                                     _collectionView.contentOffset.y?_collectionView.contentOffset.y-_collectionView.fs_height:0
+                                     );
         }
         indexPath = [self indexPathForDate:cell.date];
         cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
@@ -263,6 +265,10 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (_supressEvent) {
+        _supressEvent = NO;
+        return;
+    }
     CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
                                scrollView.contentOffset.y/scrollView.fs_height);
     _header.scrollOffset = scrollOffset;
@@ -278,6 +284,7 @@
 - (void)setFlow:(FSCalendarFlow)flow
 {
     if (self.flow != flow) {
+        _flow = flow;
         NSIndexPath *newIndexPath;
 
         if (_collectionView.indexPathsForSelectedItems && _collectionView.indexPathsForSelectedItems.count) {
@@ -297,16 +304,8 @@
             }
         }
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
+        [self setNeedsLayout];
         [self reloadData:newIndexPath];
-        CGFloat scrollOffset = MAX(_collectionView.contentOffset.x/_collectionView.fs_width,
-                                   _collectionView.contentOffset.y/_collectionView.fs_height);
-        if (scrollOffset > 0) {
-            CGPoint newOffset = CGPointMake(
-                                            flow == FSCalendarFlowHorizontal ? scrollOffset * _collectionView.fs_width : 0,
-                                            flow == FSCalendarFlowVertical ? scrollOffset * _collectionView.fs_height : 0
-                                            );
-            _collectionView.contentOffset = newOffset;
-        }
     }
 }
 
@@ -640,16 +639,11 @@
 - (void)scrollToDate:(NSDate *)date
 {
     NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate];
+    _supressEvent = YES;
     if (self.flow == FSCalendarFlowHorizontal) {
-        _collectionView.bounds = CGRectMake(scrollOffset * _collectionView.fs_width,
-                                            0,
-                                            _collectionView.fs_width,
-                                            _collectionView.fs_height);
+        _collectionView.contentOffset = CGPointMake(scrollOffset * _collectionView.fs_width, 0);
     } else if (self.flow == FSCalendarFlowVertical) {
-        _collectionView.bounds = CGRectMake(0,
-                                            scrollOffset * _collectionView.fs_height,
-                                            _collectionView.fs_width,
-                                            _collectionView.fs_height);
+        _collectionView.contentOffset = CGPointMake(0, scrollOffset * _collectionView.fs_height);
     }
     if (_header) {
         _header.scrollOffset = scrollOffset;
