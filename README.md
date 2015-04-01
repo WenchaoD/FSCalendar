@@ -239,6 +239,10 @@ ios 7.0
 
 ## Version notes
 
+### Version 0.5.2
+* Fix lunar problem in demo project
+* Fix issue #18
+
 ### Version 0.5.1
 * Fix issue for different timeZone #14
 * Fix date-calculation problem while changing `firstWeekday`
