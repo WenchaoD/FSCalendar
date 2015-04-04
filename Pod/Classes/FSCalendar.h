@@ -75,20 +75,20 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (strong, nonatomic) NSString *headerDateFormat         UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont   *headerTitleFont          UI_APPEARANCE_SELECTOR;
 
-@property (weak,   nonatomic) UIColor  *titleDefaultColor        UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *titleSelectionColor      UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *titleTodayColor          UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *titlePlaceholderColor    UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *titleWeekendColor        UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *titleDefaultColor        UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *titleSelectionColor      UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *titleTodayColor          UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *titlePlaceholderColor    UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *titleWeekendColor        UI_APPEARANCE_SELECTOR;
 
-@property (weak,   nonatomic) UIColor  *subtitleDefaultColor     UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *subtitleSelectionColor   UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *subtitleTodayColor       UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *subtitlePlaceholderColor UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *subtitleWeekendColor     UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *subtitleDefaultColor     UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *subtitleSelectionColor   UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *subtitleTodayColor       UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *subtitlePlaceholderColor UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *subtitleWeekendColor     UI_APPEARANCE_SELECTOR;
 
-@property (weak,   nonatomic) UIColor  *selectionColor           UI_APPEARANCE_SELECTOR;
-@property (weak,   nonatomic) UIColor  *todayColor               UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *selectionColor           UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *todayColor               UI_APPEARANCE_SELECTOR;
 
 - (void)reloadData;
 
