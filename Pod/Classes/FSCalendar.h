@@ -11,6 +11,10 @@
 
 @class FSCalendar;
 
+#ifndef IBInspectable
+#define IBInspectable
+#endif
+
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowVertical ,
     FSCalendarFlowHorizontal
@@ -59,11 +63,11 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (copy,   nonatomic) NSDate *currentMonth;
 
 @property (assign, nonatomic) FSCalendarFlow       flow;
-@property (assign, nonatomic) NSUInteger           firstWeekday;
-@property (assign, nonatomic) BOOL                 autoAdjustTitleSize;
+@property (assign, nonatomic) IBInspectable NSUInteger           firstWeekday;
+@property (assign, nonatomic) IBInspectable BOOL                 autoAdjustTitleSize;
 
+@property (assign, nonatomic) IBInspectable CGFloat              minDissolvedAlpha UI_APPEARANCE_SELECTOR;
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle         UI_APPEARANCE_SELECTOR;
-@property (assign, nonatomic) CGFloat             minDissolvedAlpha UI_APPEARANCE_SELECTOR;
 
 @property (strong, nonatomic) UIFont   *titleFont                UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont   *subtitleFont             UI_APPEARANCE_SELECTOR;
