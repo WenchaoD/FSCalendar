@@ -53,6 +53,9 @@
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
 
 - (void)scrollToDate:(NSDate *)date;
+- (void)scrollToDate:(NSDate *)date animate:(BOOL)animate;
+
+- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate;
 
 @end
 
@@ -229,26 +232,12 @@
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.isPlaceholder) {
-        CGPoint destOffset = CGPointZero;
-        if ([cell.date fs_daysFrom:_currentMonth] > 0) {
-            destOffset = CGPointMake(
-                                     _collectionView.contentOffset.x?_collectionView.contentOffset.x+_collectionView.fs_width:0,
-                                     _collectionView.contentOffset.y?_collectionView.contentOffset.y+_collectionView.fs_height:0
-                                     );
-        } else {
-            destOffset = CGPointMake(
-                                     _collectionView.contentOffset.x?_collectionView.contentOffset.x-_collectionView.fs_width:0,
-                                     _collectionView.contentOffset.y?_collectionView.contentOffset.y-_collectionView.fs_height:0
-                                     );
-        }
-        indexPath = [self indexPathForDate:cell.date];
-        cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-        [_collectionView setContentOffset:destOffset animated:YES];
-        [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        [self setSelectedDate:cell.date animate:YES];
+    } else {
+        [cell showAnimation];
+        _selectedDate = [self dateForIndexPath:indexPath];
+        [self didSelectDate:_selectedDate];
     }
-    [cell showAnimation];
-    _selectedDate = [self dateForIndexPath:indexPath];
-    [self didSelectDate:_selectedDate];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -265,18 +254,20 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
+                               scrollView.contentOffset.y/scrollView.fs_height);
+    NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:round(scrollOffset)];
+    if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
+        _currentMonth = [currentMonth copy];
+        if (!_supressEvent) {
+            [self currentMonthDidChange];
+        }
+    }
     if (_supressEvent) {
         _supressEvent = NO;
         return;
     }
-    CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
-                               scrollView.contentOffset.y/scrollView.fs_height);
     _header.scrollOffset = scrollOffset;
-    NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:round(scrollOffset)];
-    if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
-        _currentMonth = [currentMonth copy];
-        [self currentMonthDidChange];
-    }
 }
 
 #pragma mark - Setter & Getter
@@ -325,16 +316,24 @@
 
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
+    [self setSelectedDate:selectedDate animate:NO];
+}
+
+- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate
+{
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
     if (![_selectedDate fs_isEqualToDateForDay:selectedDate] && [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
         NSIndexPath *currentIndex = [_collectionView indexPathsForSelectedItems].lastObject;
         [_collectionView deselectItemAtIndexPath:currentIndex animated:NO];
         [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndex];
         [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-        [self scrollToDate:selectedDate];
         [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
     }
+    if (!_collectionView.tracking && !_collectionView.decelerating && ![_currentMonth fs_isEqualToDateForMonth:_selectedDate]) {
+        [self scrollToDate:selectedDate animate:animate];
+    }
 }
+
 
 - (void)setCurrentDate:(NSDate *)currentDate
 {
@@ -638,14 +637,19 @@
 
 - (void)scrollToDate:(NSDate *)date
 {
+    [self scrollToDate:date animate:NO];
+}
+
+- (void)scrollToDate:(NSDate *)date animate:(BOOL)animate
+{
     NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate];
-    _supressEvent = YES;
+    _supressEvent = !animate;
     if (self.flow == FSCalendarFlowHorizontal) {
-        _collectionView.contentOffset = CGPointMake(scrollOffset * _collectionView.fs_width, 0);
+        [_collectionView setContentOffset:CGPointMake(scrollOffset * _collectionView.fs_width, 0) animated:animate];
     } else if (self.flow == FSCalendarFlowVertical) {
-        _collectionView.contentOffset = CGPointMake(0, scrollOffset * _collectionView.fs_height);
+        [_collectionView setContentOffset:CGPointMake(0, scrollOffset * _collectionView.fs_height) animated:animate];
     }
-    if (_header) {
+    if (_header && !animate) {
         _header.scrollOffset = scrollOffset;
     }
 }

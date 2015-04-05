@@ -78,9 +78,9 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    _collectionView.frame = self.bounds;
     _collectionViewFlowLayout.itemSize = CGSizeMake(self.fs_width * 0.5,
                                                     self.fs_height);
-    _collectionView.frame = self.bounds;
     CGFloat scrollOffset = self.scrollOffset;
     _scrollOffset = 0;
     self.scrollOffset = scrollOffset;
@@ -106,7 +106,6 @@
         titleLabel.textAlignment = NSTextAlignmentCenter;
         [cell.contentView addSubview:titleLabel];
     }
-    titleLabel.frame = cell.contentView.bounds;
     titleLabel.font = self.titleFont;
     titleLabel.textColor = self.titleColor;
     NSDate *date = [_minimumDate fs_dateByAddingMonths:indexPath.item];
@@ -184,6 +183,7 @@
 
 - (void)updateAlphaForCell:(UICollectionViewCell *)cell
 {
+    [[cell.contentView viewWithTag:100] setFrame:cell.contentView.bounds];
     if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
         CGFloat center = CGRectGetMidX(self.bounds);

@@ -161,10 +161,7 @@
 
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
-    if (![_selectedDate fs_isEqualToDateForDay:selectedDate]) {
-        _selectedDate = [selectedDate copy];
-        _calendar.selectedDate = selectedDate;
-    }
+    _calendar.selectedDate = selectedDate;
 }
 
 - (void)setFirstWeekday:(NSUInteger)firstWeekday
