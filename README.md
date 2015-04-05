@@ -284,6 +284,6 @@ Wenchao Ding, f33chobits@gmail.com
 
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
 
-## Others
-* If FSCalendar cannot meet your requirment, welcome to submit issues or pull request
-* If you are using this library and using custom color modulation, please take a screenshot for your calendar appearance [here](https://github.com/f33chobits/FSCalendar/issues/2), this will help others better matching color in their apps, thanks
+## Support
+* If FSCalendar cannot meet your requirment, welcome to submit issues or pull requests
+* If you like this control and use it in your app, submit your app's link address [here](https://www.cocoacontrols.com/controls/fscalendar).It would be a great support for me.
