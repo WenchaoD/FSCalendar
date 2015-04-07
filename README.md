@@ -239,6 +239,10 @@ ios 7.0
 
 ## Version notes
 
+### Version 0.5.3
+* Fix month-jumping problem on orientation changed #16
+* Fix issue #20
+
 ### Version 0.5.2
 * Fix lunar problem in demo project
 * Fix issue #18
