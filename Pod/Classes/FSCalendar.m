@@ -254,18 +254,16 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (_supressEvent) {
+        _supressEvent = NO;
+        return;
+    }
     CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
                                scrollView.contentOffset.y/scrollView.fs_height);
     NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:round(scrollOffset)];
     if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
         _currentMonth = [currentMonth copy];
-        if (!_supressEvent) {
-            [self currentMonthDidChange];
-        }
-    }
-    if (_supressEvent) {
-        _supressEvent = NO;
-        return;
+        [self currentMonthDidChange];
     }
     _header.scrollOffset = scrollOffset;
 }
