@@ -173,6 +173,7 @@
     _supressEvent = YES;
     CGFloat padding = self.fs_height * 0.01;
     _collectionView.frame = CGRectMake(0, kWeekHeight, self.fs_width, self.fs_height-kWeekHeight);
+    _collectionView.contentInset = UIEdgeInsetsZero;
     _collectionViewFlowLayout.itemSize = CGSizeMake(
                                                     _collectionView.fs_width/7-(_flow == FSCalendarFlowVertical)*0.1,
                                                     (_collectionView.fs_height-padding*2)/6

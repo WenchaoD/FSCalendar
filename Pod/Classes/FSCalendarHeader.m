@@ -79,6 +79,7 @@
 {
     [super layoutSubviews];
     _collectionView.frame = self.bounds;
+    _collectionView.contentInset = UIEdgeInsetsZero;
     _collectionViewFlowLayout.itemSize = CGSizeMake(self.fs_width * 0.5,
                                                     self.fs_height);
     CGFloat scrollOffset = self.scrollOffset;
