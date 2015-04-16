@@ -182,6 +182,7 @@
                                                     (_collectionView.fs_height-padding*2)/6
                                                     );
     _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
+    
     [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         CGFloat width = self.fs_width/_weekdays.count;
         CGFloat height = kWeekHeight;
@@ -269,6 +270,7 @@
         [self currentMonthDidChange];
     }
     _header.scrollOffset = scrollOffset;
+    [_collectionViewFlowLayout invalidateLayout];
 }
 
 #pragma mark - Setter & Getter
