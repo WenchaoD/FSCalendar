@@ -156,12 +156,15 @@
     _cellStyle = FSCalendarCellStyleCircle;
     _autoAdjustTitleSize = YES;
     
-    _topBorderLayer = [CALayer layer];
-    _topBorderLayer.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2].CGColor;
-    [self.layer addSublayer:_topBorderLayer];
-    _bottomBorderLayer = [CALayer layer];
-    _bottomBorderLayer.backgroundColor = _topBorderLayer.backgroundColor;
-    [self.layer addSublayer:_bottomBorderLayer];
+    CALayer *topBorderLayer = [CALayer layer];
+    topBorderLayer.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2].CGColor;
+    [self.layer addSublayer:topBorderLayer];
+    self.topBorderLayer = topBorderLayer;
+    
+    CALayer *bottomBorderLayer = [CALayer layer];
+    bottomBorderLayer.backgroundColor = _topBorderLayer.backgroundColor;
+    [self.layer addSublayer:bottomBorderLayer];
+    self.bottomBorderLayer = bottomBorderLayer;
     
     _minimumDate = [NSDate fs_dateWithYear:1970 month:1 day:1];
     _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
@@ -179,7 +182,6 @@
                                                     (_collectionView.fs_height-padding*2)/6
                                                     );
     _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
-
     [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         CGFloat width = self.fs_width/_weekdays.count;
         CGFloat height = kWeekHeight;
