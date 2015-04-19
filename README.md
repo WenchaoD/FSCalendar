@@ -240,6 +240,10 @@ ios 7.0
 ## Version notes
 
 ### Version 0.5.3
+* Fix cell wrapping problem
+* Fix problem while adding FSCalendar in viewDidLoad(cause by adjust scroll inset)
+
+### Version 0.5.3
 * Fix month-jumping problem on orientation changed #16
 * Fix issue #20
 
