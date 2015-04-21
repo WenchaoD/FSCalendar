@@ -239,7 +239,7 @@ ios 7.0
 
 ## Version notes
 
-### Version 0.5.3
+### Version 0.5.4
 * Fix cell wrapping problem
 * Fix problem while adding FSCalendar in viewDidLoad(cause by adjust scroll inset)
 
