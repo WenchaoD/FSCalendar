@@ -120,6 +120,7 @@
                 [_calendar setHeaderDateFormat:@"MMMM yyyy"];
                 [_calendar setMinDissolvedAlpha:0.2];
                 [_calendar setTodayColor:kPink];
+                [_calendar setTitleDisabledColor:[UIColor lightGrayColor]];
                 [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
@@ -132,6 +133,7 @@
                 [_calendar setHeaderDateFormat:@"yyyy-MM"];
                 [_calendar setMinDissolvedAlpha:1.0];
                 [_calendar setTodayColor:[UIColor redColor]];
+                [_calendar setTitleDisabledColor:[UIColor redColor]];
                 [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
@@ -144,6 +146,7 @@
                 [_calendar setHeaderDateFormat:@"yyyy/MM"];
                 [_calendar setMinDissolvedAlpha:1.0];
                 [_calendar setCellStyle:FSCalendarCellStyleRectangle];
+                [_calendar setTitleDisabledColor:[UIColor lightGrayColor]];
                 [_calendar setTodayColor:[UIColor orangeColor]];
                 break;
             }

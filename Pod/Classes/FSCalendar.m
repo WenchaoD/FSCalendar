@@ -470,6 +470,21 @@
     return _titleColors[@(FSCalendarCellStatePlaceholder)];
 }
 
+- (void)setTitleDisabledColor:(UIColor *)color
+{
+    if (color) {
+        _titleColors[@(FSCalendarCellStateDisabled)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarCellStateDisabled)];
+    }
+    [self reloadData];
+}
+
+- (UIColor *)titleDisabledColor{
+    return _titleColors[@(FSCalendarCellStateDisabled)];
+}
+
+
 - (void)setTitleWeekendColor:(UIColor *)color
 {
     if (color) {
@@ -544,6 +559,21 @@
 {
     return _subtitleColors[@(FSCalendarCellStatePlaceholder)];
 }
+
+- (void)setSubtitleDisabledColor:(UIColor *)color
+{
+    if (color) {
+        _subtitleColors[@(FSCalendarCellStateDisabled)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarCellStateDisabled)];
+    }
+    [self reloadData];
+}
+
+- (UIColor *)subtitleDisabledColor{
+    return _subtitleColors[@(FSCalendarCellStateDisabled)];
+}
+
 
 - (void)setSubtitleWeekendColor:(UIColor *)color
 {
