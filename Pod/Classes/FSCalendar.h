@@ -54,13 +54,16 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 
 @interface FSCalendar : UIView<UIAppearance>
 
-@property (weak,   nonatomic) IBOutlet    FSCalendarHeader     *header;
+@property (weak,   nonatomic) IBOutlet    FSCalendarHeader      *header;
 @property (weak,   nonatomic) IBOutlet id<FSCalendarDelegate>   delegate;
 @property (weak,   nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 
 @property (copy,   nonatomic) NSDate *currentDate;
 @property (copy,   nonatomic) NSDate *selectedDate;
 @property (copy,   nonatomic) NSDate *currentMonth;
+
+@property (copy,   nonatomic) NSDate                            *minimumDate;
+@property (copy,   nonatomic) NSDate                            *maximumDate;
 
 @property (assign, nonatomic) FSCalendarFlow       flow;
 @property (assign, nonatomic) IBInspectable NSUInteger           firstWeekday;

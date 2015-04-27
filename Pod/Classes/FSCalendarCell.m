@@ -170,9 +170,13 @@
         return dictionary[@(FSCalendarCellStateSelected)];
     }
     if (self.isToday) {
-        return dictionary[@(FSCalendarCellStateToday)];
+        UIColor * currentDayColor = dictionary[@(FSCalendarCellStateToday)];
+        if (self.isPlaceholder){
+            currentDayColor = [currentDayColor colorWithAlphaComponent:0.8];
+        }
+        return currentDayColor;
     }
-    if (self.isPlaceholder) {
+    if (self.isPlaceholder || !self.enabled) {
         return dictionary[@(FSCalendarCellStatePlaceholder)];
     }
     if (self.isWeekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {

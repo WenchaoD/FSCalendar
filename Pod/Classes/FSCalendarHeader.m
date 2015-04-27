@@ -20,8 +20,6 @@
 @property (weak, nonatomic) UICollectionView           *collectionView;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
-@property (copy, nonatomic) NSDate                     *minimumDate;
-@property (copy, nonatomic) NSDate                     *maximumDate;
 
 - (void)updateAlphaForCell:(UICollectionViewCell *)cell;
 
@@ -56,7 +54,7 @@
     _scrollDirection          = UICollectionViewScrollDirectionHorizontal;
     _minimumDate              = [NSDate fs_dateWithYear:1970 month:1 day:1];
     _maximumDate              = [NSDate fs_dateWithYear:2099 month:12 day:31];
-
+    
     UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     collectionViewFlowLayout.minimumInteritemSpacing = 0;

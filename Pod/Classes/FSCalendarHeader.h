@@ -21,6 +21,9 @@
 
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
 
+@property (copy, nonatomic) NSDate                            *minimumDate;
+@property (copy, nonatomic) NSDate                            *maximumDate;
+
 - (void)reloadData;
 
 @end

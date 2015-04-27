@@ -36,6 +36,9 @@
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:2 day:1];
     
+    _calendar.minimumDate = [NSDate fs_dateWithYear:2015 month:1 day:1];
+    _calendar.maximumDate = [NSDate fs_dateWithYear:2015 month:12 day:1];
+    
 }
 
 #pragma mark - FSCalendarDataSource
@@ -58,15 +61,28 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    BOOL shouldSelect = date.fs_day != 7;
-    if (!shouldSelect) {
-        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
+//    BOOL shouldSelect = date.fs_day != 7;
+//    if (!shouldSelect) {
+//        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+//                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
+//                                   delegate:nil
+//                          cancelButtonTitle:@"OK"
+//                          otherButtonTitles:nil, nil] show];
+//    }
+//    return shouldSelect;
+    
+    unsigned calendarUnit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
+    NSCalendar * currentCalendar = [NSCalendar currentCalendar];
+    NSDateComponents * dateCompontents = [currentCalendar components:calendarUnit fromDate:date];
+    NSDate * selectedDate =  [currentCalendar dateFromComponents:dateCompontents];
+    
+    dateCompontents = [currentCalendar components:calendarUnit fromDate:calendar.currentDate];
+    NSDate * currentDate = [currentCalendar dateFromComponents:dateCompontents];
+    if ([selectedDate compare:currentDate] == NSOrderedAscending){
+        return NO;
     }
-    return shouldSelect;
+    return YES;
+ 
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
