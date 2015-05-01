@@ -36,6 +36,10 @@
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:2 day:1];
     
+    _calendar.minimumDate = [NSDate fs_dateWithYear:2015 month:5 day:5];
+    _calendar.maximumDate = [NSDate fs_dateWithYear:2015 month:5 day:6];
+//    _calendar.currentDate = [NSDate fs_dateWithYear:2015 month:5 day:1];
+    
 }
 
 #pragma mark - FSCalendarDataSource
@@ -56,18 +60,31 @@
 
 #pragma mark - FSCalendarDelegate
 
-- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
-{
-    BOOL shouldSelect = date.fs_day != 7;
-    if (!shouldSelect) {
-        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
-    }
-    return shouldSelect;
-}
+//- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+//{
+//    BOOL shouldSelect = date.fs_day != 7;
+//    if (!shouldSelect) {
+//        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+//                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
+//                                   delegate:nil
+//                          cancelButtonTitle:@"OK"
+//                          otherButtonTitles:nil, nil] show];
+//    }
+//    return shouldSelect;
+    
+//    unsigned calendarUnit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
+//    NSCalendar * currentCalendar = [NSCalendar currentCalendar];
+//    NSDateComponents * dateCompontents = [currentCalendar components:calendarUnit fromDate:date];
+//    NSDate * selectedDate =  [currentCalendar dateFromComponents:dateCompontents];
+//    
+//    dateCompontents = [currentCalendar components:calendarUnit fromDate:calendar.currentDate];
+//    NSDate * currentDate = [currentCalendar dateFromComponents:dateCompontents];
+//    if ([selectedDate compare:currentDate] == NSOrderedAscending){
+//        return NO;
+//    }
+//    return YES;
+// 
+//}
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
@@ -104,6 +121,7 @@
                 [_calendar setHeaderDateFormat:@"MMMM yyyy"];
                 [_calendar setMinDissolvedAlpha:0.2];
                 [_calendar setTodayColor:kPink];
+                [_calendar setTitleDisabledColor:[UIColor lightGrayColor]];
                 [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
@@ -116,6 +134,7 @@
                 [_calendar setHeaderDateFormat:@"yyyy-MM"];
                 [_calendar setMinDissolvedAlpha:1.0];
                 [_calendar setTodayColor:[UIColor redColor]];
+                [_calendar setTitleDisabledColor:[UIColor redColor]];
                 [_calendar setCellStyle:FSCalendarCellStyleCircle];
                 break;
             }
@@ -128,6 +147,7 @@
                 [_calendar setHeaderDateFormat:@"yyyy/MM"];
                 [_calendar setMinDissolvedAlpha:1.0];
                 [_calendar setCellStyle:FSCalendarCellStyleRectangle];
+                [_calendar setTitleDisabledColor:[UIColor lightGrayColor]];
                 [_calendar setTodayColor:[UIColor orangeColor]];
                 break;
             }

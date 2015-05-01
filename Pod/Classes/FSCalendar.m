@@ -42,8 +42,6 @@
 @property (weak,   nonatomic) UICollectionView           *collectionView;
 @property (weak,   nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
-@property (copy,   nonatomic) NSDate                     *minimumDate;
-@property (copy,   nonatomic) NSDate                     *maximumDate;
 
 @property (assign, nonatomic) BOOL                       supressEvent;
 
@@ -128,7 +126,7 @@
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
-    _currentDate = [NSDate date];
+    _currentDate = [[NSDate date] fs_clampDateToComponents: (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)];
     _currentMonth = [_currentDate copy];
     
     _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:4];
@@ -137,7 +135,7 @@
     _backgroundColors[@(FSCalendarCellStateDisabled)]    = [UIColor clearColor];
     _backgroundColors[@(FSCalendarCellStatePlaceholder)] = [UIColor clearColor];
     _backgroundColors[@(FSCalendarCellStateToday)]       = kPink;
-
+    
     _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
     _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];
     _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
@@ -151,7 +149,7 @@
     _subtitleColors[@(FSCalendarCellStateDisabled)]    = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
-
+    
     _eventColor = [kBlue colorWithAlphaComponent:0.75];
     _cellStyle = FSCalendarCellStyleCircle;
     _autoAdjustTitleSize = YES;
@@ -216,6 +214,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    
     cell.titleColors        = self.titleColors;
     cell.subtitleColors     = self.subtitleColors;
     cell.backgroundColors   = self.backgroundColors;
@@ -228,6 +227,7 @@
     cell.date               = [self dateForIndexPath:indexPath];
     cell.subtitle           = [self subtitleForDate:cell.date];
     cell.hasEvent           = [self hasEventForDate:cell.date];
+    cell.enabled            = [self shouldSelectDate:cell.date];
     [cell configureCell];
     return cell;
 }
@@ -235,19 +235,19 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    if (cell.isPlaceholder) {
-        [self setSelectedDate:cell.date animate:YES];
-    } else {
-        [cell showAnimation];
-        _selectedDate = [self dateForIndexPath:indexPath];
-        [self didSelectDate:_selectedDate];
+    if ([self shouldSelectDate:cell.date]){
+        if (!cell.isPlaceholder) {
+            [cell showAnimation];
+            _selectedDate = [self dateForIndexPath:indexPath];
+            [self didSelectDate:_selectedDate];
+        }
     }
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    return [self shouldSelectDate:cell.date] && ![[collectionView indexPathsForSelectedItems] containsObject:indexPath];
+    return [self shouldSelectDate:cell.date] && ![[collectionView indexPathsForSelectedItems] containsObject:indexPath] && ![self isDatePlaceHolder:cell.date];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -255,6 +255,7 @@
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell hideAnimation];
 }
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -280,7 +281,7 @@
     if (self.flow != flow) {
         _flow = flow;
         NSIndexPath *newIndexPath;
-
+        
         if (_collectionView.indexPathsForSelectedItems && _collectionView.indexPathsForSelectedItems.count) {
             NSIndexPath *indexPath = _collectionView.indexPathsForSelectedItems.lastObject;
             if (flow == FSCalendarFlowVertical) {
@@ -288,13 +289,13 @@
                 NSInteger row    = index % 6;
                 NSInteger column = index / 6;
                 newIndexPath = [NSIndexPath indexPathForRow:column+row*7
-                                                               inSection:indexPath.section];
+                                                  inSection:indexPath.section];
             } else if (flow == FSCalendarFlowHorizontal) {
                 NSInteger index  = indexPath.item;
                 NSInteger row    = index / 7;
                 NSInteger column = index % 7;
                 newIndexPath = [NSIndexPath indexPathForRow:row+column*6
-                                                               inSection:indexPath.section];
+                                                  inSection:indexPath.section];
             }
         }
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
@@ -324,6 +325,7 @@
 
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate
 {
+    
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
     if (![_selectedDate fs_isEqualToDateForDay:selectedDate] && [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
         NSIndexPath *currentIndex = [_collectionView indexPathsForSelectedItems].lastObject;
@@ -372,7 +374,7 @@
 {
     if (![_weekdayTextColor isEqual:weekdayTextColor]) {
         _weekdayTextColor = weekdayTextColor;
-       [_weekdays setValue:weekdayTextColor forKeyPath:@"textColor"];
+        [_weekdays setValue:weekdayTextColor forKeyPath:@"textColor"];
     }
 }
 
@@ -470,6 +472,21 @@
     return _titleColors[@(FSCalendarCellStatePlaceholder)];
 }
 
+- (void)setTitleDisabledColor:(UIColor *)color
+{
+    if (color) {
+        _titleColors[@(FSCalendarCellStateDisabled)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarCellStateDisabled)];
+    }
+    [self reloadData];
+}
+
+- (UIColor *)titleDisabledColor{
+    return _titleColors[@(FSCalendarCellStateDisabled)];
+}
+
+
 - (void)setTitleWeekendColor:(UIColor *)color
 {
     if (color) {
@@ -544,6 +561,21 @@
 {
     return _subtitleColors[@(FSCalendarCellStatePlaceholder)];
 }
+
+- (void)setSubtitleDisabledColor:(UIColor *)color
+{
+    if (color) {
+        _subtitleColors[@(FSCalendarCellStateDisabled)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarCellStateDisabled)];
+    }
+    [self reloadData];
+}
+
+- (UIColor *)subtitleDisabledColor{
+    return _subtitleColors[@(FSCalendarCellStateDisabled)];
+}
+
 
 - (void)setSubtitleWeekendColor:(UIColor *)color
 {
@@ -707,10 +739,17 @@
 
 - (BOOL)shouldSelectDate:(NSDate *)date
 {
-    if (_delegate && [_delegate respondsToSelector:@selector(calendar:shouldSelectDate:)]) {
-        return [_delegate calendar:self shouldSelectDate:date];
+    if ([date fs_isBetween:_minimumDate andDate:_maximumDate]){
+        if (_delegate && [_delegate respondsToSelector:@selector(calendar:shouldSelectDate:)]) {
+            return [_delegate calendar:self shouldSelectDate:date];
+        }
+        return YES;
     }
-    return YES;
+    return NO;
+}
+
+- (BOOL)isDatePlaceHolder: (NSDate *) date{
+    return ![date fs_isEqualToDateForMonth:_currentMonth];
 }
 
 - (void)didSelectDate:(NSDate *)date
@@ -780,6 +819,27 @@
                                         weekdayLabel.fs_height);
     }];
 }
+
+
+- (void) setMinimumDate:(NSDate *)minimumDate
+{
+    _minimumDate = [minimumDate fs_clampDateToComponents:(NSMonthCalendarUnit | NSYearCalendarUnit)];
+    self.header.minimumDate = _minimumDate;
+}
+
+- (void) setMaximumDate:(NSDate *)maximumDate
+{
+    NSDate * firstOfMonth = [maximumDate fs_clampDateToComponents:NSMonthCalendarUnit|NSYearCalendarUnit];
+    
+    NSDateComponents * offsetComponents = [[NSDateComponents alloc] init];
+    offsetComponents.month = 1;
+    offsetComponents.day = -1;
+    NSCalendar * calendar = [NSCalendar fs_sharedCalendar];
+    _maximumDate = [calendar dateByAddingComponents:offsetComponents toDate:firstOfMonth options:0];
+    self.header.maximumDate = _maximumDate;
+}
+
+
 
 @end
 
