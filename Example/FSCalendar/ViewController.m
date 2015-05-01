@@ -36,8 +36,9 @@
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:2 day:1];
     
-    _calendar.minimumDate = [NSDate fs_dateWithYear:2015 month:1 day:1];
-    _calendar.maximumDate = [NSDate fs_dateWithYear:2015 month:12 day:1];
+    _calendar.minimumDate = [NSDate fs_dateWithYear:2015 month:5 day:5];
+    _calendar.maximumDate = [NSDate fs_dateWithYear:2015 month:5 day:6];
+//    _calendar.currentDate = [NSDate fs_dateWithYear:2015 month:5 day:1];
     
 }
 
@@ -59,8 +60,8 @@
 
 #pragma mark - FSCalendarDelegate
 
-- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
-{
+//- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+//{
 //    BOOL shouldSelect = date.fs_day != 7;
 //    if (!shouldSelect) {
 //        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
@@ -71,19 +72,19 @@
 //    }
 //    return shouldSelect;
     
-    unsigned calendarUnit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
-    NSCalendar * currentCalendar = [NSCalendar currentCalendar];
-    NSDateComponents * dateCompontents = [currentCalendar components:calendarUnit fromDate:date];
-    NSDate * selectedDate =  [currentCalendar dateFromComponents:dateCompontents];
-    
-    dateCompontents = [currentCalendar components:calendarUnit fromDate:calendar.currentDate];
-    NSDate * currentDate = [currentCalendar dateFromComponents:dateCompontents];
-    if ([selectedDate compare:currentDate] == NSOrderedAscending){
-        return NO;
-    }
-    return YES;
- 
-}
+//    unsigned calendarUnit = NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear;
+//    NSCalendar * currentCalendar = [NSCalendar currentCalendar];
+//    NSDateComponents * dateCompontents = [currentCalendar components:calendarUnit fromDate:date];
+//    NSDate * selectedDate =  [currentCalendar dateFromComponents:dateCompontents];
+//    
+//    dateCompontents = [currentCalendar components:calendarUnit fromDate:calendar.currentDate];
+//    NSDate * currentDate = [currentCalendar dateFromComponents:dateCompontents];
+//    if ([selectedDate compare:currentDate] == NSOrderedAscending){
+//        return NO;
+//    }
+//    return YES;
+// 
+//}
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {

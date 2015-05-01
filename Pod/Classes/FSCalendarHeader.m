@@ -81,7 +81,7 @@
     _collectionViewFlowLayout.itemSize = CGSizeMake(self.fs_width * 0.5,
                                                     self.fs_height);
     CGFloat scrollOffset = self.scrollOffset;
-    _scrollOffset = 0;
+    _scrollOffset = -1;
     self.scrollOffset = scrollOffset;
 }
 

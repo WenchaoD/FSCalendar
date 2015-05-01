@@ -126,7 +126,7 @@
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
-    _currentDate = [NSDate date];
+    _currentDate = [[NSDate date] fs_clampDateToComponents: (NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit)];
     _currentMonth = [_currentDate copy];
     
     _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:4];
@@ -235,19 +235,19 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    if (cell.isPlaceholder) {
-        [self setSelectedDate:cell.date animate:YES];
-    } else {
-        [cell showAnimation];
-        _selectedDate = [self dateForIndexPath:indexPath];
-        [self didSelectDate:_selectedDate];
+    if ([self shouldSelectDate:cell.date]){
+        if (!cell.isPlaceholder) {
+            [cell showAnimation];
+            _selectedDate = [self dateForIndexPath:indexPath];
+            [self didSelectDate:_selectedDate];
+        }
     }
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    return [self shouldSelectDate:cell.date] && ![[collectionView indexPathsForSelectedItems] containsObject:indexPath];
+    return [self shouldSelectDate:cell.date] && ![[collectionView indexPathsForSelectedItems] containsObject:indexPath] && ![self isDatePlaceHolder:cell.date];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -255,6 +255,7 @@
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell hideAnimation];
 }
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -324,6 +325,7 @@
 
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate
 {
+    
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
     if (![_selectedDate fs_isEqualToDateForDay:selectedDate] && [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
         NSIndexPath *currentIndex = [_collectionView indexPathsForSelectedItems].lastObject;
@@ -737,10 +739,17 @@
 
 - (BOOL)shouldSelectDate:(NSDate *)date
 {
-    if (_delegate && [_delegate respondsToSelector:@selector(calendar:shouldSelectDate:)]) {
-        return [_delegate calendar:self shouldSelectDate:date];
+    if ([date fs_isBetween:_minimumDate andDate:_maximumDate]){
+        if (_delegate && [_delegate respondsToSelector:@selector(calendar:shouldSelectDate:)]) {
+            return [_delegate calendar:self shouldSelectDate:date];
+        }
+        return YES;
     }
-    return YES;
+    return NO;
+}
+
+- (BOOL)isDatePlaceHolder: (NSDate *) date{
+    return ![date fs_isEqualToDateForMonth:_currentMonth];
 }
 
 - (void)didSelectDate:(NSDate *)date
@@ -812,15 +821,24 @@
 }
 
 
-- (void) setMaximumDate:(NSDate *)maximumDate{
-    _maximumDate = maximumDate;
-    self.header.maximumDate = maximumDate;
+- (void) setMinimumDate:(NSDate *)minimumDate
+{
+    _minimumDate = [minimumDate fs_clampDateToComponents:(NSMonthCalendarUnit | NSYearCalendarUnit)];
+    self.header.minimumDate = _minimumDate;
 }
 
-- (void) setMinimumDate:(NSDate *)minimumDate{
-    _minimumDate = minimumDate;
-    self.header.minimumDate = minimumDate;
+- (void) setMaximumDate:(NSDate *)maximumDate
+{
+    NSDate * firstOfMonth = [maximumDate fs_clampDateToComponents:NSMonthCalendarUnit|NSYearCalendarUnit];
+    
+    NSDateComponents * offsetComponents = [[NSDateComponents alloc] init];
+    offsetComponents.month = 1;
+    offsetComponents.day = -1;
+    NSCalendar * calendar = [NSCalendar fs_sharedCalendar];
+    _maximumDate = [calendar dateByAddingComponents:offsetComponents toDate:firstOfMonth options:0];
+    self.header.maximumDate = _maximumDate;
 }
+
 
 
 @end
