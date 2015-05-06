@@ -168,6 +168,10 @@
     
     _minimumDate = [NSDate fs_dateWithYear:1970 month:1 day:1];
     _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self scrollToDate:_currentMonth];
+    });
 }
 
 -(void)layoutSubviews
@@ -183,13 +187,17 @@
                                                     );
     _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
     
-    [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        CGFloat width = self.fs_width/_weekdays.count;
-        CGFloat height = kWeekHeight;
-        [obj setFrame:CGRectMake(idx*width, 0, width, height)];
+    CGFloat width = self.fs_width/_weekdays.count;
+    CGFloat height = kWeekHeight;
+    [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
+        NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
+        weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
+                                        0,
+                                        width,
+                                        height);
     }];
+    
     [self adjustTitleIfNecessary];
-    [self scrollToDate:_currentMonth];
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer
@@ -256,6 +264,11 @@
     [cell hideAnimation];
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_collectionViewFlowLayout invalidateLayout];
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (_supressEvent) {
@@ -270,7 +283,6 @@
         [self currentMonthDidChange];
     }
     _header.scrollOffset = scrollOffset;
-    [_collectionViewFlowLayout invalidateLayout];
 }
 
 #pragma mark - Setter & Getter
@@ -388,6 +400,7 @@
 {
     if (_headerTitleFont != font) {
         _headerTitleFont = font;
+        _header.titleFont = font;
         [_header reloadData];
     }
 }
@@ -396,6 +409,7 @@
 {
     if (![_headerTitleColor isEqual:color]) {
         _headerTitleColor = color;
+        _header.titleColor = color;
         [_header reloadData];
     }
 }
@@ -766,18 +780,17 @@
     
     [_weekdays setValue:_weekdayFont forKey:@"font"];
     
-    _header.titleFont       = self.headerTitleFont;
-    _header.titleColor      = self.headerTitleColor;
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
     [_header reloadData];
     
-    [_weekdays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        UILabel *weekdayLabel = obj;
+    CGFloat width = self.fs_width/_weekdays.count;
+    CGFloat height = kWeekHeight;
+    [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
         weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
                                         0,
-                                        weekdayLabel.fs_width,
-                                        weekdayLabel.fs_height);
+                                        width,
+                                        height);
     }];
 }
 

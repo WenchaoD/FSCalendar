@@ -14,6 +14,7 @@
 
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
+
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (copy, nonatomic) NSDateFormatter            *dateFormatter;
@@ -195,5 +196,6 @@
         cell.contentView.alpha = 1.0 - (1.0-_minDissolveAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.height;
     }
 }
+
 
 @end
