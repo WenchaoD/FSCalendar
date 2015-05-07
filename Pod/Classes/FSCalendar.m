@@ -781,6 +781,8 @@
     [_weekdays setValue:_weekdayFont forKey:@"font"];
     
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
+    _header.titleColor = _headerTitleColor;
+    _header.titleFont = _headerTitleFont;
     [_header reloadData];
     
     CGFloat width = self.fs_width/_weekdays.count;
