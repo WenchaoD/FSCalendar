@@ -49,6 +49,8 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date;
+- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar;
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;
 
 @end
 
@@ -67,7 +69,7 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (assign, nonatomic) IBInspectable BOOL                 autoAdjustTitleSize;
 
 @property (assign, nonatomic) IBInspectable CGFloat              minDissolvedAlpha UI_APPEARANCE_SELECTOR;
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle         UI_APPEARANCE_SELECTOR;
+@property (assign, nonatomic) FSCalendarCellStyle cellStyle      UI_APPEARANCE_SELECTOR;
 
 @property (strong, nonatomic) UIFont   *titleFont                UI_APPEARANCE_SELECTOR;
 @property (strong, nonatomic) UIFont   *subtitleFont             UI_APPEARANCE_SELECTOR;
