@@ -236,8 +236,11 @@ ios 7.0
 `FSCalendar` is also tested on iPad device, see the demo for details.
 
 
-
 ## Version notes
+
+### Version 0.6.0
+* Add minmumDate and maximumDate in FSCalendarDataSource
+* Fix weekstarday issue
 
 ### Version 0.5.4
 * Fix cell wrapping problem
