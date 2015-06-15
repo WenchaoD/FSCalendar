@@ -29,39 +29,27 @@
 
 ### Use Interface Builder (Recommended)
 
-1. Drag an UIView object to ViewController Scene, change the `Custom Class` to `FSCalendar`<br/>
-2. After adjust the position and frame, link the `dataSource` and `delegate` to the ViewController <br/>
+1. Drag two UIView objects to ViewController Scene, change the `Custom Class` to `FSCalendarHeader` and `FSCalendar`<br/>
+![fscalendar-storyboard1](https://cloud.githubusercontent.com/assets/5186464/6655136/a3cc77b4-cb2a-11e4-8dc2-886e61d2abdb.png) <br />
+![fscalendar-storyboard2](https://cloud.githubusercontent.com/assets/5186464/6655137/a86c1bb2-cb2a-11e4-9a0d-15b28a72e1eb.png)
+<br/>
+2. After adjust the position and frame, link `header` property of the calendar to the header, and the `dataSource` and `delegate` to the ViewController <br/>
+![fscalendar-storyboard3](https://cloud.githubusercontent.com/assets/5186464/6655159/ac02925a-cb2b-11e4-885e-a287ad5c7769.png)
 3. Implement `FSCalendarDataSource` and `FSCalendarDelegate` in ViewController.m
 
 ### Use code
 
 In viewDidLoad (or loadView) of ViewController.m
 ```objective-c
-@property (weak , nonatomic) FSCalendar *calendar;
-
-FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 280)];
+FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+[self.view addSubview:header];
+FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 44, 320, 280)];
+calendar.header = header;
 calendar.dataSource = self;
 calendar.delegate = self;
 [self.view addSubview:calendar];
 self.calendar = calendar;
 ```
-<br/>
-
-Or swift
-
-```swift
-private weak var calendar: FSCalendar!
-
-let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: 320, height: 280))
-calendar.dataSource = self
-calendar.delegate = self
-view.addSubview(calendar)
-self.calenar = calendar
-```
-
-## Donate
-* Paypal - f33chobits@gmail.com
-* Alipay - f33chobits@gmail.com
 
 ## Core classes
 
@@ -70,12 +58,17 @@ self.calenar = calendar
 ```objective-c
 @property (weak, nonatomic) IBOutlet id<FSCalendarDelegate> delegate;
 ```
-A delegate object to handle user tap/scroll event, see `FSCalendarDelegate` for details.
+A delegate object to handle common user tap/scroll event, see `FSCalendarDelegate` for details.
 
 ```objective-c
 @property (weak, nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 ```
 A dataSource object to provide subtitle, event dot or other sources, see `FSCalendarDataSource` for details.
+
+```objective-c
+@property (weak, nonatomic) IBOutlet FSCalendarHeader *header;
+```
+An UIView subclass which afford a scrolling effect for month symbol.
 
 ```objective-c
 @property (assign, nonatomic) FSCalendarFlow flow;
@@ -88,17 +81,17 @@ An enumeration value to determine the scroll direction of `FSCalendar`, default 
 The text size of `FSCalendar` is automaticly calculated based on the frame by default. To turn it off, set this value to `NO`.
 
 ```objective-c
-@property (strong, nonatomic) NSDate *currentDate;
+@property (copy, nonatomic) NSDate *currentDate;
 ```
 The current date of calendar, default is [NSDate date];
 
 ```objective-c
-@property (strong, nonatomic) NSDate *selectedDate;
+@property (readonly, nonatomic) NSDate *selectedDate;
 ```
 Get the selected date of `FSCalendar`
 
 ```objective-c
-@property (strong, nonatomic) NSDate *currentMonth;
+@property (readonly, nonatomic) NSDate *currentMonth;
 ```
 Get the current month of `FSCalendar`.Extract it with `NSDateComponents`, or `currentMonth.fs_month` and `currentMonth.fs_year`
 
@@ -138,72 +131,72 @@ The color for event dot.
 The text color of weekday. 
 
 ```objective-c
-@property (strong, nonatomic) UIColor *titleDefaultColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleDefaultColor UI_APPEARANCE_SELECTOR;
 ```
 The `day text color` for default state.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *titleSelectionColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleSelectionColor UI_APPEARANCE_SELECTOR;
 ```
 The `day text color` for selection state.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *titleTodayColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleTodayColor UI_APPEARANCE_SELECTOR;
 ```
 The `day text color` where the date is equal to `currentDate`.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *titlePlaceholderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titlePlaceholderColor UI_APPEARANCE_SELECTOR;
 ```
 The `day text color` where the date is `not` in `currentMonth`.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *titleWeekendColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *titleWeekendColor UI_APPEARANCE_SELECTOR;
 ```
 The `day text color` where the date is weekend.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *subtitleDefaultColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleDefaultColor UI_APPEARANCE_SELECTOR;
 ```
 The `subtitle text color` for default state.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *subtitleSelectionColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleSelectionColor UI_APPEARANCE_SELECTOR;
 ```
 The `subtitle text color` for selection state.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *subtitleTodayColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleTodayColor UI_APPEARANCE_SELECTOR;
 ```
 The `subtitle text color` where the date is equal to `currentDate`.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *subtitlePlaceholderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitlePlaceholderColor UI_APPEARANCE_SELECTOR;
 ```
 The `subtitle text color` where the date is `not` in `currentMonth`.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *subtitleWeekendColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *subtitleWeekendColor UI_APPEARANCE_SELECTOR;
 ```
 The `subtitle text color` where the date is weekend.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *selectionColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *selectionColor UI_APPEARANCE_SELECTOR;
 ```
 The `cell background color` for selection state.
 
 ```objective-c
-@property (strong, nonatomic) UIColor *todayColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *todayColor UI_APPEARANCE_SELECTOR;
 ```
 The `cell background color` where the date is equal to `currentDate`.
 
 ```objective-c
-@property (strong, nonatomic) UIColor  *headerTitleColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor  *headerTitleColor UI_APPEARANCE_SELECTOR;
 ```
 The `text color` for `FSCalendarHeader`.
 
 ```objective-c
-@property (strong, nonatomic) NSString *headerDateFormat UI_APPEARANCE_SELECTOR;
+@property (nonatomic) NSString *headerDateFormat UI_APPEARANCE_SELECTOR;
 ```
 The `date format` for `FSCalendarHeader`.
 
@@ -236,16 +229,6 @@ This method would execute after a cell is managed to be selected and show the se
 ```
 This method would execute when calendar month page is changed. 
 
-```objective-c
-- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar;
-```
-Provides a left boundary for calendar
-
-```objective-c
-- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;
-```
-Provides a right boundary for calendar
-
 ## Requirements
 ios 7.0
 
@@ -254,11 +237,6 @@ ios 7.0
 
 
 ## Version notes
-
-### Version 0.7.0
-* Simplier initialization: No more `FSCalendarHeader`, use `headerHeight` to control the size (which I thought it's not needed because the default 44 pixels looks good enough). For those who wanna keep the `FSCalendarHeader`, just set `pod 'FSCalendar', ~> 0.6.0` in `podfile` to keep it from upated , or you can download the old released version in `tags`.
-* Fix problem setting `selectedDate` in `viewDidLoad`
-* Fix other problems
 
 ### Version 0.6.0
 * Add minmumDate and maximumDate in FSCalendarDataSource

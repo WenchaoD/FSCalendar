@@ -21,9 +21,6 @@
 @property (weak, nonatomic) UICollectionView           *collectionView;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
-@property (copy, nonatomic) NSDate                     *minimumDate;
-@property (copy, nonatomic) NSDate                     *maximumDate;
-
 - (void)updateAlphaForCell:(UICollectionViewCell *)cell;
 
 @end
@@ -79,10 +76,10 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _collectionView.frame = self.bounds;
+    _collectionView.frame = CGRectMake(0, self.fs_height*0.1, self.fs_width, self.fs_height*0.9);
     _collectionView.contentInset = UIEdgeInsetsZero;
     _collectionViewFlowLayout.itemSize = CGSizeMake(self.fs_width * 0.5,
-                                                    self.fs_height);
+                                                    _collectionView.fs_height);
     CGFloat scrollOffset = self.scrollOffset;
     _scrollOffset = 0;
     self.scrollOffset = scrollOffset;

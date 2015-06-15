@@ -34,7 +34,9 @@
     _firstWeekday = _calendar.firstWeekday;
 //    _calendar.firstWeekday = 2;
 //    _calendar.flow = FSCalendarFlowVertical;
-//    _calendar.currentMonth = [NSDate fs_dateWithYear:2015 month:2 day:1];
+    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
+    
+    _calendar.headerDateFormat = [NSDateFormatter dateFormatFromTemplate:@"MMMM yyyy" options:0 locale:[NSLocale localeWithLocaleIdentifier:@"it_IT"]];
     
 }
 

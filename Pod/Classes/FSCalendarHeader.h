@@ -14,7 +14,9 @@
 
 @property (assign  , nonatomic) CGFloat     minDissolveAlpha;
 @property (assign  , nonatomic) CGFloat     scrollOffset;
-@property (copy    , nonatomic) NSString    *dateFormat;
+@property (strong  , nonatomic) NSString    *dateFormat;
+@property (strong  , nonatomic) NSDate      *minimumDate;
+@property (strong  , nonatomic) NSDate      *maximumDate;
 
 @property (weak    , nonatomic) UIColor     *titleColor;
 @property (weak    , nonatomic) UIFont      *titleFont;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="x1V-gv-tFA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="x1V-gv-tFA">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -33,32 +33,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jwg-SK-ZNq" customClass="FSCalendarHeader">
-                                <rect key="frame" x="0.0" y="64" width="600" height="40"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i44-Ll-ELi" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="103" width="600" height="280"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="300"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="280" id="tCx-JJ-MHR"/>
+                                    <constraint firstAttribute="height" constant="300" id="AsQ-eP-ia8"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="L73-rf-0E3"/>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="U5e-UL-pjD"/>
-                                    <outlet property="header" destination="Jwg-SK-ZNq" id="QA3-Sv-PjL"/>
                                 </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392160000001" green="0.91372549020000005" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Jwg-SK-ZNq" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="1ZF-Ho-KZV"/>
-                            <constraint firstItem="Jwg-SK-ZNq" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="B8n-Un-0ox"/>
-                            <constraint firstItem="i44-Ll-ELi" firstAttribute="top" secondItem="Jwg-SK-ZNq" secondAttribute="bottom" constant="-1" id="Lv0-iC-NSW"/>
-                            <constraint firstItem="i44-Ll-ELi" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" constant="103" id="Pni-Rc-lvF"/>
-                            <constraint firstItem="Jwg-SK-ZNq" firstAttribute="trailing" secondItem="i44-Ll-ELi" secondAttribute="trailing" id="byt-1t-7df"/>
-                            <constraint firstAttribute="trailing" secondItem="i44-Ll-ELi" secondAttribute="trailing" id="cPY-R4-0f2"/>
-                            <constraint firstItem="Jwg-SK-ZNq" firstAttribute="leading" secondItem="i44-Ll-ELi" secondAttribute="leading" id="qMP-aO-pM2"/>
+                            <constraint firstItem="i44-Ll-ELi" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="1gL-Jb-oDc"/>
+                            <constraint firstAttribute="trailing" secondItem="i44-Ll-ELi" secondAttribute="trailing" id="4lx-i7-OBX"/>
+                            <constraint firstItem="i44-Ll-ELi" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="7am-cV-9Ui"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="FSCalendar" id="XvH-Gc-dEi">
@@ -75,7 +66,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="465" y="240"/>
+            <point key="canvasLocation" x="377" y="240"/>
         </scene>
         <!--Configuration-->
         <scene sceneID="nFi-cp-YQl">

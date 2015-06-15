@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3077D24A1B1457EF00A9735E /* FSCalendar.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3077D2471B1457EF00A9735E /* FSCalendar.podspec */; };
+		3077D24B1B1457EF00A9735E /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3077D2481B1457EF00A9735E /* LICENSE */; };
 		50D6661DFB2111E84D87FD51 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA143668CA544FECA6380E4A /* libPods-Tests.a */; };
 		50F827A71AA7F86500FA2387 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50F827A51AA7F86500FA2387 /* Main_iPad.storyboard */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -38,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3077D2471B1457EF00A9735E /* FSCalendar.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FSCalendar.podspec; path = ../FSCalendar.podspec; sourceTree = "<group>"; };
+		3077D2481B1457EF00A9735E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		3077D2491B1457EF00A9735E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		43213C5DF722135CE64D6076 /* Pods-FSCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-FSCalendar/Pods-FSCalendar.release.xcconfig"; sourceTree = "<group>"; };
 		50F827A61AA7F86500FA2387 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		52A9DD1445B54192336464F9 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -106,9 +111,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		3077D2401B14574500A9735E /* Podspec Metadata */ = {
+			isa = PBXGroup;
+			children = (
+				3077D2471B1457EF00A9735E /* FSCalendar.podspec */,
+				3077D2481B1457EF00A9735E /* LICENSE */,
+				3077D2491B1457EF00A9735E /* README.md */,
+			);
+			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				3077D2401B14574500A9735E /* Podspec Metadata */,
 				6003F593195388D20070C39A /* FSCalendar */,
 				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
@@ -267,6 +283,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3077D24B1B1457EF00A9735E /* LICENSE in Resources */,
+				3077D24A1B1457EF00A9735E /* FSCalendar.podspec in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				50F827A71AA7F86500FA2387 /* Main_iPad.storyboard in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,

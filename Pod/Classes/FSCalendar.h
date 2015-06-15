@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FSCalendarHeader.h"
 
 @class FSCalendar;
 
@@ -56,18 +55,17 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 
 @interface FSCalendar : UIView<UIAppearance>
 
-@property (weak,   nonatomic) IBOutlet    FSCalendarHeader     *header;
 @property (weak,   nonatomic) IBOutlet id<FSCalendarDelegate>   delegate;
 @property (weak,   nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 
-@property (copy,   nonatomic) NSDate *currentDate;
-@property (copy,   nonatomic) NSDate *selectedDate;
-@property (copy,   nonatomic) NSDate *currentMonth;
+@property (strong, nonatomic) NSDate *currentDate;
+@property (strong, nonatomic) NSDate *selectedDate;
+@property (strong, nonatomic) NSDate *currentMonth;
 
-@property (assign, nonatomic) FSCalendarFlow       flow;
+@property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) IBInspectable NSUInteger           firstWeekday;
 @property (assign, nonatomic) IBInspectable BOOL                 autoAdjustTitleSize;
-
+@property (assign, nonatomic) IBInspectable CGFloat              headerHeight;
 @property (assign, nonatomic) IBInspectable CGFloat              minDissolvedAlpha UI_APPEARANCE_SELECTOR;
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle      UI_APPEARANCE_SELECTOR;
 
