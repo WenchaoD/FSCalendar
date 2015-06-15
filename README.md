@@ -38,7 +38,7 @@
 ```objective-c
 @property (weak , nonatomic) FSCalendar *calendar;
 
-// In viewDidLoad
+// In loadView or viewDidLoad
 FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 280)];
 calendar.dataSource = self;
 calendar.delegate = self;
@@ -46,13 +46,12 @@ calendar.delegate = self;
 self.calendar = calendar;
 ```
 <br/>
-
 Or swift
 
 ```swift
 private weak var calendar: FSCalendar!
 
-// In viewDidLoad
+// In loadView or viewDidLoad
 let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: 320, height: 280))
 calendar.dataSource = self
 calendar.delegate = self
