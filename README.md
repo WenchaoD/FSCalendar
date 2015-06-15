@@ -35,10 +35,10 @@
 
 ### Use code
 
-In viewDidLoad (or loadView) of ViewController.m
 ```objective-c
 @property (weak , nonatomic) FSCalendar *calendar;
 
+// In viewDidLoad
 FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 280)];
 calendar.dataSource = self;
 calendar.delegate = self;
@@ -52,6 +52,7 @@ Or swift
 ```swift
 private weak var calendar: FSCalendar!
 
+// In viewDidLoad
 let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: 320, height: 280))
 calendar.dataSource = self
 calendar.delegate = self
