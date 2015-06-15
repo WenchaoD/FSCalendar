@@ -62,6 +62,7 @@ self.calenar = calendar
 
 ## Donate
 * Paypal - f33chobits@gmail.com
+* Alipay(支付宝) - f33chobits@gmail.com
 
 ## Core classes
 
