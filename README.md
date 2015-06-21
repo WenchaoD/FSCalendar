@@ -255,9 +255,7 @@ ios 7.0
 ## Version notes
 
 ### Version 0.7.0
-* Simplier initialization: No more `FSCalendarHeader`, use `headerHeight` to control the size (which I thought it's not needed because the default 44 pixels looks good enough). For those who wanna keep the `FSCalendarHeader`, just set `pod 'FSCalendar', ~> 0.6.0` in `podfile` to keep it from upated , or you can download the old released version in `tags`.
-* Fix problem setting `selectedDate` in `viewDidLoad`
-* Fix other problems
+* Simplier initialization: No more `FSCalendarHeader`, use `headerHeight` to control the size of header.
 
 ### Version 0.6.0
 * Add minmumDate and maximumDate in FSCalendarDataSource
