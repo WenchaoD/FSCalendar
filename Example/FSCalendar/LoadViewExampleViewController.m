@@ -21,7 +21,9 @@
     calendar.dataSource = self;
     calendar.delegate = self;
 //    calendar.flow = FSCalendarFlowVertical;
+//    calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
     [view addSubview:calendar];
+    self.calendar = calendar;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date

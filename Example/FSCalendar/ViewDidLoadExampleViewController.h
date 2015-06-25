@@ -11,6 +11,6 @@
 
 @interface ViewDidLoadExampleViewController : UIViewController <FSCalendarDataSource, FSCalendarDelegate>
 
-@property (weak, nonatomic) FSCalendar *calenar;
+@property (weak, nonatomic) FSCalendar *calendar;
 
 @end
