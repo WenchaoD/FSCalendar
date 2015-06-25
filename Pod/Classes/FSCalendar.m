@@ -13,7 +13,7 @@
 #import "NSCalendar+FSExtension.h"
 #import "FSCalendarCell.h"
 
-#define kWeekHeight roundf(self.fs_height/9)
+#define kWeekHeight roundf(self.fs_height/12)
 #define kBlueText   [UIColor colorWithRed:14/255.0  green:69/255.0  blue:221/255.0    alpha:1.0]
 #define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
 #define kBlue       [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:1.0]
@@ -176,16 +176,15 @@
     [self.layer addSublayer:bottomBorderLayer];
     self.bottomBorderLayer = bottomBorderLayer;
     
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (!_selectedDate) {
-            self.selectedDate = [NSDate date];
-        } else {
-            [self scrollToDate:_selectedDate];
-        }
-    });
+    if (!_selectedDate) {
+        _supressEvent = YES;
+        self.selectedDate = [NSDate date];
+        _supressEvent = NO;
+    } else {
+        [self scrollToDate:_selectedDate];
+    }
     
 }
 
@@ -211,7 +210,7 @@
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
         weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
-                                        _header.fs_height,
+                                        kWeekHeight,
                                         width,
                                         height);
     }];
@@ -277,7 +276,9 @@
     } else {
         [cell showAnimation];
         _selectedDate = [self dateForIndexPath:indexPath];
-        [self didSelectDate:_selectedDate];
+        if (!_supressEvent) {
+            [self didSelectDate:_selectedDate];
+        }
     }
 }
 
@@ -328,7 +329,6 @@
         _flow = flow;
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
         [self setNeedsLayout];
-        [self reloadData];
     }
 }
 
@@ -673,11 +673,6 @@
 
 - (void)reloadData
 {
-    [_collectionView reloadData];
-    if (self.selectedDate) {
-        self.selectedDate = _selectedDate;
-    }
-    
     [_weekdays setValue:_weekdayFont forKey:@"font"];
     
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
@@ -694,6 +689,11 @@
                                         width,
                                         height);
     }];
+    
+    [_collectionView reloadData];
+    if (self.selectedDate) {
+        self.selectedDate = _selectedDate;
+    }
 }
 
 #pragma mark - Private
@@ -705,6 +705,9 @@
 
 - (void)scrollToDate:(NSDate *)date animate:(BOOL)animate
 {
+    if (!_minimumDate || !_maximumDate) {
+        return;
+    }
     _supressEvent = !animate;
     date = [date fs_daysFrom:_minimumDate] < 0 ? [NSDate fs_dateWithYear:_minimumDate.fs_year month:_minimumDate.fs_month day:date.fs_day] : date;
     date = [date fs_daysFrom:_maximumDate] > 0 ? [NSDate fs_dateWithYear:_maximumDate.fs_year month:_maximumDate.fs_month day:date.fs_day] : date;

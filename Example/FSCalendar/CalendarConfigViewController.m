@@ -11,16 +11,6 @@
 
 @implementation CalendarConfigViewController
 
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    [self.tableView.visibleCells setValue:@(UITableViewCellAccessoryNone) forKeyPath:@"accessoryType"];
-//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.viewController.theme inSection:0]] setAccessoryType:UITableViewCellAccessoryCheckmark];
-//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]] setAccessoryType:self.viewController.lunar?UITableViewCellAccessoryCheckmark:UITableViewCellAccessoryNone];
-//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 - self.viewController.flow inSection:2]] setAccessoryType:UITableViewCellAccessoryCheckmark];
-//    [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.viewController.firstWeekday - 1 inSection:4]] setAccessoryType:UITableViewCellAccessoryCheckmark];
-//}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];

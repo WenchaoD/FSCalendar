@@ -8,7 +8,7 @@
         <!--FSCalendar-->
         <scene sceneID="1Ab-kM-NNC">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="rTp-Tn-brx" customClass="ViewController" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="rTp-Tn-brx" customClass="StoryboardExampleViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nZb-wA-Zwz"/>
                         <viewControllerLayoutGuide type="bottom" id="R1g-8w-zh2"/>
@@ -17,32 +17,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iAA-c4-3Ki" customClass="FSCalendarHeader">
-                                <rect key="frame" x="0.0" y="64" width="600" height="60"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jgr-9B-Alv" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="123" width="600" height="450"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="400"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="450" id="iHa-Q9-UhG"/>
+                                    <constraint firstAttribute="height" constant="400" id="LRz-13-0Pe"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="rTp-Tn-brx" id="mmN-gQ-0Bc"/>
                                     <outlet property="delegate" destination="rTp-Tn-brx" id="oc1-nH-azW"/>
-                                    <outlet property="header" destination="iAA-c4-3Ki" id="qd8-25-7wQ"/>
                                 </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.90980392160000001" green="0.91372549020000005" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="jgr-9B-Alv" firstAttribute="top" secondItem="iAA-c4-3Ki" secondAttribute="bottom" constant="-1" id="1L3-Me-0qe"/>
-                            <constraint firstAttribute="trailing" secondItem="jgr-9B-Alv" secondAttribute="trailing" id="CcB-Jp-gxd"/>
-                            <constraint firstItem="iAA-c4-3Ki" firstAttribute="top" secondItem="nZb-wA-Zwz" secondAttribute="bottom" id="cmR-XJ-HNf"/>
-                            <constraint firstItem="iAA-c4-3Ki" firstAttribute="leading" secondItem="v40-W1-5UA" secondAttribute="leading" id="iUu-69-fAL"/>
-                            <constraint firstItem="jgr-9B-Alv" firstAttribute="top" secondItem="v40-W1-5UA" secondAttribute="top" constant="123" id="k4Y-zI-Ofb"/>
-                            <constraint firstItem="iAA-c4-3Ki" firstAttribute="leading" secondItem="jgr-9B-Alv" secondAttribute="leading" id="oa0-Ri-cUg"/>
-                            <constraint firstItem="iAA-c4-3Ki" firstAttribute="trailing" secondItem="jgr-9B-Alv" secondAttribute="trailing" id="okH-vA-RT4"/>
+                            <constraint firstItem="jgr-9B-Alv" firstAttribute="top" secondItem="nZb-wA-Zwz" secondAttribute="bottom" id="J8P-Qj-adr"/>
+                            <constraint firstItem="jgr-9B-Alv" firstAttribute="leading" secondItem="v40-W1-5UA" secondAttribute="leading" id="Wdl-0X-nDb"/>
+                            <constraint firstAttribute="trailing" secondItem="jgr-9B-Alv" secondAttribute="trailing" id="iJr-if-wH9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="FSCalendar" id="CTl-ly-NDT">

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Wenchao Ding. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "StoryboardExampleViewController.h"
 #import "NSDate+FSExtension.h"
 #import "SSLunarDate.h"
 #import "CalendarConfigViewController.h"
@@ -15,23 +15,26 @@
 #define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
-@interface ViewController ()
+@interface StoryboardExampleViewController ()
 
 @property (strong, nonatomic) NSCalendar *currentCalendar;
 @property (strong, nonatomic) SSLunarDate *lunarDate;
 
 @end
 
-@implementation ViewController
+@implementation StoryboardExampleViewController
 
 #pragma mark - Life Cycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+    
     _currentCalendar = [NSCalendar currentCalendar];
     _flow = _calendar.flow;
-    _firstWeekday = _calendar.firstWeekday;
+//    _firstWeekday = _calendar.firstWeekday;
 //    _calendar.firstWeekday = 2;
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];

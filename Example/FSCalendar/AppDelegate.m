@@ -15,15 +15,6 @@
 {
     // Override point for customization after application launch.
     
-//    [[FSCalendar appearance] setWeekdayTextColor:[UIColor redColor]];
-//    [[FSCalendar appearance] setHeaderTitleColor:[UIColor redColor]];
-//    [[FSCalendar appearance] setEventColor:[UIColor greenColor]];
-//    [[FSCalendar appearance] setSelectionColor:[UIColor blueColor]];
-//    [[FSCalendar appearance] setHeaderDateFormat:@"yyyy/MM"];
-//    [[FSCalendar appearance] setMinDissolvedAlpha:1.0];
-//    [[FSCalendar appearance] setCellStyle:FSCalendarCellStyleRectangle];
-//    [[FSCalendar appearance] setTodayColor:[UIColor orangeColor]];
-    
     return YES;
 }
 

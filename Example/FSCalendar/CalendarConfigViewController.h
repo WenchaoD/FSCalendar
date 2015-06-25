@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ViewController.h"
+#import "StoryboardExampleViewController.h"
 
 @interface CalendarConfigViewController : UITableViewController
 
-@property (weak, nonatomic) ViewController *viewController;
+@property (weak, nonatomic) StoryboardExampleViewController *viewController;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 

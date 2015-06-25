@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3077D24A1B1457EF00A9735E /* FSCalendar.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 3077D2471B1457EF00A9735E /* FSCalendar.podspec */; };
 		3077D24B1B1457EF00A9735E /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 3077D2481B1457EF00A9735E /* LICENSE */; };
+		30BD9E691B3C027B0014534B /* LoadViewExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30BD9E681B3C027B0014534B /* LoadViewExampleViewController.m */; };
+		30BD9E6C1B3C028B0014534B /* ViewDidLoadExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30BD9E6B1B3C028B0014534B /* ViewDidLoadExampleViewController.m */; };
+		30BD9E721B3C06A20014534B /* FSTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30BD9E711B3C06A20014534B /* FSTableViewController.m */; };
 		50D6661DFB2111E84D87FD51 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA143668CA544FECA6380E4A /* libPods-Tests.a */; };
 		50F827A71AA7F86500FA2387 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50F827A51AA7F86500FA2387 /* Main_iPad.storyboard */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -18,7 +21,7 @@
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* AppDelegate.m */; };
 		6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6003F59F195388D20070C39A /* Main_iPhone.storyboard */; };
-		6003F5A7195388D20070C39A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* ViewController.m */; };
+		6003F5A7195388D20070C39A /* StoryboardExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* StoryboardExampleViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -43,6 +46,12 @@
 		3077D2471B1457EF00A9735E /* FSCalendar.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FSCalendar.podspec; path = ../FSCalendar.podspec; sourceTree = "<group>"; };
 		3077D2481B1457EF00A9735E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		3077D2491B1457EF00A9735E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		30BD9E671B3C027B0014534B /* LoadViewExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadViewExampleViewController.h; sourceTree = "<group>"; };
+		30BD9E681B3C027B0014534B /* LoadViewExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadViewExampleViewController.m; sourceTree = "<group>"; };
+		30BD9E6A1B3C028B0014534B /* ViewDidLoadExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewDidLoadExampleViewController.h; sourceTree = "<group>"; };
+		30BD9E6B1B3C028B0014534B /* ViewDidLoadExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewDidLoadExampleViewController.m; sourceTree = "<group>"; };
+		30BD9E701B3C06A20014534B /* FSTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTableViewController.h; sourceTree = "<group>"; };
+		30BD9E711B3C06A20014534B /* FSTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTableViewController.m; sourceTree = "<group>"; };
 		43213C5DF722135CE64D6076 /* Pods-FSCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSCalendar.release.xcconfig"; path = "Pods/Target Support Files/Pods-FSCalendar/Pods-FSCalendar.release.xcconfig"; sourceTree = "<group>"; };
 		50F827A61AA7F86500FA2387 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		52A9DD1445B54192336464F9 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -57,8 +66,8 @@
 		6003F59C195388D20070C39A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6003F5A0195388D20070C39A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		6003F5A5195388D20070C39A /* StoryboardExampleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StoryboardExampleViewController.h; sourceTree = "<group>"; };
+		6003F5A6195388D20070C39A /* StoryboardExampleViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StoryboardExampleViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -121,6 +130,35 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
+		30BD9E641B3C02400014534B /* Storyboard Example */ = {
+			isa = PBXGroup;
+			children = (
+				6003F5A5195388D20070C39A /* StoryboardExampleViewController.h */,
+				6003F5A6195388D20070C39A /* StoryboardExampleViewController.m */,
+				EED4FE9D1A907BE60031554F /* CalendarConfigViewController.h */,
+				EED4FE9E1A907BE60031554F /* CalendarConfigViewController.m */,
+			);
+			name = "Storyboard Example";
+			sourceTree = "<group>";
+		};
+		30BD9E651B3C024F0014534B /* ViewDidLoad Example */ = {
+			isa = PBXGroup;
+			children = (
+				30BD9E6A1B3C028B0014534B /* ViewDidLoadExampleViewController.h */,
+				30BD9E6B1B3C028B0014534B /* ViewDidLoadExampleViewController.m */,
+			);
+			name = "ViewDidLoad Example";
+			sourceTree = "<group>";
+		};
+		30BD9E661B3C02590014534B /* LoadView Example */ = {
+			isa = PBXGroup;
+			children = (
+				30BD9E671B3C027B0014534B /* LoadViewExampleViewController.h */,
+				30BD9E681B3C027B0014534B /* LoadViewExampleViewController.m */,
+			);
+			name = "LoadView Example";
+			sourceTree = "<group>";
+		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
@@ -158,14 +196,15 @@
 		6003F593195388D20070C39A /* FSCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				6003F59C195388D20070C39A /* AppDelegate.h */,
-				6003F59D195388D20070C39A /* AppDelegate.m */,
 				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
 				50F827A51AA7F86500FA2387 /* Main_iPad.storyboard */,
-				6003F5A5195388D20070C39A /* ViewController.h */,
-				6003F5A6195388D20070C39A /* ViewController.m */,
-				EED4FE9D1A907BE60031554F /* CalendarConfigViewController.h */,
-				EED4FE9E1A907BE60031554F /* CalendarConfigViewController.m */,
+				6003F59C195388D20070C39A /* AppDelegate.h */,
+				6003F59D195388D20070C39A /* AppDelegate.m */,
+				30BD9E701B3C06A20014534B /* FSTableViewController.h */,
+				30BD9E711B3C06A20014534B /* FSTableViewController.m */,
+				30BD9E661B3C02590014534B /* LoadView Example */,
+				30BD9E651B3C024F0014534B /* ViewDidLoad Example */,
+				30BD9E641B3C02400014534B /* Storyboard Example */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
@@ -372,8 +411,11 @@
 			files = (
 				EED4FE9F1A907BE60031554F /* CalendarConfigViewController.m in Sources */,
 				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
-				6003F5A7195388D20070C39A /* ViewController.m in Sources */,
+				6003F5A7195388D20070C39A /* StoryboardExampleViewController.m in Sources */,
+				30BD9E691B3C027B0014534B /* LoadViewExampleViewController.m in Sources */,
+				30BD9E6C1B3C028B0014534B /* ViewDidLoadExampleViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				30BD9E721B3C06A20014534B /* FSTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
