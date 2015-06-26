@@ -374,6 +374,11 @@
     selectedDate = [selectedDate fs_daysFrom:_maximumDate] > 0 ? [NSDate fs_dateWithYear:_maximumDate.fs_year month:_maximumDate.fs_month day:selectedDate.fs_day] : selectedDate;
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
     if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
+        if (_collectionView.indexPathsForSelectedItems.count && _selectedDate) {
+            NSIndexPath *currentIndexPath = [self indexPathForDate:_selectedDate];
+            [_collectionView deselectItemAtIndexPath:currentIndexPath animated:YES];
+            [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndexPath];
+        }
         [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
     }
