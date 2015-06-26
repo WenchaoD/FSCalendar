@@ -43,6 +43,11 @@
     
 }
 
+- (void)dealloc
+{
+    NSLog(@"%@:%s",self.class.description,__FUNCTION__);
+}
+
 #pragma mark - FSCalendarDataSource
 
 - (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date

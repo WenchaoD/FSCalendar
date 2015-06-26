@@ -11,6 +11,11 @@
 
 @implementation LoadViewExampleViewController
 
+- (void)dealloc
+{
+    NSLog(@"%@:%s", self.class.description, __FUNCTION__);
+}
+
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

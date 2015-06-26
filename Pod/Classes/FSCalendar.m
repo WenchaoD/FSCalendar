@@ -48,6 +48,7 @@
 @property (strong, nonatomic) NSDate                     *maximumDate;
 @property (strong, nonatomic) NSCalendar                 *calendar;
 @property (assign, nonatomic) BOOL                       supressEvent;
+@property (assign, nonatomic) BOOL                       needsLayout;
 
 - (void)adjustTitleIfNecessary;
 
@@ -196,6 +197,11 @@
     
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -242,6 +248,20 @@
     if (layer == self.layer) {
         _topBorderLayer.frame = CGRectMake(0, -1, self.fs_width, 1);
         _bottomBorderLayer.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
+    }
+}
+
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+    if (self.window) {
+        // In case : Pushing to another view controller then change orientation then pop back
+        [self setNeedsLayout];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_currentMonth) {
+                [self scrollToDate:_currentMonth];
+            }
+        });
     }
 }
 
@@ -300,11 +320,6 @@
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell hideAnimation];
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    [_collectionViewFlowLayout invalidateLayout];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -391,7 +406,6 @@
     }
 }
 
-
 - (void)setCurrentDate:(NSDate *)currentDate
 {
     if (![self isDateInRange:currentDate]) {
@@ -422,7 +436,7 @@
 
 - (void)setWeekdayFont:(UIFont *)weekdayFont
 {
-    if (_weekdayFont != weekdayFont) {
+    if (![_weekdayFont isEqual:weekdayFont]) {
         _weekdayFont = weekdayFont;
         [_weekdays setValue:weekdayFont forKeyPath:@"font"];
     }
@@ -438,10 +452,9 @@
 
 - (void)setHeaderTitleFont:(UIFont *)font
 {
-    if (_headerTitleFont != font) {
+    if (![_headerTitleFont isEqual:font]) {
         _headerTitleFont = font;
         _header.titleFont = font;
-        [_header reloadData];
     }
 }
 
@@ -450,7 +463,6 @@
     if (![_headerTitleColor isEqual:color]) {
         _headerTitleColor = color;
         _header.titleColor = color;
-        [_header reloadData];
     }
 }
 
@@ -719,13 +731,13 @@
 
 - (void)reloadData
 {
-    [_weekdays setValue:_weekdayFont forKey:@"font"];
     
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
     _header.titleColor = _headerTitleColor;
     _header.titleFont = _headerTitleFont;
     [_header reloadData];
     
+    [_weekdays setValue:_weekdayFont forKey:@"font"];
     CGFloat width = self.fs_width/_weekdays.count;
     CGFloat height = kWeekHeight;
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
@@ -769,9 +781,6 @@
     }
     if (_header && !animate) {
         _header.scrollOffset = scrollOffset;
-    }
-    if (!animate) {
-        _currentMonth = [_selectedDate copy];
     }
     _supressEvent = NO;
 }

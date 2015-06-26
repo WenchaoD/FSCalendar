@@ -109,8 +109,6 @@
     titleLabel.textColor = self.titleColor;
     NSDate *date = [_minimumDate fs_dateByAddingMonths:indexPath.item];
     titleLabel.text = [_dateFormatter stringFromDate:date];
-    
-    
     return cell;
 }
 
@@ -119,7 +117,23 @@
     [self updateAlphaForCell:cell];
 }
 
-#pragma mark - Setter & Getter
+#pragma mark - Properties
+
+- (void)setTitleFont:(UIFont *)titleFont
+{
+    if (![_titleFont isEqual:titleFont]) {
+        _titleFont = titleFont;
+        [_collectionView reloadData];
+    }
+}
+
+- (void)setTitleColor:(UIColor *)titleColor
+{
+    if (![_titleColor isEqual:titleColor]) {
+        _titleColor = titleColor;
+        [_collectionView reloadData];
+    }
+}
 
 - (void)setScrollOffset:(CGFloat)scrollOffset
 {
@@ -144,7 +158,7 @@
     if (![_dateFormat isEqualToString:dateFormat]) {
         _dateFormat = [dateFormat copy];
         _dateFormatter.dateFormat = dateFormat;
-        [self reloadData];
+        [_collectionView reloadData];
     }
 }
 
@@ -152,7 +166,7 @@
 {
     if (_minDissolveAlpha != minDissolveAlpha) {
         _minDissolveAlpha = minDissolveAlpha;
-        [self reloadData];
+        [_collectionView reloadData];
     }
 }
 
