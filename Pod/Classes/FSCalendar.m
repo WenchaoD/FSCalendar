@@ -46,7 +46,7 @@
 
 @property (strong, nonatomic) NSDate                     *minimumDate;
 @property (strong, nonatomic) NSDate                     *maximumDate;
-
+@property (strong, nonatomic) NSCalendar                 *calendar;
 @property (assign, nonatomic) BOOL                       supressEvent;
 
 - (void)adjustTitleIfNecessary;
@@ -97,8 +97,9 @@
     _headerTitleFont  = [UIFont systemFontOfSize:15];
     _headerTitleColor = kBlueText;
     _headerHeight     = -1;
+    _calendar         = [NSCalendar currentCalendar];
     
-    NSArray *weekSymbols = [[NSCalendar fs_sharedCalendar] shortStandaloneWeekdaySymbols];
+    NSArray *weekSymbols = [_calendar shortStandaloneWeekdaySymbols];
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
     for (int i = 0; i < weekSymbols.count; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -111,7 +112,7 @@
     }
     
     _flow         = FSCalendarFlowHorizontal;
-    _firstWeekday = [[NSCalendar fs_sharedCalendar] firstWeekday];
+    _firstWeekday = [_calendar firstWeekday];
     
     FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectZero];
     header.titleFont = _headerTitleFont;
@@ -358,7 +359,7 @@
 {
     if (_firstWeekday != firstWeekday) {
         _firstWeekday = firstWeekday;
-        [[NSCalendar fs_sharedCalendar] setFirstWeekday:firstWeekday];
+        [_calendar setFirstWeekday:firstWeekday];
         [self reloadData];
     }
 }
