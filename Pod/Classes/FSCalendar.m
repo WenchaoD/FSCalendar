@@ -308,14 +308,19 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (_supressEvent) {
+    if (!_minimumDate) {
         return;
     }
     CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
                                scrollView.contentOffset.y/scrollView.fs_height);
     NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:round(scrollOffset)];
+
+    BOOL monthChanged = NO;
     if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
         _currentMonth = [currentMonth copy];
+        monthChanged = YES;
+    }
+    if (monthChanged && !_supressEvent) {
         [self currentMonthDidChange];
     }
     _header.scrollOffset = scrollOffset;
@@ -337,12 +342,10 @@
         _supressEvent = YES;
         NSDate *currentMonth = self.currentMonth;
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
-        [self setNeedsLayout];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reloadData];
-            [self scrollToDate:currentMonth];
-            _supressEvent = NO;
-        });
+        [self layoutSubviews];
+        [self reloadData];
+        [self scrollToDate:currentMonth];
+        _supressEvent = NO;
     }
 }
 
