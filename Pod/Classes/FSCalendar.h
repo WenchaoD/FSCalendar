@@ -63,36 +63,36 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 @property (strong, nonatomic) NSDate *currentMonth;
 
 @property (assign, nonatomic) FSCalendarFlow flow;
-@property (assign, nonatomic) IBInspectable NSUInteger           firstWeekday;
-@property (assign, nonatomic) IBInspectable BOOL                 autoAdjustTitleSize;
-@property (assign, nonatomic) IBInspectable CGFloat              headerHeight;
-@property (assign, nonatomic) IBInspectable CGFloat              minDissolvedAlpha UI_APPEARANCE_SELECTOR;
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle      UI_APPEARANCE_SELECTOR;
+@property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
+@property (assign, nonatomic) IBInspectable BOOL       autoAdjustTitleSize;
+@property (assign, nonatomic) IBInspectable CGFloat    headerHeight;
+@property (assign, nonatomic) IBInspectable CGFloat    minDissolvedAlpha;
+@property (assign, nonatomic) FSCalendarCellStyle cellStyle;
 
-@property (strong, nonatomic) UIFont   *titleFont                UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont   *subtitleFont             UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont   *weekdayFont              UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *eventColor               UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *weekdayTextColor         UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIFont   *titleFont;
+@property (strong, nonatomic) UIFont   *subtitleFont;
+@property (strong, nonatomic) UIFont   *weekdayFont;
+@property (strong, nonatomic) UIColor  *eventColor;
+@property (strong, nonatomic) UIColor  *weekdayTextColor;
 
-@property (strong, nonatomic) UIColor  *headerTitleColor         UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) NSString *headerDateFormat         UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIFont   *headerTitleFont          UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *headerTitleColor;
+@property (strong, nonatomic) NSString *headerDateFormat;
+@property (strong, nonatomic) UIFont   *headerTitleFont;
 
-@property (strong, nonatomic) UIColor  *titleDefaultColor        UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *titleSelectionColor      UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *titleTodayColor          UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *titlePlaceholderColor    UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *titleWeekendColor        UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *titleDefaultColor;
+@property (strong, nonatomic) UIColor  *titleSelectionColor;
+@property (strong, nonatomic) UIColor  *titleTodayColor;
+@property (strong, nonatomic) UIColor  *titlePlaceholderColor;
+@property (strong, nonatomic) UIColor  *titleWeekendColor;
 
-@property (strong, nonatomic) UIColor  *subtitleDefaultColor     UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *subtitleSelectionColor   UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *subtitleTodayColor       UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *subtitlePlaceholderColor UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *subtitleWeekendColor     UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *subtitleDefaultColor;
+@property (strong, nonatomic) UIColor  *subtitleSelectionColor;
+@property (strong, nonatomic) UIColor  *subtitleTodayColor;
+@property (strong, nonatomic) UIColor  *subtitlePlaceholderColor;
+@property (strong, nonatomic) UIColor  *subtitleWeekendColor;
 
-@property (strong, nonatomic) UIColor  *selectionColor           UI_APPEARANCE_SELECTOR;
-@property (strong, nonatomic) UIColor  *todayColor               UI_APPEARANCE_SELECTOR;
+@property (strong, nonatomic) UIColor  *selectionColor;
+@property (strong, nonatomic) UIColor  *todayColor;
 
 - (void)reloadData;
 

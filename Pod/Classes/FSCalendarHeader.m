@@ -110,9 +110,13 @@
     NSDate *date = [_minimumDate fs_dateByAddingMonths:indexPath.item];
     titleLabel.text = [_dateFormatter stringFromDate:date];
     
-    [self updateAlphaForCell:cell];
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self updateAlphaForCell:cell];
 }
 
 #pragma mark - Setter & Getter

@@ -13,6 +13,7 @@
 #import "NSCalendar+FSExtension.h"
 #import "FSCalendarCell.h"
 
+#define kDefaultHeaderHeight 40
 #define kWeekHeight roundf(self.fs_height/12)
 #define kBlueText   [UIColor colorWithRed:14/255.0  green:69/255.0  blue:221/255.0    alpha:1.0]
 #define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
@@ -113,6 +114,8 @@
     _firstWeekday = [[NSCalendar fs_sharedCalendar] firstWeekday];
     
     FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectZero];
+    header.titleFont = _headerTitleFont;
+    header.titleColor = _headerTitleColor;
     [self addSubview:header];
     self.header = header;
     
@@ -147,7 +150,7 @@
     _backgroundColors[@(FSCalendarCellStateDisabled)]    = [UIColor clearColor];
     _backgroundColors[@(FSCalendarCellStatePlaceholder)] = [UIColor clearColor];
     _backgroundColors[@(FSCalendarCellStateToday)]       = kPink;
-
+    
     _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
     _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];
     _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
@@ -161,7 +164,7 @@
     _subtitleColors[@(FSCalendarCellStateDisabled)]    = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
     _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
-
+    
     _eventColor = [kBlue colorWithAlphaComponent:0.75];
     _cellStyle = FSCalendarCellStyleCircle;
     _autoAdjustTitleSize = YES;
@@ -178,13 +181,17 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
-    if (!_selectedDate) {
-        _supressEvent = YES;
-        self.selectedDate = [NSDate date];
-        _supressEvent = NO;
-    } else {
-        [self scrollToDate:_selectedDate];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (!_selectedDate) {
+            _supressEvent = YES;
+            self.selectedDate = [NSDate date];
+            _supressEvent = NO;
+        } else {
+            [self scrollToDate:_selectedDate];
+        }
+        
+    });
     
 }
 
@@ -194,7 +201,7 @@
     _supressEvent = YES;
     CGFloat padding = self.fs_height * 0.01;
     if (_headerHeight == -1) {
-        _header.frame = CGRectMake(0, 0, self.fs_width, self.fs_height/8.0);
+        _header.frame = CGRectMake(0, 0, self.fs_width, kDefaultHeaderHeight);
     }
     
     _collectionView.frame = CGRectMake(0, kWeekHeight+_header.fs_height, self.fs_width, self.fs_height-kWeekHeight-_header.fs_height);
@@ -210,7 +217,7 @@
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
         weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
-                                        kWeekHeight,
+                                        _header.fs_height,
                                         width,
                                         height);
     }];
@@ -220,7 +227,7 @@
     if ([maximumDate fs_daysFrom:minimumDate] <= 0) {
         [NSException raise:@"maximumDate must be later than minimumDate" format:nil];
     }
-
+    
     _header.minimumDate = minimumDate;
     _header.maximumDate = maximumDate;
     
@@ -321,14 +328,19 @@
     [self scrollToDate:_currentMonth];
 }
 
-#pragma mark - Setter & Getter
+#pragma mark - Properties
 
 - (void)setFlow:(FSCalendarFlow)flow
 {
     if (self.flow != flow) {
         _flow = flow;
+        _supressEvent = YES;
+        NSDate *currentMonth = self.currentMonth;
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
         [self setNeedsLayout];
+        [self reloadData];
+        [self scrollToDate:currentMonth];
+        _supressEvent = NO;
     }
 }
 
@@ -409,7 +421,7 @@
 {
     if (![_weekdayTextColor isEqual:weekdayTextColor]) {
         _weekdayTextColor = weekdayTextColor;
-       [_weekdays setValue:weekdayTextColor forKeyPath:@"textColor"];
+        [_weekdays setValue:weekdayTextColor forKeyPath:@"textColor"];
     }
 }
 
@@ -449,6 +461,14 @@
     }
 }
 
+- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
+{
+    if (_autoAdjustTitleSize != autoAdjustTitleSize) {
+        _autoAdjustTitleSize = autoAdjustTitleSize;
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
+    }
+}
+
 #pragma mark - Colors
 
 - (void)setTitleDefaultColor:(UIColor *)color
@@ -458,7 +478,8 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateNormal)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_titleColors forKey:@"titleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)titleDefaultColor
@@ -473,7 +494,8 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_titleColors forKey:@"titleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)titleSelectionColor
@@ -488,7 +510,8 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_titleColors forKey:@"titleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)titleTodayColor
@@ -503,7 +526,8 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_titleColors forKey:@"titleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)titlePlaceholderColor
@@ -518,7 +542,8 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateWeekend)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_titleColors forKey:@"titleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)titleWeekendColor
@@ -533,7 +558,8 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateNormal)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_subtitleColors forKey:@"subtitleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 -(UIColor *)subtitleDefaultColor
@@ -548,7 +574,8 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_subtitleColors forKey:@"subtitleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)subtitleSelectionColor
@@ -563,7 +590,8 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_subtitleColors forKey:@"subtitleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)subtitleTodayColor
@@ -578,7 +606,8 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_subtitleColors forKey:@"subtitleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)subtitlePlaceholderColor
@@ -593,7 +622,8 @@
     } else {
         [_subtitleColors removeObjectForKey:@(FSCalendarCellStateWeekend)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_subtitleColors forKey:@"subtitleColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)subtitleWeekendColor
@@ -608,7 +638,8 @@
     } else {
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateSelected)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_backgroundColors forKey:@"backgroundColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)selectionColor
@@ -623,7 +654,8 @@
     } else {
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
-    [self reloadData];
+    [_collectionView.visibleCells setValue:_backgroundColors forKey:@"backgroundColors"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
 }
 
 - (UIColor *)todayColor
@@ -635,7 +667,8 @@
 {
     if (![_eventColor isEqual:eventColor]) {
         _eventColor = eventColor;
-        [self reloadData];
+        [_collectionView.visibleCells setValue:_eventColor forKey:@"eventColor"];
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
     }
 }
 
@@ -646,7 +679,8 @@
         if (_autoAdjustTitleSize) {
             return;
         }
-        [self reloadData];
+        [_collectionView.visibleCells setValue:font forKey:@"titleFont"];
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
     }
 }
 
@@ -657,7 +691,8 @@
         if (_autoAdjustTitleSize) {
             return;
         }
-        [self reloadData];
+        [_collectionView.visibleCells setValue:font forKey:@"subtitleFont"];
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
     }
 }
 
@@ -691,8 +726,12 @@
     }];
     
     [_collectionView reloadData];
-    if (self.selectedDate) {
-        self.selectedDate = _selectedDate;
+    if (_selectedDate) {
+        _supressEvent = YES;
+        NSIndexPath *selectedIndexPath = [self indexPathForDate:_selectedDate];
+        [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
+        _supressEvent = NO;
     }
 }
 
@@ -766,19 +805,10 @@
 - (void)adjustTitleIfNecessary
 {
     if (_autoAdjustTitleSize) {
-        _titleFont       = [_titleFont fontWithSize:_collectionView.fs_height/3/6];
-        _subtitleFont    = [_subtitleFont fontWithSize:_collectionView.fs_height/4.5/6];
-        _headerTitleFont = [_headerTitleFont fontWithSize:_titleFont.pointSize+3];
-        _weekdayFont     = _titleFont;
-        [self reloadData];
-    }
-}
-
-- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
-{
-    if (_autoAdjustTitleSize != autoAdjustTitleSize) {
-        _autoAdjustTitleSize = autoAdjustTitleSize;
-        [self reloadData];
+        self.titleFont       = [_titleFont fontWithSize:_collectionView.fs_height/3/6];
+        self.subtitleFont    = [_subtitleFont fontWithSize:_collectionView.fs_height/4.5/6];
+        self.headerTitleFont = [_headerTitleFont fontWithSize:_titleFont.pointSize+3];
+        self.weekdayFont     = _titleFont;
     }
 }
 
