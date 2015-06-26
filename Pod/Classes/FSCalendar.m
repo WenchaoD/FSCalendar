@@ -338,9 +338,11 @@
         NSDate *currentMonth = self.currentMonth;
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
         [self setNeedsLayout];
-        [self reloadData];
-        [self scrollToDate:currentMonth];
-        _supressEvent = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadData];
+            [self scrollToDate:currentMonth];
+            _supressEvent = NO;
+        });
     }
 }
 
