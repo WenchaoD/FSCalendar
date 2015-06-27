@@ -313,7 +313,11 @@
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    return [self shouldSelectDate:cell.date] && ![[collectionView indexPathsForSelectedItems] containsObject:indexPath];
+    BOOL shouldSelect = ![[collectionView indexPathsForSelectedItems] containsObject:indexPath];
+    if (shouldSelect && cell.date) {
+        shouldSelect &= [self shouldSelectDate:cell.date];
+    }
+    return shouldSelect;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath

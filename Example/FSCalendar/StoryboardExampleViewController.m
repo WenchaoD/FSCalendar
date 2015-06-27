@@ -50,7 +50,7 @@
 
 #pragma mark - FSCalendarDataSource
 
-- (NSString *)calendar:(FSCalendar *)calendarView subtitleForDate:(NSDate *)date
+- (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
     if (!_lunar) {
         return nil;
@@ -59,7 +59,7 @@
     return _lunarDate.dayString;
 }
 
-- (BOOL)calendar:(FSCalendar *)calendarView hasEventForDate:(NSDate *)date
+- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
 {
     return date.fs_day == 3;
 }
@@ -85,6 +85,8 @@
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil, nil] show];
+    } else {
+        NSLog(@"Should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
     }
     return shouldSelect;
 }
