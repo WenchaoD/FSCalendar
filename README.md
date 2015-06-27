@@ -254,6 +254,10 @@ ios 7.0
 
 ## Version notes
 
+### Version 0.8.0
+* Smooth scrolling
+* Add example of setup FSCalendar in `loadView` and `viewDidLoad`
+
 ### Version 0.7.0
 * Simplier initialization: No more `FSCalendarHeader`, use `headerHeight` to control the size of header.
 
