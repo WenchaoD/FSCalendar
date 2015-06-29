@@ -10,6 +10,7 @@
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
 #import "NSDate+FSExtension.h"
+#import "FSCalendarDynamicHeader.h"
 
 #define kAnimationDuration 0.15
 
@@ -90,7 +91,7 @@
 {
     _backgroundLayer.hidden = NO;
     _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
-    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
+    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     CAAnimationGroup *group = [CAAnimationGroup animation];
     CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     zoomOut.fromValue = @0.3;
@@ -117,11 +118,13 @@
 
 - (void)configureCell
 {
+    _titleLabel.font = _appearance.titleFont;
     _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
+    _subtitleLabel.font = _appearance.subtitleFont;
     _subtitleLabel.text = _subtitle;
-    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_titleColors];
-    _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_subtitleColors];
-    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
+    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     
     CGFloat titleHeight = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}].height;
     if (_subtitleLabel.text) {
@@ -142,10 +145,10 @@
         _subtitleLabel.hidden = YES;
     }
     _backgroundLayer.hidden = !self.selected && !self.isToday;
-    _backgroundLayer.path = _cellStyle == FSCalendarCellStyleCircle ?
+    _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-    _eventLayer.fillColor = _eventColor.CGColor;
+    _eventLayer.fillColor = _appearance.eventColor.CGColor;
     _eventLayer.hidden = !_hasEvent;
 }
 

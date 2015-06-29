@@ -7,7 +7,6 @@
 //
 
 #import "NSDate+FSExtension.h"
-#import "NSCalendar+FSExtension.h"
 
 @implementation NSDate (FSExtension)
 
@@ -70,6 +69,13 @@
     NSDateComponents *component = [calendar components:NSSecondCalendarUnit
                                               fromDate:self];
     return component.second;
+}
+
+- (NSDate *)fs_dateByIgnoringTimeComponents
+{
+    NSCalendar *c = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [c components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
+    return [c dateFromComponents:components];
 }
 
 - (NSInteger)fs_numberOfDaysInMonth
@@ -216,3 +222,19 @@
 }
 
 @end
+
+
+@implementation NSCalendar (FSExtension)
+
++ (instancetype)fs_sharedCalendar
+{
+    static id instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [NSCalendar currentCalendar];
+    });
+    return instance;
+}
+
+@end
+
