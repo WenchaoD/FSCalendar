@@ -81,15 +81,15 @@
 - (NSDate *)fs_firstDayOfMonth
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self];
-    [components setDay:1];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth| NSCalendarUnitDay fromDate:self];
+    components.day = 1;
     return [calendar dateFromComponents:components];
 }
 
 - (NSDate *)fs_lastDayOfMonth
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSWeekCalendarUnit|NSWeekdayCalendarUnit fromDate:self];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
     components.month++;
     components.day = 0;
     return [calendar dateFromComponents:components];

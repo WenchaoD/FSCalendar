@@ -153,7 +153,10 @@
         
         if (!_selectedDate) {
             _supressEvent = YES;
-            self.selectedDate = [NSDate date];
+            NSDate *today = [NSDate date].fs_dateByIgnoringTimeComponents;
+            if ([self isDateInRange:today]) {
+                self.selectedDate = today;
+            }
             _supressEvent = NO;
         }
         
@@ -233,7 +236,7 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return [_maximumDate fs_monthsFrom:_minimumDate] + 1;
+    return [_maximumDate.fs_firstDayOfMonth fs_monthsFrom:_minimumDate.fs_firstDayOfMonth] + 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -245,8 +248,8 @@
 {
     FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.appearance         = self.appearance;
-    cell.month              = [_minimumDate fs_dateByAddingMonths:indexPath.section];
-    cell.currentDate        = self.currentDate;
+    cell.month              = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
+    cell.currentDate        = self.currentDate.fs_dateByIgnoringTimeComponents;
     cell.date               = [self dateForIndexPath:indexPath];
     cell.subtitle           = [self subtitleForDate:cell.date];
     cell.hasEvent           = [self hasEventForDate:cell.date];
@@ -273,13 +276,13 @@
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.isPlaceholder) {
         // 如果是上个月或者下个月的元素，则默认为YES，在setSelectedDate:animated:中还会调用此方法
-        return YES;
+        return [self isDateInRange:cell.date];
     }
     BOOL shouldSelect = ![collectionView.indexPathsForSelectedItems containsObject:indexPath];
-    if (shouldSelect && cell.date && !_supressEvent) {
+    if (shouldSelect && cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
         shouldSelect &= [self shouldSelectDate:cell.date];
     }
-    return shouldSelect;
+    return shouldSelect && [self isDateInRange:cell.date];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -486,7 +489,7 @@
     _supressEvent = !animate;
     date = [date fs_daysFrom:_minimumDate] < 0 ? [NSDate fs_dateWithYear:_minimumDate.fs_year month:_minimumDate.fs_month day:date.fs_day] : date;
     date = [date fs_daysFrom:_maximumDate] > 0 ? [NSDate fs_dateWithYear:_maximumDate.fs_year month:_maximumDate.fs_month day:date.fs_day] : date;
-    NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate];
+    NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate.fs_firstDayOfMonth];
     if (self.flow == FSCalendarFlowHorizontal) {
         [_collectionView setContentOffset:CGPointMake(scrollOffset * _collectionView.fs_width, 0) animated:animate];
     } else if (self.flow == FSCalendarFlowVertical) {
@@ -500,7 +503,7 @@
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *currentMonth = [_minimumDate fs_dateByAddingMonths:indexPath.section];
+    NSDate *currentMonth = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section];
     NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentMonth.fs_year
                                                 month:currentMonth.fs_month
                                                   day:1];
@@ -519,8 +522,8 @@
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
 {
-    NSInteger section = [date fs_monthsFrom:_minimumDate];
-    NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:date.fs_year month:date.fs_month day:1];
+    NSInteger section = [date fs_monthsFrom:_minimumDate.fs_firstDayOfMonth];
+    NSDate *firstDayOfMonth = date.fs_firstDayOfMonth;
     NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSInteger item = 0;
@@ -585,7 +588,7 @@
 - (NSDate *)minimumDate
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
-        _minimumDate = [_dataSource minimumDateForCalendar:self].fs_firstDayOfMonth.fs_dateByIgnoringTimeComponents;
+        _minimumDate = [_dataSource minimumDateForCalendar:self].fs_dateByIgnoringTimeComponents;
     }
     if (!_minimumDate) {
         _minimumDate = [NSDate fs_dateWithYear:1970 month:1 day:1];
@@ -596,7 +599,7 @@
 - (NSDate *)maximumDate
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
-        _maximumDate = [_dataSource maximumDateForCalendar:self].fs_lastDayOfMonth.fs_dateByIgnoringTimeComponents;
+        _maximumDate = [_dataSource maximumDateForCalendar:self].fs_dateByIgnoringTimeComponents;
     }
     if (!_maximumDate) {
         _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];

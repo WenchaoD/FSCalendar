@@ -85,7 +85,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [_maximumDate fs_monthsFrom:_minimumDate] + 1;
+    return [_maximumDate fs_monthsFrom:_minimumDate.fs_firstDayOfMonth] + 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
