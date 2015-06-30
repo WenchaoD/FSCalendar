@@ -41,9 +41,15 @@
     NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"MMMM yyyy"]);
 }
 
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
+- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
-    return date.fs_day == 4;
+    if (date.fs_day == 5) {
+        return [UIImage imageNamed:@"icon_footprint"];
+    }
+    if (date.fs_day == 10) {
+        return [UIImage imageNamed:@"icon_cat"];
+    }
+    return nil;
 }
 
 @end

@@ -58,17 +58,6 @@
     return _lunarDate.dayString;
 }
 
-- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
-{
-    if (date.fs_day == 5) {
-        return [UIImage imageNamed:@"icon_footprint"];
-    }
-    if (date.fs_day == 10) {
-        return [UIImage imageNamed:@"icon_cat"];
-    }
-    return nil;
-}
-
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
 {
     return date.fs_day == 3;
