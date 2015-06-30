@@ -13,18 +13,16 @@
 
 @property (weak,   nonatomic) FSCalendarAppearance *appearance;
 
-@property (copy,   nonatomic) NSDate              *date;
-@property (copy,   nonatomic) NSDate              *month;
-@property (weak,   nonatomic) NSDate              *currentDate;
+@property (strong, nonatomic) NSDate   *date;
+@property (strong, nonatomic) NSDate   *month;
+@property (strong, nonatomic) NSString *subtitle;
 
-@property (copy,   nonatomic) NSString            *subtitle;
+@property (weak,   nonatomic) UILabel  *titleLabel;
+@property (weak,   nonatomic) UILabel  *subtitleLabel;
 
-@property (weak,   nonatomic) UILabel             *titleLabel;
-@property (weak,   nonatomic) UILabel             *subtitleLabel;
+@property (assign, nonatomic) BOOL     hasEvent;
 
-@property (assign, nonatomic) BOOL                hasEvent;
-
-@property (readonly, getter = isPlaceholder)      BOOL placeholder;
+@property (readonly, getter = isPlaceholder) BOOL placeholder;
 
 - (void)performSelecting;
 - (void)performDeselecting;

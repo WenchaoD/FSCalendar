@@ -4,6 +4,8 @@
 //
 //  Created by DingWenchao on 6/29/15.
 //
+//  动感头文件，仅供框架内部使用。
+//  Private header, don't use it.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,10 +15,6 @@
 #import "FSCalendarCell.h"
 #import "FSCalendarHeader.h"
 
-/**
- * 动感头文件，仅供框架内部使用。
- * Private header, don't use it.
- */
 
 @interface FSCalendar (Dynamic)
 
@@ -47,3 +45,4 @@
 @property (readonly, nonatomic) UICollectionView *collectionView;
 
 @end
+

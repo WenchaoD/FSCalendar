@@ -73,9 +73,9 @@
 
 - (NSDate *)fs_dateByIgnoringTimeComponents
 {
-    NSCalendar *c = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *components = [c components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
-    return [c dateFromComponents:components];
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
+    return [calendar dateFromComponents:components];
 }
 
 - (NSDate *)fs_firstDayOfMonth

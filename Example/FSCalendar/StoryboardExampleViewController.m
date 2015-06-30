@@ -63,15 +63,15 @@
     return date.fs_day == 3;
 }
 
-- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
-{
-    return [NSDate fs_dateWithYear:2015 month:6 day:10];
-}
-
-- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
-{
-    return [NSDate fs_dateWithYear:2015 month:7 day:15];
-}
+//- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
+//{
+//    return [NSDate fs_dateWithYear:2015 month:6 day:1];
+//}
+//
+//- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+//{
+//    return [NSDate fs_dateWithYear:2015 month:7 day:31];
+//}
 
 #pragma mark - FSCalendarDelegate
 

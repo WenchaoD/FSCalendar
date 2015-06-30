@@ -24,7 +24,6 @@
 
 @property (assign,   nonatomic) BOOL         deselecting;
 
-
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 
 @end
@@ -168,7 +167,7 @@
 
 - (BOOL)isToday
 {
-    return [_date fs_isEqualToDateForDay:_currentDate];
+    return [_date fs_isEqualToDateForDay:self.calendar.currentDate];
 }
 
 - (BOOL)isWeekend

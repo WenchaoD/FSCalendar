@@ -21,6 +21,8 @@
 
 - (BOOL)hasEventForDate:(NSDate *)date;
 - (NSString *)subtitleForDate:(NSDate *)date;
+- (NSDate *)minimumDateForCalendar;
+- (NSDate *)maximumDateForCalendar;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
@@ -87,6 +89,9 @@
 {
     _appearance = [[FSCalendarAppearance alloc] init];
     _appearance.calendar = self;
+    
+    _minimumDate = [NSDate fs_dateWithYear:1970 month:1 day:1];
+    _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
     
     _headerHeight     = -1;
     _calendar         = [NSCalendar currentCalendar];
@@ -196,14 +201,6 @@
                                         height);
     }];
     [_appearance adjustTitleIfNecessary];
-    NSDate *maximumDate = self.maximumDate;
-    NSDate *minimumDate = self.minimumDate;
-    if ([maximumDate fs_daysFrom:minimumDate] <= 0) {
-        [NSException raise:@"maximumDate must be later than minimumDate" format:nil];
-    }
-    
-    _header.minimumDate = minimumDate;
-    _header.maximumDate = maximumDate;
     
     _supressEvent = NO;
     
@@ -223,10 +220,12 @@
     [super didMoveToWindow];
     if (self.window) {
         // In case : Pushing to another view controller then change orientation then pop back
+        // 防止Push到其他的控制器中，切换了Orientation并返回
         [self setNeedsLayout];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_currentMonth) {
                 [self scrollToDate:_currentMonth];
+                [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
             }
         });
     }
@@ -236,7 +235,8 @@
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return [_maximumDate.fs_firstDayOfMonth fs_monthsFrom:_minimumDate.fs_firstDayOfMonth] + 1;
+    NSInteger sections = [_maximumDate fs_monthsFrom:_minimumDate.fs_firstDayOfMonth] + 1;
+    return sections;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -247,9 +247,10 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.appearance         = self.appearance;
+    if (!cell.appearance) {
+        cell.appearance = self.appearance;
+    }
     cell.month              = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
-    cell.currentDate        = self.currentDate.fs_dateByIgnoringTimeComponents;
     cell.date               = [self dateForIndexPath:indexPath];
     cell.subtitle           = [self subtitleForDate:cell.date];
     cell.hasEvent           = [self hasEventForDate:cell.date];
@@ -269,14 +270,24 @@
             [self didSelectDate:_selectedDate];
         }
     }
+    
+    // CollectionView选中状态仅仅在‘当月’体现，placeholder需要重新计算'模拟选中'状态
+    // There is no stored 'selection' state for placeholder cell, so the 'simulated selection' state needs to be recalculated.
+    [collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+        if (cell.isPlaceholder) {
+            [cell configureCell];
+        }
+    }];
+    
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.isPlaceholder) {
-        // 如果是上个月或者下个月的元素，则默认为YES，在setSelectedDate:animated:中还会调用此方法
-        return [self isDateInRange:cell.date];
+        // 如果是上个月或者下个月的元素，则默认通过，在[setSelectedDate:animated:]中还会调用此方法
+        // If selecting a placeholder cell, then pass and call this method in [setSelectedDate:animated:]
+        return [self isDateInRange:cell.date] && ![cell.date fs_isEqualToDateForDay:_selectedDate];
     }
     BOOL shouldSelect = ![collectionView.indexPathsForSelectedItems containsObject:indexPath];
     if (shouldSelect && cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
@@ -293,11 +304,15 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (!_minimumDate || _supressEvent) {
+    if (_supressEvent) {
         return;
     }
-    CGFloat scrollOffset = MAX(scrollView.contentOffset.x/scrollView.fs_width,
-                               scrollView.contentOffset.y/scrollView.fs_height);
+    CGFloat scrollOffset = 0;
+    if (_flow == FSCalendarFlowHorizontal) {
+        scrollOffset = scrollView.contentOffset.x/scrollView.fs_width;
+    } else if (_flow == FSCalendarFlowVertical) {
+        scrollOffset = scrollView.contentOffset.y/scrollView.fs_height;
+    }
     _header.scrollOffset = scrollOffset;
 }
 
@@ -446,10 +461,22 @@
     }
 }
 
+- (void)setDataSource:(id<FSCalendarDataSource>)dataSource
+{
+    if (![_dataSource isEqual:dataSource]) {
+        _dataSource = dataSource;
+        _minimumDate = self.minimumDateForCalendar;
+        _maximumDate = self.maximumDateForCalendar;
+    }
+}
+
 #pragma mark - Public
 
 - (void)reloadData
 {
+    _minimumDate = self.minimumDateForCalendar;
+    _maximumDate = self.maximumDateForCalendar;
+    
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
     [_header reloadData];
     
@@ -540,7 +567,7 @@
 
 - (BOOL)isDateInRange:(NSDate *)date
 {
-    return [date fs_daysFrom:self.minimumDate] >= 0 && [date fs_daysFrom:self.maximumDate] <= 0;
+    return [date fs_daysFrom:_minimumDate] >= 0 && [date fs_daysFrom:_maximumDate] <= 0;
 }
 
 #pragma mark - Delegate
@@ -585,7 +612,7 @@
     return NO;
 }
 
-- (NSDate *)minimumDate
+- (NSDate *)minimumDateForCalendar
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
         _minimumDate = [_dataSource minimumDateForCalendar:self].fs_dateByIgnoringTimeComponents;
@@ -596,7 +623,7 @@
     return _minimumDate;
 }
 
-- (NSDate *)maximumDate
+- (NSDate *)maximumDateForCalendar
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
         _maximumDate = [_dataSource maximumDateForCalendar:self].fs_dateByIgnoringTimeComponents;

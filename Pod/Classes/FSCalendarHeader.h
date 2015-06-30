@@ -12,14 +12,19 @@
 
 @interface FSCalendarHeader : UIView
 
-@property (assign  , nonatomic) CGFloat     scrollOffset;
-@property (strong  , nonatomic) NSDate      *minimumDate;
-@property (strong  , nonatomic) NSDate      *maximumDate;
+@property (assign  , nonatomic) CGFloat scrollOffset;
 
 @property (weak, nonatomic) FSCalendarAppearance *appearance;
 
 @property (assign  , nonatomic) UICollectionViewScrollDirection scrollDirection;
 
 - (void)reloadData;
+
+@end
+
+
+@interface FSCalendarHeaderCell : UICollectionViewCell
+
+@property (weak, nonatomic) UILabel *titleLabel;
 
 @end

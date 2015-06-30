@@ -19,6 +19,8 @@
 @property (weak, nonatomic) UICollectionView           *collectionView;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
+@property (readonly, nonatomic) FSCalendar *calendar;
+
 - (void)updateAlphaForCell:(UICollectionViewCell *)cell;
 
 @end
@@ -47,24 +49,24 @@
 {
     _dateFormatter            = [[NSDateFormatter alloc] init];
     _scrollDirection          = UICollectionViewScrollDirectionHorizontal;
-    _minimumDate              = [NSDate fs_dateWithYear:1970 month:1 day:1];
-    _maximumDate              = [NSDate fs_dateWithYear:2099 month:12 day:31];
 
     UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     collectionViewFlowLayout.minimumInteritemSpacing = 0;
     collectionViewFlowLayout.minimumLineSpacing = 0;
+    collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
     collectionViewFlowLayout.itemSize = CGSizeMake(1, 1);
     self.collectionViewFlowLayout = collectionViewFlowLayout;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_collectionViewFlowLayout];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
     collectionView.scrollEnabled = NO;
     collectionView.userInteractionEnabled = NO;
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.dataSource = self;
     collectionView.delegate = self;
+    collectionView.contentInset = UIEdgeInsetsZero;
     [self addSubview:collectionView];
-    [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    [collectionView registerClass:[FSCalendarHeaderCell class] forCellWithReuseIdentifier:@"cell"];
     self.collectionView = collectionView;
     
 }
@@ -74,7 +76,7 @@
     [super layoutSubviews];
     _collectionView.frame = CGRectMake(0, self.fs_height*0.1, self.fs_width, self.fs_height*0.9);
     _collectionView.contentInset = UIEdgeInsetsZero;
-    _collectionViewFlowLayout.itemSize = CGSizeMake(self.fs_width * 0.5,
+    _collectionViewFlowLayout.itemSize = CGSizeMake(_collectionView.fs_width * 0.5,
                                                     _collectionView.fs_height);
 }
 
@@ -85,24 +87,33 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [_maximumDate fs_monthsFrom:_minimumDate.fs_firstDayOfMonth] + 1;
+    NSInteger count = [self.calendar.maximumDate fs_monthsFrom:self.calendar.minimumDate.fs_firstDayOfMonth] + 1;
+    if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+        // 这里需要默认多出两项，否则当contentOffset为负时，切换到其他页面时会自动归零
+        // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
+        return count + 2;
+    }
+    return count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:100];
-    if (!titleLabel) {
-        titleLabel = [[UILabel alloc] initWithFrame:cell.contentView.bounds];
-        titleLabel.tag = 100;
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        [cell.contentView addSubview:titleLabel];
-    }
-    titleLabel.font = _appearance.headerTitleFont;
-    titleLabel.textColor = _appearance.headerTitleColor;
-    NSDate *date = [_minimumDate fs_dateByAddingMonths:indexPath.item];
+    FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    cell.titleLabel.font = _appearance.headerTitleFont;
+    cell.titleLabel.textColor = _appearance.headerTitleColor;
     _dateFormatter.dateFormat = _appearance.headerDateFormat;
-    titleLabel.text = [_dateFormatter stringFromDate:date];
+    if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+        // 多出的两项需要制空
+        if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1 )) {
+            cell.titleLabel.text = nil;
+        } else {
+            NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
+            cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+        }
+    } else {
+        NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item].fs_dateByIgnoringTimeComponents;
+        cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+    }
     return cell;
 }
 
@@ -119,7 +130,7 @@
         _scrollOffset = scrollOffset;
     }
     if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-        _collectionView.contentOffset = CGPointMake((_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width, 0);
+        _collectionView.contentOffset = CGPointMake((_scrollOffset+0.5)*_collectionViewFlowLayout.itemSize.width, 0);
     } else {
         _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
     }
@@ -174,4 +185,33 @@
 }
 
 
+- (FSCalendar *)calendar
+{
+    return (FSCalendar *)self.superview;
+}
+
 @end
+
+
+@implementation FSCalendarHeaderCell
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        [self.contentView addSubview:titleLabel];
+        self.titleLabel = titleLabel;
+    }
+    return self;
+}
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    _titleLabel.frame = bounds;
+}
+
+@end
+
