@@ -20,6 +20,9 @@
 @property (strong,   nonatomic) CAShapeLayer *eventLayer;
 @property (readonly, nonatomic) BOOL         today;
 @property (readonly, nonatomic) BOOL         weekend;
+@property (readonly, nonatomic) FSCalendar   *calendar;
+
+@property (assign,   nonatomic) BOOL         deselecting;
 
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
@@ -85,9 +88,14 @@
     [CATransaction setDisableActions:YES];
 }
 
+- (BOOL)isSelected
+{
+    return [super isSelected] || ([self.calendar.selectedDate fs_isEqualToDateForDay:_date] && !_deselecting);
+}
+
 #pragma mark - Public
 
-- (void)showAnimation
+- (void)performSelecting
 {
     _backgroundLayer.hidden = NO;
     _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
@@ -108,10 +116,11 @@
     [self configureCell];
 }
 
-- (void)hideAnimation
+- (void)performDeselecting
 {
-    _backgroundLayer.hidden = YES;
+    _deselecting = YES;
     [self configureCell];
+    _deselecting = NO;
 }
 
 #pragma mark - Private
@@ -182,6 +191,15 @@
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];
+}
+
+- (FSCalendar *)calendar
+{
+    UIView *superview = self.superview;
+    while (superview && ![superview isKindOfClass:[FSCalendar class]]) {
+        superview = superview.superview;
+    }
+    return (FSCalendar *)superview;
 }
 
 @end

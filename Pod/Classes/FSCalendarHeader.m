@@ -117,18 +117,18 @@
 {
     if (_scrollOffset != scrollOffset) {
         _scrollOffset = scrollOffset;
-        if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-            _collectionView.contentOffset = CGPointMake((_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width, 0);
-        } else {
-            _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSArray *cells = _collectionView.visibleCells;
-            [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                [self updateAlphaForCell:obj];
-            }];
-        });
     }
+    if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+        _collectionView.contentOffset = CGPointMake((_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width, 0);
+    } else {
+        _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSArray *cells = _collectionView.visibleCells;
+        [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [self updateAlphaForCell:obj];
+        }];
+    });
 }
 
 - (void)setScrollDirection:(UICollectionViewScrollDirection)scrollDirection

@@ -78,6 +78,23 @@
     return [c dateFromComponents:components];
 }
 
+- (NSDate *)fs_firstDayOfMonth
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:self];
+    [components setDay:1];
+    return [calendar dateFromComponents:components];
+}
+
+- (NSDate *)fs_lastDayOfMonth
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSWeekCalendarUnit|NSWeekdayCalendarUnit fromDate:self];
+    components.month++;
+    components.day = 0;
+    return [calendar dateFromComponents:components];
+}
+
 - (NSInteger)fs_numberOfDaysInMonth
 {
     NSCalendar *c = [NSCalendar fs_sharedCalendar];

@@ -26,8 +26,8 @@
 
 @property (readonly, getter = isPlaceholder)      BOOL placeholder;
 
-- (void)showAnimation;
-- (void)hideAnimation;
+- (void)performSelecting;
+- (void)performDeselecting;
 - (void)configureCell;
 
 @end

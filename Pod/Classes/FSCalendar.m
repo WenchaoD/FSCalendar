@@ -134,7 +134,7 @@
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
-    _currentDate = [NSDate date];
+    _currentDate = [NSDate date].fs_dateByIgnoringTimeComponents;
     _currentMonth = [_currentDate copy];
     
     CALayer *topBorderLayer = [CALayer layer];
@@ -155,8 +155,6 @@
             _supressEvent = YES;
             self.selectedDate = [NSDate date];
             _supressEvent = NO;
-        } else {
-            [self scrollToDate:_selectedDate];
         }
         
     });
@@ -262,7 +260,7 @@
     if (cell.isPlaceholder) {
         [self setSelectedDate:cell.date animate:YES];
     } else {
-        [cell showAnimation];
+        [cell performSelecting];
         _selectedDate = [self dateForIndexPath:indexPath];
         if (!_supressEvent) {
             [self didSelectDate:_selectedDate];
@@ -273,8 +271,12 @@
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    BOOL shouldSelect = ![[collectionView indexPathsForSelectedItems] containsObject:indexPath];
-    if (shouldSelect && cell.date) {
+    if (cell.isPlaceholder) {
+        // 如果是上个月或者下个月的元素，则默认为YES，在setSelectedDate:animated:中还会调用此方法
+        return YES;
+    }
+    BOOL shouldSelect = ![collectionView.indexPathsForSelectedItems containsObject:indexPath];
+    if (shouldSelect && cell.date && !_supressEvent) {
         shouldSelect &= [self shouldSelectDate:cell.date];
     }
     return shouldSelect;
@@ -283,7 +285,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    [cell hideAnimation];
+    [cell performDeselecting];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -314,7 +316,7 @@
                                      (pannedOffset > 0 && targetOffset < currentOffset)) && _minimumDate;
     if (shouldTriggerMonthChange) {
         [self willChangeValueForKey:@"currentMonth"];
-        _currentMonth = [_minimumDate fs_dateByAddingMonths:targetOffset/contentSize];
+        _currentMonth = [_minimumDate fs_dateByAddingMonths:targetOffset/contentSize].fs_dateByIgnoringTimeComponents;
         [self currentMonthDidChange];
         [self didChangeValueForKey:@"currentMonth"];
     }
@@ -381,6 +383,7 @@
 {
     selectedDate = [selectedDate fs_daysFrom:_minimumDate] < 0 ? [NSDate fs_dateWithYear:_minimumDate.fs_year month:_minimumDate.fs_month day:selectedDate.fs_day] : selectedDate;
     selectedDate = [selectedDate fs_daysFrom:_maximumDate] > 0 ? [NSDate fs_dateWithYear:_maximumDate.fs_year month:_maximumDate.fs_month day:selectedDate.fs_day] : selectedDate;
+    selectedDate = selectedDate.fs_dateByIgnoringTimeComponents;
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
     if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
         if (_collectionView.indexPathsForSelectedItems.count && _selectedDate) {
@@ -394,7 +397,9 @@
     if (!_collectionView.tracking && !_collectionView.decelerating) {
         [self willChangeValueForKey:@"currentMonth"];
         _currentMonth = [selectedDate copy];
-        [self currentMonthDidChange];
+        if (!_supressEvent) {
+            [self currentMonthDidChange];
+        }
         [self didChangeValueForKey:@"currentMonth"];
         [self scrollToDate:selectedDate animate:animate];
     }
@@ -406,6 +411,7 @@
         [NSException raise:@"currentDate out of range" format:nil];
     }
     if (![_currentDate fs_isEqualToDateForDay:currentDate]) {
+        currentDate = currentDate.fs_dateByIgnoringTimeComponents;
         _currentDate = [currentDate copy];
         _currentMonth = [currentDate copy];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -420,6 +426,7 @@
         [NSException raise:@"currentMonth out of range" format:nil];
     }
     if (![_currentMonth fs_isEqualToDateForMonth:currentMonth]) {
+        currentMonth = currentMonth.fs_dateByIgnoringTimeComponents;
         _currentMonth = currentMonth;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self scrollToDate:currentMonth];
@@ -507,7 +514,7 @@
     } else {
         date = [firstDateOfPage fs_dateByAddingDays:indexPath.item];
     }
-    return date;
+    return date.fs_dateByIgnoringTimeComponents;
 }
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
@@ -578,7 +585,7 @@
 - (NSDate *)minimumDate
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
-        _minimumDate = [_dataSource minimumDateForCalendar:self];
+        _minimumDate = [_dataSource minimumDateForCalendar:self].fs_firstDayOfMonth.fs_dateByIgnoringTimeComponents;
     }
     if (!_minimumDate) {
         _minimumDate = [NSDate fs_dateWithYear:1970 month:1 day:1];
@@ -589,7 +596,7 @@
 - (NSDate *)maximumDate
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
-        _maximumDate = [_dataSource maximumDateForCalendar:self];
+        _maximumDate = [_dataSource maximumDateForCalendar:self].fs_lastDayOfMonth.fs_dateByIgnoringTimeComponents;
     }
     if (!_maximumDate) {
         _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
