@@ -21,6 +21,7 @@
 
 - (BOOL)hasEventForDate:(NSDate *)date;
 - (NSString *)subtitleForDate:(NSDate *)date;
+- (UIImage *)imageForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
 
@@ -219,8 +220,8 @@
 {
     [super didMoveToWindow];
     if (self.window) {
+        // 防止Push到其他的控制器中，旋转手机再返回
         // In case : Pushing to another view controller then change orientation then pop back
-        // 防止Push到其他的控制器中，切换了Orientation并返回
         [self setNeedsLayout];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_currentMonth) {
@@ -247,13 +248,13 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    if (!cell.appearance) {
-        cell.appearance = self.appearance;
-    }
+    cell.appearance         = _appearance;
     cell.month              = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
     cell.date               = [self dateForIndexPath:indexPath];
-    cell.subtitle           = [self subtitleForDate:cell.date];
-    cell.hasEvent           = [self hasEventForDate:cell.date];
+    
+    cell.image = [self imageForDate:cell.date];
+    cell.subtitle  = [self subtitleForDate:cell.date];
+    cell.hasEvent = [self hasEventForDate:cell.date];
     [cell configureCell];
     return cell;
 }
@@ -271,7 +272,7 @@
         }
     }
     
-    // CollectionView选中状态仅仅在‘当月’体现，placeholder需要重新计算'模拟选中'状态
+    // CollectionView选中状态仅仅在‘当月’体现，placeholder需要重新计算'选中'状态
     // There is no stored 'selection' state for placeholder cell, so the 'simulated selection' state needs to be recalculated.
     [collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
         if (cell.isPlaceholder) {
@@ -285,8 +286,8 @@
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.isPlaceholder) {
-        // 如果是上个月或者下个月的元素，则默认通过，在[setSelectedDate:animated:]中还会调用此方法
-        // If selecting a placeholder cell, then pass and call this method in [setSelectedDate:animated:]
+        // 如果是上个月或者下个月的元素，则无需调用代理方法，在[setSelectedDate:animated:]中还会调用此方法
+        // If selecting a placeholder cell, will get back here and call the delegate method below from [setSelectedDate:animated:]
         return [self isDateInRange:cell.date] && ![cell.date fs_isEqualToDateForDay:_selectedDate];
     }
     BOOL shouldSelect = ![collectionView.indexPathsForSelectedItems containsObject:indexPath];
@@ -600,6 +601,14 @@
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:subtitleForDate:)]) {
         return [_dataSource calendar:self subtitleForDate:date];
+    }
+    return nil;
+}
+
+- (UIImage *)imageForDate:(NSDate *)date
+{
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:imageForDate:)]) {
+        return [_dataSource calendar:self imageForDate:date];
     }
     return nil;
 }

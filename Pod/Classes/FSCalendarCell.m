@@ -16,8 +16,10 @@
 
 @interface FSCalendarCell ()
 
-@property (strong,   nonatomic) CAShapeLayer *backgroundLayer;
-@property (strong,   nonatomic) CAShapeLayer *eventLayer;
+@property (weak, nonatomic) CAShapeLayer *backgroundLayer;
+@property (weak, nonatomic) CAShapeLayer *eventLayer;
+@property (weak, nonatomic) CALayer      *imageLayer;
+
 @property (readonly, nonatomic) BOOL         today;
 @property (readonly, nonatomic) BOOL         weekend;
 @property (readonly, nonatomic) FSCalendar   *calendar;
@@ -51,17 +53,24 @@
         [self.contentView addSubview:subtitleLabel];
         self.subtitleLabel = subtitleLabel;
         
-        _backgroundLayer = [CAShapeLayer layer];
-        _backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
-        _backgroundLayer.hidden = YES;
-        [self.contentView.layer insertSublayer:_backgroundLayer atIndex:0];
+        CAShapeLayer *backgroundLayer = [CAShapeLayer layer];
+        backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
+        backgroundLayer.hidden = YES;
+        [self.contentView.layer insertSublayer:backgroundLayer atIndex:0];
+        self.backgroundLayer = backgroundLayer;
         
-        _eventLayer = [CAShapeLayer layer];
-        _eventLayer.backgroundColor = [UIColor clearColor].CGColor;
-        _eventLayer.fillColor = [UIColor cyanColor].CGColor;
-        _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
-        _eventLayer.hidden = YES;
-        [self.contentView.layer addSublayer:_eventLayer];
+        CAShapeLayer *eventLayer = [CAShapeLayer layer];
+        eventLayer.backgroundColor = [UIColor clearColor].CGColor;
+        eventLayer.fillColor = [UIColor cyanColor].CGColor;
+        eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:eventLayer.bounds].CGPath;
+        eventLayer.hidden = YES;
+        [self.contentView.layer addSublayer:eventLayer];
+        self.eventLayer = eventLayer;
+        
+        CALayer *imageLayer = [CALayer layer];
+        imageLayer.backgroundColor = [UIColor clearColor].CGColor;
+        [self.contentView.layer addSublayer:imageLayer];
+        self.imageLayer = imageLayer;
     }
     return self;
 }
@@ -156,8 +165,17 @@
     _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-    _eventLayer.fillColor = _appearance.eventColor.CGColor;
     _eventLayer.hidden = !_hasEvent;
+    _eventLayer.fillColor = _appearance.eventColor.CGColor;
+    
+    if (_image) {
+        _imageLayer.hidden = NO;
+        _imageLayer.frame = CGRectMake((self.fs_width-_image.size.width)*0.5, self.fs_height-_image.size.height, _image.size.width, _image.size.height);
+        _imageLayer.contents = (id)_image.CGImage;
+    } else {
+        _imageLayer.hidden = YES;
+        _imageLayer.contents = nil;
+    }
 }
 
 - (BOOL)isPlaceholder

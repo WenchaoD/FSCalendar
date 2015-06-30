@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSDate   *date;
 @property (strong, nonatomic) NSDate   *month;
 @property (strong, nonatomic) NSString *subtitle;
+@property (strong, nonatomic) UIImage  *image;
 
 @property (weak,   nonatomic) UILabel  *titleLabel;
 @property (weak,   nonatomic) UILabel  *subtitleLabel;

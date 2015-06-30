@@ -43,6 +43,7 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
 
 @optional
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
+- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date;
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar;
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;

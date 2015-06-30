@@ -39,7 +39,7 @@
 @property (weak , nonatomic) FSCalendar *calendar;
 
 // In loadView or viewDidLoad
-FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 280)];
+FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
 calendar.dataSource = self;
 calendar.delegate = self;
 [self.view addSubview:calendar];
@@ -52,7 +52,7 @@ Or swift
 private weak var calendar: FSCalendar!
 
 // In loadView or viewDidLoad
-let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: 320, height: 280))
+let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: 320, height: 300))
 calendar.dataSource = self
 calendar.delegate = self
 view.addSubview(calendar)
@@ -84,7 +84,7 @@ An enumeration value to determine the scroll direction of `FSCalendar`, default 
 ```objective-c
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;
 ```
-The text size of `FSCalendar` is automaticly calculated based on the frame by default. To turn it off, set this value to `NO`.
+The text size of `FSCalendar` is automaticly calculated based on the frame. To turn it off, set this value to `NO`.
 
 ```objective-c
 @property (strong, nonatomic) NSDate *currentDate;
@@ -310,10 +310,6 @@ self.calendar.subtitleFont = otherSubtitleFont;
 
 `titleFont` and `subtitleFont` is also available for `UIAppearance` selector, but would not take any effect if `autoAdjustTitleSize` value is `YES`
 
-## Author
-
-Wenchao Ding, f33chobits@gmail.com
-
 ## License
 
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
@@ -321,3 +317,8 @@ FSCalendar is available under the MIT license. See the LICENSE file for more inf
 ## Support
 * If FSCalendar cannot meet your requirment, welcome to submit issues or pull requests
 * If you like this control and use it in your app, submit your app's link address [here](https://www.cocoacontrols.com/controls/fscalendar).It would be a great support for me.
+
+## Contact me
+email: `f33chobits@gmail.com`
+skype: `wenchao.ding`
+
