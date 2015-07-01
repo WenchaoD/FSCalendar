@@ -80,6 +80,7 @@ _calendar.flow = FSCalendarFlowHorizontal; // By default
 
 ```swift
 calendar.flow = .Horizontal 
+```
 
 ![fscalendar-horizontal](https://cloud.githubusercontent.com/assets/5186464/8448696/059e9acc-1ffd-11e5-8a95-aff6d871c6e1.gif)
 
