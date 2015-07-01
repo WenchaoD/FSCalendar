@@ -4,6 +4,9 @@
 [![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/cocoapods/p/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 
+
+![fscalendar---takealook](https://cloud.githubusercontent.com/assets/5186464/8448508/0abae54e-1ffb-11e5-9963-c02e4d44a0af.png)
+
 ## Installation
 
 * Using cocoapods:`pod 'FSCalendar'` 
@@ -49,8 +52,6 @@ calendar.delegate = self
 view.addSubview(calendar)
 self.calendar = calendar
 ```
-
-![fscalendar---takealook](https://cloud.githubusercontent.com/assets/5186464/8448508/0abae54e-1ffb-11e5-9963-c02e4d44a0af.png)
 
 ## More usage
 
@@ -209,11 +210,11 @@ calendar.appearance.cellStyle = .Rectangle
 }
 ```
 
+#### `FSCalendar` can be used on `iPad`.
+![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/6502151/b4ce3092-c35b-11e4-827a-498d73579d78.jpg)
+
 ## Requirements
 ios 7.0
-
-## Compatibility
-`FSCalendar` can be used on iPad.
 
 ## Known issues
 * The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:
