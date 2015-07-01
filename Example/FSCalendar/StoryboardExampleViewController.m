@@ -37,7 +37,6 @@
 //    _calendar.firstWeekday = 2; // Monday
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
-    
     _flow = _calendar.flow;
     
 }
@@ -58,10 +57,10 @@
     return _lunarDate.dayString;
 }
 
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
-{
-    return date.fs_day == 3;
-}
+//- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
+//{
+//    return date.fs_day == 3;
+//}
 
 //- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 //{

@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, FSCalendarFlow) {
 };
 
 
-typedef NS_OPTIONS(NSInteger, FSCalendarCellState) {
+typedef NS_ENUM(NSInteger, FSCalendarCellState) {
     FSCalendarCellStateNormal      = 0,
     FSCalendarCellStateSelected    = 1,
     FSCalendarCellStatePlaceholder = 1 << 1,

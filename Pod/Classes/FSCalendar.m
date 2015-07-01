@@ -417,7 +417,9 @@
         [self willChangeValueForKey:@"currentMonth"];
         _currentMonth = [selectedDate copy];
         if (!_supressEvent) {
+            _supressEvent = YES;
             [self currentMonthDidChange];
+            _supressEvent = NO;
         }
         [self didChangeValueForKey:@"currentMonth"];
         [self scrollToDate:selectedDate animate:animate];
