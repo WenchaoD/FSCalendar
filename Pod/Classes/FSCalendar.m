@@ -196,7 +196,7 @@
     CGFloat height = kWeekHeight;
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
-        weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
+        weekdayLabel.frame = CGRectMake(absoluteIndex*width,
                                         _header.fs_height,
                                         width,
                                         height);
@@ -486,7 +486,7 @@
     CGFloat height = kWeekHeight;
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
-        weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayLabel.fs_width,
+        weekdayLabel.frame = CGRectMake(absoluteIndex * width,
                                         _header.fs_height,
                                         width,
                                         height);
