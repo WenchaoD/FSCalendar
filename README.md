@@ -48,9 +48,11 @@ view.addSubview(calendar)
 self.calendar = calendar
 ```
 
+![fscalendar---takealook](https://cloud.githubusercontent.com/assets/5186464/8448508/0abae54e-1ffb-11e5-9963-c02e4d44a0af.png)
+
 ## More usage
 
-#### If you want `FSCalendar` to scroll vertically (default horizontally)
+#### If you want `FSCalendar` to scroll vertically
 
 * Objective - c
 
@@ -64,19 +66,41 @@ _calendar.flow = FSCalendarFlowVertical;
 calendar.flow = .Vertical 
 ```
 
+![fscalendar-vertical](https://cloud.githubusercontent.com/assets/5186464/8448624/384e344c-1ffc-11e5-8b0b-1c3951dab2e1.gif)
+
+#### If you want `FSCalendar` to scroll horizontally (Default)
+
+* Objective - c
+
+```objective-c
+_calendar.flow = FSCalendarFlowHorizontal; // By default
+```
+
+* Swift
+
+```swift
+calendar.flow = .Horizontal 
+
+![fscalendar-horizontal](https://cloud.githubusercontent.com/assets/5186464/8448696/059e9acc-1ffd-11e5-8a95-aff6d871c6e1.gif)
+
 #### If you want `FSCalendar` to use `Monday` as the first column (or any other weekday)
 
 ```objective-c
 _calendar.firstWeekday = 2; 
 ```
 
-#### If you wanna change the date format for header
+![fscalendar---monday](https://cloud.githubusercontent.com/assets/5186464/8448782/c92505e4-1ffd-11e5-95c0-9bf3c8bec669.png)
+
+
+#### The date format of header can be customized
 
 ```objective-c
 _calendar.appearance.headerDateFormat = @"MMM yy";
 ```
 
-#### If you wanna change colors
+![fscalendar---headerformat](https://cloud.githubusercontent.com/assets/5186464/8449322/15d79168-2003-11e5-997a-06c6721dd807.png)
+
+#### You can define the appearance
 
 ```objective-c
 _calendar.appearance.weekdayTextColor = [UIColor redColor];
@@ -86,19 +110,23 @@ _calendar.appearance.selectionColor = [UIColor blueColor];
 _calendar.appearance.todayColor = [UIColor orangeColor];
 ```
 
-#### What if you wanna hide this?
+![fscalendar---colors](https://cloud.githubusercontent.com/assets/5186464/8449300/d55d1c7a-2002-11e5-8de6-be04f3783456.png)
 
+#### The day shape doesn't have to be a circle
+
+* Objective - c
 ```objective-c
-_calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
+_calendar.appearance.cellStyle = FSCalendarCellStyleRectangle;
 ```
 
-#### What if you wanna show this without alpha?
-```objective-c
-_calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
+* Swift
+```swift
+calendar.appearance.cellStyle = .Rectangle
 ```
 
+![fscalendar---rectangle](https://cloud.githubusercontent.com/assets/5186464/8449186/d38ea39c-2001-11e5-99f4-32fcd6120a01.png)
 
-#### If you want `FSCalendar` to show subtitle for each day
+#### `FSCalendar` can show subtitle for each day
 
 ```objective-c
 // FSCalendarDataSource
@@ -108,7 +136,13 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you want `FSCalendar` to show event dot for some days
+![fscalendar---subtitle1](https://cloud.githubusercontent.com/assets/5186464/8449076/b0be3d88-2000-11e5-9c5d-22ecd325b6cc.png)
+
+&nbsp&nbsp&nbsp&nbsp
+
+![fscalendar---subtitle2](https://cloud.githubusercontent.com/assets/5186464/8449075/b0bb34ee-2000-11e5-9c4a-401bc708d9ea.png)
+
+#### And event dot for some days
 
 ```objective-c
 // FSCalendarDataSource
@@ -118,7 +152,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you want `FSCalendar` to show an image for some days
+#### Or an image for some days
 
 ```objective-c
 // FSCalendarDataSource
@@ -128,7 +162,9 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you want set a boundary for `FSCalendar`
+![fscalendar---image](https://cloud.githubusercontent.com/assets/5186464/8449772/e94d3126-2006-11e5-8871-e4f8dbce81ea.png)
+
+#### There are left and right boundaries
 
 ```objective-c
 // FSCalendarDataSource
@@ -143,7 +179,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you want to do something when a date is selected
+#### You can do something when a date is selected
 ```objective-c
 // FSCalendarDelegate
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
@@ -152,7 +188,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you don't want some date to be selected
+#### You can prevent it from being selected
 ```objective-c
 // FSCalendarDelegate
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
@@ -164,7 +200,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you need to do something when the month changes
+#### You will get notified when `FSCalendar` changes the month
 ```objective-c
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
 {
@@ -176,7 +212,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 ios 7.0
 
 ## Compatibility
-`FSCalendar` can be used on iPad, see the demo for details.
+`FSCalendar` can be used on iPad.
 
 ## Known issues
 1. The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:
@@ -195,6 +231,12 @@ _calendar.appearance.subtitleFont = otherSubtitleFont;
 _calendar.appearance.todayColor = [UIColor clearColor];
 _calendar.appearance.titleTodayColor = _calendar.appearance.titleDefaultColor;
 _calendar.appearance.subtitleTodayColor = _calendar.appearance.subtitleDefaultColor;
+```
+
+3. Can we hide this?
+
+```objective-c
+_calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
 ```
 
 ## License
