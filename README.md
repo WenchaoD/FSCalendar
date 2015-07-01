@@ -89,7 +89,7 @@ _calendar.appearance.todayColor = [UIColor orangeColor];
 #### What if you wanna hide this?
 
 ```objective-c
-_calendar.appearance.headerMinimumDissolvedAlpha = 0.2;
+_calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
 ```
 
 #### What if you wanna show this without alpha?
@@ -108,7 +108,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you want `FSCalendar` to show event dot for each day
+#### If you want `FSCalendar` to show event dot for some days
 
 ```objective-c
 // FSCalendarDataSource
@@ -118,7 +118,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you want `FSCalendar` to show an image for each day
+#### If you want `FSCalendar` to show an image for some days
 
 ```objective-c
 // FSCalendarDataSource
@@ -164,7 +164,7 @@ _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
 }
 ```
 
-#### If you need to do something when the month change
+#### If you need to do something when the month changes
 ```objective-c
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
 {
@@ -206,8 +206,8 @@ FSCalendar is available under the MIT license. See the LICENSE file for more inf
 * If you like this control and use it in your app, submit your app's link address [here](https://www.cocoacontrols.com/controls/fscalendar).It would be a great support for me.
 
 ## Contact
-email: `f33chobits@gmail.com`
-skype: `wenchao.ding`
+* email: `f33chobits@gmail.com`
+* skype: `wenchao.ding`
 
 ## Donate
 * Paypal - f33chobits@gmail.com

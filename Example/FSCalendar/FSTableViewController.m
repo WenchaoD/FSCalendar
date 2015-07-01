@@ -38,8 +38,7 @@
         // ViewDidLoad Example
         ViewDidLoadExampleViewController *viewController = [[ViewDidLoadExampleViewController alloc] init];
         viewController.title = @"FSCalendar";
-        [self.navigationController pushViewController:viewController animated:YES
-         ];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 
