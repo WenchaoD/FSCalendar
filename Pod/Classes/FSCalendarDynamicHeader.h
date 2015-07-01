@@ -34,11 +34,7 @@
 
 @end
 
-@interface FSCalendarCell (Dynamic)
 
-- (void)configureCell;
-
-@end
 
 @interface FSCalendarHeader (Dynamic)
 

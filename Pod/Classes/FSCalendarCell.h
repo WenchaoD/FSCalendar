@@ -27,6 +27,6 @@
 
 - (void)performSelecting;
 - (void)performDeselecting;
-- (void)configureCell;
+
 
 @end

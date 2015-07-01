@@ -90,6 +90,12 @@
     _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self configureCell];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];

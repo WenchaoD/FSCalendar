@@ -226,7 +226,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_currentMonth) {
                 [self scrollToDate:_currentMonth];
-                [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureCell)];
+                [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
             }
         });
     }
@@ -255,7 +255,7 @@
     cell.image = [self imageForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.hasEvent = [self hasEventForDate:cell.date];
-    [cell configureCell];
+    [cell setNeedsLayout];
     return cell;
 }
 
@@ -276,7 +276,7 @@
     // There is no stored 'selection' state for placeholder cell, so the 'simulated selection' state needs to be recalculated.
     [collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
         if (cell.isPlaceholder) {
-            [cell configureCell];
+            [cell setNeedsLayout];
         }
     }];
     
