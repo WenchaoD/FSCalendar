@@ -25,7 +25,8 @@
 
 ```objective-c
 @property (weak , nonatomic) FSCalendar *calendar;
-
+```
+```objective-c
 // In loadView or viewDidLoad
 FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
 calendar.dataSource = self;
@@ -39,7 +40,8 @@ self.calendar = calendar;
 
 ```swift
 private weak var calendar: FSCalendar!
-
+```
+```swift
 // In loadView or viewDidLoad
 let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: 320, height: 300))
 calendar.dataSource = self
@@ -137,11 +139,9 @@ calendar.appearance.cellStyle = .Rectangle
 }
 ```
 
-![fscalendar---subtitle1](https://cloud.githubusercontent.com/assets/5186464/8449076/b0be3d88-2000-11e5-9c5d-22ecd325b6cc.png)
-
-&nbsp&nbsp&nbsp&nbsp
-
 ![fscalendar---subtitle2](https://cloud.githubusercontent.com/assets/5186464/8449075/b0bb34ee-2000-11e5-9c4a-401bc708d9ea.png)
+<br/>
+![fscalendar---subtitle1](https://cloud.githubusercontent.com/assets/5186464/8449076/b0be3d88-2000-11e5-9c5d-22ecd325b6cc.png)
 
 #### And event dot for some days
 
@@ -153,7 +153,7 @@ calendar.appearance.cellStyle = .Rectangle
 }
 ```
 
-#### Or an image for some days
+#### Or image for some days
 
 ```objective-c
 // FSCalendarDataSource
@@ -171,12 +171,12 @@ calendar.appearance.cellStyle = .Rectangle
 // FSCalendarDataSource
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate fs_dateWithYear:2015 month:1 day:1];
+    return yourMinimumDate;
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate fs_dateWithYear:2015 month:10 day:31];
+    return yourMaximumDate;
 }
 ```
 
@@ -194,7 +194,7 @@ calendar.appearance.cellStyle = .Rectangle
 // FSCalendarDelegate
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    if ([date shouldNotBeSelected]) {
+    if ([dateShouldNotBeSelected]) {
         return NO;
     }
     return YES;
@@ -216,7 +216,7 @@ ios 7.0
 `FSCalendar` can be used on iPad.
 
 ## Known issues
-1. The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:
+* The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:
 
 ```objective-c    
 _calendar.appearance.autoAdjustTitleSize = NO; 
@@ -226,7 +226,7 @@ _calendar.appearance.subtitleFont = otherSubtitleFont;
 
 `titleFont` and `subtitleFont` would not take any effect if `autoAdjustTitleSize` value is `YES`
 
-2. What if I don't need the `today` circle?
+* What if I don't need the `today` circle?
 
 ```objective-c
 _calendar.appearance.todayColor = [UIColor clearColor];
@@ -234,7 +234,7 @@ _calendar.appearance.titleTodayColor = _calendar.appearance.titleDefaultColor;
 _calendar.appearance.subtitleTodayColor = _calendar.appearance.subtitleDefaultColor;
 ```
 
-3. Can we hide this?
+* Can we hide this?
 
 ```objective-c
 _calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
@@ -246,7 +246,7 @@ FSCalendar is available under the MIT license. See the LICENSE file for more inf
 
 ## Support
 * If FSCalendar cannot meet your requirment, tell me in issues or send your pull requests
-* If you like this control and use it in your app, submit your app's link address [here](https://www.cocoacontrols.com/controls/fscalendar).It would be a great support for me.
+* If you like this control and use it in your app, submit your app's link address [here](https://www.cocoacontrols.com/controls/fscalendar).It would be a great support.
 
 ## Contact
 * email: `f33chobits@gmail.com`
