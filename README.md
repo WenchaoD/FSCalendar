@@ -236,6 +236,7 @@ _calendar.appearance.subtitleTodayColor = _calendar.appearance.subtitleDefaultCo
 ```
 
 * Can we hide this?
+![fscalendar---headeralpha](https://cloud.githubusercontent.com/assets/5186464/8450978/217855ca-2012-11e5-8b97-a9b45ece4e71.png)
 
 ```objective-c
 _calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
