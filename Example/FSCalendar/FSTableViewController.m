@@ -16,6 +16,7 @@
 {
     [super viewDidLoad];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -37,8 +38,7 @@
         // ViewDidLoad Example
         ViewDidLoadExampleViewController *viewController = [[ViewDidLoadExampleViewController alloc] init];
         viewController.title = @"FSCalendar";
-        [self.navigationController pushViewController:viewController animated:YES
-         ];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 

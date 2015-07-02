@@ -25,7 +25,7 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, 300)];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.flow = FSCalendarFlowVertical;
+//    calendar.flow = FSCalendarFlowVertical;
     calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -41,9 +41,25 @@
     NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"MMMM yyyy"]);
 }
 
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
+//- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
+//{
+//    return [NSDate fs_dateWithYear:2015 month:1 day:1];
+//}
+//
+//- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+//{
+//    return [NSDate fs_dateWithYear:2015 month:10 day:31];
+//}
+
+- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
-    return date.fs_day == 4;
+    if (date.fs_day == 5) {
+        return [UIImage imageNamed:@"icon_footprint"];
+    }
+    if (date.fs_day == 10 || date.fs_day == 15) {
+        return [UIImage imageNamed:@"icon_cat"];
+    }
+    return nil;
 }
 
 @end

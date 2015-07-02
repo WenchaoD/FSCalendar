@@ -11,28 +11,22 @@
 
 @interface FSCalendarCell : UICollectionViewCell
 
-@property (weak,   nonatomic) NSDictionary        *titleColors;
-@property (weak,   nonatomic) NSDictionary        *subtitleColors;
-@property (weak,   nonatomic) NSDictionary        *backgroundColors;
+@property (weak,   nonatomic) FSCalendarAppearance *appearance;
 
-@property (weak,   nonatomic) UIColor             *eventColor;
+@property (strong, nonatomic) NSDate   *date;
+@property (strong, nonatomic) NSDate   *month;
+@property (strong, nonatomic) NSString *subtitle;
+@property (strong, nonatomic) UIImage  *image;
 
-@property (copy,   nonatomic) NSDate              *date;
-@property (copy,   nonatomic) NSDate              *month;
-@property (weak,   nonatomic) NSDate              *currentDate;
+@property (weak,   nonatomic) UILabel  *titleLabel;
+@property (weak,   nonatomic) UILabel  *subtitleLabel;
 
-@property (copy,   nonatomic) NSString            *subtitle;
+@property (assign, nonatomic) BOOL     hasEvent;
 
-@property (weak,   nonatomic) UILabel             *titleLabel;
-@property (weak,   nonatomic) UILabel             *subtitleLabel;
+@property (readonly, getter = isPlaceholder) BOOL placeholder;
 
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle;
-@property (assign, nonatomic) BOOL                hasEvent;
+- (void)performSelecting;
+- (void)performDeselecting;
 
-@property (readonly, getter = isPlaceholder)      BOOL placeholder;
-
-- (void)showAnimation;
-- (void)hideAnimation;
-- (void)configureCell;
 
 @end

@@ -10,16 +10,21 @@
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
 #import "NSDate+FSExtension.h"
+#import "FSCalendarDynamicHeader.h"
 
 #define kAnimationDuration 0.15
 
 @interface FSCalendarCell ()
 
-@property (strong,   nonatomic) CAShapeLayer *backgroundLayer;
-@property (strong,   nonatomic) CAShapeLayer *eventLayer;
+@property (weak, nonatomic) CAShapeLayer *backgroundLayer;
+@property (weak, nonatomic) CAShapeLayer *eventLayer;
+@property (weak, nonatomic) CALayer      *imageLayer;
+
 @property (readonly, nonatomic) BOOL         today;
 @property (readonly, nonatomic) BOOL         weekend;
+@property (readonly, nonatomic) FSCalendar   *calendar;
 
+@property (assign,   nonatomic) BOOL         deselecting;
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 
@@ -48,17 +53,24 @@
         [self.contentView addSubview:subtitleLabel];
         self.subtitleLabel = subtitleLabel;
         
-        _backgroundLayer = [CAShapeLayer layer];
-        _backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
-        _backgroundLayer.hidden = YES;
-        [self.contentView.layer insertSublayer:_backgroundLayer atIndex:0];
+        CAShapeLayer *backgroundLayer = [CAShapeLayer layer];
+        backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
+        backgroundLayer.hidden = YES;
+        [self.contentView.layer insertSublayer:backgroundLayer atIndex:0];
+        self.backgroundLayer = backgroundLayer;
         
-        _eventLayer = [CAShapeLayer layer];
-        _eventLayer.backgroundColor = [UIColor clearColor].CGColor;
-        _eventLayer.fillColor = [UIColor cyanColor].CGColor;
-        _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
-        _eventLayer.hidden = YES;
-        [self.contentView.layer addSublayer:_eventLayer];
+        CAShapeLayer *eventLayer = [CAShapeLayer layer];
+        eventLayer.backgroundColor = [UIColor clearColor].CGColor;
+        eventLayer.fillColor = [UIColor cyanColor].CGColor;
+        eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:eventLayer.bounds].CGPath;
+        eventLayer.hidden = YES;
+        [self.contentView.layer addSublayer:eventLayer];
+        self.eventLayer = eventLayer;
+        
+        CALayer *imageLayer = [CALayer layer];
+        imageLayer.backgroundColor = [UIColor clearColor].CGColor;
+        [self.contentView.layer addSublayer:imageLayer];
+        self.imageLayer = imageLayer;
     }
     return self;
 }
@@ -78,19 +90,30 @@
     _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self configureCell];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
     [CATransaction setDisableActions:YES];
 }
 
+- (BOOL)isSelected
+{
+    return [super isSelected] || ([self.calendar.selectedDate fs_isEqualToDateForDay:_date] && !_deselecting);
+}
+
 #pragma mark - Public
 
-- (void)showAnimation
+- (void)performSelecting
 {
     _backgroundLayer.hidden = NO;
     _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
-    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
+    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     CAAnimationGroup *group = [CAAnimationGroup animation];
     CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     zoomOut.fromValue = @0.3;
@@ -107,21 +130,24 @@
     [self configureCell];
 }
 
-- (void)hideAnimation
+- (void)performDeselecting
 {
-    _backgroundLayer.hidden = YES;
+    _deselecting = YES;
     [self configureCell];
+    _deselecting = NO;
 }
 
 #pragma mark - Private
 
 - (void)configureCell
 {
+    _titleLabel.font = _appearance.titleFont;
     _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
+    _subtitleLabel.font = _appearance.subtitleFont;
     _subtitleLabel.text = _subtitle;
-    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_titleColors];
-    _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_subtitleColors];
-    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_backgroundColors].CGColor;
+    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     
     CGFloat titleHeight = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}].height;
     if (_subtitleLabel.text) {
@@ -142,11 +168,20 @@
         _subtitleLabel.hidden = YES;
     }
     _backgroundLayer.hidden = !self.selected && !self.isToday;
-    _backgroundLayer.path = _cellStyle == FSCalendarCellStyleCircle ?
+    _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-    _eventLayer.fillColor = _eventColor.CGColor;
     _eventLayer.hidden = !_hasEvent;
+    _eventLayer.fillColor = _appearance.eventColor.CGColor;
+    
+    if (_image) {
+        _imageLayer.hidden = NO;
+        _imageLayer.frame = CGRectMake((self.fs_width-_image.size.width)*0.5, self.fs_height-_image.size.height, _image.size.width, _image.size.height);
+        _imageLayer.contents = (id)_image.CGImage;
+    } else {
+        _imageLayer.hidden = YES;
+        _imageLayer.contents = nil;
+    }
 }
 
 - (BOOL)isPlaceholder
@@ -156,7 +191,7 @@
 
 - (BOOL)isToday
 {
-    return [_date fs_isEqualToDateForDay:_currentDate];
+    return [_date fs_isEqualToDateForDay:self.calendar.currentDate];
 }
 
 - (BOOL)isWeekend
@@ -179,6 +214,15 @@
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];
+}
+
+- (FSCalendar *)calendar
+{
+    UIView *superview = self.superview;
+    while (superview && ![superview isKindOfClass:[FSCalendar class]]) {
+        superview = superview.superview;
+    }
+    return (FSCalendar *)superview;
 }
 
 @end

@@ -33,13 +33,11 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
     _currentCalendar = [NSCalendar currentCalendar];
-    _flow = _calendar.flow;
 //    _firstWeekday = _calendar.firstWeekday;
-//    _calendar.firstWeekday = 2;
+//    _calendar.firstWeekday = 2; // Monday
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
-    
-//    _calendar.headerDateFormat = [NSDateFormatter dateFormatFromTemplate:@"MMMM yyyy" options:0 locale:[NSLocale localeWithLocaleIdentifier:@"it_IT"]];
+    _flow = _calendar.flow;
     
 }
 
@@ -59,19 +57,19 @@
     return _lunarDate.dayString;
 }
 
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
-{
-    return date.fs_day == 3;
-}
+//- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
+//{
+//    return date.fs_day == 3;
+//}
 
 //- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [NSDate fs_dateWithYear:2015 month:3 day:1];
+//    return [NSDate fs_dateWithYear:2015 month:6 day:15];
 //}
 //
 //- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [NSDate fs_dateWithYear:2015 month:7 day:30];
+//    return [NSDate fs_dateWithYear:2015 month:7 day:15];
 //}
 
 #pragma mark - FSCalendarDelegate
@@ -117,40 +115,38 @@
     if (_theme != theme) {
         _theme = theme;
         switch (theme) {
-            case 0:
-            {
-                [_calendar setWeekdayTextColor:kBlueText];
-                [_calendar setHeaderTitleColor:kBlueText];
-                [_calendar setEventColor:[kBlueText colorWithAlphaComponent:0.75]];
-                [_calendar setSelectionColor:kBlue];
-                [_calendar setHeaderDateFormat:@"MMMM yyyy"];
-                [_calendar setMinDissolvedAlpha:0.2];
-                [_calendar setTodayColor:kPink];
-                [_calendar setCellStyle:FSCalendarCellStyleCircle];
+            case 0: {
+                _calendar.appearance.weekdayTextColor = kBlueText;
+                _calendar.appearance.headerTitleColor = kBlueText;
+                _calendar.appearance.eventColor = [kBlueText colorWithAlphaComponent:0.75];
+                _calendar.appearance.selectionColor = kBlue;
+                _calendar.appearance.headerDateFormat = @"MMMM yyyy";
+                _calendar.appearance.todayColor = kPink;
+                _calendar.appearance.cellStyle = FSCalendarCellStyleCircle;
+                _calendar.appearance.headerMinimumDissolvedAlpha = 0.2;
                 break;
             }
-            case 1:
-            {
-                [_calendar setWeekdayTextColor:[UIColor redColor]];
-                [_calendar setHeaderTitleColor:[UIColor darkGrayColor]];
-                [_calendar setEventColor:[UIColor greenColor]];
-                [_calendar setSelectionColor:[UIColor blueColor]];
-                [_calendar setHeaderDateFormat:@"yyyy-MM"];
-                [_calendar setMinDissolvedAlpha:1.0];
-                [_calendar setTodayColor:[UIColor redColor]];
-                [_calendar setCellStyle:FSCalendarCellStyleCircle];
+            case 1: {
+                _calendar.appearance.weekdayTextColor = [UIColor redColor];
+                _calendar.appearance.headerTitleColor = [UIColor darkGrayColor];
+                _calendar.appearance.eventColor = [UIColor greenColor];
+                _calendar.appearance.selectionColor = [UIColor blueColor];
+                _calendar.appearance.headerDateFormat = @"yyyy-MM";
+                _calendar.appearance.todayColor = [UIColor redColor];
+                _calendar.appearance.cellStyle = FSCalendarCellStyleCircle;
+                _calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
+
                 break;
             }
-            case 2:
-            {
-                [_calendar setWeekdayTextColor:[UIColor redColor]];
-                [_calendar setHeaderTitleColor:[UIColor redColor]];
-                [_calendar setEventColor:[UIColor greenColor]];
-                [_calendar setSelectionColor:[UIColor blueColor]];
-                [_calendar setHeaderDateFormat:@"yyyy/MM"];
-                [_calendar setMinDissolvedAlpha:1.0];
-                [_calendar setCellStyle:FSCalendarCellStyleRectangle];
-                [_calendar setTodayColor:[UIColor orangeColor]];
+            case 2: {
+                _calendar.appearance.weekdayTextColor = [UIColor redColor];
+                _calendar.appearance.headerTitleColor = [UIColor redColor];
+                _calendar.appearance.eventColor = [UIColor greenColor];
+                _calendar.appearance.selectionColor = [UIColor blueColor];
+                _calendar.appearance.headerDateFormat = @"yyyy/MM";
+                _calendar.appearance.todayColor = [UIColor orangeColor];
+                _calendar.appearance.cellStyle = FSCalendarCellStyleRectangle;
+                _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
                 break;
             }
             default:
