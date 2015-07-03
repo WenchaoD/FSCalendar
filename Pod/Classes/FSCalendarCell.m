@@ -42,7 +42,7 @@
         titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:15];
-        titleLabel.textColor = [UIColor darkTextColor];
+        titleLabel.textColor = _titleColor ? _titleColor : [UIColor darkTextColor];
         [self.contentView addSubview:titleLabel];
         self.titleLabel = titleLabel;
         
@@ -145,7 +145,7 @@
     _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
     _subtitleLabel.font = _appearance.subtitleFont;
     _subtitleLabel.text = _subtitle;
-    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    _titleLabel.textColor = _titleColor ? _titleColor : [self colorForCurrentStateInDictionary:_appearance.titleColors];
     _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
     _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     
