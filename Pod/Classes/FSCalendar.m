@@ -21,7 +21,8 @@
 
 - (BOOL)hasEventForDate:(NSDate *)date;
 - (NSString *)subtitleForDate:(NSDate *)date;
-- (UIImage *)imageForDate:(NSDate *)date;
+- (UIImage *)topImageForDate:(NSDate *)date;
+- (UIImage *)bottomImageForDate:(NSDate *)date;
 - (UIColor *)titleColorForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
@@ -98,14 +99,15 @@
     _headerHeight     = -1;
     _calendar         = [NSCalendar currentCalendar];
     
-    NSArray *weekSymbols = [_calendar shortStandaloneWeekdaySymbols];
+    NSArray *weekSymbols = [_calendar shortWeekdaySymbols];
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
     for (int i = 0; i < weekSymbols.count; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        weekdayLabel.text = weekSymbols[i];
+        weekdayLabel.text = [[weekSymbols[i] uppercaseString] stringByReplacingOccurrencesOfString:@"." withString:@""];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
         weekdayLabel.font = _appearance.weekdayFont;
         weekdayLabel.textColor = _appearance.weekdayTextColor;
+        weekdayLabel.backgroundColor = _appearance.headerBackgroundColor;
         [_weekdays addObject:weekdayLabel];
         [self addSubview:weekdayLabel];
     }
@@ -185,6 +187,10 @@
         _header.frame = CGRectMake(0, 0, self.fs_width, kDefaultHeaderHeight);
     }
     
+    if (_appearance.headerBackgroundColor) {
+        _header.backgroundColor = _appearance.headerBackgroundColor;
+    }
+    
     _collectionView.frame = CGRectMake(0, kWeekHeight+_header.fs_height, self.fs_width, self.fs_height-kWeekHeight-_header.fs_height);
     _collectionView.contentInset = UIEdgeInsetsZero;
     _collectionViewFlowLayout.itemSize = CGSizeMake(
@@ -199,8 +205,9 @@
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
         weekdayLabel.frame = CGRectMake(absoluteIndex*width,
                                         _header.fs_height,
-                                        width,
+                                        width+0.5, // round for prevent white spaces between labels
                                         height);
+        weekdayLabel.backgroundColor = _appearance.headerBackgroundColor;
     }];
     [_appearance adjustTitleIfNecessary];
     
@@ -253,7 +260,8 @@
     cell.month              = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
     cell.date               = [self dateForIndexPath:indexPath];
     
-    cell.image = [self imageForDate:cell.date];
+    cell.topImage = [self topImageForDate:cell.date];
+    cell.bottomImage = [self bottomImageForDate:cell.date];
     cell.titleColor = [self titleColorForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.hasEvent = [self hasEventForDate:cell.date];
@@ -609,10 +617,18 @@
     return nil;
 }
 
-- (UIImage *)imageForDate:(NSDate *)date
+- (UIImage *)topImageForDate:(NSDate *)date
 {
-    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:imageForDate:)]) {
-        return [_dataSource calendar:self imageForDate:date];
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:topImageForDate:)]) {
+        return [_dataSource calendar:self topImageForDate:date];
+    }
+    return nil;
+}
+
+- (UIImage *)bottomImageForDate:(NSDate *)date
+{
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:bottomImageForDate:)]) {
+        return [_dataSource calendar:self bottomImageForDate:date];
     }
     return nil;
 }

@@ -18,7 +18,8 @@
 
 @property (weak, nonatomic) CAShapeLayer *backgroundLayer;
 @property (weak, nonatomic) CAShapeLayer *eventLayer;
-@property (weak, nonatomic) CALayer      *imageLayer;
+@property (weak, nonatomic) CALayer      *topImageLayer;
+@property (weak, nonatomic) CALayer      *bottomImageLayer;
 
 @property (readonly, nonatomic) BOOL         today;
 @property (readonly, nonatomic) BOOL         weekend;
@@ -67,10 +68,15 @@
         [self.contentView.layer addSublayer:eventLayer];
         self.eventLayer = eventLayer;
         
-        CALayer *imageLayer = [CALayer layer];
-        imageLayer.backgroundColor = [UIColor clearColor].CGColor;
-        [self.contentView.layer addSublayer:imageLayer];
-        self.imageLayer = imageLayer;
+        CALayer *bottomImageLayer = [CALayer layer];
+        bottomImageLayer.backgroundColor = [UIColor clearColor].CGColor;
+        [self.contentView.layer addSublayer:bottomImageLayer];
+        self.bottomImageLayer = bottomImageLayer;
+        
+        CALayer *topImageLayer = [CALayer layer];
+        topImageLayer.backgroundColor = [UIColor clearColor].CGColor;
+        [self.contentView.layer addSublayer:topImageLayer];
+        self.topImageLayer = topImageLayer;
     }
     return self;
 }
@@ -146,6 +152,7 @@
     _subtitleLabel.font = _appearance.subtitleFont;
     _subtitleLabel.text = _subtitle;
     _titleLabel.textColor = _titleColor ? _titleColor : [self colorForCurrentStateInDictionary:_appearance.titleColors];
+//    _titleLabel.layer.backgroundColor = [UIColor redColor].CGColor;
     _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
     _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     
@@ -174,13 +181,22 @@
     _eventLayer.hidden = !_hasEvent;
     _eventLayer.fillColor = _appearance.eventColor.CGColor;
     
-    if (_image) {
-        _imageLayer.hidden = NO;
-        _imageLayer.frame = CGRectMake((self.fs_width-_image.size.width)*0.5, self.fs_height-_image.size.height, _image.size.width, _image.size.height);
-        _imageLayer.contents = (id)_image.CGImage;
+    if (_topImage) {
+        _topImageLayer.hidden = NO;
+        _topImageLayer.frame = CGRectMake((self.fs_width-_topImage.size.width)*0.5, _titleLabel.fs_top, _topImage.size.width, _topImage.size.height);
+        _topImageLayer.contents = (id)_topImage.CGImage;
     } else {
-        _imageLayer.hidden = YES;
-        _imageLayer.contents = nil;
+        _topImageLayer.hidden = YES;
+        _topImageLayer.contents = nil;
+    }
+    
+    if (_bottomImage) {
+        _bottomImageLayer.hidden = NO;
+        _bottomImageLayer.frame = CGRectMake((self.fs_width-_bottomImage.size.width)*0.5, _titleLabel.fs_bottom-_bottomImage.size.height, _bottomImage.size.width, _bottomImage.size.height);
+        _bottomImageLayer.contents = (id)_bottomImage.CGImage;
+    } else {
+        _bottomImageLayer.hidden = YES;
+        _bottomImageLayer.contents = nil;
     }
 }
 

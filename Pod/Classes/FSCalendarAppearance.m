@@ -13,6 +13,7 @@
 #define kBlueText   [UIColor colorWithRed:14/255.0  green:69/255.0  blue:221/255.0    alpha:1.0]
 #define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
 #define kBlue       [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:1.0]
+#define kWhite      [UIColor whiteColor]
 
 @interface FSCalendarAppearance ()
 
@@ -37,6 +38,7 @@
         _subtitleFont     = [UIFont systemFontOfSize:10];
         _weekdayFont      = [UIFont systemFontOfSize:15];
         _headerTitleFont  = [UIFont systemFontOfSize:15];
+        _headerBackgroundColor = kWhite;
         _headerTitleColor = kBlueText;
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;
@@ -315,6 +317,14 @@
     }
 }
 
+- (void)setHeaderBackgroundColor:(UIColor *)color
+{
+    if (![_headerBackgroundColor isEqual:color]) {
+        _headerBackgroundColor = color;
+        [_calendar.header.collectionView reloadData];
+    }
+}
+
 - (void)setHeaderTitleColor:(UIColor *)color
 {
     if (![_headerTitleColor isEqual:color]) {
@@ -322,6 +332,7 @@
         [_calendar.header.collectionView reloadData];
     }
 }
+
 - (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
 {
     if (_autoAdjustTitleSize != autoAdjustTitleSize) {
@@ -341,10 +352,10 @@
 - (void)adjustTitleIfNecessary
 {
     if (_autoAdjustTitleSize) {
-        _titleFont       = [_titleFont fontWithSize:_calendar.collectionView.fs_height/3/6];
+        _titleFont       = [_titleFont fontWithSize:_calendar.collectionView.fs_height/3/7];
         _subtitleFont    = [_subtitleFont fontWithSize:_calendar.collectionView.fs_height/4.5/6];
         _headerTitleFont = [_headerTitleFont fontWithSize:_titleFont.pointSize+3];
-        _weekdayFont     = _titleFont;
+        _weekdayFont     = [_titleFont fontWithSize:_titleFont.pointSize/1.5];//_titleFont;
         
         // reload appearance
         [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];

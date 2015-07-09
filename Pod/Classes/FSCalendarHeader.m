@@ -101,14 +101,14 @@
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.titleLabel.font = _appearance.headerTitleFont;
     cell.titleLabel.textColor = _appearance.headerTitleColor;
-    _dateFormatter.dateFormat = _appearance.headerDateFormat;
+    [_dateFormatter setLocalizedDateFormatFromTemplate:_appearance.headerDateFormat];   //.dateFormat = _appearance.headerDateFormat;
     if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         // 多出的两项需要制空
         if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1 )) {
             cell.titleLabel.text = nil;
         } else {
             NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
-            cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+            cell.titleLabel.text = [[_dateFormatter stringFromDate:date] capitalizedString];
         }
     } else {
         NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item].fs_dateByIgnoringTimeComponents;

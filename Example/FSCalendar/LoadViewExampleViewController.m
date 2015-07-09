@@ -22,13 +22,17 @@
     view.backgroundColor = [UIColor whiteColor];
     self.view = view;
     
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, 300)];
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, 400)];
     calendar.dataSource = self;
     calendar.delegate = self;
 //    calendar.flow = FSCalendarFlowVertical;
     calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
     [view addSubview:calendar];
     self.calendar = calendar;
+    self.calendar.appearance.headerTitleColor = [UIColor whiteColor];
+    self.calendar.appearance.headerBackgroundColor = [UIColor colorWithRed:247.0/255.0 green:129.0/255.0 blue:127.0/255.0 alpha:1];
+    self.calendar.appearance.weekdayTextColor = [UIColor whiteColor];
+//    self.calendar.calendarGlobalColor = [UIColor colorWithRed:247.0/255.0 green:129.0/255.0 blue:127.0/255.0 alpha:1];
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
@@ -51,7 +55,15 @@
 //    return [NSDate fs_dateWithYear:2015 month:10 day:31];
 //}
 
-- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
+- (UIImage *)calendar:(FSCalendar *)calendar topImageForDate:(NSDate *)date
+{
+    if (date.fs_day == 13) {
+        return [UIImage imageNamed:@"icon_footprint"];
+    }
+    return nil;
+}
+
+- (UIImage *)calendar:(FSCalendar *)calendar bottomImageForDate:(NSDate *)date
 {
     if (date.fs_day == 5) {
         return [UIImage imageNamed:@"icon_footprint"];

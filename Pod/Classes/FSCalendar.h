@@ -43,7 +43,8 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 
 @optional
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
-- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date;
+- (UIImage *)calendar:(FSCalendar *)calendar topImageForDate:(NSDate *)date;
+- (UIImage *)calendar:(FSCalendar *)calendar bottomImageForDate:(NSDate *)date;
 - (UIColor *)calendar:(FSCalendar *)calendar titleColorForDate:(NSDate *)date;
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar;
