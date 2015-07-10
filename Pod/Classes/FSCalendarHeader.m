@@ -21,8 +21,6 @@
 
 @property (readonly, nonatomic) FSCalendar *calendar;
 
-- (void)updateAlphaForCell:(UICollectionViewCell *)cell;
-
 @end
 
 @implementation FSCalendarHeader
@@ -119,7 +117,12 @@
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self updateAlphaForCell:cell];
+    [cell setNeedsLayout];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 
 #pragma mark - Properties
@@ -134,12 +137,6 @@
     } else {
         _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSArray *cells = _collectionView.visibleCells;
-        [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [self updateAlphaForCell:obj];
-        }];
-    });
 }
 
 - (void)setScrollDirection:(UICollectionViewScrollDirection)scrollDirection
@@ -170,21 +167,6 @@
 
 #pragma mark - Private
 
-- (void)updateAlphaForCell:(UICollectionViewCell *)cell
-{
-    [[cell.contentView viewWithTag:100] setFrame:cell.contentView.bounds];
-    if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-        CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].x;
-        CGFloat center = CGRectGetMidX(self.bounds);
-        cell.contentView.alpha = 1.0 - (1.0-_appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.width;
-    } else {
-        CGFloat position = [cell convertPoint:CGPointMake(CGRectGetMidX(cell.bounds), CGRectGetMidY(cell.bounds)) toView:self].y;
-        CGFloat center = CGRectGetMidY(self.bounds);
-        cell.contentView.alpha = 1.0 - (1.0-_appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/_collectionViewFlowLayout.itemSize.height;
-    }
-}
-
-
 - (FSCalendar *)calendar
 {
     return (FSCalendar *)self.superview;
@@ -212,6 +194,32 @@
     [super setBounds:bounds];
     _titleLabel.frame = bounds;
 }
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    self.titleLabel.frame = self.contentView.bounds;
+    if (self.header.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+        CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].x;
+        CGFloat center = CGRectGetMidX(self.header.bounds);
+        self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_width;
+    } else {
+        CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].y;
+        CGFloat center = CGRectGetMidY(self.header.bounds);
+        self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
+    }
+}
+
+- (FSCalendarHeader *)header
+{
+    UIView *superview = self.superview;
+    while (superview && ![superview isKindOfClass:[FSCalendarHeader class]]) {
+        superview = superview.superview;
+    }
+    return (FSCalendarHeader *)superview;
+}
+
 
 @end
 
