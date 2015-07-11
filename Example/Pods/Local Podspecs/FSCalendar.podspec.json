@@ -1,6 +1,6 @@
 {
   "name": "FSCalendar",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "summary": "A powerful calendar which supports Appearance, Infinite Scrolling and Subtitle",
   "homepage": "https://github.com/f33chobits/FSCalendar",
   "screenshots": [
@@ -15,7 +15,7 @@
   },
   "source": {
     "git": "https://github.com/f33chobits/FSCalendar.git",
-    "tag": "0.9.0"
+    "tag": "0.9.1"
   },
   "platforms": {
     "ios": "7.0"
