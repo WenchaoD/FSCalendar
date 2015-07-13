@@ -170,9 +170,7 @@
     [super layoutSubviews];
     _supressEvent = YES;
     CGFloat padding = self.fs_height * 0.01;
-    if (_headerHeight == -1) {
-        _header.frame = CGRectMake(0, 0, self.fs_width, kDefaultHeaderHeight);
-    }
+    _header.frame = CGRectMake(0, 0, self.fs_width, _headerHeight == -1 ? kDefaultHeaderHeight : _headerHeight);
     
     _collectionView.frame = CGRectMake(0, kWeekHeight+_header.fs_height, self.fs_width, self.fs_height-kWeekHeight-_header.fs_height);
     _collectionView.contentInset = UIEdgeInsetsZero;
