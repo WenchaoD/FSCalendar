@@ -195,7 +195,11 @@
     
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
-        self.selectedDate = _selectedDate ?: [NSDate date];
+        if (!_selectedDate) {
+            self.selectedDate = [NSDate date];
+        } else {
+            [self scrollToDate:_currentMonth];
+        }
     }
     
     _supressEvent = NO;
