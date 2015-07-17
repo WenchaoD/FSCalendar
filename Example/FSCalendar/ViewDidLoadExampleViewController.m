@@ -52,4 +52,16 @@
     return date.fs_day == 5;
 }
 
+- (UIColor *)calendar:(FSCalendar *)calendar titleColorForDate:(NSDate *)date
+{
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    dateComponents = [[NSCalendar calendarWithIdentifier:NSGregorianCalendar] components:(NSCalendarUnitDay) fromDate:date];
+    
+    if ((dateComponents.day % 2) == 0) {
+        return [UIColor redColor];
+    }
+    
+    return [UIColor darkTextColor];
+}
+
 @end
