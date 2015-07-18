@@ -132,11 +132,22 @@ calendar.appearance.cellStyle = .Rectangle
 
 #### `FSCalendar` can show subtitle for each day
 
+* Objective - c
+
 ```objective-c
 // FSCalendarDataSource
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
     return yourSubtitle;
+}
+```
+
+* Swift
+
+```swift
+// FSCalendarDataSource
+func calendar(calendar: FSCalendar!, subtitleForDate date: NSDate!) -> String! {
+    return yourSubtitle
 }
 ```
 
@@ -146,6 +157,8 @@ calendar.appearance.cellStyle = .Rectangle
 
 #### And event dot for some days
 
+* Objective - c
+
 ```objective-c
 // FSCalendarDataSource
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
@@ -154,13 +167,33 @@ calendar.appearance.cellStyle = .Rectangle
 }
 ```
 
+* Swift
+
+```swift
+// FSCalendarDataSource
+func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
+    return shouldShowEventDot
+}
+```
+
 #### Or image for some days
+
+* Objective - c
 
 ```objective-c
 // FSCalendarDataSource
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
     return anyImage;
+}
+```
+
+* Swift
+
+```swift
+// FSCalendarDataSource
+func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
+    return anyImage
 }
 ```
 
@@ -182,6 +215,9 @@ calendar.appearance.cellStyle = .Rectangle
 ```
 
 #### You can do something when a date is selected
+
+* Objective - c
+
 ```objective-c
 // FSCalendarDelegate
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
@@ -190,7 +226,20 @@ calendar.appearance.cellStyle = .Rectangle
 }
 ```
 
+* Swift
+
+```swift
+// FSCalendarDelegate
+func calendar(calendar: FSCalendar!, didSelectDate date: NSDate!) {
+    
+}
+
+```
+
 #### You can prevent it from being selected
+
+* Objective - c
+
 ```objective-c
 // FSCalendarDelegate
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
@@ -202,10 +251,33 @@ calendar.appearance.cellStyle = .Rectangle
 }
 ```
 
+* Swift
+
+```swift
+func calendar(calendar: FSCalendar!, shouldSelectDate date: NSDate!) -> Bool {
+    if dateShouldNotBeSelected {
+        return false
+    }
+    return true
+}
+```
+ 
+
 #### You will get notified when `FSCalendar` changes the month
+
+* Objective - c
+
 ```objective-c
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
 {
+    // Do something
+}
+```
+
+* Swift
+
+```swift
+func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
     // Do something
 }
 ```
