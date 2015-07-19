@@ -19,7 +19,11 @@
 @property (weak, nonatomic) UICollectionView           *collectionView;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
+@property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
+
 @property (readonly, nonatomic) FSCalendar *calendar;
+
+- (void)setNeedsAdjusting;
 
 @end
 
@@ -76,6 +80,14 @@
     _collectionView.contentInset = UIEdgeInsetsZero;
     _collectionViewFlowLayout.itemSize = CGSizeMake(_collectionView.fs_width * 0.5,
                                                     _collectionView.fs_height);
+    if (_needsAdjustingMonthPosition) {
+        _needsAdjustingMonthPosition = NO;
+        if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+            _collectionView.contentOffset = CGPointMake((_scrollOffset+0.5)*_collectionViewFlowLayout.itemSize.width, 0);
+        } else {
+            _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
+        }
+    }
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -132,11 +144,7 @@
     if (_scrollOffset != scrollOffset) {
         _scrollOffset = scrollOffset;
     }
-    if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-        _collectionView.contentOffset = CGPointMake((_scrollOffset+0.5)*_collectionViewFlowLayout.itemSize.width, 0);
-    } else {
-        _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
-    }
+    [self setNeedsAdjusting];
 }
 
 - (void)setScrollDirection:(UICollectionViewScrollDirection)scrollDirection
@@ -170,6 +178,12 @@
 - (FSCalendar *)calendar
 {
     return (FSCalendar *)self.superview;
+}
+
+- (void)setNeedsAdjusting
+{
+    _needsAdjustingMonthPosition = YES;
+    [self setNeedsLayout];
 }
 
 @end

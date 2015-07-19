@@ -48,11 +48,14 @@
 @property (strong, nonatomic) NSCalendar                 *calendar;
 @property (assign, nonatomic) BOOL                       supressEvent;
 
+@property (assign, nonatomic) BOOL                       needsAdjustingMonthPosition;
+
 - (void)orientationDidChange:(NSNotification *)notification;
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
 
+- (void)setNeedsAdjusting;
 - (void)scrollToDate:(NSDate *)date;
 - (void)scrollToDate:(NSDate *)date animate:(BOOL)animate;
 
@@ -155,19 +158,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        if (!_selectedDate) {
-            _supressEvent = YES;
-            NSDate *today = [NSDate date].fs_dateByIgnoringTimeComponents;
-            if ([self isDateInRange:today]) {
-                self.selectedDate = today;
-            }
-            _supressEvent = NO;
-        }
-        
-    });
-    
 }
 
 - (void)dealloc
@@ -180,9 +170,7 @@
     [super layoutSubviews];
     _supressEvent = YES;
     CGFloat padding = self.fs_height * 0.01;
-    if (_headerHeight == -1) {
-        _header.frame = CGRectMake(0, 0, self.fs_width, kDefaultHeaderHeight);
-    }
+    _header.frame = CGRectMake(0, 0, self.fs_width, _headerHeight == -1 ? kDefaultHeaderHeight : _headerHeight);
     
     _collectionView.frame = CGRectMake(0, kWeekHeight+_header.fs_height, self.fs_width, self.fs_height-kWeekHeight-_header.fs_height);
     _collectionView.contentInset = UIEdgeInsetsZero;
@@ -203,6 +191,15 @@
     }];
     [_appearance adjustTitleIfNecessary];
     
+    if (_needsAdjustingMonthPosition) {
+        _needsAdjustingMonthPosition = NO;
+        if (!_selectedDate) {
+            self.selectedDate = [NSDate date];
+        } else {
+            [self scrollToDate:_currentMonth];
+        }
+    }
+    
     _supressEvent = NO;
     
 }
@@ -220,15 +217,7 @@
 {
     [super didMoveToWindow];
     if (self.window) {
-        // 防止Push到其他的控制器中，旋转手机再返回
-        // In case : Pushing to another view controller then change orientation then pop back
-        [self setNeedsLayout];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (_currentMonth) {
-                [self scrollToDate:_currentMonth];
-                [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-            }
-        });
+        [self setNeedsAdjusting];
     }
 }
 
@@ -505,6 +494,12 @@
 }
 
 #pragma mark - Private
+
+- (void)setNeedsAdjusting
+{
+    _needsAdjustingMonthPosition = YES;
+    [self setNeedsLayout];
+}
 
 - (void)scrollToDate:(NSDate *)date
 {
