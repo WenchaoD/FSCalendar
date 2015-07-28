@@ -69,6 +69,7 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 @property (readonly, nonatomic) NSDate *maximumDate;
 
 - (void)reloadData;
+- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate;
 
 @end
 
