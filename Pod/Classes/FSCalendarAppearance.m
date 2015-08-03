@@ -13,7 +13,7 @@
 #define kBlueText   [UIColor colorWithRed:14/255.0  green:69/255.0  blue:221/255.0    alpha:1.0]
 #define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
 #define kBlue       [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:1.0]
-#define kBlueHighlighted [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:0.8]
+#define kBlueHighlighted [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:0.65]
 
 @interface FSCalendarAppearance ()
 
