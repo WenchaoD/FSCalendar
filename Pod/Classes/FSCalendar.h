@@ -38,7 +38,6 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar;
-- (void)calendar:(FSCalendar *)calendar shouldHighlightDate:(NSDate *)date;
 @end
 
 @protocol FSCalendarDataSource <NSObject>
@@ -61,7 +60,6 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 @property (strong, nonatomic) NSDate *currentDate;
 @property (strong, nonatomic) NSDate *selectedDate;
 @property (strong, nonatomic) NSDate *currentMonth;
-@property (nonatomic) BOOL shouldSelectSecondDate;
 @property (strong, nonatomic) NSDate *selectedSecondDate;
 
 @property (assign, nonatomic) FSCalendarFlow flow;

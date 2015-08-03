@@ -453,16 +453,6 @@
     }
 }
 
-//- (void)setSecondSelectedDate:(NSDate *) selectedDate animated:(BOOL)animated {
-//    selectedDate = [selectedDate fs_daysFrom:_minimumDate] < 0 ? [NSDate fs_dateWithYear:_minimumDate.fs_year month:_minimumDate.fs_month day:selectedDate.fs_day] : selectedDate;
-//    selectedDate = [selectedDate fs_daysFrom:_maximumDate] > 0 ? [NSDate fs_dateWithYear:_maximumDate.fs_year month:_maximumDate.fs_month day:selectedDate.fs_day] : selectedDate;
-//    selectedDate = selectedDate.fs_dateByIgnoringTimeComponents;
-//    NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
-//    if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
-//        if (_collectionView.indexPathsForSelectedItems.count && )
-//    }
-//}
-
 - (void)setCurrentDate:(NSDate *)currentDate
 {
     if (![self isDateInRange:currentDate]) {
