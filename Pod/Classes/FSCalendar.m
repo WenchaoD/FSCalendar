@@ -258,6 +258,8 @@
         cell.isSecondSelected = NO;
     }
     
+    cell.isDisabled = ![self shouldSelectDate:cell.date];
+    
     cell.image = [self imageForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.hasEvent = [self hasEventForDate:cell.date];
@@ -640,6 +642,7 @@
     }
     return nil;
 }
+
 
 - (UIImage *)imageForDate:(NSDate *)date
 {
