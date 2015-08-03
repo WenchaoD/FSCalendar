@@ -20,10 +20,10 @@
 
 @property (weak,   nonatomic) UILabel  *titleLabel;
 @property (weak,   nonatomic) UILabel  *subtitleLabel;
-@property (nonatomic) BOOL isSecondSelected;
-@property (nonatomic) BOOL isInbetween;
+@property (assign, nonatomic) BOOL isSecondSelected;
+@property (assign, nonatomic) BOOL isInbetween;
 @property (assign, nonatomic) BOOL     hasEvent;
-
+@property (assign, nonatomic) BOOL isDisabled;
 @property (readonly, getter = isPlaceholder) BOOL placeholder;
 
 - (void)performSelecting;

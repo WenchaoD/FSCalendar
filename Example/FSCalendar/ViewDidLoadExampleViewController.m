@@ -30,7 +30,6 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 300)];
     calendar.dataSource = self;
     calendar.delegate = self;    
-//    calendar.flow = FSCalendarFlowVertical;
     calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:14];
     calendar.selectedSecondDate = [NSDate fs_dateWithYear:2015 month:2 day:10];
     [self.view addSubview:calendar];
@@ -51,6 +50,13 @@
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
 {
     return date.fs_day == 5;
+}
+
+-(BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date {
+    if (date == [NSDate fs_dateWithYear:2015 month:2 day:5]) {
+        return NO;
+    }
+    return YES;
 }
 
 @end

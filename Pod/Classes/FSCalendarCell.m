@@ -216,6 +216,9 @@
     if (self.isPlaceholder) {
         return dictionary[@(FSCalendarCellStatePlaceholder)];
     }
+    if (self.isDisabled) {
+        return dictionary[@(FSCalendarCellStateDisabled)];
+    }
     if (self.isWeekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
