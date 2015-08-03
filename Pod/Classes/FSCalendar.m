@@ -245,7 +245,8 @@
             cell.isSecondSelected = NO;
         }
         
-        BOOL isInbetween = [cell.date fs_daysFrom:_selectedSecondDate] > 0 && [cell.date fs_daysFrom:_selectedDate] < 0;
+        BOOL isInbetween = ([cell.date fs_daysFrom:_selectedSecondDate] > 0 && [cell.date fs_daysFrom:_selectedDate] < 0) || ([cell.date fs_daysFrom:_selectedSecondDate] < 0 && [cell.date
+                                                                                                                                                                                   fs_daysFrom:_selectedDate] > 0);
         
         if (isInbetween) {
             cell.isInbetween = YES;
@@ -293,8 +294,8 @@
                 cell.isSecondSelected = NO;
             }
             
-            BOOL isInbetween = [cell.date fs_daysFrom:_selectedSecondDate] > 0 && [cell.date fs_daysFrom:_selectedDate] < 0;
-            
+            BOOL isInbetween = ([cell.date fs_daysFrom:_selectedSecondDate] > 0 && [cell.date fs_daysFrom:_selectedDate] < 0) || ([cell.date fs_daysFrom:_selectedSecondDate] < 0 && [cell.date
+                                                                                                                                                                                      fs_daysFrom:_selectedDate] > 0);
             if (isInbetween) {
                 cell.isInbetween = YES;
             } else {
