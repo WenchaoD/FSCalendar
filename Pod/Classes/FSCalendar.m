@@ -155,7 +155,6 @@
     self.bottomBorderLayer = bottomBorderLayer;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
 }
 
 - (void)dealloc
@@ -238,6 +237,25 @@
     cell.appearance         = _appearance;
     cell.month              = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
     cell.date               = [self dateForIndexPath:indexPath];
+    _selectedSecondDate = [_selectedSecondDate fs_dateByIgnoringTimeComponents];
+    if (_selectedSecondDate) {
+        if (_selectedSecondDate == cell.date) {
+            cell.isSecondSelected = YES;
+        } else {
+            cell.isSecondSelected = NO;
+        }
+        
+        BOOL isInbetween = [cell.date fs_daysFrom:_selectedSecondDate] > 0 && [cell.date fs_daysFrom:_selectedDate] < 0;
+        
+        if (isInbetween) {
+            cell.isInbetween = YES;
+        } else {
+            cell.isInbetween = NO;
+        }
+        
+    } else {
+        cell.isSecondSelected = NO;
+    }
     
     cell.image = [self imageForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
@@ -250,23 +268,45 @@
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.isPlaceholder) {
-        [self setSelectedDate:cell.date animate:YES];
+
+    [self setSelectedDate:cell.date animate:YES];
+
     } else {
         [cell performSelecting];
         _selectedDate = [self dateForIndexPath:indexPath];
+        
         if (!_supressEvent) {
             [self didSelectDate:_selectedDate];
         }
     }
-    
+
     // CollectionView选中状态仅仅在‘当月’体现，placeholder需要重新计算'选中'状态
     // There is no stored 'selection' state for placeholder cell, so the 'simulated selection' state needs to be recalculated.
     [collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
         if (cell.isPlaceholder) {
             [cell setNeedsLayout];
         }
+        if (_selectedSecondDate) {
+            if (_selectedSecondDate == cell.date) {
+                cell.isSecondSelected = YES;
+            } else {
+                cell.isSecondSelected = NO;
+            }
+            
+            BOOL isInbetween = [cell.date fs_daysFrom:_selectedSecondDate] > 0 && [cell.date fs_daysFrom:_selectedDate] < 0;
+            
+            if (isInbetween) {
+                cell.isInbetween = YES;
+            } else {
+                cell.isInbetween = NO;
+            }
+            
+        } else {
+            cell.isSecondSelected = NO;
+        }
+        [cell performDeselecting];
     }];
-    
+
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
