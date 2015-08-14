@@ -14,22 +14,6 @@
 
 #define kAnimationDuration 0.15
 
-@interface FSCalendarCell ()
-
-@property (weak, nonatomic) CAShapeLayer *backgroundLayer;
-@property (weak, nonatomic) CAShapeLayer *eventLayer;
-@property (weak, nonatomic) CALayer      *imageLayer;
-
-@property (readonly, nonatomic) BOOL         today;
-@property (readonly, nonatomic) BOOL         weekend;
-@property (readonly, nonatomic) FSCalendar   *calendar;
-
-@property (assign,   nonatomic) BOOL         deselecting;
-
-- (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
-
-@end
-
 @implementation FSCalendarCell
 
 #pragma mark - Init and life cycle
@@ -141,9 +125,9 @@
 
 - (void)configureCell
 {
-    _titleLabel.font = _appearance.titleFont;
+    _titleLabel.font = [UIFont systemFontOfSize:_appearance.titleTextSize];
     _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
-    _subtitleLabel.font = _appearance.subtitleFont;
+    _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize];
     _subtitleLabel.text = _subtitle;
     _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
     _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
@@ -191,7 +175,7 @@
 
 - (BOOL)isToday
 {
-    return [_date fs_isEqualToDateForDay:self.calendar.currentDate];
+    return [_date fs_isEqualToDateForDay:self.calendar.today];
 }
 
 - (BOOL)isWeekend
@@ -226,3 +210,6 @@
 }
 
 @end
+
+
+

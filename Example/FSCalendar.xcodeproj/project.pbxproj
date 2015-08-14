@@ -12,7 +12,7 @@
 		30BD9E691B3C027B0014534B /* LoadViewExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30BD9E681B3C027B0014534B /* LoadViewExampleViewController.m */; };
 		30BD9E6C1B3C028B0014534B /* ViewDidLoadExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30BD9E6B1B3C028B0014534B /* ViewDidLoadExampleViewController.m */; };
 		30BD9E721B3C06A20014534B /* FSTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30BD9E711B3C06A20014534B /* FSTableViewController.m */; };
-		50D6661DFB2111E84D87FD51 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA143668CA544FECA6380E4A /* libPods-Tests.a */; };
+		506339B4FCF53B736A889B6F /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FCA2FD1EF8936D71E6AA1CD /* Pods_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		50F827A71AA7F86500FA2387 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50F827A51AA7F86500FA2387 /* Main_iPad.storyboard */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -28,8 +28,8 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
+		876126946DDE685310DC1B29 /* Pods_FSCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7DBDCA202D8EE7D60E290AD /* Pods_FSCalendar.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		EED4FE9F1A907BE60031554F /* CalendarConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EED4FE9E1A907BE60031554F /* CalendarConfigViewController.m */; };
-		F8C3942141E4882B65342A28 /* libPods-FSCalendar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F979DD533B3F7130E25C782 /* libPods-FSCalendar.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0FCA2FD1EF8936D71E6AA1CD /* Pods_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3077D2471B1457EF00A9735E /* FSCalendar.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = FSCalendar.podspec; path = ../FSCalendar.podspec; sourceTree = "<group>"; };
 		3077D2481B1457EF00A9735E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		3077D2491B1457EF00A9735E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -75,10 +76,9 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		8F979DD533B3F7130E25C782 /* libPods-FSCalendar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FSCalendar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CB12DDF9FF8B718CB8D5945 /* Pods-FSCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSCalendar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FSCalendar/Pods-FSCalendar.debug.xcconfig"; sourceTree = "<group>"; };
+		C7DBDCA202D8EE7D60E290AD /* Pods_FSCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FSCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E12F52F167890295C53E1F43 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
-		EA143668CA544FECA6380E4A /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EED4FE9D1A907BE60031554F /* CalendarConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarConfigViewController.h; sourceTree = "<group>"; };
 		EED4FE9E1A907BE60031554F /* CalendarConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarConfigViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,7 +91,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				F8C3942141E4882B65342A28 /* libPods-FSCalendar.a in Frameworks */,
+				876126946DDE685310DC1B29 /* Pods_FSCalendar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,7 +102,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				50D6661DFB2111E84D87FD51 /* libPods-Tests.a in Frameworks */,
+				506339B4FCF53B736A889B6F /* Pods_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,8 +187,8 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				8F979DD533B3F7130E25C782 /* libPods-FSCalendar.a */,
-				EA143668CA544FECA6380E4A /* libPods-Tests.a */,
+				C7DBDCA202D8EE7D60E290AD /* Pods_FSCalendar.framework */,
+				0FCA2FD1EF8936D71E6AA1CD /* Pods_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -253,6 +253,7 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				C2CC5DE0A1E4BDC71AE6A3C6 /* Copy Pods Resources */,
+				DFC1D212CDA78EB1B5B32EBD /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -272,6 +273,7 @@
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
 				FDAAB12EF2F215F0C3388F74 /* Copy Pods Resources */,
+				1E9DABCC78D5EC67E83C4372 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -357,6 +359,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		1E9DABCC78D5EC67E83C4372 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		29B9F694E136BE3D75EC443F /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -385,6 +402,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FSCalendar/Pods-FSCalendar-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DFC1D212CDA78EB1B5B32EBD /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FSCalendar/Pods-FSCalendar-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FDAAB12EF2F215F0C3388F74 /* Copy Pods Resources */ = {

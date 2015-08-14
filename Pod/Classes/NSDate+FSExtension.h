@@ -22,6 +22,8 @@
 @property (readonly, nonatomic) NSDate *fs_dateByIgnoringTimeComponents;
 @property (readonly, nonatomic) NSDate *fs_firstDayOfMonth;
 @property (readonly, nonatomic) NSDate *fs_lastDayOfMonth;
+@property (readonly, nonatomic) NSDate *fs_tomorrow;
+@property (readonly, nonatomic) NSDate *fs_yesterday;
 @property (readonly, nonatomic) NSInteger fs_numberOfDaysInMonth;
 
 - (NSDate *)fs_dateByAddingYears:(NSInteger)years;

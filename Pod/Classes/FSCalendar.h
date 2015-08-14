@@ -11,10 +11,6 @@
 
 @class FSCalendar;
 
-#ifndef IBInspectable
-#define IBInspectable
-#endif
-
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowVertical ,
     FSCalendarFlowHorizontal
@@ -50,13 +46,13 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 
 @end
 
-
+IB_DESIGNABLE
 @interface FSCalendar : UIView
 
 @property (weak, nonatomic) IBOutlet id<FSCalendarDelegate>   delegate;
 @property (weak, nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 
-@property (strong, nonatomic) NSDate *currentDate;
+@property (strong, nonatomic) NSDate *today;
 @property (strong, nonatomic) NSDate *selectedDate;
 @property (strong, nonatomic) NSDate *currentMonth;
 

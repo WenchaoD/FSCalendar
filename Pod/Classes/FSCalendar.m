@@ -17,6 +17,8 @@
 #define kDefaultHeaderHeight 40
 #define kWeekHeight roundf(self.fs_height/12)
 
+BOOL inInterfaceBuilder = NO;
+
 @interface FSCalendar (DataSourceAndDelegate)
 
 - (BOOL)hasEventForDate:(NSDate *)date;
@@ -100,11 +102,12 @@
     
     NSArray *weekSymbols = [_calendar shortStandaloneWeekdaySymbols];
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
+    UIFont *weekdayFont = [UIFont systemFontOfSize:_appearance.weekdayTextSize];
     for (int i = 0; i < weekSymbols.count; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.text = weekSymbols[i];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
-        weekdayLabel.font = _appearance.weekdayFont;
+        weekdayLabel.font = weekdayFont;
         weekdayLabel.textColor = _appearance.weekdayTextColor;
         [_weekdays addObject:weekdayLabel];
         [self addSubview:weekdayLabel];
@@ -142,8 +145,8 @@
     [self addSubview:collectionView];
     self.collectionView = collectionView;
     
-    _currentDate = [NSDate date].fs_dateByIgnoringTimeComponents;
-    _currentMonth = [_currentDate copy];
+    _today = [NSDate date].fs_dateByIgnoringTimeComponents;
+    _currentMonth = [_today copy];
     
     CALayer *topBorderLayer = [CALayer layer];
     topBorderLayer.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2].CGColor;
@@ -218,6 +221,15 @@
     if (self.window) {
         [self setNeedsAdjusting];
     }
+}
+
+- (void)prepareForInterfaceBuilder
+{
+    inInterfaceBuilder = YES;
+    NSDate *date = [NSDate date];
+    NSDate *today = [NSDate fs_dateWithYear:date.fs_year month:date.fs_month day:13];
+    self.today = today;
+    self.selectedDate = today.fs_tomorrow;
 }
 
 #pragma mark - UICollectionView dataSource/delegate
@@ -415,17 +427,17 @@
     }
 }
 
-- (void)setCurrentDate:(NSDate *)currentDate
+- (void)setToday:(NSDate *)today
 {
-    if (![self isDateInRange:currentDate]) {
+    if (![self isDateInRange:today]) {
         [NSException raise:@"currentDate out of range" format:nil];
     }
-    if (![_currentDate fs_isEqualToDateForDay:currentDate]) {
-        currentDate = currentDate.fs_dateByIgnoringTimeComponents;
-        _currentDate = [currentDate copy];
-        _currentMonth = [currentDate copy];
+    if (![_today fs_isEqualToDateForDay:today]) {
+        today = today.fs_dateByIgnoringTimeComponents;
+        _today = today;
+        _currentMonth = [today copy];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self scrollToDate:_currentDate];
+            [self scrollToDate:_today];
         });
     }
 }
@@ -472,7 +484,7 @@
     _header.scrollDirection = self.collectionViewFlowLayout.scrollDirection;
     [_header reloadData];
     
-    [_weekdays setValue:_appearance.weekdayFont forKey:@"font"];
+    [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
     CGFloat width = self.fs_width/_weekdays.count;
     CGFloat height = kWeekHeight;
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
@@ -599,7 +611,7 @@
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:subtitleForDate:)]) {
         return [_dataSource calendar:self subtitleForDate:date];
     }
-    return nil;
+    return inInterfaceBuilder&&_appearance.showTestSubtitles ? @"test" : nil;
 }
 
 - (UIImage *)imageForDate:(NSDate *)date
@@ -615,7 +627,7 @@
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:hasEventForDate:)]) {
         return [_dataSource calendar:self hasEventForDate:date];
     }
-    return NO;
+    return inInterfaceBuilder && ([@[@3,@5,@8,@16,@20,@25] containsObject:@(date.fs_day)]);
 }
 
 - (NSDate *)minimumDateForCalendar
