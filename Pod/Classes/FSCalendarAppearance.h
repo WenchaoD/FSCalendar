@@ -44,6 +44,8 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
 @property (strong, nonatomic) UIColor  *subtitleWeekendColor;
 
 @property (strong, nonatomic) UIColor  *selectionColor;
+@property (strong, nonatomic) UIColor  *secondSelectionColor;
+@property (strong, nonatomic) UIColor  *highlightedColor;
 @property (strong, nonatomic) UIColor  *todayColor;
 
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle;

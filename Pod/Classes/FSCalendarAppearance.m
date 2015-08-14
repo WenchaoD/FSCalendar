@@ -13,6 +13,7 @@
 #define kBlueText   [UIColor colorWithRed:14/255.0  green:69/255.0  blue:221/255.0    alpha:1.0]
 #define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
 #define kBlue       [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:1.0]
+#define kBlueHighlighted [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:0.65]
 
 @interface FSCalendarAppearance ()
 
@@ -48,6 +49,8 @@
         _backgroundColors[@(FSCalendarCellStateDisabled)]    = [UIColor clearColor];
         _backgroundColors[@(FSCalendarCellStatePlaceholder)] = [UIColor clearColor];
         _backgroundColors[@(FSCalendarCellStateToday)]       = kPink;
+        _backgroundColors[@(FSCalendarCellStateSecondSelected)] = kPink;
+        _backgroundColors[@(FSCalendarCellStateHighlighted)] = kBlueHighlighted;
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];
@@ -55,6 +58,8 @@
         _titleColors[@(FSCalendarCellStateDisabled)]    = [UIColor grayColor];
         _titleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
         _titleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
+        _titleColors[@(FSCalendarCellStateSecondSelected)] = [UIColor whiteColor];
+        _titleColors[@(FSCalendarCellStateHighlighted)] = [UIColor whiteColor];
         
         _subtitleColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _subtitleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkGrayColor];
@@ -62,6 +67,8 @@
         _subtitleColors[@(FSCalendarCellStateDisabled)]    = [UIColor lightGrayColor];
         _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
         _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
+        _subtitleColors[@(FSCalendarCellStateSecondSelected)] = [UIColor whiteColor];
+        _subtitleColors[@(FSCalendarCellStateHighlighted)] = [UIColor whiteColor];
         
         _cellStyle = FSCalendarCellStyleCircle;
         _eventColor = [kBlue colorWithAlphaComponent:0.75];
@@ -110,6 +117,32 @@
         [_titleColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (void) setTitleSecondSelectionColor:(UIColor *)color {
+    if (color) {
+        _titleColors[@(FSCalendarCellStateSecondSelected)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarCellStateSecondSelected)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (void) setTitleHighlightedColor:(UIColor *) color {
+    if (color) {
+        _titleColors[@(FSCalendarCellStateHighlighted)]= color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarCellStateHighlighted)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)titleSecondSelectionColor {
+    return _titleColors[@(FSCalendarCellStateSecondSelected)];
+}
+
+- (UIColor *)titleHighlightedColor {
+    return _titleColors[@(FSCalendarCellStateHighlighted)];
 }
 
 - (UIColor *)titleTodayColor
@@ -187,6 +220,19 @@
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 
+-(void)setSubtitleSecondSelectionColor:(UIColor *)color {
+    if (color) {
+        _subtitleColors[@(FSCalendarCellStateSecondSelected)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarCellStateSecondSelected)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)subtitleSecondSelectionColor {
+    return _subtitleColors[@(FSCalendarCellStateSecondSelected)];
+}
+
 - (UIColor *)subtitleTodayColor
 {
     return _subtitleColors[@(FSCalendarCellStateToday)];
@@ -237,6 +283,26 @@
     return _backgroundColors[@(FSCalendarCellStateSelected)];
 }
 
+- (void)setSecondSelectionColor:(UIColor *)color {
+    if (color) {
+        _backgroundColors[@(FSCalendarCellStateSecondSelected)] = color;
+    } else {
+        [_backgroundColors removeObjectForKey:@(FSCalendarCellStateSecondSelected)];
+    }
+    
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (void)setHighlightedColor:(UIColor *)color {
+    if (color) {
+        _backgroundColors[@(FSCalendarCellStateHighlighted)] = color;
+    } else {
+        [_backgroundColors removeObjectForKey:@(FSCalendarCellStateHighlighted)];
+    }
+    
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
 - (void)setTodayColor:(UIColor *)color
 {
     if (color) {
@@ -245,6 +311,14 @@
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)secondSelectionColor {
+    return _backgroundColors[@(FSCalendarCellStateSecondSelected)];
+}
+
+- (UIColor *)highlightedColor {
+    return _backgroundColors[@(FSCalendarCellStateHighlighted)];
 }
 
 - (UIColor *)todayColor
