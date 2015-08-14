@@ -66,7 +66,7 @@
 - (NSInteger)fs_second
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *component = [calendar components:NSSecondCalendarUnit
+    NSDateComponents *component = [calendar components:NSCalendarUnitSecond
                                               fromDate:self];
     return component.second;
 }

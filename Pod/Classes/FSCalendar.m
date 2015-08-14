@@ -137,6 +137,7 @@
     collectionView.showsVerticalScrollIndicator = NO;
     collectionView.delaysContentTouches = NO;
     collectionView.canCancelContentTouches = YES;
+    collectionView.scrollsToTop = NO;
     [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:@"cell"];
     [self addSubview:collectionView];
     self.collectionView = collectionView;
@@ -399,6 +400,7 @@
         _supressEvent = YES;
         NSDate *currentMonth = self.currentMonth;
         _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
+        _header.scrollDirection = _collectionViewFlowLayout.scrollDirection;
         [self layoutSubviews];
         [self reloadData];
         [self scrollToDate:currentMonth];
