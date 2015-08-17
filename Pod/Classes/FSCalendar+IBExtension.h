@@ -17,7 +17,6 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat  subtitleTextSize;
 @property (assign, nonatomic) IBInspectable CGFloat  weekdayTextSize;
 @property (assign, nonatomic) IBInspectable CGFloat  headerTitleTextSize;
-@property (assign, nonatomic) IBInspectable BOOL     showTestSubtitles;
 
 @property (strong, nonatomic) IBInspectable UIColor  *eventColor;
 @property (strong, nonatomic) IBInspectable UIColor  *weekdayTextColor;
@@ -42,5 +41,10 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor  *todayColor;
 
 @property (assign, nonatomic) IBInspectable FSCalendarCellStyle cellStyle;
+
+
+// For IB Preview. Not actually affect.
+@property (assign, nonatomic) IBInspectable BOOL      fakeSubtitles;
+@property (assign, nonatomic) IBInspectable NSInteger fakedSelectedDay;
 
 @end

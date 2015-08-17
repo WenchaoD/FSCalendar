@@ -71,16 +71,6 @@
     return self.appearance.headerTitleTextSize;
 }
 
-- (void)setShowTestSubtitles:(BOOL)showTestSubtitles
-{
-    self.appearance.showTestSubtitles = showTestSubtitles;
-}
-
-- (BOOL)showTestSubtitles
-{
-    return self.appearance.showTestSubtitles;
-}
-
 #pragma mark -  eventColor
 
 - (void)setEventColor:(UIColor *)eventColor
@@ -284,7 +274,7 @@
 {
     return self.appearance.todayColor;
 }
-#pragma mark -  cellStyle
+#pragma mark - cellStyle
 
 - (void)setCellStyle:(FSCalendarCellStyle)cellStyle
 {
@@ -294,6 +284,30 @@
 - (FSCalendarCellStyle)cellStyle
 {
     return self.appearance.cellStyle;
+}
+
+#pragma mark - fakeSubtitles
+
+- (void)setFakeSubtitles:(BOOL)fakeSubtitles
+{
+    self.appearance.fakeSubtitles = fakeSubtitles;
+}
+
+- (BOOL)fakeSubtitles
+{
+    return self.appearance.fakeSubtitles;
+}
+
+#pragma mark - fakedSelectedDay
+
+- (void)setFakedSelectedDay:(NSInteger)fakedSelectedDay
+{
+    self.appearance.fakedSelectedDay = fakedSelectedDay;
+}
+
+- (NSInteger)fakedSelectedDay
+{
+    return self.appearance.fakedSelectedDay;
 }
 
 @end

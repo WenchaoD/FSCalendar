@@ -17,7 +17,7 @@
 #define kDefaultHeaderHeight 40
 #define kWeekHeight roundf(self.fs_height/12)
 
-BOOL inInterfaceBuilder = NO;
+static BOOL FSCalendarInInterfaceBuilder = NO;
 
 @interface FSCalendar (DataSourceAndDelegate)
 
@@ -225,11 +225,9 @@ BOOL inInterfaceBuilder = NO;
 
 - (void)prepareForInterfaceBuilder
 {
-    inInterfaceBuilder = YES;
+    FSCalendarInInterfaceBuilder = YES;
     NSDate *date = [NSDate date];
-    NSDate *today = [NSDate fs_dateWithYear:date.fs_year month:date.fs_month day:13];
-    self.today = today;
-    self.selectedDate = today.fs_tomorrow;
+    self.selectedDate = [NSDate fs_dateWithYear:date.fs_year month:date.fs_month day:_appearance.fakedSelectedDay?:1];
 }
 
 #pragma mark - UICollectionView dataSource/delegate
@@ -436,9 +434,7 @@ BOOL inInterfaceBuilder = NO;
         today = today.fs_dateByIgnoringTimeComponents;
         _today = today;
         _currentMonth = [today copy];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self scrollToDate:_today];
-        });
+        [self setNeedsAdjusting];
     }
 }
 
@@ -611,7 +607,7 @@ BOOL inInterfaceBuilder = NO;
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:subtitleForDate:)]) {
         return [_dataSource calendar:self subtitleForDate:date];
     }
-    return inInterfaceBuilder&&_appearance.showTestSubtitles ? @"test" : nil;
+    return FSCalendarInInterfaceBuilder && _appearance.fakeSubtitles ? @"test" : nil;
 }
 
 - (UIImage *)imageForDate:(NSDate *)date
@@ -627,7 +623,7 @@ BOOL inInterfaceBuilder = NO;
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:hasEventForDate:)]) {
         return [_dataSource calendar:self hasEventForDate:date];
     }
-    return inInterfaceBuilder && ([@[@3,@5,@8,@16,@20,@25] containsObject:@(date.fs_day)]);
+    return FSCalendarInInterfaceBuilder && ([@[@3,@5,@8,@16,@20,@25] containsObject:@(date.fs_day)]);
 }
 
 - (NSDate *)minimumDateForCalendar

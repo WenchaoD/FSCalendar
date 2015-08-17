@@ -24,7 +24,6 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
 @property (assign, nonatomic) CGFloat  subtitleTextSize;
 @property (assign, nonatomic) CGFloat  weekdayTextSize;
 @property (assign, nonatomic) CGFloat  headerTitleTextSize;
-@property (assign, nonatomic) BOOL     showTestSubtitles;
 
 @property (strong, nonatomic) UIColor  *eventColor;
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
@@ -50,5 +49,9 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
 
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle;
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;
+
+
+@property (assign, nonatomic) BOOL      fakeSubtitles;
+@property (assign, nonatomic) NSInteger fakedSelectedDay;
 
 @end
