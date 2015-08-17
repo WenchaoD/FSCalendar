@@ -14,6 +14,8 @@
 
 #import "FSCalendarDynamicHeader.h"
 
+#import "FSCalendarHeaderTouchDeliver.h"
+
 #define kDefaultHeaderHeight 40
 #define kWeekHeight roundf(self.fs_height/12)
 
@@ -46,6 +48,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 @property (weak  , nonatomic) UICollectionView           *collectionView;
 @property (weak  , nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 @property (weak  , nonatomic) FSCalendarHeader           *header;
+@property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
 
 @property (strong, nonatomic) NSCalendar                 *calendar;
 @property (assign, nonatomic) BOOL                       supressEvent;
@@ -62,6 +65,8 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 - (void)scrollToDate:(NSDate *)date animate:(BOOL)animate;
 
 - (BOOL)isDateInRange:(NSDate *)date;
+
+- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate forPlaceholder:(BOOL)forPlaceholder;
 
 @end
 
@@ -121,6 +126,12 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     [self addSubview:header];
     self.header = header;
     
+    FSCalendarHeaderTouchDeliver *deliver = [[FSCalendarHeaderTouchDeliver alloc] initWithFrame:CGRectZero];
+    deliver.header = header;
+    deliver.calendar = self;
+    [self addSubview:deliver];
+    self.deliver = deliver;
+    
     UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     collectionViewFlowLayout.minimumInteritemSpacing = 0;
@@ -173,6 +184,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     _supressEvent = YES;
     CGFloat padding = self.fs_height * 0.01;
     _header.frame = CGRectMake(0, 0, self.fs_width, _headerHeight == -1 ? kDefaultHeaderHeight : _headerHeight);
+    _deliver.frame = _header.frame;
     
     _collectionView.frame = CGRectMake(0, kWeekHeight+_header.fs_height, self.fs_width, self.fs_height-kWeekHeight-_header.fs_height);
     _collectionView.contentInset = UIEdgeInsetsZero;
@@ -261,7 +273,8 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.isPlaceholder) {
-        [self setSelectedDate:cell.date animate:YES];
+        [self setSelectedDate:cell.date animate:YES forPlaceholder:YES];
+        return;
     } else {
         [cell performSelecting];
         _selectedDate = [self dateForIndexPath:indexPath];
@@ -269,7 +282,6 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
             [self didSelectDate:_selectedDate];
         }
     }
-    
     // CollectionView选中状态仅仅在‘当月’体现，placeholder需要重新计算'选中'状态
     // There is no stored 'selection' state for placeholder cell, so the 'simulated selection' state needs to be recalculated.
     [collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
@@ -284,9 +296,8 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.isPlaceholder) {
-        // 如果是上个月或者下个月的元素，则无需调用代理方法，在[setSelectedDate:animated:]中还会调用此方法
-        // If selecting a placeholder cell, will get back here and call the delegate method below from [setSelectedDate:animated:]
-        return [self isDateInRange:cell.date] && ![cell.date fs_isEqualToDateForDay:_selectedDate];
+        [self setSelectedDate:cell.date animate:YES forPlaceholder:YES];
+        return NO;
     }
     BOOL shouldSelect = ![collectionView.indexPathsForSelectedItems containsObject:indexPath];
     if (shouldSelect && cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
@@ -391,19 +402,35 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
-    if (![self isDateInRange:selectedDate]) {
-        [NSException raise:@"selectedDate out of range" format:nil];
-    }
     [self setSelectedDate:selectedDate animate:NO];
 }
 
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate
 {
+    [self setSelectedDate:selectedDate animate:animate forPlaceholder:NO];
+}
+
+- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate forPlaceholder:(BOOL)forPlaceholder
+{
+    if (![self isDateInRange:selectedDate]) {
+        [NSException raise:@"selectedDate out of range" format:nil];
+    }
     selectedDate = [selectedDate fs_daysFrom:_minimumDate] < 0 ? [NSDate fs_dateWithYear:_minimumDate.fs_year month:_minimumDate.fs_month day:selectedDate.fs_day] : selectedDate;
     selectedDate = [selectedDate fs_daysFrom:_maximumDate] > 0 ? [NSDate fs_dateWithYear:_maximumDate.fs_year month:_maximumDate.fs_month day:selectedDate.fs_day] : selectedDate;
     selectedDate = selectedDate.fs_dateByIgnoringTimeComponents;
     NSIndexPath *selectedIndexPath = [self indexPathForDate:selectedDate];
-    if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
+    
+    BOOL shouldSelect = YES;
+    if (forPlaceholder) {
+        BOOL shouldSelect = ![_collectionView.indexPathsForSelectedItems containsObject:selectedIndexPath];
+        shouldSelect &= !_supressEvent;
+        shouldSelect &= [self shouldSelectDate:selectedDate];
+        if (!shouldSelect) return;
+    } else {
+        shouldSelect = [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath];
+    }
+    
+    if (shouldSelect) {
         if (_collectionView.indexPathsForSelectedItems.count && _selectedDate) {
             NSIndexPath *currentIndexPath = [self indexPathForDate:_selectedDate];
             [_collectionView deselectItemAtIndexPath:currentIndexPath animated:YES];
@@ -412,6 +439,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
     }
+    
     if (!_collectionView.tracking && !_collectionView.decelerating) {
         [self willChangeValueForKey:@"currentMonth"];
         _currentMonth = [selectedDate copy];

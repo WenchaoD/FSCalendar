@@ -6,6 +6,7 @@
 #import "FSCalendarCell.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarHeader.h"
+#import "FSCalendarHeaderTouchDeliver.h"
 #import "NSDate+FSExtension.h"
 #import "UIView+FSExtension.h"
 

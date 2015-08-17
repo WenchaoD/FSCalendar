@@ -31,6 +31,12 @@
     self.calendar = calendar;
 }
 
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+{
+    NSLog(@"should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    return YES;
+}
+
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
     NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
