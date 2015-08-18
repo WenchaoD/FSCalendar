@@ -1,0 +1,6 @@
+framework module SSLunarDate {
+  umbrella header "SSLunarDate-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -20,15 +20,16 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
 
 @property (weak  , nonatomic) FSCalendar *calendar;
 
-@property (strong, nonatomic) UIFont   *titleFont;
-@property (strong, nonatomic) UIFont   *subtitleFont;
-@property (strong, nonatomic) UIFont   *weekdayFont;
+@property (assign, nonatomic) CGFloat  titleTextSize;
+@property (assign, nonatomic) CGFloat  subtitleTextSize;
+@property (assign, nonatomic) CGFloat  weekdayTextSize;
+@property (assign, nonatomic) CGFloat  headerTitleTextSize;
+
 @property (strong, nonatomic) UIColor  *eventColor;
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
 
 @property (strong, nonatomic) UIColor  *headerTitleColor;
 @property (strong, nonatomic) NSString *headerDateFormat;
-@property (strong, nonatomic) UIFont   *headerTitleFont;
 @property (assign, nonatomic) CGFloat  headerMinimumDissolvedAlpha;
 
 @property (strong, nonatomic) UIColor  *titleDefaultColor;
@@ -48,5 +49,9 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
 
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle;
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;
+
+
+@property (assign, nonatomic) BOOL      fakeSubtitles;
+@property (assign, nonatomic) NSInteger fakedSelectedDay;
 
 @end

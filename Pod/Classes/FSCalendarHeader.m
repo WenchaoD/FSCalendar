@@ -79,8 +79,10 @@
     [super layoutSubviews];
     _collectionView.frame = CGRectMake(0, self.fs_height*0.1, self.fs_width, self.fs_height*0.9);
     _collectionView.contentInset = UIEdgeInsetsZero;
-    _collectionViewFlowLayout.itemSize = CGSizeMake(_collectionView.fs_width * 0.5,
-                                                    _collectionView.fs_height);
+    _collectionViewFlowLayout.itemSize = CGSizeMake(
+                                                    _collectionView.fs_width*((_scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
+                                                    _collectionView.fs_height
+                                                    );
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
         if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
@@ -110,7 +112,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.titleLabel.font = _appearance.headerTitleFont;
+    cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _dateFormatter.dateFormat = _appearance.headerDateFormat;
     if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
@@ -159,7 +161,8 @@
                                         );
         _collectionView.contentOffset = newOffset;
         if (scrollDirection == UICollectionViewScrollDirectionVertical) {
-            _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, self.fs_width*0.25, 0, self.fs_width*0.25);
+            CGFloat inset = self.fs_width * 0.25;
+            _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, inset, 0, inset);
         } else {
             _collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
         }
@@ -198,6 +201,8 @@
     if (self) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        titleLabel.numberOfLines = 0;
         [self.contentView addSubview:titleLabel];
         self.titleLabel = titleLabel;
     }

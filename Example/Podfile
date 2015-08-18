@@ -1,4 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
 
 target 'FSCalendar', :exclusive => true do
   pod "FSCalendar", :path => "../"

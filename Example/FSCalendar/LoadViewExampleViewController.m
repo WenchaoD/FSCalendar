@@ -25,10 +25,16 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, 300)];
     calendar.dataSource = self;
     calendar.delegate = self;
-//    calendar.flow = FSCalendarFlowVertical;
+    calendar.flow = FSCalendarFlowVertical;
     calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
     [view addSubview:calendar];
     self.calendar = calendar;
+}
+
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+{
+    NSLog(@"should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    return YES;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date

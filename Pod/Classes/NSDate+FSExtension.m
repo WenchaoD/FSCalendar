@@ -95,6 +95,22 @@
     return [calendar dateFromComponents:components];
 }
 
+- (NSDate *)fs_tomorrow
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
+    components.day++;
+    return [calendar dateFromComponents:components];
+}
+
+- (NSDate *)fs_yesterday
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
+    components.day--;
+    return [calendar dateFromComponents:components];
+}
+
 - (NSInteger)fs_numberOfDaysInMonth
 {
     NSCalendar *c = [NSCalendar fs_sharedCalendar];
