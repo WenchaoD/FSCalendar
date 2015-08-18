@@ -59,7 +59,7 @@ self.calendar = calendar;
 
 ### Or swift
 
-* To use `FSCalendar` in swift, you need to ![Create Bridge Header in Swift Project](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html)
+* To use `FSCalendar` in swift, you need to [Create Bridge Header](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) first.
 
 
 ```swift
