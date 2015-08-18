@@ -55,6 +55,7 @@ IB_DESIGNABLE
 @property (strong, nonatomic) NSDate *today;
 @property (strong, nonatomic) NSDate *selectedDate;
 @property (strong, nonatomic) NSDate *currentMonth;
+@property (strong, nonatomic) NSLocale *locale;
 
 @property (assign, nonatomic) FSCalendarFlow flow;
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;

@@ -72,6 +72,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 @implementation FSCalendar
 
+@dynamic locale;
 @synthesize flow = _flow, firstWeekday = _firstWeekday;
 
 #pragma mark - Life Cycle && Initialize
@@ -105,7 +106,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     _headerHeight     = -1;
     _calendar         = [NSCalendar currentCalendar];
     
-    NSArray *weekSymbols = [_calendar shortStandaloneWeekdaySymbols];
+    NSArray *weekSymbols = _calendar.shortStandaloneWeekdaySymbols;
     _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
     UIFont *weekdayFont = [UIFont systemFontOfSize:_appearance.weekdayTextSize];
     for (int i = 0; i < weekSymbols.count; i++) {
@@ -498,6 +499,20 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     }
 }
 
+- (void)setLocale:(NSLocale *)locale
+{
+    if (![_calendar.locale isEqual:locale]) {
+        _calendar.locale = locale;
+        _header.dateFormatter.locale = locale;
+        [self reloadData];
+    }
+}
+
+- (NSLocale *)locale
+{
+    return _calendar.locale;
+}
+
 #pragma mark - Public
 
 - (void)reloadData
@@ -511,6 +526,14 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
     CGFloat width = self.fs_width/_weekdays.count;
     CGFloat height = kWeekHeight;
+    [_calendar.shortStandaloneWeekdaySymbols enumerateObjectsUsingBlock:^(NSString *symbol, NSUInteger index, BOOL *stop) {
+        if (index >= _weekdays.count) {
+            *stop = YES;
+            return;
+        }
+        UILabel *weekdayLabel = _weekdays[index];
+        weekdayLabel.text = symbol;
+    }];
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
         weekdayLabel.frame = CGRectMake(absoluteIndex * width,
@@ -518,7 +541,6 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
                                         width,
                                         height);
     }];
-    
     [_collectionView reloadData];
     if (_selectedDate) {
         _supressEvent = YES;
