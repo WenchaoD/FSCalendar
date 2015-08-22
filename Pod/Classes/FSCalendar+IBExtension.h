@@ -39,6 +39,7 @@ IB_DESIGNABLE
 
 @property (strong, nonatomic) IBInspectable UIColor  *selectionColor;
 @property (strong, nonatomic) IBInspectable UIColor  *todayColor;
+@property (strong, nonatomic) IBInspectable UIColor  *todaySelectionColor;
 
 @property (assign, nonatomic) IBInspectable FSCalendarCellStyle cellStyle;
 

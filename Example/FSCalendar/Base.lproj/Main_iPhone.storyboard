@@ -105,11 +105,20 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i44-Ll-ELi" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="64" width="600" height="300"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="320"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="AsQ-eP-ia8"/>
+                                    <constraint firstAttribute="height" constant="320" id="AsQ-eP-ia8"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="headerHeight">
+                                        <real key="value" value="55"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="headerDateFormat" value="MMMM YYYY"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fakedSelectedDay">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="L73-rf-0E3"/>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="U5e-UL-pjD"/>

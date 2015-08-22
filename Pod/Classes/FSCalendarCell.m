@@ -186,6 +186,9 @@
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
     if (self.isSelected) {
+        if (self.isToday) {
+            return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
+        }
         return dictionary[@(FSCalendarCellStateSelected)];
     }
     if (self.isToday) {

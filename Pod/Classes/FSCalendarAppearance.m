@@ -237,10 +237,10 @@
     return _backgroundColors[@(FSCalendarCellStateSelected)];
 }
 
-- (void)setTodayColor:(UIColor *)color
+- (void)setTodayColor:(UIColor *)todayColor
 {
-    if (color) {
-        _backgroundColors[@(FSCalendarCellStateToday)] = color;
+    if (todayColor) {
+        _backgroundColors[@(FSCalendarCellStateToday)] = todayColor;
     } else {
         [_backgroundColors removeObjectForKey:@(FSCalendarCellStateToday)];
     }
@@ -250,6 +250,21 @@
 - (UIColor *)todayColor
 {
     return _backgroundColors[@(FSCalendarCellStateToday)];
+}
+
+- (void)setTodaySelectionColor:(UIColor *)todaySelectionColor
+{
+    if (todaySelectionColor) {
+        _backgroundColors[@(FSCalendarCellStateToday|FSCalendarCellStateSelected)] = todaySelectionColor;
+    } else {
+        [_backgroundColors removeObjectForKey:@(FSCalendarCellStateToday|FSCalendarCellStateSelected)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)todaySelectionColor
+{
+    return _backgroundColors[@(FSCalendarCellStateToday|FSCalendarCellStateSelected)];
 }
 
 - (void)setEventColor:(UIColor *)eventColor

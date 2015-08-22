@@ -274,6 +274,19 @@
 {
     return self.appearance.todayColor;
 }
+
+#pragma mark - todaySelectionColor
+
+- (void)setTodaySelectionColor:(UIColor *)todaySelectionColor
+{
+    self.appearance.todaySelectionColor = todaySelectionColor;
+}
+
+- (UIColor *)todaySelectionColor
+{
+    return self.appearance.todaySelectionColor;
+}
+
 #pragma mark - cellStyle
 
 - (void)setCellStyle:(FSCalendarCellStyle)cellStyle
