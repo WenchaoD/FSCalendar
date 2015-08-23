@@ -11,7 +11,7 @@
 
 @class FSCalendar;
 
-__attribute((deprecated(("use \'FSCalendarScrollDirection instead\'"))))
+__attribute((deprecated(("use \'FSCalendarScrollDirection\' instead"))))
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowVertical,
     FSCalendarFlowHorizontal
@@ -68,7 +68,7 @@ IB_DESIGNABLE
 @property (strong, nonatomic) NSDate *currentMonth;
 @property (strong, nonatomic) NSLocale *locale;
 
-@property (assign, nonatomic) FSCalendarFlow flow __attribute((deprecated(("use \'scrollDirection instead\'"))));
+@property (assign, nonatomic) FSCalendarFlow flow __attribute((deprecated(("use \'scrollDirection\' instead"))));
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
 @property (assign, nonatomic) IBInspectable CGFloat    headerHeight;

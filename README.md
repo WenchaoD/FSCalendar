@@ -115,6 +115,7 @@ _calendar.appearance.headerTitleColor = [UIColor redColor];
 _calendar.appearance.eventColor = [UIColor greenColor];
 _calendar.appearance.selectionColor = [UIColor blueColor];
 _calendar.appearance.todayColor = [UIColor orangeColor];
+_calendar.appearance.todaySelectionColor = [UIColor blackColor];
 ```
 
 ![fscalendar---colors](https://cloud.githubusercontent.com/assets/5186464/8449300/d55d1c7a-2002-11e5-8de6-be04f3783456.png)

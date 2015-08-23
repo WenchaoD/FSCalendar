@@ -389,6 +389,16 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     return _appearance;
 }
 
+- (void)setFlow:(FSCalendarFlow)flow
+{
+    self.scrollDirection = (FSCalendarScrollDirection)flow;
+}
+
+- (FSCalendarFlow)flow
+{
+    return (FSCalendarFlow)self.scrollDirection;
+}
+
 - (void)setScrollDirection:(FSCalendarScrollDirection)scrollDirection
 {
     if (_scrollDirection != scrollDirection) {
