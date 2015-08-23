@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowHorizontal
 };
 
+/** Comming soon */
 typedef NS_ENUM(NSInteger, FSCalendarScope) {
     FSCalendarScopeMonth,
     FSCalendarScopeWeek
