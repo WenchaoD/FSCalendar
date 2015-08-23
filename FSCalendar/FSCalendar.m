@@ -73,7 +73,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 @implementation FSCalendar
 
 @dynamic locale;
-@synthesize flow = _flow, firstWeekday = _firstWeekday;
+@synthesize scrollDirection = _scrollDirection, firstWeekday = _firstWeekday;
 
 #pragma mark - Life Cycle && Initialize
 
@@ -119,7 +119,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         [self addSubview:weekdayLabel];
     }
     
-    _flow         = FSCalendarFlowHorizontal;
+    _scrollDirection = FSCalendarScrollDirectionHorizontal;
     _firstWeekday = [_calendar firstWeekday];
     
     FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectZero];
@@ -138,6 +138,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     collectionViewFlowLayout.minimumInteritemSpacing = 0;
     collectionViewFlowLayout.minimumLineSpacing = 0;
     collectionViewFlowLayout.itemSize = CGSizeMake(1, 1);
+    collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
     self.collectionViewFlowLayout = collectionViewFlowLayout;
     
     
@@ -190,7 +191,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     _collectionView.frame = CGRectMake(0, kWeekHeight+_header.fs_height, self.fs_width, self.fs_height-kWeekHeight-_header.fs_height);
     _collectionView.contentInset = UIEdgeInsetsZero;
     _collectionViewFlowLayout.itemSize = CGSizeMake(
-                                                    _collectionView.fs_width/7-(_flow == FSCalendarFlowVertical)*0.1,
+                                                    _collectionView.fs_width/7-(_scrollDirection == FSCalendarScrollDirectionVertical)*0.1,
                                                     (_collectionView.fs_height-padding*2)/6
                                                     );
     _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
@@ -319,10 +320,18 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         return;
     }
     CGFloat scrollOffset = 0;
-    if (_flow == FSCalendarFlowHorizontal) {
-        scrollOffset = scrollView.contentOffset.x/scrollView.fs_width;
-    } else if (_flow == FSCalendarFlowVertical) {
-        scrollOffset = scrollView.contentOffset.y/scrollView.fs_height;
+    switch (_scrollDirection) {
+        case FSCalendarScrollDirectionHorizontal: {
+            scrollOffset = scrollView.contentOffset.x/scrollView.fs_width;
+            break;
+        }
+        case FSCalendarScrollDirectionVertical: {
+            scrollOffset = scrollView.contentOffset.y/scrollView.fs_height;
+            break;
+        }
+        default: {
+            break;
+        }
     }
     _header.scrollOffset = scrollOffset;
 }
@@ -330,16 +339,24 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     CGFloat pannedOffset = 0, targetOffset = 0, currentOffset = 0, contentSize = 0;
-    if (_flow == FSCalendarFlowHorizontal) {
-        pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].x;
-        targetOffset = (*targetContentOffset).x;
-        currentOffset = scrollView.contentOffset.x;
-        contentSize = scrollView.fs_width;
-    } else if (_flow == FSCalendarFlowVertical) {
-        pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].y;
-        targetOffset = (*targetContentOffset).y;
-        currentOffset = scrollView.contentOffset.y;
-        contentSize = scrollView.fs_height;
+    switch (_scrollDirection) {
+        case FSCalendarScrollDirectionHorizontal: {
+            pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].x;
+            targetOffset = (*targetContentOffset).x;
+            currentOffset = scrollView.contentOffset.x;
+            contentSize = scrollView.fs_width;
+            break;
+        }
+        case FSCalendarScrollDirectionVertical: {
+            pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].y;
+            targetOffset = (*targetContentOffset).y;
+            currentOffset = scrollView.contentOffset.y;
+            contentSize = scrollView.fs_height;
+            break;
+        }
+        default: {
+            break;
+        }
     }
     BOOL shouldTriggerMonthChange = ((pannedOffset < 0 && targetOffset > currentOffset) ||
                                      (pannedOffset > 0 && targetOffset < currentOffset)) && _minimumDate;
@@ -372,24 +389,19 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     return _appearance;
 }
 
-- (void)setFlow:(FSCalendarFlow)flow
+- (void)setScrollDirection:(FSCalendarScrollDirection)scrollDirection
 {
-    if (self.flow != flow) {
-        _flow = flow;
+    if (_scrollDirection != scrollDirection) {
+        _scrollDirection = scrollDirection;
         _supressEvent = YES;
         NSDate *currentMonth = self.currentMonth;
-        _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)flow;
+        _collectionViewFlowLayout.scrollDirection = (UICollectionViewScrollDirection)scrollDirection;
         _header.scrollDirection = _collectionViewFlowLayout.scrollDirection;
         [self layoutSubviews];
         [self reloadData];
         [self scrollToDate:currentMonth];
         _supressEvent = NO;
     }
-}
-
-- (FSCalendarFlow)flow
-{
-    return (FSCalendarFlow)_collectionViewFlowLayout.scrollDirection;
 }
 
 - (void)setFirstWeekday:(NSUInteger)firstWeekday
@@ -573,10 +585,17 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     date = [date fs_daysFrom:_minimumDate] < 0 ? [NSDate fs_dateWithYear:_minimumDate.fs_year month:_minimumDate.fs_month day:date.fs_day] : date;
     date = [date fs_daysFrom:_maximumDate] > 0 ? [NSDate fs_dateWithYear:_maximumDate.fs_year month:_maximumDate.fs_month day:date.fs_day] : date;
     NSInteger scrollOffset = [date fs_monthsFrom:_minimumDate.fs_firstDayOfMonth];
-    if (self.flow == FSCalendarFlowHorizontal) {
-        [_collectionView setContentOffset:CGPointMake(scrollOffset * _collectionView.fs_width, 0) animated:animate];
-    } else if (self.flow == FSCalendarFlowVertical) {
-        [_collectionView setContentOffset:CGPointMake(0, scrollOffset * _collectionView.fs_height) animated:animate];
+    switch (_scrollDirection) {
+        case FSCalendarScrollDirectionHorizontal: {
+            [_collectionView setContentOffset:CGPointMake(scrollOffset * _collectionView.fs_width, 0) animated:animate];
+            break;
+        }
+        case FSCalendarScrollDirectionVertical: {
+            [_collectionView setContentOffset:CGPointMake(0, scrollOffset * _collectionView.fs_height) animated:animate];
+            break;
+        }
+        default:
+            break;
     }
     if (_header && !animate) {
         _header.scrollOffset = scrollOffset;
@@ -593,12 +612,19 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSDate *date;
-    if (self.flow == FSCalendarFlowHorizontal) {
-        NSUInteger    rows = indexPath.item % 6;
-        NSUInteger columns = indexPath.item / 6;
-        date = [firstDateOfPage fs_dateByAddingDays:7 * rows + columns];
-    } else {
-        date = [firstDateOfPage fs_dateByAddingDays:indexPath.item];
+    switch (_scrollDirection) {
+        case FSCalendarScrollDirectionHorizontal: {
+            NSUInteger    rows = indexPath.item % 6;
+            NSUInteger columns = indexPath.item / 6;
+            date = [firstDateOfPage fs_dateByAddingDays:7 * rows + columns];
+            break;
+        }
+        case FSCalendarScrollDirectionVertical: {
+            date = [firstDateOfPage fs_dateByAddingDays:indexPath.item];
+            break;
+        }
+        default:
+            break;
     }
     return date.fs_dateByIgnoringTimeComponents;
 }
@@ -610,13 +636,20 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ? : 7;
     NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
     NSInteger item = 0;
-    if (self.flow == FSCalendarFlowHorizontal) {
-        NSInteger vItem = [date fs_daysFrom:firstDateOfPage];
-        NSInteger rows = vItem/7;
-        NSInteger columns = vItem%7;
-        item = columns*6 + rows;
-    } else if (self.flow == FSCalendarFlowVertical) {
-        item = [date fs_daysFrom:firstDateOfPage];
+    switch (_scrollDirection) {
+        case FSCalendarScrollDirectionHorizontal: {
+            NSInteger vItem = [date fs_daysFrom:firstDateOfPage];
+            NSInteger rows = vItem/7;
+            NSInteger columns = vItem%7;
+            item = columns*6 + rows;
+            break;
+        }
+        case FSCalendarScrollDirectionVertical: {
+            item = [date fs_daysFrom:firstDateOfPage];
+            break;
+        }
+        default:
+            break;
     }
     return [NSIndexPath indexPathForItem:item inSection:section];
 }

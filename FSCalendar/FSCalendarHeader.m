@@ -160,12 +160,6 @@
                                         scrollDirection == UICollectionViewScrollDirectionVertical ? _scrollOffset * _collectionViewFlowLayout.itemSize.height : 0
                                         );
         _collectionView.contentOffset = newOffset;
-        if (scrollDirection == UICollectionViewScrollDirectionVertical) {
-            CGFloat inset = self.fs_width * 0.25;
-            _collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, inset, 0, inset);
-        } else {
-            _collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
-        }
         [_collectionView reloadData];
     }
 }

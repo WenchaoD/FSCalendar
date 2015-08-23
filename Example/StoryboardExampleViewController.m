@@ -37,7 +37,7 @@
 //    _calendar.firstWeekday = 2; // Monday
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
-    _flow = _calendar.flow;
+    _scrollDirection = _calendar.scrollDirection;
     
 }
 
@@ -164,13 +164,13 @@
     }
 }
 
-- (void)setFlow:(FSCalendarFlow)flow
+- (void)setScrollDirection:(FSCalendarScrollDirection)scrollDirection
 {
-    if (_flow != flow) {
-        _flow = flow;
-        _calendar.flow = flow;
+    if (_scrollDirection != scrollDirection) {
+        _scrollDirection = scrollDirection;
+        _calendar.scrollDirection = scrollDirection;
         [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][_calendar.flow]]
+                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][_calendar.scrollDirection]]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil, nil] show];

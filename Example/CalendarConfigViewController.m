@@ -19,7 +19,7 @@
     } else if (indexPath.section == 1) {
         cell.accessoryType = self.viewController.lunar ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     } else if (indexPath.section == 2) {
-        cell.accessoryType = indexPath.row == 1 - self.viewController.flow ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        cell.accessoryType = indexPath.row == 1 - self.viewController.scrollDirection ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     } else if (indexPath.section == 4) {
         cell.accessoryType = indexPath.row == self.viewController.firstWeekday - 1 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
@@ -43,10 +43,10 @@
     } else if (indexPath.section == 1) {
         self.viewController.lunar = !self.viewController.lunar;
     } else if (indexPath.section == 2) {
-        if (self.viewController.flow == 1 - indexPath.row) {
+        if (self.viewController.scrollDirection == 1 - indexPath.row) {
             return;
         }
-        self.viewController.flow = (FSCalendarFlow)(1-indexPath.row);
+        self.viewController.scrollDirection = (FSCalendarScrollDirection)(1-indexPath.row);
     } else if (indexPath.section == 3) {
         self.viewController.selectedDate = _datePicker.date;
         [[tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];

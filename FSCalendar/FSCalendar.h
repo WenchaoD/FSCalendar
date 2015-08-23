@@ -11,11 +11,21 @@
 
 @class FSCalendar;
 
+__attribute((deprecated(("use \'FSCalendarScrollDirection instead\'"))))
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
-    FSCalendarFlowVertical ,
+    FSCalendarFlowVertical,
     FSCalendarFlowHorizontal
 };
 
+typedef NS_ENUM(NSInteger, FSCalendarScope) {
+    FSCalendarScopeMonth,
+    FSCalendarScopeWeek
+};
+
+typedef NS_ENUM(NSInteger, FSCalendarScrollDirection) {
+    FSCalendarScrollDirectionVertical,
+    FSCalendarScrollDirectionHorizontal
+};
 
 typedef NS_ENUM(NSInteger, FSCalendarCellState) {
     FSCalendarCellStateNormal      = 0,
@@ -57,7 +67,8 @@ IB_DESIGNABLE
 @property (strong, nonatomic) NSDate *currentMonth;
 @property (strong, nonatomic) NSLocale *locale;
 
-@property (assign, nonatomic) FSCalendarFlow flow;
+@property (assign, nonatomic) FSCalendarFlow flow __attribute((deprecated(("use \'scrollDirection instead\'"))));
+@property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
 @property (assign, nonatomic) IBInspectable CGFloat    headerHeight;
 

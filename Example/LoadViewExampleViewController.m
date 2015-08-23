@@ -25,7 +25,7 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, 300)];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.flow = FSCalendarFlowVertical;
+    calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
     [view addSubview:calendar];
     self.calendar = calendar;
