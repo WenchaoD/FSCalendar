@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
   s.framework    = 'UIKit', 'QuartzCore'
-  s.source_files = 'FSCalendar/*'
+  s.source_files = 'FSCalendar/*.{h,m}'
 
 end
