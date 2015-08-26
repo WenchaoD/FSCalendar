@@ -18,6 +18,23 @@
 		30B0BAD51B8D8E23004B9476 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30B0BACA1B8D8E22004B9476 /* Info.plist */; };
 		30B0BAD61B8D8E23004B9476 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BACC1B8D8E22004B9476 /* NSDate+FSExtension.m */; };
 		30B0BAD71B8D8E23004B9476 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BACE1B8D8E22004B9476 /* UIView+FSExtension.m */; };
+		30B0BAF41B8D9AC1004B9476 /* FSCalendar+IBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BABE1B8D8E22004B9476 /* FSCalendar+IBExtension.m */; };
+		30B0BAF51B8D9AC1004B9476 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC01B8D8E22004B9476 /* FSCalendar.m */; };
+		30B0BAF61B8D9AC1004B9476 /* FSCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC21B8D8E22004B9476 /* FSCalendarAppearance.m */; };
+		30B0BAF71B8D9AC1004B9476 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC41B8D8E22004B9476 /* FSCalendarCell.m */; };
+		30B0BAF81B8D9AC1004B9476 /* FSCalendarHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC71B8D8E22004B9476 /* FSCalendarHeader.m */; };
+		30B0BAF91B8D9AC1004B9476 /* FSCalendarHeaderTouchDeliver.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC91B8D8E22004B9476 /* FSCalendarHeaderTouchDeliver.m */; };
+		30B0BAFA1B8D9AC1004B9476 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BACC1B8D8E22004B9476 /* NSDate+FSExtension.m */; };
+		30B0BAFB1B8D9AC1004B9476 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BACE1B8D8E22004B9476 /* UIView+FSExtension.m */; };
+		30B0BAFC1B8D9AD4004B9476 /* FSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BABF1B8D8E22004B9476 /* FSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30B0BB001B8D9B6C004B9476 /* FSCalendar+IBExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BABD1B8D8E22004B9476 /* FSCalendar+IBExtension.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		30B0BB011B8D9B6C004B9476 /* FSCalendarAppearance.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BAC11B8D8E22004B9476 /* FSCalendarAppearance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		30B0BB021B8D9B6C004B9476 /* FSCalendarCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BAC31B8D8E22004B9476 /* FSCalendarCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		30B0BB031B8D9B6D004B9476 /* FSCalendarDynamicHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BAC51B8D8E22004B9476 /* FSCalendarDynamicHeader.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		30B0BB041B8D9B6D004B9476 /* FSCalendarHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BAC61B8D8E22004B9476 /* FSCalendarHeader.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		30B0BB051B8D9B6D004B9476 /* FSCalendarHeaderTouchDeliver.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BAC81B8D8E22004B9476 /* FSCalendarHeaderTouchDeliver.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		30B0BB061B8D9B6D004B9476 /* NSDate+FSExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BACB1B8D8E22004B9476 /* NSDate+FSExtension.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		30B0BB071B8D9B6D004B9476 /* UIView+FSExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 30B0BACD1B8D8E22004B9476 /* UIView+FSExtension.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EE638CB21B89DB450006DD1A /* LunarDateFormatter.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE638C911B89DB450006DD1A /* LunarDateFormatter.strings */; };
 		EE638CB31B89DB450006DD1A /* libLunar.c in Sources */ = {isa = PBXBuildFile; fileRef = EE638C941B89DB450006DD1A /* libLunar.c */; };
 		EE638CB41B89DB450006DD1A /* SSHolidayCA.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638C971B89DB450006DD1A /* SSHolidayCA.m */; };
@@ -177,14 +194,22 @@
 				30B0BAC71B8D8E22004B9476 /* FSCalendarHeader.m */,
 				30B0BAC81B8D8E22004B9476 /* FSCalendarHeaderTouchDeliver.h */,
 				30B0BAC91B8D8E22004B9476 /* FSCalendarHeaderTouchDeliver.m */,
-				30B0BACA1B8D8E22004B9476 /* Info.plist */,
 				30B0BACB1B8D8E22004B9476 /* NSDate+FSExtension.h */,
 				30B0BACC1B8D8E22004B9476 /* NSDate+FSExtension.m */,
 				30B0BACD1B8D8E22004B9476 /* UIView+FSExtension.h */,
 				30B0BACE1B8D8E22004B9476 /* UIView+FSExtension.m */,
+				30B0BAF31B8D9A91004B9476 /* Supporting Files */,
 			);
 			name = FSCalendar;
 			path = ../FSCalendar;
+			sourceTree = "<group>";
+		};
+		30B0BAF31B8D9A91004B9476 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				30B0BACA1B8D8E22004B9476 /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		EE0D7FBE1B89C5D3003C287B = {
@@ -323,6 +348,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30B0BAFC1B8D9AD4004B9476 /* FSCalendar.h in Headers */,
+				30B0BB011B8D9B6C004B9476 /* FSCalendarAppearance.h in Headers */,
+				30B0BB001B8D9B6C004B9476 /* FSCalendar+IBExtension.h in Headers */,
+				30B0BB021B8D9B6C004B9476 /* FSCalendarCell.h in Headers */,
+				30B0BB031B8D9B6D004B9476 /* FSCalendarDynamicHeader.h in Headers */,
+				30B0BB041B8D9B6D004B9476 /* FSCalendarHeader.h in Headers */,
+				30B0BB051B8D9B6D004B9476 /* FSCalendarHeaderTouchDeliver.h in Headers */,
+				30B0BB061B8D9B6D004B9476 /* NSDate+FSExtension.h in Headers */,
+				30B0BB071B8D9B6D004B9476 /* UIView+FSExtension.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,6 +501,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30B0BAF41B8D9AC1004B9476 /* FSCalendar+IBExtension.m in Sources */,
+				30B0BAF51B8D9AC1004B9476 /* FSCalendar.m in Sources */,
+				30B0BAF61B8D9AC1004B9476 /* FSCalendarAppearance.m in Sources */,
+				30B0BAF71B8D9AC1004B9476 /* FSCalendarCell.m in Sources */,
+				30B0BAF81B8D9AC1004B9476 /* FSCalendarHeader.m in Sources */,
+				30B0BAF91B8D9AC1004B9476 /* FSCalendarHeaderTouchDeliver.m in Sources */,
+				30B0BAFA1B8D9AC1004B9476 /* NSDate+FSExtension.m in Sources */,
+				30B0BAFB1B8D9AC1004B9476 /* UIView+FSExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,11 +638,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/f33chobits/Developer/github/IOS/FSCalendar/Carthage/Build/iOS,
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/FSCalendar-deltqpsyqgiutrhdnzruvdnlqnkp/Build/Products/Debug-iphoneos",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -614,11 +651,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/f33chobits/Developer/github/IOS/FSCalendar/Carthage/Build/iOS,
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/FSCalendar-deltqpsyqgiutrhdnzruvdnlqnkp/Build/Products/Debug-iphoneos",
-				);
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -641,7 +673,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/../FSCalendar/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -661,7 +693,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "$(SRCROOT)/../FSCalendar/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
