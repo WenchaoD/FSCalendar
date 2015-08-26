@@ -12,28 +12,28 @@
 
 ## Cocoapods:
 
-* For iOS8+ ,`Support` IB_DESINABLE
+* For iOS8+: 👍
 ```ruby
 use_frameworks!
 pod 'FSCalendar'
 ```
 
-* For iOS7+ ,`Not support` IB_DESINABLE
+* For iOS7+:
 ```ruby
 pod 'FSCalendar'
 ```
 
 ## Carthage: 
-* Only iOS8+, `Not support` IB_DESINABLE
+* For iOS8+
 ```ruby
 github "WenchaoIOS/FSCalendar"
 ```
-## Manually 
-* iOS7+, iOS8+, `Support` IB_DESINABLE
+
+## Manually: 👍
 Drag all files under `FSCalendar` folder into your project
 
-## IB_DESINABLE
-If the way you install `FSCalendar` has been marked `Support` IB_DESIGNABLE, you can [Roll with Interface Builder](#Roll with Interface Builder)
+## Support IBInspectable / IBDesignable
+Only the methods marked "👍" support IBInspectable / IBDesignable feature
 
 # Setup
 
@@ -312,7 +312,7 @@ func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
 ### `FSCalendar` can be used on `iPad`.
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/6502151/b4ce3092-c35b-11e4-827a-498d73579d78.jpg)
 
-# Roll with Interface Builder
+## Roll with Interface Builder
 
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
