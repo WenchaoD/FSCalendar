@@ -3,28 +3,51 @@
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/cocoapods/p/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
 ![fscalendar---takealook](https://cloud.githubusercontent.com/assets/5186464/8448508/0abae54e-1ffb-11e5-9963-c02e4d44a0af.png)
 
-## Installation
+# Installation
 
-* Using cocoapods:`pod 'FSCalendar'` 
-* Manually: Unzip downloaded zip file, drag all files under `FSCalendar-master/Pod/Classes` to your project, make sure `copy items if needed` is checked.
+## Cocoapods:
 
-```objective-c
-#import "FSCalendar.h"
+* For iOS8+: 👍
+```ruby
+use_frameworks!
+pod 'FSCalendar'
 ```
 
-## Setup
+* For iOS7+:
+```ruby
+pod 'FSCalendar'
+```
 
-### Use Interface Builder (Recommended)
+## Carthage: 
+* For iOS8+
+```ruby
+github "WenchaoIOS/FSCalendar"
+```
 
-1. Drag an UIView object to ViewController Scene, change the `Custom Class` to `FSCalendar`<br/>
-2. After adjust the position and frame, link the `dataSource` and `delegate` to the ViewController <br/>
-3. Implement `FSCalendarDataSource` and `FSCalendarDelegate` in ViewController.m
+## Manually:
+* Drag all files under `FSCalendar` folder into your project. 👍
 
-### Code
+## Support IBInspectable / IBDesignable
+Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Have fun with Interface builder](#roll_with_interface_builder)
+
+# Setup
+
+## Use Interface Builder (Recommended)
+
+1. Drag an UIView object to ViewController Scene
+2. Change the `Custom Class` to `FSCalendar`<br/>
+3. Link `dataSource` and `delegate` to the ViewController <br/>
+
+![fscalendar-ib](https://cloud.githubusercontent.com/assets/5186464/9488580/a360297e-4c0d-11e5-8548-ee9274e7c4af.jpg)
+
+4. Finally, you should implement `FSCalendarDataSource` and `FSCalendarDelegate` in ViewController.m
+
+## Code
 
 ```objective-c
 @property (weak , nonatomic) FSCalendar *calendar;
@@ -39,7 +62,7 @@ self.calendar = calendar;
 ```
 <br/>
 
-### Or swift
+## Or swift
 
 * To use `FSCalendar` in swift, you need to [Create Bridge Header](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) first.
 
@@ -58,7 +81,7 @@ self.calendar = calendar
 
 ## More usage
 
-#### If you want `FSCalendar` to scroll vertically
+### If you want `FSCalendar` to scroll vertically
 
 * Objective - c
 
@@ -74,7 +97,7 @@ calendar.flow = .Vertical
 
 ![fscalendar-vertical](https://cloud.githubusercontent.com/assets/5186464/8448624/384e344c-1ffc-11e5-8b0b-1c3951dab2e1.gif)
 
-#### If you want `FSCalendar` to scroll horizontally (Default)
+### If you want `FSCalendar` to scroll horizontally (Default)
 
 * Objective - c
 
@@ -99,7 +122,7 @@ _calendar.firstWeekday = 2;
 ![fscalendar---monday](https://cloud.githubusercontent.com/assets/5186464/8448782/c92505e4-1ffd-11e5-95c0-9bf3c8bec669.png)
 
 
-#### The date format of header can be customized
+### The date format of header can be customized
 
 ```objective-c
 _calendar.appearance.headerDateFormat = @"MMM yy";
@@ -107,7 +130,7 @@ _calendar.appearance.headerDateFormat = @"MMM yy";
 
 ![fscalendar---headerformat](https://cloud.githubusercontent.com/assets/5186464/8449322/15d79168-2003-11e5-997a-06c6721dd807.png)
 
-#### You can define the appearance
+### You can define the appearance
 
 ```objective-c
 _calendar.appearance.weekdayTextColor = [UIColor redColor];
@@ -120,7 +143,7 @@ _calendar.appearance.todaySelectionColor = [UIColor blackColor];
 
 ![fscalendar---colors](https://cloud.githubusercontent.com/assets/5186464/8449300/d55d1c7a-2002-11e5-8de6-be04f3783456.png)
 
-#### The day shape doesn't have to be a circle
+### The day shape doesn't have to be a circle
 
 * Objective - c
 ```objective-c
@@ -134,7 +157,7 @@ calendar.appearance.cellStyle = .Rectangle
 
 ![fscalendar---rectangle](https://cloud.githubusercontent.com/assets/5186464/8449186/d38ea39c-2001-11e5-99f4-32fcd6120a01.png)
 
-#### `FSCalendar` can show subtitle for each day
+### `FSCalendar` can show subtitle for each day
 
 * Objective - c
 
@@ -159,7 +182,7 @@ func calendar(calendar: FSCalendar!, subtitleForDate date: NSDate!) -> String! {
 <br/>
 ![fscalendar---subtitle1](https://cloud.githubusercontent.com/assets/5186464/8449076/b0be3d88-2000-11e5-9c5d-22ecd325b6cc.png)
 
-#### And event dot for some days
+### And event dot for some days
 
 * Objective - c
 
@@ -180,7 +203,7 @@ func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
 }
 ```
 
-#### Or image for some days
+### Or image for some days
 
 * Objective - c
 
@@ -218,7 +241,7 @@ func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
 }
 ```
 
-#### You can do something when a date is selected
+### You can do something when a date is selected
 
 * Objective - c
 
@@ -240,7 +263,7 @@ func calendar(calendar: FSCalendar!, didSelectDate date: NSDate!) {
 
 ```
 
-#### You can prevent it from being selected
+### You can prevent it from being selected
 
 * Objective - c
 
@@ -267,7 +290,7 @@ func calendar(calendar: FSCalendar!, shouldSelectDate date: NSDate!) -> Bool {
 ```
  
 
-#### You will get notified when `FSCalendar` changes the month
+### You will get notified when `FSCalendar` changes the month
 
 * Objective - c
 
@@ -286,28 +309,15 @@ func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
 }
 ```
 
-#### `FSCalendar` can be used on `iPad`.
+### `FSCalendar` can be used on `iPad`.
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/6502151/b4ce3092-c35b-11e4-827a-498d73579d78.jpg)
 
-#### Roll with Interface Builder
+### <a id="roll_with_interface_builder"></a> Roll with Interface Builder
 
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
-* This feature requires iOS7+ and Xcode6+, but if you use `cocoapods`, it requires `iOS8+` and `use_frameworks!`, for example:
-
-```ruby
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
-use_frameworks!
-
-pod "FSCalendar"
-```
 
 * `fakeSubtitles` and `fakedSelectedDay` is only used for preview in Interface Builder
-
-
-## Requirements
-ios 7.0, Xcode 6+
 
 ## Known issues
 * The title size changed as we change frame size of FSCalendar: Automatically adjusting font size based on frame size is default behavior of FSCalendadr, to disable it:
@@ -335,18 +345,18 @@ _calendar.appearance.subtitleTodayColor = _calendar.appearance.subtitleDefaultCo
 _calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
 ```
 
-## License
+# License
 
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
 
-## Support
+# Support
 * If FSCalendar cannot meet your requirment, tell me in issues or send your pull requests
 * If you like this control and use it in your app, submit your app's link address [here](https://www.cocoacontrols.com/controls/fscalendar).It would be a great support.
 
-## Contact
+# Contact
 * email: `f33chobits@gmail.com`
 * skype: `wenchao.ding`
 
-## Donate
+# Donate
 * Paypal - f33chobits@gmail.com
 

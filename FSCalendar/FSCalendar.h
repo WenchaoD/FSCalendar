@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendarAppearance.h"
 
+//! Project version number for FSCalendar.
+FOUNDATION_EXPORT double FSCalendarVersionNumber;
+
+//! Project version string for FSCalendar.
+FOUNDATION_EXPORT const unsigned char FSCalendarVersionString[];
+
 @class FSCalendar;
 
 __attribute((deprecated(("use \'FSCalendarScrollDirection\' instead"))))
