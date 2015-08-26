@@ -11,27 +11,29 @@
 # Installation
 
 ## Cocoapods:
-* For iOS7+ (`Not support` IB_DESINABLE)
-```ruby
-pod 'FSCalendar'
-```
 
-## For iOS8+ (`Support` IB_DESINABLE)
+* For iOS8+ ,`Support` IB_DESINABLE
 ```ruby
 use_frameworks!
 pod 'FSCalendar'
 ```
 
-## Carthage(Only iOS8+, `Not support` IB_DESINABLE): 
+* For iOS7+ ,`Not support` IB_DESINABLE
+```ruby
+pod 'FSCalendar'
+```
 
+## Carthage: 
+* Only iOS8+, `Not support` IB_DESINABLE
 ```ruby
 github "WenchaoIOS/FSCalendar"
 ```
-## Manually (`Support` IB_DESINABLE)
+## Manually 
+* iOS7+, iOS8+, `Support` IB_DESINABLE
 Drag all files under `FSCalendar` folder into your project
 
-## Interface Builder
-If the way you install `FSCalendar` has marked `Support` IB_DESIGNABLE, you can * [Roll With Interface Builder](# Roll with Interface Builder)
+## IB_DESINABLE
+If the way you install `FSCalendar` has been marked `Support` IB_DESIGNABLE, you can [Roll with Interface Builder](#Roll with Interface Builder)
 
 # Setup
 
