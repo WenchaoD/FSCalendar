@@ -21,6 +21,7 @@
 @property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) UICollectionView *collectionView;
 @property (readonly, nonatomic) NSArray *weekdays;
+@property (readonly, nonatomic) CGFloat rowHeight;
 
 @end
 

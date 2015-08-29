@@ -55,6 +55,9 @@
         imageLayer.backgroundColor = [UIColor clearColor].CGColor;
         [self.contentView.layer addSublayer:imageLayer];
         self.imageLayer = imageLayer;
+        
+        self.clipsToBounds = NO;
+        self.contentView.clipsToBounds = NO;
     }
     return self;
 }
@@ -88,7 +91,7 @@
 
 - (BOOL)isSelected
 {
-    return [super isSelected] || ([self.calendar.selectedDate fs_isEqualToDateForDay:_date] && !_deselecting);
+    return [super isSelected] || (_dateIsSelected && !_deselecting);
 }
 
 #pragma mark - Public
@@ -151,7 +154,7 @@
         _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(self.contentView.fs_height*5.0/6.0));
         _subtitleLabel.hidden = YES;
     }
-    _backgroundLayer.hidden = !self.selected && !self.isToday;
+    _backgroundLayer.hidden = !self.selected && !self.dateIsToday;
     _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
@@ -168,16 +171,6 @@
     }
 }
 
-- (BOOL)isPlaceholder
-{
-    return ![_date fs_isEqualToDateForMonth:_month];
-}
-
-- (BOOL)isToday
-{
-    return [_date fs_isEqualToDateForDay:self.calendar.today];
-}
-
 - (BOOL)isWeekend
 {
     return self.date.fs_weekday == 1 || self.date.fs_weekday == 7;
@@ -186,30 +179,21 @@
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
     if (self.isSelected) {
-        if (self.isToday) {
+        if (self.dateIsToday) {
             return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
         }
         return dictionary[@(FSCalendarCellStateSelected)];
     }
-    if (self.isToday) {
+    if (self.dateIsToday) {
         return dictionary[@(FSCalendarCellStateToday)];
     }
-    if (self.isPlaceholder) {
+    if (self.dateIsPlaceholder) {
         return dictionary[@(FSCalendarCellStatePlaceholder)];
     }
     if (self.isWeekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];
-}
-
-- (FSCalendar *)calendar
-{
-    UIView *superview = self.superview;
-    while (superview && ![superview isKindOfClass:[FSCalendar class]]) {
-        superview = superview.superview;
-    }
-    return (FSCalendar *)superview;
 }
 
 @end

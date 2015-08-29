@@ -22,18 +22,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        
-        // Storyboard Example
+        // FSCalendarScope Example
         return;
         
     } else if (indexPath.row == 1) {
+        // Storyboard Example
+        return;
+    } else if (indexPath.row == 2) {
         
         // LoadView Example
         LoadViewExampleViewController *viewController = [[LoadViewExampleViewController alloc] init];
         viewController.title = @"FSCalendar";
         [self.navigationController pushViewController:viewController animated:YES];
         
-    } else if (indexPath.row == 2) {
+    } else if (indexPath.row == 3) {
         
         // ViewDidLoad Example
         ViewDidLoadExampleViewController *viewController = [[ViewDidLoadExampleViewController alloc] init];

@@ -33,10 +33,10 @@
         
         _autoAdjustTitleSize = YES;
         
-        _titleTextSize    = 15;
+        _titleTextSize    = 13.5;
         _subtitleTextSize = 10;
-        _weekdayTextSize  = 15;
-        _headerTitleTextSize = 15;
+        _weekdayTextSize  = 14;
+        _headerTitleTextSize = 16;
         _headerTitleColor = kBlueText;
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;

@@ -6,7 +6,7 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
-![fscalendar---takealook](https://cloud.githubusercontent.com/assets/5186464/8448508/0abae54e-1ffb-11e5-9963-c02e4d44a0af.png)
+![fscalendarscope](https://cloud.githubusercontent.com/assets/5186464/9562222/b0318d40-4e98-11e5-97dc-1694cbd26a74.gif)
 
 # Installation
 
@@ -86,13 +86,13 @@ self.calendar = calendar
 * Objective - c
 
 ```objective-c
-_calendar.flow = FSCalendarFlowVertical;
+_calendar.scrollDirection = FSCalendarScrollDirectionVertical;
 ```
 
 * Swift
 
 ```swift
-calendar.flow = .Vertical 
+calendar.scrollDirection = .Vertical 
 ```
 
 ![fscalendar-vertical](https://cloud.githubusercontent.com/assets/5186464/8448624/384e344c-1ffc-11e5-8b0b-1c3951dab2e1.gif)
@@ -102,18 +102,48 @@ calendar.flow = .Vertical
 * Objective - c
 
 ```objective-c
-_calendar.flow = FSCalendarFlowHorizontal; // By default
+_calendar.scrollDirection = FSCalendarScrollDirectionHorizontal; // By default
 ```
 
 * Swift
 
 ```swift
-calendar.flow = .Horizontal 
+calendar.scrollDirection = .Horizontal 
 ```
 
 ![fscalendar-horizontal](https://cloud.githubusercontent.com/assets/5186464/8448696/059e9acc-1ffd-11e5-8a95-aff6d871c6e1.gif)
 
-#### If you want `FSCalendar` to use `Monday` as the first column (or any other weekday)
+### For week mode
+
+* Objective - c
+
+```objective-c
+_calendar.scope = FSCalendarScopeWeek;
+```
+
+* Swift
+
+```swift
+calendar.scope = .Week 
+```
+
+### For month mode
+
+* Objective - c
+
+```objective-c
+_calendar.scope = FSCalendarScopeMonth; // By default
+```
+
+* Swift
+
+```swift
+calendar.scope = .Month 
+```
+
+![fscalendarscope](https://cloud.githubusercontent.com/assets/5186464/9562222/b0318d40-4e98-11e5-97dc-1694cbd26a74.gif)
+
+### If you want `FSCalendar` to use `Monday` as the first column (or any other weekday)
 
 ```objective-c
 _calendar.firstWeekday = 2; 

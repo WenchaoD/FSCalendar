@@ -99,14 +99,34 @@
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    NSInteger count = [self.calendar.maximumDate fs_monthsFrom:self.calendar.minimumDate.fs_firstDayOfMonth] + 1;
-    if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-        // 这里需要默认多出两项，否则当contentOffset为负时，切换到其他页面时会自动归零
-        // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
-        return count + 2;
+{    switch (self.calendar.scope) {
+        case FSCalendarScopeMonth: {
+            switch (_scrollDirection) {
+                case UICollectionViewScrollDirectionVertical: {
+                    NSInteger count = [self.calendar.maximumDate fs_monthsFrom:self.calendar.minimumDate.fs_firstDayOfMonth] + 1;
+                    return count;
+                }
+                case UICollectionViewScrollDirectionHorizontal: {
+                    // 这里需要默认多出两项，否则当contentOffset为负时，切换到其他页面时会自动归零
+                    // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
+                    NSInteger count = [self.calendar.maximumDate fs_monthsFrom:self.calendar.minimumDate.fs_firstDayOfMonth] + 1;
+                    return count + 2;
+                }
+                default: {
+                    break;
+                }
+            }
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            NSInteger count = [self.calendar.maximumDate fs_weeksFrom:self.calendar.minimumDate.fs_firstDayOfWeek] + 1;
+            return count + 2;
+        }
+        default: {
+            break;
+        }
     }
-    return count;
+    return 0;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -115,18 +135,36 @@
     cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _dateFormatter.dateFormat = _appearance.headerDateFormat;
-    if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-        // 多出的两项需要制空
-        if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1 )) {
-            cell.titleLabel.text = nil;
-        } else {
-            NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
-            cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+    switch (self.calendar.scope) {
+        case FSCalendarScopeMonth: {
+            if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+                // 多出的两项需要制空
+                if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
+                    cell.titleLabel.text = nil;
+                } else {
+                    NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
+                    cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+                }
+            } else {
+                NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item].fs_dateByIgnoringTimeComponents;
+                cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+            }
+            break;
         }
-    } else {
-        NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item].fs_dateByIgnoringTimeComponents;
-        cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+        case FSCalendarScopeWeek: {
+            if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
+                cell.titleLabel.text = nil;
+            } else {
+                NSDate *date = [self.calendar.minimumDate.fs_firstDayOfWeek fs_dateByAddingWeeks:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
+                cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+            }
+            break;
+        }
+        default: {
+            break;
+        }
     }
+    [cell setNeedsLayout];
     return cell;
 }
 
@@ -175,7 +213,7 @@
 
 - (FSCalendar *)calendar
 {
-    return (FSCalendar *)self.superview;
+    return (FSCalendar *)self.superview.superview;
 }
 
 - (void)setNeedsAdjusting

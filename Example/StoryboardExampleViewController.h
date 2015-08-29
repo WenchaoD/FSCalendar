@@ -11,12 +11,12 @@
 
 @interface StoryboardExampleViewController : UIViewController<UIScrollViewDelegate, FSCalendarDataSource, FSCalendarDelegate>
 
-@property (weak,   nonatomic) IBOutlet FSCalendar *calendar;
+@property (weak, nonatomic) IBOutlet FSCalendar *calendar;
 
 @property (assign, nonatomic) NSInteger      theme;
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 @property (assign, nonatomic) BOOL           lunar;
-@property (copy,   nonatomic) NSDate         *selectedDate;
+@property (strong, nonatomic) NSDate         *selectedDate;
 @property (assign, nonatomic) NSUInteger     firstWeekday;
 
 @end

@@ -95,6 +95,19 @@
     return [calendar dateFromComponents:components];
 }
 
+- (NSDate *)fs_firstDayOfWeek
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *weekdayComponents = [calendar components:NSCalendarUnitWeekday fromDate:self];
+    NSDateComponents *componentsToSubtract = [[NSDateComponents alloc] init];
+    componentsToSubtract.day = - (weekdayComponents.weekday - calendar.firstWeekday);
+    NSDate *beginningOfWeek = [calendar dateByAddingComponents:componentsToSubtract toDate:self options:0];
+    NSDateComponents *components = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                                fromDate: beginningOfWeek];
+    beginningOfWeek = [calendar dateFromComponents: components];
+    return beginningOfWeek;
+}
+
 - (NSDate *)fs_tomorrow
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
@@ -120,19 +133,28 @@
     return days.length;
 }
 
-- (NSString *)fs_stringWithFormat:(NSString *)format
++ (instancetype)fs_dateFromString:(NSString *)string format:(NSString *)format
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = format;
-    return [formatter stringFromDate:self];
+    return [formatter dateFromString:string];
+}
+
++ (instancetype)fs_dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    components.year = year;
+    components.month = month;
+    components.day = day;
+    return [calendar dateFromComponents:components];
 }
 
 - (NSDate *)fs_dateByAddingYears:(NSInteger)years
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
-    [components setYear:years];
-    
+    components.year = years;
     return [calendar dateByAddingComponents:components toDate:self options:0];
 }
 
@@ -145,8 +167,7 @@
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
-    [components setMonth:months];
-    
+    components.month = months;
     return [calendar dateByAddingComponents:components toDate:self options:0];
 }
 
@@ -159,8 +180,7 @@
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
-    [components setWeekOfYear:weeks];
-
+    components.weekOfYear = weeks;
     return [calendar dateByAddingComponents:components toDate:self options:0];
 }
 
@@ -222,6 +242,19 @@
     return components.day;
 }
 
+- (NSString *)fs_stringWithFormat:(NSString *)format
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = format;
+    return [formatter stringFromDate:self];
+}
+
+- (NSString *)fs_string
+{
+    return [self fs_stringWithFormat:@"yyyyMMdd"];
+}
+
+
 - (BOOL)fs_isEqualToDateForMonth:(NSDate *)date
 {
     return self.fs_year == date.fs_year && self.fs_month == date.fs_month;
@@ -237,23 +270,6 @@
     return self.fs_year == date.fs_year && self.fs_month == date.fs_month && self.fs_day == date.fs_day;
 }
 
-+ (instancetype)fs_dateFromString:(NSString *)string format:(NSString *)format
-{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = format;
-    return [formatter dateFromString:string];
-}
-
-+ (instancetype)fs_dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day
-{
-    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
-    NSDateComponents *components = [[NSDateComponents alloc] init];
-    components.year = year;
-    components.month = month;
-    components.day = day;
-    return [calendar dateFromComponents:components];
-}
-
 @end
 
 
@@ -262,8 +278,8 @@
 + (instancetype)fs_sharedCalendar
 {
     static id instance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    static dispatch_once_t fs_sharedCalendar_onceToken;
+    dispatch_once(&fs_sharedCalendar_onceToken, ^{
         instance = [NSCalendar currentCalendar];
     });
     return instance;
