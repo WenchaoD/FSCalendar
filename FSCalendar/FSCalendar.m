@@ -414,6 +414,8 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     // There is no stored 'selection' state for placeholder cell, so the 'simulated selection' state needs to be recalculated.
     [collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
         if (cell.dateIsPlaceholder) {
+            cell.dateIsSelected = [cell.date fs_isEqualToDateForDay:_selectedDate];
+            cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
             [cell setNeedsLayout];
         }
     }];
