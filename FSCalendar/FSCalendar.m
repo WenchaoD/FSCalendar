@@ -273,11 +273,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
-        if (!_selectedDate) {
-            self.selectedDate = [NSDate date];
-        } else {
-            [self scrollToDate:_currentPage];
-        }
+        [self scrollToDate:_currentPage];
     }
     
     _supressEvent = NO;
@@ -429,7 +425,11 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         [self setSelectedDate:cell.date animate:YES forPlaceholder:YES];
         return NO;
     }
-    BOOL shouldSelect = ![collectionView.indexPathsForSelectedItems containsObject:indexPath];
+    if ([collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
+        [self didSelectDate:_selectedDate];
+        return NO;
+    }
+    BOOL shouldSelect = YES;
     if (shouldSelect && cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
         shouldSelect &= [self shouldSelectDate:cell.date];
     }
@@ -594,7 +594,6 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     
     BOOL shouldSelect = YES;
     if (forPlaceholder) {
-        BOOL shouldSelect = ![_collectionView.indexPathsForSelectedItems containsObject:selectedIndexPath];
         shouldSelect &= !_supressEvent;
         shouldSelect &= [self shouldSelectDate:targetDate];
         if (!shouldSelect) return;
@@ -816,7 +815,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         switch (prevScope) {
             case FSCalendarScopeMonth: {
                 FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-                _currentPage = cell.date;
+                _currentPage = cell.date ?: _today;
                 break;
             }
             case FSCalendarScopeWeek: {
@@ -847,7 +846,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
                         }
                     }
                 }
-                
+                _currentPage = _currentPage ?: _today;
                 completion();
                 
                 break;
@@ -856,6 +855,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
                 break;
             }
         }
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
             

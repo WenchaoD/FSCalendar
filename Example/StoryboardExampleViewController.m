@@ -38,6 +38,8 @@
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
     _scrollDirection = _calendar.scrollDirection;
+    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
+//    _calendar.scope = FSCalendarScopeWeek;
     
 }
 
@@ -97,6 +99,12 @@
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
 {
     NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"MMMM yyyy"]);
+}
+
+- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+{
+    _calendarHeightConstraint.constant = [calendar sizeThatFits:CGSizeZero].height;
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark - Navigation

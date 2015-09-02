@@ -22,6 +22,7 @@
 @property (readonly, nonatomic) UICollectionView *collectionView;
 @property (readonly, nonatomic) NSArray *weekdays;
 @property (readonly, nonatomic) CGFloat rowHeight;
+@property (readonly, nonatomic) NSCalendar *calendar;
 
 @end
 

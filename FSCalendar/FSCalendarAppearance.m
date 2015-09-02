@@ -346,6 +346,17 @@
     }
 }
 
+- (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
+{
+    if (_useVeryShortWeekdaySymbols != useVeryShortWeekdaySymbols) {
+        _useVeryShortWeekdaySymbols = useVeryShortWeekdaySymbols;
+        NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.calendar.veryShortStandaloneWeekdaySymbols : self.calendar.calendar.shortStandaloneWeekdaySymbols;
+        [_calendar.weekdays enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
+            label.text = weekdaySymbols[index];
+        }];
+    }
+}
+
 - (void)setHeaderMinimumDissolvedAlpha:(CGFloat)headerMinimumDissolvedAlpha
 {
     if (_headerMinimumDissolvedAlpha != headerMinimumDissolvedAlpha) {
@@ -365,8 +376,9 @@
 - (void)adjustTitleIfNecessary
 {
     if (_autoAdjustTitleSize) {
-        _titleTextSize       = _calendar.collectionView.fs_height/3/6;
-        _subtitleTextSize    = _calendar.collectionView.fs_height/4.5/6;
+        CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
+        _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
+        _subtitleTextSize    = _calendar.collectionView.fs_height/4.5/factor;
         _headerTitleTextSize = _titleTextSize + 3;
         _weekdayTextSize     = _titleTextSize;
         

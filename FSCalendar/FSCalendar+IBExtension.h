@@ -42,7 +42,7 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor  *todaySelectionColor;
 
 @property (assign, nonatomic) IBInspectable FSCalendarCellStyle cellStyle;
-
+@property (assign, nonatomic) IBInspectable BOOL useVeryShortWeekdaySymbols;
 
 // For IB Preview. Not actually affect.
 @property (assign, nonatomic) IBInspectable BOOL      fakeSubtitles;

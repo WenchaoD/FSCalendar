@@ -299,6 +299,18 @@
     return self.appearance.cellStyle;
 }
 
+#pragma mark - useVeryShortWeekdaySymbols
+
+- (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
+{
+    self.appearance.useVeryShortWeekdaySymbols = useVeryShortWeekdaySymbols;
+}
+
+- (BOOL)useVeryShortWeekdaySymbols
+{
+    return self.appearance.useVeryShortWeekdaySymbols;
+}
+
 #pragma mark - fakeSubtitles
 
 - (void)setFakeSubtitles:(BOOL)fakeSubtitles
