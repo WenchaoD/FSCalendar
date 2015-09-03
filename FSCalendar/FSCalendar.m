@@ -626,7 +626,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
                 break;
             }
         }
-        if (!_supressEvent) {
+        if (!_supressEvent && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero)) {
             _supressEvent = YES;
             [self currentPageDidChange];
             _supressEvent = NO;
@@ -856,8 +856,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
             }
         }
         
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
+        void(^resizeBlock)() = ^{
             
             CGSize size = [self sizeThatFits:self.frame.size];
             void(^transitionCompletion)() = ^{
@@ -922,8 +921,15 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
                 
             }
             
-            
-        });
+        };
+        
+        if (animated) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                resizeBlock();
+            });
+        } else {
+            resizeBlock();
+        }
     }
 }
 

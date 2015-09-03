@@ -1,0 +1,505 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */; };
+		EE0954AF1B97DDE0007F6964 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AE1B97DDE0007F6964 /* ViewController.swift */; };
+		EE0954B21B97DDE0007F6964 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE0954B01B97DDE0007F6964 /* Main.storyboard */; };
+		EE0954B41B97DDE0007F6964 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE0954B31B97DDE0007F6964 /* Images.xcassets */; };
+		EE0954B71B97DDE0007F6964 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EE0954B51B97DDE0007F6964 /* LaunchScreen.xib */; };
+		EE0954C31B97DDE0007F6964 /* SwiftExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954C21B97DDE0007F6964 /* SwiftExampleTests.swift */; };
+		EE0954E31B97DDF4007F6964 /* FSCalendar+IBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954CE1B97DDF4007F6964 /* FSCalendar+IBExtension.m */; };
+		EE0954E41B97DDF4007F6964 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D01B97DDF4007F6964 /* FSCalendar.m */; };
+		EE0954E51B97DDF4007F6964 /* FSCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D21B97DDF4007F6964 /* FSCalendarAppearance.m */; };
+		EE0954E61B97DDF4007F6964 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D41B97DDF4007F6964 /* FSCalendarCell.m */; };
+		EE0954E71B97DDF4007F6964 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D61B97DDF4007F6964 /* FSCalendarConstance.m */; };
+		EE0954E81B97DDF4007F6964 /* FSCalendarHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D91B97DDF4007F6964 /* FSCalendarHeader.m */; };
+		EE0954E91B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954DB1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m */; };
+		EE0954EA1B97DDF4007F6964 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE0954DC1B97DDF4007F6964 /* Info.plist */; };
+		EE0954EB1B97DDF4007F6964 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954DE1B97DDF4007F6964 /* NSDate+FSExtension.m */; };
+		EE0954EC1B97DDF4007F6964 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E01B97DDF4007F6964 /* NSString+FSExtension.m */; };
+		EE0954ED1B97DDF4007F6964 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EE0954BD1B97DDE0007F6964 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE09549F1B97DDE0007F6964 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EE0954A61B97DDE0007F6964;
+			remoteInfo = SwiftExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EE0954A71B97DDE0007F6964 /* SwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE0954AB1B97DDE0007F6964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EE0954AE1B97DDE0007F6964 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EE0954B11B97DDE0007F6964 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EE0954B31B97DDE0007F6964 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		EE0954B61B97DDE0007F6964 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		EE0954BC1B97DDE0007F6964 /* SwiftExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE0954C11B97DDE0007F6964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE0954C21B97DDE0007F6964 /* SwiftExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExampleTests.swift; sourceTree = "<group>"; };
+		EE0954CD1B97DDF4007F6964 /* FSCalendar+IBExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FSCalendar+IBExtension.h"; sourceTree = "<group>"; };
+		EE0954CE1B97DDF4007F6964 /* FSCalendar+IBExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+IBExtension.m"; sourceTree = "<group>"; };
+		EE0954CF1B97DDF4007F6964 /* FSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendar.h; sourceTree = "<group>"; };
+		EE0954D01B97DDF4007F6964 /* FSCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendar.m; sourceTree = "<group>"; };
+		EE0954D11B97DDF4007F6964 /* FSCalendarAppearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarAppearance.h; sourceTree = "<group>"; };
+		EE0954D21B97DDF4007F6964 /* FSCalendarAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarAppearance.m; sourceTree = "<group>"; };
+		EE0954D31B97DDF4007F6964 /* FSCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarCell.h; sourceTree = "<group>"; };
+		EE0954D41B97DDF4007F6964 /* FSCalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarCell.m; sourceTree = "<group>"; };
+		EE0954D51B97DDF4007F6964 /* FSCalendarConstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarConstance.h; sourceTree = "<group>"; };
+		EE0954D61B97DDF4007F6964 /* FSCalendarConstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarConstance.m; sourceTree = "<group>"; };
+		EE0954D71B97DDF4007F6964 /* FSCalendarDynamicHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarDynamicHeader.h; sourceTree = "<group>"; };
+		EE0954D81B97DDF4007F6964 /* FSCalendarHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarHeader.h; sourceTree = "<group>"; };
+		EE0954D91B97DDF4007F6964 /* FSCalendarHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarHeader.m; sourceTree = "<group>"; };
+		EE0954DA1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarHeaderTouchDeliver.h; sourceTree = "<group>"; };
+		EE0954DB1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarHeaderTouchDeliver.m; sourceTree = "<group>"; };
+		EE0954DC1B97DDF4007F6964 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EE0954DD1B97DDF4007F6964 /* NSDate+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+FSExtension.h"; sourceTree = "<group>"; };
+		EE0954DE1B97DDF4007F6964 /* NSDate+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+FSExtension.m"; sourceTree = "<group>"; };
+		EE0954DF1B97DDF4007F6964 /* NSString+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FSExtension.h"; sourceTree = "<group>"; };
+		EE0954E01B97DDF4007F6964 /* NSString+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FSExtension.m"; sourceTree = "<group>"; };
+		EE0954E11B97DDF4007F6964 /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
+		EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
+		EE0954EE1B97DE08007F6964 /* Objc-Bridge-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Objc-Bridge-Header.h"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EE0954A41B97DDE0007F6964 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE0954B91B97DDE0007F6964 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE09549E1B97DDE0007F6964 = {
+			isa = PBXGroup;
+			children = (
+				EE0954A91B97DDE0007F6964 /* SwiftExample */,
+				EE0954BF1B97DDE0007F6964 /* SwiftExampleTests */,
+				EE0954A81B97DDE0007F6964 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EE0954A81B97DDE0007F6964 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE0954A71B97DDE0007F6964 /* SwiftExample.app */,
+				EE0954BC1B97DDE0007F6964 /* SwiftExampleTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE0954A91B97DDE0007F6964 /* SwiftExample */ = {
+			isa = PBXGroup;
+			children = (
+				EE0954CC1B97DDF4007F6964 /* FSCalendar */,
+				EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */,
+				EE0954AE1B97DDE0007F6964 /* ViewController.swift */,
+				EE0954B01B97DDE0007F6964 /* Main.storyboard */,
+				EE0954B31B97DDE0007F6964 /* Images.xcassets */,
+				EE0954B51B97DDE0007F6964 /* LaunchScreen.xib */,
+				EE0954AA1B97DDE0007F6964 /* Supporting Files */,
+			);
+			path = SwiftExample;
+			sourceTree = "<group>";
+		};
+		EE0954AA1B97DDE0007F6964 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EE0954AB1B97DDE0007F6964 /* Info.plist */,
+				EE0954EE1B97DE08007F6964 /* Objc-Bridge-Header.h */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EE0954BF1B97DDE0007F6964 /* SwiftExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				EE0954C21B97DDE0007F6964 /* SwiftExampleTests.swift */,
+				EE0954C01B97DDE0007F6964 /* Supporting Files */,
+			);
+			path = SwiftExampleTests;
+			sourceTree = "<group>";
+		};
+		EE0954C01B97DDE0007F6964 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EE0954C11B97DDE0007F6964 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EE0954CC1B97DDF4007F6964 /* FSCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				EE0954CD1B97DDF4007F6964 /* FSCalendar+IBExtension.h */,
+				EE0954CE1B97DDF4007F6964 /* FSCalendar+IBExtension.m */,
+				EE0954CF1B97DDF4007F6964 /* FSCalendar.h */,
+				EE0954D01B97DDF4007F6964 /* FSCalendar.m */,
+				EE0954D11B97DDF4007F6964 /* FSCalendarAppearance.h */,
+				EE0954D21B97DDF4007F6964 /* FSCalendarAppearance.m */,
+				EE0954D31B97DDF4007F6964 /* FSCalendarCell.h */,
+				EE0954D41B97DDF4007F6964 /* FSCalendarCell.m */,
+				EE0954D51B97DDF4007F6964 /* FSCalendarConstance.h */,
+				EE0954D61B97DDF4007F6964 /* FSCalendarConstance.m */,
+				EE0954D71B97DDF4007F6964 /* FSCalendarDynamicHeader.h */,
+				EE0954D81B97DDF4007F6964 /* FSCalendarHeader.h */,
+				EE0954D91B97DDF4007F6964 /* FSCalendarHeader.m */,
+				EE0954DA1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.h */,
+				EE0954DB1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m */,
+				EE0954DC1B97DDF4007F6964 /* Info.plist */,
+				EE0954DD1B97DDF4007F6964 /* NSDate+FSExtension.h */,
+				EE0954DE1B97DDF4007F6964 /* NSDate+FSExtension.m */,
+				EE0954DF1B97DDF4007F6964 /* NSString+FSExtension.h */,
+				EE0954E01B97DDF4007F6964 /* NSString+FSExtension.m */,
+				EE0954E11B97DDF4007F6964 /* UIView+FSExtension.h */,
+				EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */,
+			);
+			name = FSCalendar;
+			path = ../../FSCalendar;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EE0954A61B97DDE0007F6964 /* SwiftExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE0954C61B97DDE0007F6964 /* Build configuration list for PBXNativeTarget "SwiftExample" */;
+			buildPhases = (
+				EE0954A31B97DDE0007F6964 /* Sources */,
+				EE0954A41B97DDE0007F6964 /* Frameworks */,
+				EE0954A51B97DDE0007F6964 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftExample;
+			productName = SwiftExample;
+			productReference = EE0954A71B97DDE0007F6964 /* SwiftExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EE0954BB1B97DDE0007F6964 /* SwiftExampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE0954C91B97DDE0007F6964 /* Build configuration list for PBXNativeTarget "SwiftExampleTests" */;
+			buildPhases = (
+				EE0954B81B97DDE0007F6964 /* Sources */,
+				EE0954B91B97DDE0007F6964 /* Frameworks */,
+				EE0954BA1B97DDE0007F6964 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EE0954BE1B97DDE0007F6964 /* PBXTargetDependency */,
+			);
+			name = SwiftExampleTests;
+			productName = SwiftExampleTests;
+			productReference = EE0954BC1B97DDE0007F6964 /* SwiftExampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EE09549F1B97DDE0007F6964 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = wenchao;
+				TargetAttributes = {
+					EE0954A61B97DDE0007F6964 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					EE0954BB1B97DDE0007F6964 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = EE0954A61B97DDE0007F6964;
+					};
+				};
+			};
+			buildConfigurationList = EE0954A21B97DDE0007F6964 /* Build configuration list for PBXProject "SwiftExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EE09549E1B97DDE0007F6964;
+			productRefGroup = EE0954A81B97DDE0007F6964 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EE0954A61B97DDE0007F6964 /* SwiftExample */,
+				EE0954BB1B97DDE0007F6964 /* SwiftExampleTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EE0954A51B97DDE0007F6964 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE0954EA1B97DDF4007F6964 /* Info.plist in Resources */,
+				EE0954B21B97DDE0007F6964 /* Main.storyboard in Resources */,
+				EE0954B71B97DDE0007F6964 /* LaunchScreen.xib in Resources */,
+				EE0954B41B97DDE0007F6964 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE0954BA1B97DDE0007F6964 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EE0954A31B97DDE0007F6964 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE0954E61B97DDF4007F6964 /* FSCalendarCell.m in Sources */,
+				EE0954E81B97DDF4007F6964 /* FSCalendarHeader.m in Sources */,
+				EE0954E31B97DDF4007F6964 /* FSCalendar+IBExtension.m in Sources */,
+				EE0954EC1B97DDF4007F6964 /* NSString+FSExtension.m in Sources */,
+				EE0954AF1B97DDE0007F6964 /* ViewController.swift in Sources */,
+				EE0954ED1B97DDF4007F6964 /* UIView+FSExtension.m in Sources */,
+				EE0954E41B97DDF4007F6964 /* FSCalendar.m in Sources */,
+				EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */,
+				EE0954E51B97DDF4007F6964 /* FSCalendarAppearance.m in Sources */,
+				EE0954E91B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m in Sources */,
+				EE0954E71B97DDF4007F6964 /* FSCalendarConstance.m in Sources */,
+				EE0954EB1B97DDF4007F6964 /* NSDate+FSExtension.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE0954B81B97DDE0007F6964 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE0954C31B97DDE0007F6964 /* SwiftExampleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EE0954BE1B97DDE0007F6964 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EE0954A61B97DDE0007F6964 /* SwiftExample */;
+			targetProxy = EE0954BD1B97DDE0007F6964 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		EE0954B01B97DDE0007F6964 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EE0954B11B97DDE0007F6964 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EE0954B51B97DDE0007F6964 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EE0954B61B97DDE0007F6964 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EE0954C41B97DDE0007F6964 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EE0954C51B97DDE0007F6964 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EE0954C71B97DDE0007F6964 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SwiftExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/SwiftExample/Objc-Bridge-Header.h";
+			};
+			name = Debug;
+		};
+		EE0954C81B97DDE0007F6964 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = SwiftExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/SwiftExample/Objc-Bridge-Header.h";
+			};
+			name = Release;
+		};
+		EE0954CA1B97DDE0007F6964 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwiftExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftExample.app/SwiftExample";
+			};
+			name = Debug;
+		};
+		EE0954CB1B97DDE0007F6964 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwiftExampleTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftExample.app/SwiftExample";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EE0954A21B97DDE0007F6964 /* Build configuration list for PBXProject "SwiftExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE0954C41B97DDE0007F6964 /* Debug */,
+				EE0954C51B97DDE0007F6964 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE0954C61B97DDE0007F6964 /* Build configuration list for PBXNativeTarget "SwiftExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE0954C71B97DDE0007F6964 /* Debug */,
+				EE0954C81B97DDE0007F6964 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		EE0954C91B97DDE0007F6964 /* Build configuration list for PBXNativeTarget "SwiftExampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE0954CA1B97DDE0007F6964 /* Debug */,
+				EE0954CB1B97DDE0007F6964 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EE09549F1B97DDE0007F6964 /* Project object */;
+}
