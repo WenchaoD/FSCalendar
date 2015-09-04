@@ -38,7 +38,7 @@
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
     _scrollDirection = _calendar.scrollDirection;
-    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
+//    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
 //    _calendar.scope = FSCalendarScopeWeek;
     
 }
@@ -73,6 +73,11 @@
 //{
 //    return [NSDate fs_dateWithYear:2015 month:7 day:15];
 //}
+
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+{
+    return [NSDate date];
+}
 
 #pragma mark - FSCalendarDelegate
 

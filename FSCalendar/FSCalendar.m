@@ -69,6 +69,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (void)scrollToDate:(NSDate *)date;
 - (void)scrollToDate:(NSDate *)date animate:(BOOL)animate;
+- (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated;
 
 - (BOOL)isDateInRange:(NSDate *)date;
 
@@ -316,14 +317,16 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 - (CGSize)sizeThatFits:(CGSize)size
 {
     if (_rowHeight == -1) {
-        return size;
+        [self adjustRowHeight];
     }
+    CGFloat headerHeight = _header.fs_height ?: _headerHeight;
+    headerHeight = headerHeight == -1 ? kFSCalendarDefaultHeaderHeight : headerHeight;
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            return CGSizeMake(size.width, kFSCalendarDefaultWeekHeight + _header.fs_height + 6 * _rowHeight + kFSCalendarDefaultWeekHeight*0.2);
+            return CGSizeMake(size.width, kFSCalendarDefaultWeekHeight + headerHeight + 6 * _rowHeight + kFSCalendarDefaultWeekHeight*0.2);
         }
         case FSCalendarScopeWeek: {
-            return CGSizeMake(size.width, kFSCalendarDefaultWeekHeight + _header.fs_height + _rowHeight + kFSCalendarDefaultWeekHeight*0.2);
+            return CGSizeMake(size.width, kFSCalendarDefaultWeekHeight + headerHeight + _rowHeight + kFSCalendarDefaultWeekHeight*0.2);
         }
         default: {
             break;
@@ -377,11 +380,11 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
-            cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month];
+            cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month] || ![self isDateInRange:cell.date];
             break;
         }
         case FSCalendarScopeWeek: {
-            cell.dateIsPlaceholder = NO;
+            cell.dateIsPlaceholder = ![self isDateInRange:cell.date];
             break;
         }
         default: {
@@ -422,7 +425,11 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.dateIsPlaceholder) {
-        [self setSelectedDate:cell.date animate:YES forPlaceholder:YES];
+        if ([self isDateInRange:cell.date]) {
+            [self setSelectedDate:cell.date animate:YES forPlaceholder:YES];
+        } else if (![cell.date fs_isEqualToDateForMonth:_currentPage]) {
+            [self scrollToPageForDate:cell.date animated:YES];
+        }
         return NO;
     }
     if ([collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
@@ -611,29 +618,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
     }
     
-    if (!_collectionView.tracking && !_collectionView.decelerating) {
-        [self willChangeValueForKey:@"currentPage"];
-        switch (_scope) {
-            case FSCalendarScopeMonth: {
-                _currentPage = [targetDate fs_firstDayOfMonth];
-                break;
-            }
-            case FSCalendarScopeWeek: {
-                _currentPage = [targetDate fs_firstDayOfWeek];
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-        if (!_supressEvent && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero)) {
-            _supressEvent = YES;
-            [self currentPageDidChange];
-            _supressEvent = NO;
-        }
-        [self didChangeValueForKey:@"currentPage"];
-        [self scrollToDate:targetDate animate:animate];
-    }
+    [self scrollToPageForDate:targetDate animated:animate];
 }
 
 - (void)setToday:(NSDate *)today
@@ -981,6 +966,33 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     _supressEvent = NO;
 }
 
+- (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
+{
+    if (!_collectionView.tracking && !_collectionView.decelerating) {
+        [self willChangeValueForKey:@"currentPage"];
+        switch (_scope) {
+            case FSCalendarScopeMonth: {
+                _currentPage = date.fs_firstDayOfMonth;
+                break;
+            }
+            case FSCalendarScopeWeek: {
+                _currentPage = date.fs_firstDayOfWeek;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        if (!_supressEvent && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero)) {
+            _supressEvent = YES;
+            [self currentPageDidChange];
+            _supressEvent = NO;
+        }
+        [self didChangeValueForKey:@"currentPage"];
+        [self scrollToDate:_currentPage animate:YES];
+    }
+}
+
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
     switch (_scope) {
@@ -1062,7 +1074,8 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (void)adjustRowHeight
 {
-    CGFloat contentHeight = self.fs_height-kFSCalendarDefaultWeekHeight-_header.fs_height;
+    CGFloat headerHeight = _headerHeight == -1 ? kFSCalendarDefaultHeaderHeight : _headerHeight;
+    CGFloat contentHeight = self.fs_height-kFSCalendarDefaultWeekHeight - headerHeight;
     CGFloat padding = kFSCalendarDefaultWeekHeight*0.1;
     switch (_scope) {
         case FSCalendarScopeMonth: {
