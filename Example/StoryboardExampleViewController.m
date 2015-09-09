@@ -99,6 +99,7 @@
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
     NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    
 }
 
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
@@ -192,7 +193,7 @@
 
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
-    _calendar.selectedDate = selectedDate;
+    [_calendar selectDate:selectedDate];
 }
 
 - (void)setFirstWeekday:(NSUInteger)firstWeekday

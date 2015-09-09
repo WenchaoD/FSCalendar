@@ -49,7 +49,7 @@ Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Ha
 
 4. Finally, you should implement `FSCalendarDataSource` and `FSCalendarDelegate` in ViewController.m
 
-## Code
+## Or use code
 
 ```objective-c
 @property (weak , nonatomic) FSCalendar *calendar;
@@ -144,6 +144,14 @@ calendar.scope = .Month
 ```
 
 ![fscalendarscope](https://cloud.githubusercontent.com/assets/5186464/9562222/b0318d40-4e98-11e5-97dc-1694cbd26a74.gif)
+
+### To select more than one date
+
+```objective-c
+_calendar.allowsMultipleSelection = YES;
+```
+
+![fscalendar-mulipleselection](https://cloud.githubusercontent.com/assets/5186464/9751497/368f55f6-56d8-11e5-9af5-0d09ba13f0eb.png)
 
 ### If you want `FSCalendar` to use `Monday` as the first column (or any other weekday)
 

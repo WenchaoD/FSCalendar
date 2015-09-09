@@ -89,11 +89,6 @@
     [CATransaction setDisableActions:YES];
 }
 
-- (BOOL)isSelected
-{
-    return [super isSelected] || (_dateIsSelected && !_deselecting);
-}
-
 #pragma mark - Public
 
 - (void)performSelecting
@@ -154,7 +149,7 @@
         _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(self.contentView.fs_height*5.0/6.0));
         _subtitleLabel.hidden = YES;
     }
-    _backgroundLayer.hidden = !self.selected && !self.dateIsToday;
+    _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected;
     _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
@@ -178,7 +173,7 @@
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
-    if (self.isSelected) {
+    if (self.isSelected || (self.dateIsSelected && !_deselecting)) {
         if (self.dateIsToday) {
             return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
         }

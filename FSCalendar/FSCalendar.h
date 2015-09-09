@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendarAppearance.h"
 
+#define FSCalendarDeprecated(message) __attribute((deprecated(message)))
+
 //! Project version number for FSCalendar.
 FOUNDATION_EXPORT double FSCalendarVersionNumber;
 
@@ -17,7 +19,7 @@ FOUNDATION_EXPORT const unsigned char FSCalendarVersionString[];
 
 @class FSCalendar;
 
-__attribute((deprecated("use \'FSCalendarScrollDirection\' instead")))
+FSCalendarDeprecated("use \'FSCalendarScrollDirection\' instead")
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowVertical,
     FSCalendarFlowHorizontal
@@ -50,7 +52,7 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated;
 
-- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar __attribute((deprecated("use \'calendarCurrentPageDidChange\' instead")));
+- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated("use \'calendarCurrentPageDidChange\' instead");
 
 @end
 
@@ -72,7 +74,6 @@ IB_DESIGNABLE
 @property (weak, nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 
 @property (strong, nonatomic) NSDate *today;
-@property (strong, nonatomic) NSDate *selectedDate;
 @property (strong, nonatomic) NSDate *currentPage;
 @property (strong, nonatomic) NSLocale *locale;
 
@@ -80,24 +81,33 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScope scope;
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
 @property (assign, nonatomic) IBInspectable CGFloat headerHeight;
+@property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
 
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
 @property (readonly, nonatomic) NSDate *minimumDate;
 @property (readonly, nonatomic) NSDate *maximumDate;
 
+@property (readonly, nonatomic) NSDate *selectedDate;
+@property (readonly, nonatomic) NSArray *selectedDates;
+
 - (void)reloadData;
 - (CGSize)sizeThatFits:(CGSize)size;
 
-- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate;
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated;
+
+- (void)selectDate:(NSDate *)date;
+- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate;
 
 @end
 
 
 @interface FSCalendar (Deprecated)
 
-@property (strong, nonatomic) NSDate *currentMonth __attribute((deprecated("use \'currentPage\' instead")));
-@property (assign, nonatomic) FSCalendarFlow flow __attribute((deprecated("use \'scrollDirection\' instead")));
+@property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated("use \'currentPage\' instead");
+@property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated("use \'scrollDirection\' instead");
+
+- (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated("use \'selectDate:\' instead");
+- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated("use \'selectDate:scrollToDate:\' instead");
 
 @end
 

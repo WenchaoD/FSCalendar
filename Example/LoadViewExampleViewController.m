@@ -16,6 +16,15 @@
     NSLog(@"%@:%s", self.class.description, __FUNCTION__);
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.title = @"FSCalendar";
+    }
+    return self;
+}
+
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -26,7 +35,7 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-    calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
+    [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
     [view addSubview:calendar];
     self.calendar = calendar;
 }

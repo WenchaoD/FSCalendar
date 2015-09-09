@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
 
   s.name             = "FSCalendar"
-  s.version          = "1.1.4"
-  s.summary          = "A powerful calendar which supports Appearance, Infinite Scrolling and Subtitle"
+  s.version          = "1.2.0"
+  s.summary          = "The fastest, most beautiful and most convenient calendar control, https://www.cocoacontrols.com/controls/fscalendar"
   
-  s.homepage         = "https://github.com/f33chobits/FSCalendar"
+  s.homepage         = "https://github.com/WenchaoIOS/FSCalendar"
   s.screenshots      = "https://cloud.githubusercontent.com/assets/5186464/6655324/213a814a-cb36-11e4-9add-f80515a83291.png","https://cloud.githubusercontent.com/assets/5186464/6652191/f11d5242-caa1-11e4-9cc2-8a7c0cc9ef02.gif","https://cloud.githubusercontent.com/assets/5186464/6652193/19e7f92a-caa2-11e4-92af-0639dc0c2d79.gif","https://cloud.githubusercontent.com/assets/5186464/6680012/4af05080-cc8c-11e4-863a-59cd3507192d.gif"
   s.license          = 'MIT'
   s.author           = { "Wenchao Ding" => "f33chobits@gmail.com" }
