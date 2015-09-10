@@ -156,6 +156,16 @@
                 cell.titleLabel.text = nil;
             } else {
                 NSDate *date = [self.calendar.minimumDate.fs_firstDayOfWeek fs_dateByAddingWeeks:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
+				
+				NSRange days = [[NSCalendar fs_sharedCalendar] rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:date];
+				NSInteger diff = days.length - date.fs_day;
+				
+				if (diff < 3) {
+					NSDateComponents* dateComponents = [[NSDateComponents alloc] init];
+					[dateComponents setMonth:1];
+					date = [[NSCalendar fs_sharedCalendar] dateByAddingComponents:dateComponents toDate:date options:0];
+				}
+				
                 cell.titleLabel.text = [_dateFormatter stringFromDate:date];
             }
             break;
