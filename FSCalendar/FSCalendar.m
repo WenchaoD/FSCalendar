@@ -633,7 +633,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     }
     if (![_currentPage fs_isEqualToDateForMonth:currentPage]) {
         currentPage = currentPage.fs_dateByIgnoringTimeComponents;
-        [self scrollToPageForDate:currentPage animated:YES];
+        [self scrollToPageForDate:currentPage animated:animated];
     }
 }
 
