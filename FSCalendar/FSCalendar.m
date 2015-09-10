@@ -1132,6 +1132,11 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (void)didSelectDate:(NSDate *)date
 {
+	if (!self.allowsMultipleSelection) {
+		[_selectedDates removeAllObjects];
+	}
+	
+	
     if (![_selectedDates containsObject:date]) {
         [_selectedDates addObject:date];
     }
