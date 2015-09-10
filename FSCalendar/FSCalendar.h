@@ -98,6 +98,8 @@ IB_DESIGNABLE
 - (void)selectDate:(NSDate *)date;
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate;
 
+- (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated;
+
 @end
 
 
