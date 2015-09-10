@@ -79,6 +79,7 @@ IB_DESIGNABLE
 
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 @property (assign, nonatomic) FSCalendarScope scope;
+@property (assign, nonatomic) BOOL disableSelection;
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
 @property (assign, nonatomic) IBInspectable CGFloat headerHeight;
 @property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
