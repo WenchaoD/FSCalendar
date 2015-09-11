@@ -131,6 +131,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
+    _disableSelection = NO;
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -434,6 +435,9 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_disableSelection) {
+        return NO;
+    }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.dateIsPlaceholder) {
         if ([self isDateInRange:cell.date]) {
@@ -452,6 +456,10 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         shouldSelect &= [self shouldSelectDate:cell.date];
     }
     return shouldSelect && [self isDateInRange:cell.date];
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    return !_disableSelection;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
