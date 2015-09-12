@@ -40,6 +40,7 @@
     _scrollDirection = _calendar.scrollDirection;
 //    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
 //    _calendar.scope = FSCalendarScopeWeek;
+    _calendar.allowsMultipleSelection = YES;
     
 }
 
@@ -71,12 +72,18 @@
 //
 //- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [NSDate fs_dateWithYear:2015 month:7 day:15];
+//    return [NSDate fs_dateWithYear:2025 month:7 day:15];
 //}
 
-- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date
 {
-    return [NSDate date];
+    NSLog(@"Should Deselect date %@",date.fs_string);
+    return NO;
+}
+
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
+{
+    NSLog(@"Did deselect date %@",date.fs_string);
 }
 
 #pragma mark - FSCalendarDelegate

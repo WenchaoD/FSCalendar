@@ -30,6 +30,8 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
+- (BOOL)shouldDeselectDate:(NSDate *)date;
+- (void)didDeselectDate:(NSDate *)date;
 - (void)currentPageDidChange;
 
 @end
@@ -122,7 +124,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
     _firstWeekday = [_calendar firstWeekday];
     _scope = FSCalendarScopeMonth;
-    _selectedDates = [NSMutableArray array];
+    _selectedDates = [NSMutableArray arrayWithCapacity:1];
     
     _rowHeight = -1;
     
@@ -346,7 +348,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     return size;
 }
 
-#pragma mark - UICollectionView dataSource/delegate
+#pragma mark - <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -407,6 +409,8 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     return cell;
 }
 
+#pragma mark - <UICollectionViewDelegate>
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
@@ -460,7 +464,16 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     _daysContainer.clipsToBounds = NO;
     [cell performDeselecting];
     [_selectedDates removeObject:cell.date];
+    [self didDeselectDate:cell.date];
 }
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    return [self shouldDeselectDate:cell.date ?: [self dateForIndexPath:indexPath]];
+}
+
+#pragma mark - <UIScrollViewDelegate>
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -985,7 +998,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
-    if (!_collectionView.tracking && !_collectionView.decelerating) {
+    if (!_collectionView.tracking && !_collectionView.decelerating && ![_currentPage fs_isEqualToDateForMonth:date]) {
         [self willChangeValueForKey:@"currentPage"];
         switch (_scope) {
             case FSCalendarScopeMonth: {
@@ -1132,6 +1145,21 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     }];
     if (_delegate && [_delegate respondsToSelector:@selector(calendar:didSelectDate:)]) {
         [_delegate calendar:self didSelectDate:date];
+    }
+}
+
+- (BOOL)shouldDeselectDate:(NSDate *)date
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(calendar:shouldDeselectDate:)]) {
+       return [_delegate calendar:self shouldDeselectDate:date];
+    }
+    return YES;
+}
+
+- (void)didDeselectDate:(NSDate *)date
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(calendar:didDeselectDate:)]) {
+        [_delegate calendar:self didDeselectDate:date];
     }
 }
 

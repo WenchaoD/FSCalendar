@@ -49,6 +49,8 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 @optional
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
+- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date;
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated;
 
