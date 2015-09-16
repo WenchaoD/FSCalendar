@@ -40,7 +40,7 @@
     _scrollDirection = _calendar.scrollDirection;
 //    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
 //    _calendar.scope = FSCalendarScopeWeek;
-    _calendar.allowsMultipleSelection = YES;
+//    _calendar.allowsMultipleSelection = YES;
     
 }
 
@@ -75,11 +75,6 @@
 //    return [NSDate fs_dateWithYear:2025 month:7 day:15];
 //}
 
-- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date
-{
-    NSLog(@"Should Deselect date %@",date.fs_string);
-    return NO;
-}
 
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
 {

@@ -447,8 +447,15 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         }
         return NO;
     }
-    if ([collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
-        [self didSelectDate:self.selectedDate];
+    if ([collectionView.indexPathsForSelectedItems containsObject:indexPath] || [self.selectedDates containsObject:[self dateForIndexPath:indexPath]]) {
+        if (self.allowsMultipleSelection) {
+            if ([self collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath]) {
+                [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+                [self collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
+            }
+        } else {
+            [self didSelectDate:self.selectedDate];
+        }
         return NO;
     }
     BOOL shouldSelect = YES;
@@ -727,14 +734,14 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
     CGFloat width = self.fs_width/_weekdays.count;
     CGFloat height = kFSCalendarDefaultWeekHeight;
-    [_calendar.shortStandaloneWeekdaySymbols enumerateObjectsUsingBlock:^(NSString *symbol, NSUInteger index, BOOL *stop) {
-        if (index >= _weekdays.count) {
-            *stop = YES;
-            return;
-        }
-        UILabel *weekdayLabel = _weekdays[index];
-        weekdayLabel.text = symbol;
-    }];
+//    [_calendar.shortStandaloneWeekdaySymbols enumerateObjectsUsingBlock:^(NSString *symbol, NSUInteger index, BOOL *stop) {
+//        if (index >= _weekdays.count) {
+//            *stop = YES;
+//            return;
+//        }
+//        UILabel *weekdayLabel = _weekdays[index];
+//        weekdayLabel.text = symbol;
+//    }];
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
         weekdayLabel.frame = CGRectMake(absoluteIndex * width,
@@ -924,26 +931,39 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     targetDate = date.fs_dateByIgnoringTimeComponents;
     NSIndexPath *selectedIndexPath = [self indexPathForDate:targetDate];
     
-    BOOL shouldSelect = YES;
+    BOOL shouldSelect = !_supressEvent;
     if (forPlaceholder) {
-        shouldSelect &= !_supressEvent;
+        
+        // 跨月份选中日期，需要触发各类事件
         shouldSelect &= [self shouldSelectDate:targetDate];
-        if (!shouldSelect) return;
-    } else {
-        shouldSelect = [self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath];
-    }
-    
-    if (shouldSelect) {
-        if (_collectionView.indexPathsForSelectedItems.count && self.selectedDate && !self.allowsMultipleSelection) {
-            NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
-            [_collectionView deselectItemAtIndexPath:currentIndexPath animated:YES];
-            [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndexPath];
+        if (shouldSelect) {
+            if (_collectionView.indexPathsForSelectedItems.count && self.selectedDate && !self.allowsMultipleSelection) {
+                NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
+                [_collectionView deselectItemAtIndexPath:currentIndexPath animated:YES];
+                [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndexPath];
+            }
+            if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
+                [_collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+                [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
+            }
         }
-        [_collectionView selectItemAtIndexPath:selectedIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-        [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
+    } else {
+        // 手动选中日期时，需先反选已经选中的日期，但不触发事件
+        if (self.selectedDate && !self.allowsMultipleSelection) {
+            NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
+            FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
+            _daysContainer.clipsToBounds = NO;
+            [cell performDeselecting];
+            [_selectedDates removeObject:cell.date];
+        }
+        [_collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        
     }
     
     if (scrollToDate) {
+        if (forPlaceholder && !shouldSelect) {
+            return;
+        }
         [self scrollToPageForDate:targetDate animated:YES];
     }
 }

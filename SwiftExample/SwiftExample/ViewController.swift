@@ -15,7 +15,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        calendar.selectedDate = NSDate()
+        calendar.selectDate(NSDate())
         calendar.scrollDirection = .Vertical
         calendar.scope = .Month
     }

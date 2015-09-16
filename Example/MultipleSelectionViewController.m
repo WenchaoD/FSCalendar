@@ -35,7 +35,36 @@
     self.calendar = calendar;
 }
 
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+{
+    BOOL shouldDedeselect = date.fs_day != 5;
+    if (!shouldDedeselect) {
+        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be selected",date.fs_string] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date
+{
+    BOOL shouldDedeselect = date.fs_day != 7;
+    if (!shouldDedeselect) {
+        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be deselected",date.fs_string] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+        return NO;
+    }
+    return YES;
+}
+
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+{
+    NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
+    [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [selectedDates addObject:[obj fs_stringWithFormat:@"yyyy/MM/dd"]];
+    }];
+    NSLog(@"selected dates is %@",selectedDates);
+}
+
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
