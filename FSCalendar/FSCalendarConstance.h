@@ -12,3 +12,4 @@
 UIKIT_EXTERN CGFloat const kFSCalendarDefaultHeaderHeight;
 UIKIT_EXTERN CGFloat const kFSCalendarMinimumRowHeight;
 UIKIT_EXTERN CGFloat const kFSCalendarDefaultWeekHeight;
+UIKIT_EXTERN CGFloat const kFSCalendarDefaultBounceAnimationDuration;

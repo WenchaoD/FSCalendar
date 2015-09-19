@@ -1,0 +1,21 @@
+//
+//  FSCalendarStaticHeader.h
+//  FSCalendar
+//
+//  Created by dingwenchao on 9/17/15.
+//  Copyright (c) 2015 wenchaoios. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class FSCalendar;
+
+@interface FSCalendarStickyHeader : UICollectionReusableView
+
+@property (weak, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) UILabel *titleLabel;
+@property (strong, nonatomic) NSArray *weekdayLabels;
+
+@property (strong, nonatomic) NSDate *month;
+
+@end

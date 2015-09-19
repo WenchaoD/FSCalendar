@@ -11,3 +11,4 @@
 CGFloat const kFSCalendarDefaultHeaderHeight = 40;
 CGFloat const kFSCalendarMinimumRowHeight = 40;
 CGFloat const kFSCalendarDefaultWeekHeight = 25;
+CGFloat const kFSCalendarDefaultBounceAnimationDuration = 0.15;
