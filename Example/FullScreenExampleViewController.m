@@ -29,8 +29,7 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-    calendar.pagingEnabled = NO;
-    calendar.appearance.headerTitleTextSize = 20;
+    calendar.pagingEnabled = NO; // important
     calendar.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:calendar];
     self.calendar = calendar;

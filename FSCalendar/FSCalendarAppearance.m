@@ -79,6 +79,7 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateNormal)];
     }
+    
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 
@@ -375,18 +376,23 @@
 
 - (void)adjustTitleIfNecessary
 {
-    if (_autoAdjustTitleSize) {
-        CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
-        _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
-        _subtitleTextSize    = _calendar.collectionView.fs_height/4.5/factor;
-        _headerTitleTextSize = _titleTextSize + 3;
-        _weekdayTextSize     = _titleTextSize;
-        
-        // reload appearance
-        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        [_calendar.header.collectionView reloadData];
-        [_calendar.weekdays setValue:[UIFont systemFontOfSize:_weekdayTextSize] forKeyPath:@"font"];
+    if (self.calendar.pagingEnabled) {
+        if (_autoAdjustTitleSize) {
+            CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
+            _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
+            _subtitleTextSize    = _calendar.collectionView.fs_height/4.5/factor;
+            _headerTitleTextSize = _titleTextSize + 3;
+            _weekdayTextSize     = _titleTextSize;
+            
+        }
+    } else {
+        _headerTitleTextSize = 20;
     }
+    
+    // reload appearance
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+    [_calendar.header.collectionView reloadData];
+    [_calendar.weekdays setValue:[UIFont systemFontOfSize:_weekdayTextSize] forKeyPath:@"font"];
 }
 
 @end

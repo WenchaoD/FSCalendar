@@ -21,7 +21,6 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (assign, nonatomic) BOOL needsReloadingAppearance;
-@property (assign, nonatomic) BOOL needsReloadingData;
 @property (assign, nonatomic) BOOL needsAdjustingFrames;
 
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
@@ -40,7 +39,6 @@
         
         self.dateFormatter = [[NSDateFormatter alloc] init];
         self.needsReloadingAppearance = YES;
-        self.needsReloadingData = YES;
         self.needsAdjustingFrames = YES;
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
@@ -76,32 +74,29 @@
     [super layoutSubviews];
     
     _contentView.frame = self.bounds;
-
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         CGFloat width = self.fs_width / 7.0;
         CGFloat height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[_weekdayLabels.lastObject font]}].height;
-        CGFloat padding = height*0.1;
+        CGFloat padding = (height*0.4+_contentView.fs_height*0.2)*0.5;
         dispatch_async(dispatch_get_main_queue(), ^{
             [_weekdayLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
                 label.frame = CGRectMake(index*width, _contentView.fs_height-height, width, height);
             }];
-            _separator.frame = CGRectMake(0, _contentView.fs_height-height-padding*6, _contentView.fs_width, 1.0);
+            _separator.frame = CGRectMake(0, _contentView.fs_height-height-padding, _contentView.fs_width, 1.0);
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                CGFloat width = _contentView.fs_width;
+                CGFloat height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:self.appearance.headerTitleTextSize]}].height;
+                CGFloat padding = (height*0.2+_contentView.fs_height*0.1)*0.5;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _titleLabel.frame = CGRectMake(0, _separator.fs_top-padding-height, width, height);
+                });
+            });
+            
         });
     });
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        CGFloat width = _contentView.fs_width;
-        CGFloat height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:self.appearance.headerTitleTextSize]}].height;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            CGFloat padding = height*0.1;
-            _titleLabel.frame = CGRectMake(0, _separator.fs_top-padding-height, width, height);
-        });
-    });
-
-    if (_needsReloadingData) {
-        _needsReloadingData = NO;
-        [self reloadData];
-    }
+    [self reloadData];
     
     if (_needsReloadingAppearance) {
         _needsReloadingAppearance = NO;
