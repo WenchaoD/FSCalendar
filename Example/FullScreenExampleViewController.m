@@ -7,6 +7,7 @@
 //
 
 #import "FullScreenExampleViewController.h"
+#import "NSDate+FSExtension.h"
 
 @implementation FullScreenExampleViewController
 
@@ -30,9 +31,17 @@
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     calendar.pagingEnabled = NO; // important
+    calendar.allowsMultipleSelection = YES;
     calendar.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:calendar];
     self.calendar = calendar;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
+    [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:2]];
 }
 
 @end

@@ -81,6 +81,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 - (BOOL)isDateInRange:(NSDate *)date;
 
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder;
+- (void)enqueueSelectedDate:(NSDate *)date;
 
 - (void)adjustRowHeight;
 
@@ -986,6 +987,9 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder
 {
+    if (!self.allowsSelection) {
+        return;
+    }
     if (![self isDateInRange:date]) {
         [NSException raise:@"selectedDate out of range" format:nil];
     }
@@ -1021,6 +1025,11 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
         }
         [_collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
+        FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:selectedIndexPath];
+        _daysContainer.clipsToBounds = NO;
+        [cell performSelecting];
+        
+        [self enqueueSelectedDate:targetDate];
     }
     
     if (scrollToDate) {
@@ -1259,6 +1268,19 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
     }
 }
 
+- (void)enqueueSelectedDate:(NSDate *)date
+{
+    if (!self.allowsMultipleSelection) {
+        [_selectedDates removeAllObjects];
+    }
+    if (![_selectedDates containsObject:date]) {
+        [_selectedDates addObject:date];
+    }
+    [_selectedDates sortUsingComparator:^NSComparisonResult(NSDate *d1, NSDate *d2) {
+        return [d1 compare:d2] == NSOrderedDescending;
+    }];
+}
+
 
 #pragma mark - Delegate
 
@@ -1272,15 +1294,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
 
 - (void)didSelectDate:(NSDate *)date
 {
-    if (!self.allowsMultipleSelection) {
-        [_selectedDates removeAllObjects];
-    }
-    if (![_selectedDates containsObject:date]) {
-        [_selectedDates addObject:date];
-    }
-    [_selectedDates sortUsingComparator:^NSComparisonResult(NSDate *d1, NSDate *d2) {
-        return [d1 compare:d2] == NSOrderedDescending;
-    }];
+    [self enqueueSelectedDate:date];
     if (_delegate && [_delegate respondsToSelector:@selector(calendar:didSelectDate:)]) {
         [_delegate calendar:self didSelectDate:date];
     }

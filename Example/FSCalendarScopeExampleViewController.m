@@ -34,12 +34,6 @@
     }];
     NSLog(@"selected dates is %@",selectedDates);
     
-    
-    if (calendar.scope == FSCalendarScopeMonth) {
-        [calendar setScope:FSCalendarScopeWeek animated: YES];
-//        [calendar selectDate:date];
-    }
-    
 }
 
 #pragma mark - <UITableViewDataSource>
