@@ -1039,7 +1039,7 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
             _supressEvent = NO;
         }
         [self didChangeValueForKey:@"currentPage"];
-        [self scrollToDate:_currentPage animate:YES];
+        [self scrollToDate:_currentPage animate:animated];
     }
 }
 
