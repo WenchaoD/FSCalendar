@@ -956,8 +956,12 @@ static BOOL FSCalendarInInterfaceBuilder = NO;
             [cell performDeselecting];
             [_selectedDates removeObject:cell.date];
         }
-        [_collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-        
+      
+        if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:selectedIndexPath]) {
+          [_collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+          [self collectionView:_collectionView didSelectItemAtIndexPath:selectedIndexPath];
+        }
+      
     }
     
     if (scrollToDate) {
