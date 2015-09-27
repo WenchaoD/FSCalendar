@@ -11,7 +11,8 @@
 
 @interface FSCalendarCell : UICollectionViewCell
 
-@property (weak,   nonatomic) FSCalendarAppearance *appearance;
+@property (weak, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) FSCalendarAppearance *appearance;
 
 @property (weak, nonatomic) UILabel  *titleLabel;
 @property (weak, nonatomic) UILabel  *subtitleLabel;

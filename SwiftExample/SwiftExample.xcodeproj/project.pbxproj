@@ -24,6 +24,7 @@
 		EE0954EB1B97DDF4007F6964 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954DE1B97DDF4007F6964 /* NSDate+FSExtension.m */; };
 		EE0954EC1B97DDF4007F6964 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E01B97DDF4007F6964 /* NSString+FSExtension.m */; };
 		EE0954ED1B97DDF4007F6964 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */; };
+		EE2B62831BB6D7FE00ACB430 /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EE2B62821BB6D7FE00ACB430 /* FSCalendarStickyHeader.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		EE0954E11B97DDF4007F6964 /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
 		EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
 		EE0954EE1B97DE08007F6964 /* Objc-Bridge-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Objc-Bridge-Header.h"; sourceTree = "<group>"; };
+		EE2B62811BB6D7FE00ACB430 /* FSCalendarStickyHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarStickyHeader.h; sourceTree = "<group>"; };
+		EE2B62821BB6D7FE00ACB430 /* FSCalendarStickyHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarStickyHeader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,13 +169,15 @@
 				EE0954D91B97DDF4007F6964 /* FSCalendarHeader.m */,
 				EE0954DA1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.h */,
 				EE0954DB1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m */,
-				EE0954DC1B97DDF4007F6964 /* Info.plist */,
+				EE2B62811BB6D7FE00ACB430 /* FSCalendarStickyHeader.h */,
+				EE2B62821BB6D7FE00ACB430 /* FSCalendarStickyHeader.m */,
 				EE0954DD1B97DDF4007F6964 /* NSDate+FSExtension.h */,
 				EE0954DE1B97DDF4007F6964 /* NSDate+FSExtension.m */,
 				EE0954DF1B97DDF4007F6964 /* NSString+FSExtension.h */,
 				EE0954E01B97DDF4007F6964 /* NSString+FSExtension.m */,
 				EE0954E11B97DDF4007F6964 /* UIView+FSExtension.h */,
 				EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */,
+				EE0954DC1B97DDF4007F6964 /* Info.plist */,
 			);
 			name = FSCalendar;
 			path = ../../FSCalendar;
@@ -222,7 +227,8 @@
 		EE09549F1B97DDE0007F6964 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = wenchao;
 				TargetAttributes = {
 					EE0954A61B97DDE0007F6964 = {
@@ -285,6 +291,7 @@
 				EE0954EC1B97DDF4007F6964 /* NSString+FSExtension.m in Sources */,
 				EE0954AF1B97DDE0007F6964 /* ViewController.swift in Sources */,
 				EE0954ED1B97DDF4007F6964 /* UIView+FSExtension.m in Sources */,
+				EE2B62831BB6D7FE00ACB430 /* FSCalendarStickyHeader.m in Sources */,
 				EE0954E41B97DDF4007F6964 /* FSCalendar.m in Sources */,
 				EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */,
 				EE0954E51B97DDF4007F6964 /* FSCalendarAppearance.m in Sources */,
@@ -353,6 +360,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -420,6 +428,7 @@
 				INFOPLIST_FILE = SwiftExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/SwiftExample/Objc-Bridge-Header.h";
 			};
@@ -432,6 +441,7 @@
 				INFOPLIST_FILE = SwiftExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/SwiftExample/Objc-Bridge-Header.h";
 			};
@@ -451,6 +461,7 @@
 				);
 				INFOPLIST_FILE = SwiftExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftExample.app/SwiftExample";
 			};
@@ -466,6 +477,7 @@
 				);
 				INFOPLIST_FILE = SwiftExampleTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftExample.app/SwiftExample";
 			};
@@ -490,6 +502,7 @@
 				EE0954C81B97DDE0007F6964 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EE0954C91B97DDE0007F6964 /* Build configuration list for PBXNativeTarget "SwiftExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +511,7 @@
 				EE0954CB1B97DDE0007F6964 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

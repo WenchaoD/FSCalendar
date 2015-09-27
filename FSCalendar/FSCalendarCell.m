@@ -57,6 +57,7 @@
         
         self.clipsToBounds = NO;
         self.contentView.clipsToBounds = NO;
+        
     }
     return self;
 }
@@ -98,6 +99,7 @@
     _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     
 #define kAnimationDuration kFSCalendarDefaultBounceAnimationDuration
+    
     CAAnimationGroup *group = [CAAnimationGroup animation];
     CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     zoomOut.fromValue = @0.3;
@@ -127,44 +129,60 @@
 {
     _titleLabel.font = [UIFont systemFontOfSize:_appearance.titleTextSize];
     _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
-    _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize];
-    _subtitleLabel.text = _subtitle;
     
-    CGFloat titleHeight = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}].height;
-    
-    
-    if (_subtitleLabel.text) {
-        _subtitleLabel.hidden = NO;
-        CGFloat subtitleHeight = [_subtitleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.subtitleLabel.font}].height;
-        CGFloat height = titleHeight + subtitleHeight;
-        _titleLabel.frame = CGRectMake(0,
-                                       (self.contentView.fs_height*5.0/6.0-height)*0.5,
-                                       self.fs_width,
-                                       titleHeight);
-        
-        _subtitleLabel.frame = CGRectMake(0,
-                                          _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize),
-                                          self.fs_width,
-                                          subtitleHeight);
-    } else {
-        _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(self.contentView.fs_height*5.0/6.0));
-        _subtitleLabel.hidden = YES;
+#define m_calculateTitleHeight \
+        CGFloat titleHeight = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}].height;
+#define m_adjustLabelFrame \
+    if (_subtitle) { \
+        _subtitleLabel.hidden = NO; \
+        _subtitleLabel.text = _subtitle; \
+        _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize]; \
+        CGFloat subtitleHeight = [_subtitleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.subtitleLabel.font}].height;\
+        CGFloat height = titleHeight + subtitleHeight; \
+        _titleLabel.frame = CGRectMake(0, \
+                                       (self.contentView.fs_height*5.0/6.0-height)*0.5, \
+                                       self.fs_width, \
+                                       titleHeight); \
+    \
+        _subtitleLabel.frame = CGRectMake(0, \
+                                          _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize),\
+                                          self.fs_width,\
+                                          subtitleHeight);\
+        _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];\
+    } else { \
+        _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(self.contentView.fs_height*5.0/6.0)); \
+        _subtitleLabel.hidden = YES; \
     }
     
+    if (self.calendar.ibEditing) {
+        m_calculateTitleHeight
+        m_adjustLabelFrame
+    } else {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            m_calculateTitleHeight
+            dispatch_async(dispatch_get_main_queue(), ^{
+                m_adjustLabelFrame
+            });
+        });
+    }
+    
+    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    
     _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected;
-    _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
-    [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
-    [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
+    if (!_backgroundLayer.hidden) {
+        _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
+        [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
+        [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
+        _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
+    }
     
     _imageView.image = _image;
     _imageView.hidden = !_image;
     
-    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
-    _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
-    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
     _eventLayer.hidden = !_hasEvent;
-    _eventLayer.fillColor = _appearance.eventColor.CGColor;
-    
+    if (!_eventLayer.hidden) {
+        _eventLayer.fillColor = _appearance.eventColor.CGColor;
+    }
 }
 
 - (BOOL)isWeekend

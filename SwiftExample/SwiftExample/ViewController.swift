@@ -27,11 +27,11 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
 
 
     func calendarCurrentPageDidChange(calendar: FSCalendar!) {
-        println("change page to \(calendar.currentPage.fs_string())")
+        NSLog("change page to \(calendar.currentPage.fs_string())")
     }
     
     func calendar(calendar: FSCalendar!, didSelectDate date: NSDate!) {
-        println("calendar did select date \(date.fs_string())")
+        NSLog("calendar did select date \(date.fs_string())")
     }
     
     func calendarCurrentScopeWillChange(calendar: FSCalendar!, animated: Bool) {

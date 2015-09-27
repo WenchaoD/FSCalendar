@@ -29,7 +29,6 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height)];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     calendar.pagingEnabled = NO; // important
     calendar.allowsMultipleSelection = YES;
     calendar.backgroundColor = [UIColor whiteColor];
@@ -42,6 +41,11 @@
     [super viewDidLoad];
     [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
     [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:2]];
+}
+
+- (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
+{
+    NSLog(@"did change page %@",[calendar.currentPage fs_stringWithFormat:@"yyyy-MM"]);
 }
 
 @end
