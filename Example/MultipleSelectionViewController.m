@@ -35,6 +35,12 @@
     self.calendar = calendar;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
+}
+
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
     BOOL shouldDedeselect = date.fs_day != 5;

@@ -20,9 +20,12 @@
 
 @property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) UICollectionView *collectionView;
+@property (readonly, nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
 @property (readonly, nonatomic) NSArray *weekdays;
 @property (readonly, nonatomic) CGFloat rowHeight;
 @property (readonly, nonatomic) NSCalendar *calendar;
+@property (readonly, nonatomic) BOOL ibEditing;
+@property (readonly, nonatomic) BOOL isVerticallyFlowing;
 
 @end
 

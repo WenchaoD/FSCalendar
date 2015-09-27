@@ -42,6 +42,7 @@
 //    _calendar.scope = FSCalendarScopeWeek;
 //    _calendar.allowsMultipleSelection = YES;
     
+//    [_calendar selectDate:[NSDate date]];
 }
 
 - (void)dealloc
