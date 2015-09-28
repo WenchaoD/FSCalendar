@@ -27,6 +27,8 @@
 @property (readonly, nonatomic) BOOL ibEditing;
 @property (readonly, nonatomic) BOOL isVerticallyFlowing;
 
+- (void)invalidateWeekdaySymbols;
+
 @end
 
 @interface FSCalendarAppearance (Dynamic)

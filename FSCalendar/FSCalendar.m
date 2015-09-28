@@ -87,6 +87,7 @@
 - (void)adjustRowHeight;
 
 - (void)invalidatePagingEnabled;
+- (void)invalidateWeekdaySymbols;
 
 @end
 
@@ -756,6 +757,7 @@
     if (![_calendar.locale isEqual:locale]) {
         _calendar.locale = locale;
         _header.dateFormatter.locale = locale;
+        [self invalidateWeekdaySymbols];
         [self reloadData];
     }
 }
@@ -856,6 +858,7 @@
                                         width,
                                         height);
     }];
+    
     _needsReloadingSelectingDates = YES;
     [_collectionView reloadData];
     [_header reloadData];
@@ -1329,6 +1332,15 @@
         _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.scrollDirection;
         
     }
+}
+
+- (void)invalidateWeekdaySymbols
+{
+    NSArray *weekdaySymbols = _appearance.useVeryShortWeekdaySymbols ? _calendar.veryShortStandaloneWeekdaySymbols : _calendar.shortStandaloneWeekdaySymbols;
+    [_weekdays enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
+        label.text = weekdaySymbols[index];
+    }];
+    
 }
 
 - (void)enqueueSelectedDate:(NSDate *)date

@@ -351,10 +351,7 @@
 {
     if (_useVeryShortWeekdaySymbols != useVeryShortWeekdaySymbols) {
         _useVeryShortWeekdaySymbols = useVeryShortWeekdaySymbols;
-        NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.calendar.veryShortStandaloneWeekdaySymbols : self.calendar.calendar.shortStandaloneWeekdaySymbols;
-        [_calendar.weekdays enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
-            label.text = weekdaySymbols[index];
-        }];
+        [self.calendar invalidateWeekdaySymbols];
     }
 }
 

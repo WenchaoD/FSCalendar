@@ -121,6 +121,7 @@
     }];
     
     _dateFormatter.dateFormat = self.calendar.appearance.headerDateFormat;
+    _dateFormatter.locale = self.calendar.locale;
     _titleLabel.text = [_dateFormatter stringFromDate:_month];
 }
 
