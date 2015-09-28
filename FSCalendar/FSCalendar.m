@@ -538,7 +538,7 @@
                 [visibleSections addObject:@(indexPath.section)];
             }
         }];
-        [visibleSections sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        [visibleSections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [obj1 compare:obj2] == NSOrderedDescending;
         }];
         NSInteger minimumSectionOnScreen = [visibleSections[0] integerValue];
