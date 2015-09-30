@@ -59,7 +59,7 @@
         
         NSMutableArray *weekdayLabels = [NSMutableArray arrayWithCapacity:7];
         for (int i = 0; i < 7; i++) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+            label = [[UILabel alloc] initWithFrame:CGRectZero];
             label.textAlignment = NSTextAlignmentCenter;
             [_contentView addSubview:label];
             [weekdayLabels addObject:label];
@@ -76,18 +76,18 @@
     _contentView.frame = self.bounds;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        CGFloat width = self.fs_width / 7.0;
-        CGFloat height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[_weekdayLabels.lastObject font]}].height;
-        CGFloat padding = (height*0.4+_contentView.fs_height*0.2)*0.5;
+        __block CGFloat width = self.fs_width / 7.0;
+        __block CGFloat height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[_weekdayLabels.lastObject font]}].height;
+        __block CGFloat padding = (height*0.4+_contentView.fs_height*0.2)*0.5;
         dispatch_async(dispatch_get_main_queue(), ^{
             [_weekdayLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
                 label.frame = CGRectMake(index*width, _contentView.fs_height-height, width, height);
             }];
             _separator.frame = CGRectMake(0, _contentView.fs_height-height-padding, _contentView.fs_width, 1.0);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                CGFloat width = _contentView.fs_width;
-                CGFloat height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:self.appearance.headerTitleTextSize]}].height;
-                CGFloat padding = (height*0.2+_contentView.fs_height*0.1)*0.5;
+                width = _contentView.fs_width;
+                height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:self.appearance.headerTitleTextSize]}].height;
+                padding = (height*0.2+_contentView.fs_height*0.1)*0.5;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     _titleLabel.frame = CGRectMake(0, _separator.fs_top-padding-height, width, height);
                 });
