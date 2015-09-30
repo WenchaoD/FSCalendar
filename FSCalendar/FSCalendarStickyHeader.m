@@ -76,7 +76,7 @@
     _contentView.frame = self.bounds;
     
 #define m_calculate \
-CGFloat weekdayWidth = self.fs_width / 7.0; \
+    CGFloat weekdayWidth = self.fs_width / 7.0; \
     CGFloat weekdayHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:[_weekdayLabels.lastObject font]}].height; \
     CGFloat weekdayMargin = (weekdayHeight*0.4+_contentView.fs_height*0.2)*0.5; \
     CGFloat titleWidth = _contentView.fs_width; \

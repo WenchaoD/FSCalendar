@@ -514,7 +514,9 @@
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
         _daysContainer.clipsToBounds = NO;
-        [cell performDeselecting];
+//        [cell performDeselecting];
+        cell.dateIsSelected = NO;
+        [cell setNeedsLayout];
         [_selectedDates removeObject:cell.date];
         [self didDeselectDate:cell.date];
     }
@@ -1079,8 +1081,11 @@
         if (self.selectedDate && !self.allowsMultipleSelection) {
             NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
             FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
+            cell.dateIsSelected = NO;
+            [cell setNeedsLayout];
             _daysContainer.clipsToBounds = NO;
-            [_selectedDates removeObject:cell.date];
+            [_selectedDates removeLastObject];
+
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
