@@ -59,10 +59,10 @@
         
         NSMutableArray *weekdayLabels = [NSMutableArray arrayWithCapacity:7];
         for (int i = 0; i < 7; i++) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-            label.textAlignment = NSTextAlignmentCenter;
-            [_contentView addSubview:label];
-            [weekdayLabels addObject:label];
+            UILabel *subLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+            subLabel.textAlignment = NSTextAlignmentCenter;
+            [_contentView addSubview:subLabel];
+            [weekdayLabels addObject:subLabel];
         }
         self.weekdayLabels = weekdayLabels.copy;
     }
