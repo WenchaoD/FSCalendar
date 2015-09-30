@@ -75,26 +75,32 @@
     
     _contentView.frame = self.bounds;
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        __block CGFloat width = self.fs_width / 7.0;
-        __block CGFloat height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[_weekdayLabels.lastObject font]}].height;
-        __block CGFloat padding = (height*0.4+_contentView.fs_height*0.2)*0.5;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_weekdayLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
-                label.frame = CGRectMake(index*width, _contentView.fs_height-height, width, height);
-            }];
-            _separator.frame = CGRectMake(0, _contentView.fs_height-height-padding, _contentView.fs_width, 1.0);
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                width = _contentView.fs_width;
-                height = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:self.appearance.headerTitleTextSize]}].height;
-                padding = (height*0.2+_contentView.fs_height*0.1)*0.5;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    _titleLabel.frame = CGRectMake(0, _separator.fs_top-padding-height, width, height);
-                });
+#define m_calculate \
+CGFloat weekdayWidth = self.fs_width / 7.0; \
+    CGFloat weekdayHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:[_weekdayLabels.lastObject font]}].height; \
+    CGFloat weekdayMargin = (weekdayHeight*0.4+_contentView.fs_height*0.2)*0.5; \
+    CGFloat titleWidth = _contentView.fs_width; \
+    CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:self.appearance.headerTitleTextSize]}].height; \
+    CGFloat titleMargin = (titleHeight*0.2+_contentView.fs_height*0.1)*0.5; \
+
+#define m_adjust \
+    [_weekdayLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) { \
+        label.frame = CGRectMake(index*weekdayWidth, _contentView.fs_height-weekdayHeight, weekdayWidth, weekdayHeight); \
+    }]; \
+    _separator.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin, _contentView.fs_width, 1.0); \
+    _titleLabel.frame = CGRectMake(0, _separator.fs_top-titleMargin-titleHeight, titleWidth, titleHeight); \
+    
+    if (_calendar.ibEditing) {
+        m_calculate
+        m_adjust
+    } else {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            m_calculate
+            dispatch_async(dispatch_get_main_queue(), ^{
+                m_adjust
             });
-            
         });
-    });
+    }
 
     [self reloadData];
     

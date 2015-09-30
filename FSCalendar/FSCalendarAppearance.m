@@ -373,7 +373,7 @@
 
 - (void)adjustTitleIfNecessary
 {
-    if (!self.calendar.isVerticallyFlowing) {
+    if (self.calendar.pagingEnabled) {
         if (_autoAdjustTitleSize) {
             CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
             _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
