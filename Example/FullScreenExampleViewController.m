@@ -9,6 +9,8 @@
 #import "FullScreenExampleViewController.h"
 #import "NSDate+FSExtension.h"
 
+#import "FSCalendarTestMacros.h"
+
 @implementation FullScreenExampleViewController
 
 - (instancetype)init
@@ -41,6 +43,9 @@
     [super viewDidLoad];
     [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
     [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:2]];
+    if (kFSCalendarShouldEnableTestMacros) {
+        FSCalendarTestSelectDate
+    }
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar

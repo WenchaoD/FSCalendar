@@ -7,7 +7,7 @@
 //
 
 #import "MultipleSelectionViewController.h"
-
+#import "FSCalendarTestMacros.h"
 
 @implementation MultipleSelectionViewController
 
@@ -39,6 +39,10 @@
 {
     [super viewDidLoad];
     [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
+    
+    if (kFSCalendarShouldEnableTestMacros) {
+        FSCalendarTestSelectDate
+    }
 }
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date

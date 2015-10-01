@@ -8,6 +8,7 @@
 
 #import "LoadViewExampleViewController.h"
 #import "NSDate+FSExtension.h"
+#import "FSCalendarTestMacros.h"
 
 @implementation LoadViewExampleViewController
 
@@ -38,6 +39,14 @@
     [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
     [view addSubview:calendar];
     self.calendar = calendar;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    if (kFSCalendarShouldEnableTestMacros) {
+        FSCalendarTestSelectDate
+    }
 }
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
