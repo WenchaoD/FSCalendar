@@ -37,6 +37,5 @@
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 
 - (void)performSelecting;
-//- (void)performDeselecting;
 
 @end

@@ -45,9 +45,9 @@
     
 //    [_calendar selectDate:[NSDate date]];
     
-    if (kFSCalendarShouldEnableTestMacros) {
-        FSCalendarTestSelectDate
-    }
+#if 0
+    FSCalendarTestSelectDate
+#endif
 }
 
 - (void)dealloc

@@ -40,9 +40,9 @@
     [super viewDidLoad];
     [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
     
-    if (kFSCalendarShouldEnableTestMacros) {
-        FSCalendarTestSelectDate
-    }
+#if 0
+    FSCalendarTestSelectDate
+#endif
 }
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date

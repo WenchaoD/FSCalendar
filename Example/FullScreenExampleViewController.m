@@ -41,11 +41,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
-    [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:2]];
-    if (kFSCalendarShouldEnableTestMacros) {
-        FSCalendarTestSelectDate
-    }
+    
+#if 0
+    FSCalendarTestSelectDate
+#endif
+
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar

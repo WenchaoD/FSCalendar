@@ -8,8 +8,29 @@
 
 #define FSCalendarTestSelectDate \
 NSLog(@"start test selected date"); \
-[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1] scrollToDate:NO]; \
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+NSTimeInterval time = 0.5; \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:3 day:1] scrollToDate:NO]; \
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+    [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:3 day:2] scrollToDate:YES]; \
+}); \
+time += 0.5;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+    [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:3 day:3] scrollToDate:YES]; \
+}); \
+time += 0.25;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:3 day:4] scrollToDate:YES]; \
+}); \
+time += 0.25;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:3 day:5] scrollToDate:YES]; \
+}); \
+time += 0.25;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:3 day:6] scrollToDate:YES]; \
+}); \
+time += 0.25;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
     [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:2]]; \
     if (_calendar.allowsMultipleSelection) { \
         [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:3]]; \
@@ -18,10 +39,24 @@ dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), 
         [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:6]]; \
     } \
 }); \
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+time += 0.5;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
     [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:4 day:2] scrollToDate:YES]; \
 }); \
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
-    [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:2] scrollToDate:YES]; \
+time += 0.3;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:4 day:3] scrollToDate:YES]; \
+}); \
+time += 0.3;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:4 day:4] scrollToDate:YES]; \
+}); \
+time += 0.3;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:4 day:5] scrollToDate:YES]; \
+}); \
+time += 0.3;\
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ \
+[_calendar selectDate:[NSDate fs_dateWithYear:2015 month:4 day:6] scrollToDate:YES]; \
 }); \
 NSLog(@"end test selected date"); \

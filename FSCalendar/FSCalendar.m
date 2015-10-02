@@ -292,7 +292,7 @@
     
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
-        [self scrollToDate:_currentPage];
+        [self scrollToDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate)];
     }
     
     _supressEvent = NO;
@@ -1152,8 +1152,14 @@
         
     } else {
         CGRect itemFrame = [_collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
-        CGRect headerFrame = CGRectOffset(itemFrame, 0, -_collectionViewLayout.headerReferenceSize.height);
-        [_collectionView setContentOffset:headerFrame.origin animated:animated];
+        if (!_pagingEnabled && CGRectEqualToRect(itemFrame, CGRectZero)) {
+            _currentPage = targetDate;
+            _needsAdjustingMonthPosition = YES;
+            [self setNeedsLayout];
+        } else {
+            CGRect headerFrame = CGRectOffset(itemFrame, 0, -_collectionViewLayout.headerReferenceSize.height);
+            [_collectionView setContentOffset:headerFrame.origin animated:animated];
+        }
     }
     
     if (_header && !animated) {

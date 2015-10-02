@@ -39,7 +39,7 @@
         CAShapeLayer *backgroundLayer = [CAShapeLayer layer];
         backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
         backgroundLayer.hidden = YES;
-        [self.contentView.layer insertSublayer:backgroundLayer atIndex:0];
+        [self.contentView.layer insertSublayer:backgroundLayer below:_titleLabel.layer];
         self.backgroundLayer = backgroundLayer;
         
         CAShapeLayer *eventLayer = [CAShapeLayer layer];
@@ -57,7 +57,6 @@
         
         self.clipsToBounds = NO;
         self.contentView.clipsToBounds = NO;
-        
     }
     return self;
 }
@@ -114,13 +113,6 @@
     group.animations = @[zoomOut, zoomIn];
     [_backgroundLayer addAnimation:group forKey:@"bounce"];
     [self configureCell];
-}
-
-- (void)performDeselecting
-{
-    _deselecting = YES;
-    [self configureCell];
-    _deselecting = NO;
 }
 
 #pragma mark - Private
