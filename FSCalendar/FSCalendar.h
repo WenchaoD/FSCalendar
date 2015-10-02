@@ -69,6 +69,16 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 
 @end
 
+@protocol FSCalendarDelegateAppearance <NSObject>
+
+@optional
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date;
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date;
+
+@end
+
 IB_DESIGNABLE
 @interface FSCalendar : UIView
 

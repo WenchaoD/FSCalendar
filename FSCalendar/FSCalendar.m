@@ -27,6 +27,11 @@
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
 
+- (UIColor *)preferedSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferedTitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferedSubtitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferedEventColorForDate:(NSDate *)date;
+
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
 - (BOOL)shouldDeselectDate:(NSDate *)date;
@@ -35,7 +40,7 @@
 
 @end
 
-@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
+@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 {
     FSCalendarAppearance *_appearance;
     NSMutableArray *_selectedDates;
@@ -67,6 +72,7 @@
 
 @property (readonly, nonatomic) NSInteger currentSection;
 @property (readonly, nonatomic) CGFloat preferedHeaderHeight;
+@property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
 
 - (void)orientationDidChange:(NSNotification *)notification;
 
@@ -413,6 +419,12 @@
     cell.hasEvent = [self hasEventForDate:cell.date];
     cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
     cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
+    
+    cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
+    cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
+    if (cell.subtitle) cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
+    if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
+    
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
@@ -847,6 +859,14 @@
         return _pagingEnabled ? kFSCalendarDefaultHeaderHeight : kFSCalendarDefaultStickyHeaderHeight;
     }
     return _headerHeight;
+}
+
+- (id<FSCalendarDelegateAppearance>)delegateAppearance
+{
+    if (_delegate && [_delegate conformsToProtocol:@protocol(FSCalendarDelegateAppearance)]) {
+        return (id<FSCalendarDelegateAppearance>)_delegate;
+    }
+    return nil;
 }
 
 #pragma mark - Public
@@ -1426,6 +1446,42 @@
         [_delegate calendarCurrentMonthDidChange:self];
     }
 #pragma GCC diagnostic pop
+}
+
+- (UIColor *)preferedSelectionColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:selectionColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance selectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferedTitleSelectionColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:titleSelectionColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance titleSelectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferedSubtitleSelectionColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleSelectionColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance subtitleSelectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferedEventColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance eventColorForDate:date];
+        return color;
+    }
+    return nil;
 }
 
 #pragma mark - DataSource

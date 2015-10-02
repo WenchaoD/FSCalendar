@@ -83,4 +83,20 @@
     NSLog(@"selected dates is %@",selectedDates);
 }
 
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date
+{
+    if (date.fs_day % 3 == 0) {
+        return [UIColor yellowColor];
+    }
+    return nil;
+}
+
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleSelectionColorForDate:(NSDate *)date
+{
+    if (date.fs_day % 3 == 0) {
+        return [UIColor blueColor];
+    }
+    return nil;
+}
+
 @end

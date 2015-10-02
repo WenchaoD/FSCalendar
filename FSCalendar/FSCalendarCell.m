@@ -13,6 +13,14 @@
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarConstance.h"
 
+@interface FSCalendarCell ()
+
+@property (readonly, nonatomic) UIColor *colorForBackgroundLayer;
+@property (readonly, nonatomic) UIColor *colorForTitleLabel;
+@property (readonly, nonatomic) UIColor *colorForSubtitleLabel;
+
+@end
+
 @implementation FSCalendarCell
 
 #pragma mark - Life cycle
@@ -95,7 +103,7 @@
 {
     _backgroundLayer.hidden = NO;
     _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
-    _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
+    _backgroundLayer.fillColor = self.colorForBackgroundLayer.CGColor;
     
 #define kAnimationDuration kFSCalendarDefaultBounceAnimationDuration
     
@@ -140,7 +148,7 @@
                                           _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize),\
                                           self.fs_width,\
                                           subtitleHeight);\
-        _subtitleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.subtitleColors];\
+        _subtitleLabel.textColor = self.colorForSubtitleLabel; \
     } else { \
         _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(self.contentView.fs_height*5.0/6.0)); \
         _subtitleLabel.hidden = YES; \
@@ -158,14 +166,14 @@
         });
     }
     
-    _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    _titleLabel.textColor = self.colorForTitleLabel;
     
     _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected;
     if (!_backgroundLayer.hidden) {
         _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
         [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
         [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-        _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
+        _backgroundLayer.fillColor = self.colorForBackgroundLayer.CGColor;
     }
     
     _imageView.image = _image;
@@ -173,7 +181,7 @@
     
     _eventLayer.hidden = !_hasEvent;
     if (!_eventLayer.hidden) {
-        _eventLayer.fillColor = _appearance.eventColor.CGColor;
+        _eventLayer.fillColor = self.preferedEventColor.CGColor ?: _appearance.eventColor.CGColor;
     }
 }
 
@@ -184,7 +192,7 @@
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
-    if (self.isSelected || (self.dateIsSelected && !_deselecting)) {
+    if (self.isSelected || self.dateIsSelected) {
         if (self.dateIsToday) {
             return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
         }
@@ -200,6 +208,32 @@
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];
+}
+
+#pragma mark - Properties
+
+- (UIColor *)colorForBackgroundLayer
+{
+    if (self.dateIsSelected || self.isSelected) {
+        return self.preferedSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+    }
+    return [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+}
+
+- (UIColor *)colorForTitleLabel
+{
+    if (self.dateIsSelected || self.isSelected) {
+        return self.preferedTitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    }
+    return [self colorForCurrentStateInDictionary:_appearance.titleColors];
+}
+
+- (UIColor *)colorForSubtitleLabel
+{
+    if (self.dateIsSelected || self.isSelected) {
+        return self.preferedSubtitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+    }
+    return [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
 }
 
 @end
