@@ -15,10 +15,12 @@
 @property (weak, nonatomic) FSCalendarAppearance *appearance;
 
 @property (weak, nonatomic) UILabel  *titleLabel;
+@property (weak, nonatomic) UIColor  *titleLabelColor;
 @property (weak, nonatomic) UILabel  *subtitleLabel;
 @property (weak, nonatomic) UIImageView *imageView;
 
 @property (weak, nonatomic) CAShapeLayer *backgroundLayer;
+@property (weak, nonatomic) UIColor *backgroundColor;
 @property (weak, nonatomic) CAShapeLayer *eventLayer;
 
 @property (strong, nonatomic) NSDate   *date;
