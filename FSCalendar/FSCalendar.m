@@ -23,6 +23,8 @@
 
 - (BOOL)hasEventForDate:(NSDate *)date;
 - (NSString *)subtitleForDate:(NSDate *)date;
+- (UIColor *)backgroundColorForDate:(NSDate*)date;
+- (UIColor *)titleLabelColorForDate:(NSDate*)date;
 - (UIImage *)imageForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
@@ -413,6 +415,9 @@
     cell.hasEvent = [self hasEventForDate:cell.date];
     cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
     cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
+    cell.titleLabelColor = [self titleLabelColorForDate:cell.date];
+    cell.backgroundColor = [self backgroundColorForDate:cell.date];
+    
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
@@ -1437,6 +1442,23 @@
     }
     return _ibEditing && _appearance.fakeSubtitles ? @"test" : nil;
 }
+
+- (UIColor *)backgroundColorForDate:(NSDate *)date
+{
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:backgroundColorForDate:)]) {
+        return [_dataSource calendar:self backgroundColorForDate:date];
+    }
+    return nil;
+}
+
+- (UIColor *)titleLabelColorForDate:(NSDate *)date
+{
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:titleLabelColorForDate:)]) {
+        return [_dataSource calendar:self titleLabelColorForDate:date];
+    }
+    return nil;
+}
+
 
 - (UIImage *)imageForDate:(NSDate *)date
 {

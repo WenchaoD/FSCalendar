@@ -159,13 +159,21 @@
     }
     
     _titleLabel.textColor = [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    if (_titleLabelColor != nil) {
+        _titleLabel.textColor = _titleLabelColor;
+    }
     
-    _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected;
+    _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected && (self.backgroundColor == nil);
     if (!_backgroundLayer.hidden) {
         _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
         [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
         [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-        _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
+        
+        if (_backgroundColor) {
+            _backgroundLayer.fillColor = _backgroundColor.CGColor;
+        } else {
+            _backgroundLayer.fillColor = [self colorForCurrentStateInDictionary:_appearance.backgroundColors].CGColor;
+        }
     }
     
     _imageView.image = _image;
