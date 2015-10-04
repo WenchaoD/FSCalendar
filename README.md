@@ -84,9 +84,13 @@ self.calendar = calendar
 
 # If you like this repo
 * Star this repo.
-* Send your calendar screenshot to #2, or the itunes url of the app.
+* Send your calendar screenshot or itunes link address [here](https://github.com/WenchaoIOS/FSCalendar/issues/2).
 
-# Contact me
+# Donation via paypal
+* [Say thank you and buy me a cup of coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=By%20me%20a%20cup%20of%20coffee&item_number=FSCalendar&amount=5%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted) - PS: I love coffee
+* [Greate work and I want to offer highly support](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=Support%20FSCalendar&item_number=FSCalendar&amount=25%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
+
+# Contact
 * Email: `f33chobits@gmail.com`
 * Skype: `wenchao.ding`
 
