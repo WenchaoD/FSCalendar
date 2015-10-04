@@ -10,7 +10,7 @@
 #import "FSCalendar.h"
 #import "NSDate+FSExtension.h"
 
-@interface MultipleSelectionViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+@interface MultipleSelectionViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate>
 
 @property (weak, nonatomic) FSCalendar *calendar;
 

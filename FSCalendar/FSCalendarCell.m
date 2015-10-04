@@ -225,7 +225,7 @@
     if (self.dateIsSelected || self.isSelected) {
         return self.preferedTitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
     }
-    return [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    return self.preferedTitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
 }
 
 - (UIColor *)colorForSubtitleLabel
@@ -233,7 +233,7 @@
     if (self.dateIsSelected || self.isSelected) {
         return self.preferedSubtitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
     }
-    return [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+    return self.preferedSubtitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
 }
 
 @end

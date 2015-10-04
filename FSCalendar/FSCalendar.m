@@ -28,7 +28,9 @@
 - (NSDate *)maximumDateForCalendar;
 
 - (UIColor *)preferedSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferedTitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferedTitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferedSubtitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferedSubtitleSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferedEventColorForDate:(NSDate *)date;
 
@@ -421,8 +423,12 @@
     cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
     
     cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
+    cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date];
     cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
-    if (cell.subtitle) cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
+    if (cell.subtitle) {
+        cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
+        cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
+    }
     if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
     
     switch (_scope) {
@@ -526,12 +532,12 @@
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
         _daysContainer.clipsToBounds = NO;
-//        [cell performDeselecting];
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
-        [_selectedDates removeObject:cell.date];
-        [self didDeselectDate:cell.date];
     }
+    NSDate *selectedDate = self.selectedDate;
+    [_selectedDates removeObject:selectedDate];
+    [self didDeselectDate:selectedDate];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -1283,7 +1289,7 @@
         }
         case FSCalendarScopeWeek: {
             section = [date fs_weeksFrom:_minimumDate.fs_firstDayOfWeek];
-            item = [date fs_daysFrom:date.fs_firstDayOfWeek];
+            item = ((date.fs_weekday - _firstWeekday) + 7) % 7;
             break;
         }
         default: {
@@ -1457,10 +1463,28 @@
     return nil;
 }
 
+- (UIColor *)preferedTitleDefaultColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:titleDefaultColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance titleDefaultColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
 - (UIColor *)preferedTitleSelectionColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:titleSelectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance titleSelectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferedSubtitleDefaultColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleDefaultColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance subtitleDefaultColorForDate:date];
         return color;
     }
     return nil;

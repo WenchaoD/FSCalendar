@@ -11,6 +11,7 @@
 #import "ViewDidLoadExampleViewController.h"
 #import "MultipleSelectionViewController.h"
 #import "FullScreenExampleViewController.h"
+#import "DelegateAppearanceViewController.h"
 
 @implementation FSTableViewController
 
@@ -23,25 +24,28 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        FullScreenExampleViewController *viewController = [[FullScreenExampleViewController alloc] init];
+        DelegateAppearanceViewController *viewController = [[DelegateAppearanceViewController alloc] init];
         [self.navigationController pushViewController:viewController animated:YES];
     } else if (indexPath.row == 1) {
-        MultipleSelectionViewController *viewController = [[MultipleSelectionViewController alloc] init];
+        FullScreenExampleViewController *viewController = [[FullScreenExampleViewController alloc] init];
         [self.navigationController pushViewController:viewController animated:YES];
     } else if (indexPath.row == 2) {
+        MultipleSelectionViewController *viewController = [[MultipleSelectionViewController alloc] init];
+        [self.navigationController pushViewController:viewController animated:YES];
+    } else if (indexPath.row == 3) {
         // FSCalendarScope Example
         return;
         
-    } else if (indexPath.row == 3) {
+    } else if (indexPath.row == 4) {
         // Storyboard Example
         return;
-    } else if (indexPath.row == 4) {
+    } else if (indexPath.row == 5) {
         
         // LoadView Example
         LoadViewExampleViewController *viewController = [[LoadViewExampleViewController alloc] init];
         [self.navigationController pushViewController:viewController animated:YES];
         
-    } else if (indexPath.row == 5) {
+    } else if (indexPath.row == 6) {
         
         // ViewDidLoad Example
         ViewDidLoadExampleViewController *viewController = [[ViewDidLoadExampleViewController alloc] init];

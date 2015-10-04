@@ -102,9 +102,8 @@
     NSDateComponents *componentsToSubtract = [[NSDateComponents alloc] init];
     componentsToSubtract.day = - (weekdayComponents.weekday - calendar.firstWeekday);
     NSDate *beginningOfWeek = [calendar dateByAddingComponents:componentsToSubtract toDate:self options:0];
-    NSDateComponents *components = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                                fromDate: beginningOfWeek];
-    beginningOfWeek = [calendar dateFromComponents: components];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:beginningOfWeek];
+    beginningOfWeek = [calendar dateFromComponents:components];
     return beginningOfWeek;
 }
 
