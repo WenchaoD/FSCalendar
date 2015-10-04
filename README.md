@@ -77,16 +77,18 @@ calendar.delegate = self
 view.addSubview(calendar)
 self.calendar = calendar
 ```
+### <a id="roll_with_interface_builder"></a> Roll with Interface Builder
+![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
 ## More Usage
 * To view more usage, download the zip file and read the example.
-* Or your could refer to [this document](https://github.com/WenchaoIOS/FSCalendar/MOREUSAGE.md)
+* Or your could refer to [this document](https://github.com/WenchaoIOS/FSCalendar/blob/master/MOREUSAGE.md)
 
 # If you like this repo
 * Star this repo.
 * Send your calendar screenshot or itunes link address [here](https://github.com/WenchaoIOS/FSCalendar/issues/2).
 
-# Donation via paypal
+# Donation via [![paypal](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=By%20me%20a%20cup%20of%20coffee&item_number=FSCalendar&amount=5%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
 * [Say thank you and buy me a cup of coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=By%20me%20a%20cup%20of%20coffee&item_number=FSCalendar&amount=5%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted) - PS: I love coffee
 * [Greate work and I want to offer highly support](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=Support%20FSCalendar&item_number=FSCalendar&amount=25%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
 
