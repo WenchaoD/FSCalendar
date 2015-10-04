@@ -29,7 +29,7 @@
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.95 alpha:1.0];
     self.view = view;
     
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, 300)];
@@ -37,6 +37,7 @@
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
+    calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
 }

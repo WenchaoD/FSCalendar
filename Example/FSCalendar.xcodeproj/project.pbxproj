@@ -69,6 +69,7 @@
 		EE89AF9E1B9162B90001B657 /* NSString+FSExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = EE89AF9C1B9162B90001B657 /* NSString+FSExtension.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EE89AF9F1B9162B90001B657 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */; };
 		EE89AFA01B9162B90001B657 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */; };
+		EE90434B1BBEC32800E50992 /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE90434A1BBEC32800E50992 /* DelegateAppearanceViewController.m */; settings = {ASSET_TAGS = (); }; };
 		EECA10F81BA9C0E400945B83 /* FullScreenExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -178,6 +179,8 @@
 		EE638CF51B8A1F550006DD1A /* FSCalendarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSCalendarTests.m; sourceTree = "<group>"; };
 		EE89AF9C1B9162B90001B657 /* NSString+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FSExtension.h"; sourceTree = "<group>"; };
 		EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FSExtension.m"; sourceTree = "<group>"; };
+		EE9043491BBEC32800E50992 /* DelegateAppearanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelegateAppearanceViewController.h; sourceTree = SOURCE_ROOT; };
+		EE90434A1BBEC32800E50992 /* DelegateAppearanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelegateAppearanceViewController.m; sourceTree = SOURCE_ROOT; };
 		EECA10F61BA9C0E400945B83 /* FullScreenExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenExampleViewController.h; sourceTree = SOURCE_ROOT; };
 		EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenExampleViewController.m; sourceTree = SOURCE_ROOT; };
 		EEF1EB571BBCBBC600F1B357 /* FSCalendarSelectDateTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarSelectDateTest.h; sourceTree = SOURCE_ROOT; };
@@ -280,6 +283,7 @@
 				EE638CD01B89DBE90006DD1A /* AppDelegate.m */,
 				EE638CD11B89DBE90006DD1A /* FSTableViewController.h */,
 				EE638CD21B89DBE90006DD1A /* FSTableViewController.m */,
+				EE9043481BBEC2D500E50992 /* DelegateAppearance Example */,
 				EECA10F51BA9BF9B00945B83 /* Fullscreen Example */,
 				30F5D8571B9FC48C00C1C201 /* MultipleSelection Example */,
 				EE52AE151B91E65D00016662 /* FSCalendarScope Example */,
@@ -391,6 +395,15 @@
 				EE638CF41B8A1F550006DD1A /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EE9043481BBEC2D500E50992 /* DelegateAppearance Example */ = {
+			isa = PBXGroup;
+			children = (
+				EE9043491BBEC32800E50992 /* DelegateAppearanceViewController.h */,
+				EE90434A1BBEC32800E50992 /* DelegateAppearanceViewController.m */,
+			);
+			name = "DelegateAppearance Example";
 			sourceTree = "<group>";
 		};
 		EECA10F51BA9BF9B00945B83 /* Fullscreen Example */ = {
@@ -560,6 +573,7 @@
 				EE638CB31B89DB450006DD1A /* libLunar.c in Sources */,
 				EE638CBA1B89DB450006DD1A /* SSHolidayUK.m in Sources */,
 				EE638CC61B89DB7D0006DD1A /* ViewDidLoadExampleViewController.m in Sources */,
+				EE90434B1BBEC32800E50992 /* DelegateAppearanceViewController.m in Sources */,
 				EE638CB91B89DB450006DD1A /* SSHolidayTW.m in Sources */,
 				30B0BACF1B8D8E23004B9476 /* FSCalendar+IBExtension.m in Sources */,
 				EE638CBE1B89DB450006DD1A /* SSLunarDateFormatter.m in Sources */,
