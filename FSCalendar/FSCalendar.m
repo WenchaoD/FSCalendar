@@ -537,7 +537,7 @@
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
     }
-    NSDate *selectedDate = [self dateForIndexPath:indexPath];
+    NSDate *selectedDate = cell.date ?: [self dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
     [self didDeselectDate:selectedDate];
 }
