@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
 
-@interface StoryboardExampleViewController : UIViewController<UIScrollViewDelegate, FSCalendarDataSource, FSCalendarDelegate>
+@interface StoryboardExampleViewController : UIViewController<FSCalendarDataSource, FSCalendarDelegate>
 
 @property (weak, nonatomic) IBOutlet FSCalendar *calendar;
 

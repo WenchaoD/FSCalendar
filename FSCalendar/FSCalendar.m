@@ -524,10 +524,12 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath *selectedIndexPath = [self indexPathForDate:self.selectedDate];
-    if (!self.allowsMultipleSelection && ![indexPath isEqual:selectedIndexPath]) {
-        [self collectionView:collectionView didDeselectItemAtIndexPath:selectedIndexPath];
-        return;
+    if (!self.allowsMultipleSelection) {
+        NSIndexPath *selectedIndexPath = [self indexPathForDate:self.selectedDate];
+        if (![indexPath isEqual:selectedIndexPath]) {
+            [self collectionView:collectionView didDeselectItemAtIndexPath:selectedIndexPath];
+            return;
+        }
     }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
@@ -535,19 +537,21 @@
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
     }
-    NSDate *selectedDate = self.selectedDate;
+    NSDate *selectedDate = [self dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
     [self didDeselectDate:selectedDate];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath *selectedIndexPath = [self indexPathForDate:self.selectedDate];
-    if (!self.allowsMultipleSelection && ![indexPath isEqual:selectedIndexPath]) {
-        return [self collectionView:collectionView shouldDeselectItemAtIndexPath:selectedIndexPath];
+    if (!self.allowsMultipleSelection) {
+        NSIndexPath *selectedIndexPath = [self indexPathForDate:self.selectedDate];
+        if (![indexPath isEqual:selectedIndexPath]) {
+            return [self collectionView:collectionView shouldDeselectItemAtIndexPath:selectedIndexPath];
+        }
     }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    return [self shouldDeselectDate:cell.date ?: [self dateForIndexPath:indexPath]];
+    return [self shouldDeselectDate:(cell.date?:[self dateForIndexPath:indexPath])];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
@@ -1090,6 +1094,13 @@
     if (forPlaceholder) {
         
         // 跨月份选中日期，需要触发各类事件
+        if (self.allowsMultipleSelection && [self isDateSelected:targetDate]) {
+            // 在多选模式下，点击了已经选中的跨月日期
+            BOOL shouldDeselect = [self shouldDeselectDate:targetDate];
+            if (!shouldDeselect) {
+                return;
+            }
+        }
         shouldSelect &= [self shouldSelectDate:targetDate];
         if (shouldSelect && ![self isDateSelected:targetDate]) {
             if (_collectionView.indexPathsForSelectedItems.count && self.selectedDate && !self.allowsMultipleSelection) {
