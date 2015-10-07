@@ -277,6 +277,7 @@ func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
 
 ```objective-c
 _calendar.today = nil;
+_calendar.currentPage = [NSDate date];
 ```
 
 * Can we hide this?
