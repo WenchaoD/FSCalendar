@@ -276,9 +276,7 @@ func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
 * What if I don't need the `today` circle?
 
 ```objective-c
-_calendar.appearance.todayColor = [UIColor clearColor];
-_calendar.appearance.titleTodayColor = _calendar.appearance.titleDefaultColor;
-_calendar.appearance.subtitleTodayColor = _calendar.appearance.subtitleDefaultColor;
+_calendar.today = nil;
 ```
 
 * Can we hide this?
