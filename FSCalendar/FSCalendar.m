@@ -280,12 +280,10 @@
                                                         );
             
         }
-        
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
         _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
         
     }
-    
     if (_needsAdjustingTextSize) {
         _needsAdjustingTextSize = NO;
         [_appearance adjustTitleIfNecessary];
@@ -672,6 +670,7 @@
     _needsAdjustingTextSize = YES;
     [self setNeedsLayout];
     [self adjustRowHeight];
+    [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell me why?
 }
 
 #pragma mark - Properties
