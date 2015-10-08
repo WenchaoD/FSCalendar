@@ -698,13 +698,12 @@
         switch (_scope) {
             case FSCalendarScopeMonth: {
                 _supressEvent = YES;
-                NSDate *currentPage = self.currentPage;
+
                 _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)scrollDirection;
                 _header.scrollDirection = _collectionViewLayout.scrollDirection;
                 if (!CGRectEqualToRect(_collectionView.frame, CGRectZero)) {
-                    [self layoutSubviews];
+                    _needsAdjustingMonthPosition = YES;
                     [self reloadData];
-                    [self scrollToDate:currentPage];
                 }
                 _supressEvent = NO;
                 break;
@@ -898,9 +897,11 @@
                                         height);
     }];
     
-    _needsReloadingSelectingDates = YES;
     [_collectionView reloadData];
     [_header reloadData];
+    
+    _needsReloadingSelectingDates = YES;
+    [self setNeedsLayout];
 }
 
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
