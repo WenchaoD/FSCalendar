@@ -87,6 +87,7 @@
 
 - (BOOL)isDateInRange:(NSDate *)date;
 - (BOOL)isDateSelected:(NSDate *)date;
+- (BOOL)isDateInDifferentPage:(NSDate *)date;
 
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder;
 - (void)enqueueSelectedDate:(NSDate *)date;
@@ -594,7 +595,7 @@
             [self didChangeValueForKey:@"currentPage"];
         }
         
-    } else {
+    } else if (_collectionView.indexPathsForVisibleItems.count) {
         CGFloat scrollOffset = 0;
         switch (_collectionViewLayout.scrollDirection) {
             case UICollectionViewScrollDirectionHorizontal: {
@@ -767,7 +768,7 @@
     if (![self isDateInRange:currentPage]) {
         [NSException raise:@"currentMonth out of range" format:@""];
     }
-    if (![_currentPage fs_isEqualToDateForMonth:currentPage]) {
+    if ([self isDateInDifferentPage:currentPage]) {
         currentPage = currentPage.fs_dateByIgnoringTimeComponents;
         [self scrollToPageForDate:currentPage animated:animated];
     }
@@ -1208,7 +1209,7 @@
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
     if (!_collectionView.tracking && !_collectionView.decelerating) {
-        if (_pagingEnabled && ![_currentPage fs_isEqualToDateForMonth:date]) {
+        if (_pagingEnabled && [self isDateInDifferentPage:date]) {
             [self willChangeValueForKey:@"currentPage"];
             switch (_scope) {
                 case FSCalendarScopeMonth: {
@@ -1318,6 +1319,19 @@
 - (BOOL)isDateSelected:(NSDate *)date
 {
     return [self.selectedDates containsObject:date] || [_collectionView.indexPathsForSelectedItems containsObject:[self indexPathForDate:date]];
+}
+
+- (BOOL)isDateInDifferentPage:(NSDate *)date
+{
+    if (!_pagingEnabled) {
+        return ![date fs_isEqualToDateForMonth:_currentPage];
+    }
+    switch (_scope) {
+        case FSCalendarScopeMonth:
+            return ![date fs_isEqualToDateForMonth:_currentPage];
+        case FSCalendarScopeWeek:
+            return ![date fs_isEqualToDateForWeek:_currentPage];
+    }
 }
 
 - (void)adjustRowHeight
