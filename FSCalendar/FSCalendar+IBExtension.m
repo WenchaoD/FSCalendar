@@ -287,6 +287,30 @@
     return self.appearance.todaySelectionColor;
 }
 
+#pragma mark - borderDefaultColor
+
+- (void)setBorderDefaultColor:(UIColor *)borderDefaultColor
+{
+    self.appearance.borderDefaultColor = borderDefaultColor;
+}
+
+- (UIColor *)borderDefaultColor
+{
+    return self.appearance.borderDefaultColor;
+}
+
+#pragma mark - borderSelectionColor
+
+- (void)setBorderSelectionColor:(UIColor *)borderSelectionColor
+{
+    self.appearance.borderSelectionColor = borderSelectionColor;
+}
+
+- (UIColor *)borderSelectionColor
+{
+    return self.appearance.borderSelectionColor;
+}
+
 #pragma mark - cellStyle
 
 - (void)setCellStyle:(FSCalendarCellStyle)cellStyle

@@ -41,6 +41,9 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor  *todayColor;
 @property (strong, nonatomic) IBInspectable UIColor  *todaySelectionColor;
 
+@property (strong, nonatomic) IBInspectable UIColor *borderDefaultColor;
+@property (strong, nonatomic) IBInspectable UIColor *borderSelectionColor;
+
 @property (assign, nonatomic) IBInspectable FSCalendarCellStyle cellStyle;
 @property (assign, nonatomic) IBInspectable BOOL useVeryShortWeekdaySymbols;
 

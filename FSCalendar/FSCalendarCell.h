@@ -39,6 +39,9 @@
 @property (strong, nonatomic) UIColor *preferedSubtitleDefaultColor;
 @property (strong, nonatomic) UIColor *preferedSubtitleSelectionColor;
 @property (strong, nonatomic) UIColor *preferedEventColor;
+@property (strong, nonatomic) UIColor *preferedBorderDefaultColor;
+@property (strong, nonatomic) UIColor *preferedBorderSelectionColor;
+@property (assign, nonatomic) FSCalendarCellStyle preferedCellStyle;
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 - (void)performSelecting;

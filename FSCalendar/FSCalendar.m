@@ -33,6 +33,9 @@
 - (UIColor *)preferedSubtitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferedSubtitleSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferedEventColorForDate:(NSDate *)date;
+- (UIColor *)preferedBorderDefaultColorForDate:(NSDate *)date;
+- (UIColor *)preferedBorderSelectionColorForDate:(NSDate *)date;
+- (FSCalendarCellStyle)preferedCellStyleForDate:(NSDate *)date;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
@@ -429,6 +432,9 @@
         cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
     }
     if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
+    cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
+    cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
+    cell.preferedCellStyle = [self preferedCellStyleForDate:cell.date];
     
     switch (_scope) {
         case FSCalendarScopeMonth: {
@@ -1531,6 +1537,33 @@
         return color;
     }
     return nil;
+}
+
+- (UIColor *)preferedBorderDefaultColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:borderDefaultColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance borderDefaultColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferedBorderSelectionColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:borderSelectionColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance borderSelectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (FSCalendarCellStyle)preferedCellStyleForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellStyleForDate:)]) {
+        FSCalendarCellStyle cellStyle = [self.delegateAppearance calendar:self appearance:self.appearance cellStyleForDate:date];
+        return cellStyle;
+    }
+    return FSCalendarCellStyleCircle;
 }
 
 #pragma mark - DataSource

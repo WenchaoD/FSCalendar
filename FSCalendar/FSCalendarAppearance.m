@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSMutableDictionary *backgroundColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
 @property (strong, nonatomic) NSMutableDictionary *subtitleColors;
+@property (strong, nonatomic) NSMutableDictionary *borderColors;
 
 - (void)adjustTitleIfNecessary;
 
@@ -63,8 +64,13 @@
         _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
         _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
         
+        _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
+        _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
+        
         _cellStyle = FSCalendarCellStyleCircle;
         _eventColor = [kBlue colorWithAlphaComponent:0.75];
+        
+        _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
     }
     return self;
@@ -274,6 +280,36 @@
         _eventColor = eventColor;
         [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
+}
+
+- (void)setBorderDefaultColor:(UIColor *)color
+{
+    if (color) {
+        _borderColors[@(FSCalendarCellStateNormal)] = color;
+    } else {
+        [_borderColors removeObjectForKey:@(FSCalendarCellStateNormal)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)borderDefaultColor
+{
+    return _borderColors[@(FSCalendarCellStateNormal)];
+}
+
+- (void)setBorderSelectionColor:(UIColor *)color
+{
+    if (color) {
+        _borderColors[@(FSCalendarCellStateSelected)] = color;
+    } else {
+        [_borderColors removeObjectForKey:@(FSCalendarCellStateSelected)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)borderSelectionColor
+{
+    return _borderColors[@(FSCalendarCellStateSelected)];
 }
 
 - (void)setTitleTextSize:(CGFloat)titleTextSize

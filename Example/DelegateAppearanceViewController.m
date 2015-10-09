@@ -77,4 +77,28 @@
     return nil;
 }
 
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date
+{
+    if (date.fs_day % 5 == 0) {
+        return [UIColor redColor];
+    }
+    return nil;
+}
+
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSelectionColorForDate:(NSDate *)date
+{
+    if (date.fs_day % 5 == 0) {
+        return [UIColor greenColor];
+    }
+    return nil;
+}
+
+- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date
+{
+    if (date.fs_day >= 14) {
+        return FSCalendarCellStyleRectangle;
+    }
+    return FSCalendarCellStyleCircle;
+}
+
 @end

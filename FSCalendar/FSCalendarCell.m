@@ -18,6 +18,8 @@
 @property (readonly, nonatomic) UIColor *colorForBackgroundLayer;
 @property (readonly, nonatomic) UIColor *colorForTitleLabel;
 @property (readonly, nonatomic) UIColor *colorForSubtitleLabel;
+@property (readonly, nonatomic) UIColor *colorForCellBorder;
+@property (readonly, nonatomic) FSCalendarCellStyle cellStyle;
 
 @end
 
@@ -78,6 +80,8 @@
                                         (titleHeight-diameter)/2,
                                         diameter,
                                         diameter);
+    _backgroundLayer.borderWidth = 1.0;
+    _backgroundLayer.borderColor = [UIColor clearColor].CGColor;
     
     CGFloat eventSize = _backgroundLayer.frame.size.height/6.0;
     _eventLayer.frame = CGRectMake((_backgroundLayer.frame.size.width-eventSize)/2+_backgroundLayer.frame.origin.x, CGRectGetMaxY(_backgroundLayer.frame)+eventSize*0.2, eventSize*0.8, eventSize*0.8);
@@ -168,14 +172,15 @@
     
     _titleLabel.textColor = self.colorForTitleLabel;
     
-    _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected;
+    UIColor *borderColor = self.colorForCellBorder;
+    _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor;
     if (!_backgroundLayer.hidden) {
-        _backgroundLayer.path = _appearance.cellStyle == FSCalendarCellStyleCircle ?
+        _backgroundLayer.path = self.cellStyle == FSCalendarCellStyleCircle ?
         [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
         [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
         _backgroundLayer.fillColor = self.colorForBackgroundLayer.CGColor;
+        _backgroundLayer.strokeColor = self.colorForCellBorder.CGColor;
     }
-    
     _imageView.image = _image;
     _imageView.hidden = !_image;
     
@@ -198,10 +203,10 @@
         }
         return dictionary[@(FSCalendarCellStateSelected)];
     }
-    if (self.dateIsToday) {
+    if (self.dateIsToday && [[dictionary allKeys] containsObject:@(FSCalendarCellStateToday)]) {
         return dictionary[@(FSCalendarCellStateToday)];
     }
-    if (self.dateIsPlaceholder) {
+    if (self.dateIsPlaceholder && [[dictionary allKeys] containsObject:@(FSCalendarCellStatePlaceholder)]) {
         return dictionary[@(FSCalendarCellStatePlaceholder)];
     }
     if (self.isWeekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {
@@ -234,6 +239,19 @@
         return self.preferedSubtitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
     }
     return self.preferedSubtitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+}
+
+- (UIColor *)colorForCellBorder
+{
+    if (self.dateIsSelected || self.isSelected) {
+        return _preferedBorderSelectionColor ?: _appearance.borderSelectionColor;
+    }
+    return _preferedBorderDefaultColor ?: _appearance.borderDefaultColor;
+}
+
+- (FSCalendarCellStyle)cellStyle
+{
+    return _preferedCellStyle ?: _appearance.cellStyle;
 }
 
 @end
