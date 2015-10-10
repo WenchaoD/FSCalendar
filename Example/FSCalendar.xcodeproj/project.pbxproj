@@ -69,7 +69,7 @@
 		EE89AF9E1B9162B90001B657 /* NSString+FSExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = EE89AF9C1B9162B90001B657 /* NSString+FSExtension.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EE89AF9F1B9162B90001B657 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */; };
 		EE89AFA01B9162B90001B657 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */; };
-		EE90434B1BBEC32800E50992 /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE90434A1BBEC32800E50992 /* DelegateAppearanceViewController.m */; settings = {ASSET_TAGS = (); }; };
+		EE90434B1BBEC32800E50992 /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE90434A1BBEC32800E50992 /* DelegateAppearanceViewController.m */; };
 		EECA10F81BA9C0E400945B83 /* FullScreenExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */; };
 /* End PBXBuildFile section */
 

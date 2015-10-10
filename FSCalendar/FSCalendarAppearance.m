@@ -372,7 +372,7 @@
 {
     if (![_headerTitleColor isEqual:color]) {
         _headerTitleColor = color;
-        [_calendar.header.collectionView reloadData];
+        [_calendar.header reloadData];
     }
 }
 - (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
@@ -409,7 +409,7 @@
 
 - (void)adjustTitleIfNecessary
 {
-    if (self.calendar.pagingEnabled) {
+    if (!self.calendar.floatingMode) {
         if (_autoAdjustTitleSize) {
             CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
             _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
