@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name             = "FSCalendar"
-  s.version          = "1.5.2"
+  s.version          = "1.6.0"
   s.summary          = "The fastest, most beautiful and most convenient calendar control, https://www.cocoacontrols.com/controls/fscalendar"
   
   s.homepage         = "https://github.com/WenchaoIOS/FSCalendar"

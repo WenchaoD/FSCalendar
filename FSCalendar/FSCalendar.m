@@ -1113,10 +1113,9 @@
     if (![self isDateInRange:date]) {
         [NSException raise:@"selectedDate out of range" format:@""];
     }
-    NSDate *targetDate = date;
-    targetDate = [date fs_daysFrom:_minimumDate] < 0 ? _minimumDate.copy : date;
-    targetDate = [date fs_daysFrom:_maximumDate] > 0 ? _maximumDate.copy : date;
-    targetDate = date.fs_dateByIgnoringTimeComponents;
+    NSDate *targetDate = [date fs_daysFrom:_minimumDate] < 0 ? _minimumDate.copy : date;
+    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate.copy : date;
+    targetDate = targetDate.fs_dateByIgnoringTimeComponents;
     NSIndexPath *targetIndexPath = [self indexPathForDate:targetDate];
     
     BOOL shouldSelect = !_supressEvent;
@@ -1186,7 +1185,7 @@
     
     _supressEvent = !animated;
     NSDate * targetDate = [date fs_daysFrom:_minimumDate] < 0 ? _minimumDate : date;
-    targetDate = [date fs_daysFrom:_maximumDate] > 0 ? _maximumDate : date;
+    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate : date;
     NSInteger scrollOffset = 0;
     switch (_scope) {
         case FSCalendarScopeMonth: {

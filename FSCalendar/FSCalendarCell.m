@@ -32,7 +32,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:14];
         titleLabel.textColor = [UIColor darkTextColor];
