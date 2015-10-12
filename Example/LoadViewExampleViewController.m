@@ -36,6 +36,8 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+//    calendar.scrollEnabled = NO;
+//    calendar.scope = FSCalendarScopeWeek;
     [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
@@ -67,6 +69,11 @@
 {
     NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"MMMM yyyy"]);
 }
+
+//- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+//{
+//    calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, [calendar sizeThatFits:CGSizeZero].height);
+//}
 
 //- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 //{

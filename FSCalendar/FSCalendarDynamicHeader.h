@@ -25,7 +25,7 @@
 @property (readonly, nonatomic) CGFloat rowHeight;
 @property (readonly, nonatomic) NSCalendar *calendar;
 @property (readonly, nonatomic) BOOL ibEditing;
-@property (readonly, nonatomic) BOOL isVerticallyFlowing;
+@property (readonly, nonatomic) BOOL floatingMode;
 
 - (void)invalidateWeekdaySymbols;
 
