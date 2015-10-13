@@ -1118,6 +1118,13 @@
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
+        
+        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+            if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:date]) {
+                cell.dateIsSelected = cell.dateIsSelected = NO;
+                [cell setNeedsLayout];
+            }
+        }];
     }
 }
 
