@@ -46,6 +46,12 @@
         [_calendar selectDate:[[NSDate date].fs_firstDayOfMonth fs_dateByAddingDays:i]];
     }
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        for (int i = 1; i < 28; i+=2) {
+            [_calendar deselectDate:[[NSDate date].fs_firstDayOfMonth fs_dateByAddingDays:i]];
+        }
+    });
+    
 #if 0
     FSCalendarTestSelectDate
 #endif

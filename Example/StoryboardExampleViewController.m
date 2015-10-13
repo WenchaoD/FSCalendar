@@ -43,7 +43,11 @@
 //    _calendar.scope = FSCalendarScopeWeek;
 //    _calendar.allowsMultipleSelection = YES;
     
-//    [_calendar selectDate:[NSDate date]];
+    [_calendar selectDate:[NSDate date]];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_calendar deselectDate:[NSDate date]];
+    });
     
 #if 0
     FSCalendarTestSelectDate

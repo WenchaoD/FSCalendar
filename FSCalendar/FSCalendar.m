@@ -1105,6 +1105,22 @@
     [self selectDate:date scrollToDate:scrollToDate forPlaceholder:NO];
 }
 
+- (void)deselectDate:(NSDate *)date
+{
+    if (![_selectedDates containsObject:date.fs_dateByIgnoringTimeComponents]) {
+        return;
+    }
+    date = date.fs_dateByIgnoringTimeComponents;
+    [_selectedDates removeObject:date];
+    NSIndexPath *indexPath = [self indexPathForDate:date];
+    if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
+        [_collectionView deselectItemAtIndexPath:indexPath animated:YES];
+        FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+        cell.dateIsSelected = NO;
+        [cell setNeedsLayout];
+    }
+}
+
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder
 {
     if (!self.allowsSelection) {
