@@ -9,7 +9,7 @@
 
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
 
-# New Feature - <FSCalendarDelegateAppearance>
+# New Feature - FSCalendarDelegateAppearance
 
 ![fscalendar-roll](https://cloud.githubusercontent.com/assets/5186464/10562289/1885c3aa-7588-11e5-8505-ef030bd183c7.gif)
 
