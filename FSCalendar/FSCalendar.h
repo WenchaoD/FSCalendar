@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FSCalendarAppearance.h"
-
-#define FSCalendarDeprecated(message) __attribute((deprecated(message)))
+#import "FSCalendarConstance.h"
 
 //! Project version number for FSCalendar.
 FOUNDATION_EXPORT double FSCalendarVersionNumber;
@@ -78,6 +77,11 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleSelectionColorForDate:(NSDate *)date;
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date;
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date;
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSelectionColorForDate:(NSDate *)date;
+- (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date;
+
+- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated("use \'calendar:appearance:cellShapeForDate:\' instead");
 
 @end
 
@@ -98,6 +102,7 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL allowsSelection;
 @property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
 @property (assign, nonatomic) IBInspectable BOOL pagingEnabled;
+@property (assign, nonatomic) IBInspectable BOOL scrollEnabled;
 
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
 @property (readonly, nonatomic) NSDate *minimumDate;
@@ -113,6 +118,7 @@ IB_DESIGNABLE
 
 - (void)selectDate:(NSDate *)date;
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate;
+- (void)deselectDate:(NSDate *)date;
 
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated;
 

@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "FSCalendarConstance.h"
 
-typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
-    FSCalendarCellStyleCircle      = 0,
-    FSCalendarCellStyleRectangle   = 1
+typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
+    FSCalendarCellShapeCircle    = 0,
+    FSCalendarCellShapeRectangle = 1
 };
 
 @class FSCalendar;
@@ -48,7 +49,10 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
 @property (strong, nonatomic) UIColor  *todayColor;
 @property (strong, nonatomic) UIColor  *todaySelectionColor;
 
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle;
+@property (strong, nonatomic) UIColor *borderDefaultColor;
+@property (strong, nonatomic) UIColor *borderSelectionColor;
+
+@property (assign, nonatomic) FSCalendarCellShape cellShape;
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;
 @property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols;
 
@@ -56,4 +60,23 @@ typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
 @property (assign, nonatomic) BOOL      fakeSubtitles;
 @property (assign, nonatomic) NSInteger fakedSelectedDay;
 
+- (void)invalidateAppearance;
+
 @end
+
+
+FSCalendarDeprecated("use \'FSCalendarCellShape\' instead")
+typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
+    FSCalendarCellStyleCircle      = 0,
+    FSCalendarCellStyleRectangle   = 1
+};
+
+@interface FSCalendarAppearance (Deprecated)
+
+@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated("use \'cellShape\' instead");
+
+@end
+
+
+
+

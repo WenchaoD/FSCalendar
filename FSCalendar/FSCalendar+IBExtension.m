@@ -287,16 +287,40 @@
     return self.appearance.todaySelectionColor;
 }
 
-#pragma mark - cellStyle
+#pragma mark - borderDefaultColor
 
-- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+- (void)setBorderDefaultColor:(UIColor *)borderDefaultColor
 {
-    self.appearance.cellStyle = cellStyle;
+    self.appearance.borderDefaultColor = borderDefaultColor;
 }
 
-- (FSCalendarCellStyle)cellStyle
+- (UIColor *)borderDefaultColor
 {
-    return self.appearance.cellStyle;
+    return self.appearance.borderDefaultColor;
+}
+
+#pragma mark - borderSelectionColor
+
+- (void)setBorderSelectionColor:(UIColor *)borderSelectionColor
+{
+    self.appearance.borderSelectionColor = borderSelectionColor;
+}
+
+- (UIColor *)borderSelectionColor
+{
+    return self.appearance.borderSelectionColor;
+}
+
+#pragma mark - cellStyle
+
+- (void)setCellShape:(FSCalendarCellShape)cellShape
+{
+    self.appearance.cellShape = cellShape;
+}
+
+- (FSCalendarCellShape)cellShape
+{
+    return self.appearance.cellShape;
 }
 
 #pragma mark - useVeryShortWeekdaySymbols
@@ -333,6 +357,18 @@
 - (NSInteger)fakedSelectedDay
 {
     return self.appearance.fakedSelectedDay;
+}
+
+#pragma mark - cellStyle
+
+- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+{
+    self.appearance.cellShape = (FSCalendarCellShape)cellStyle;
+}
+
+- (FSCalendarCellStyle)cellStyle
+{
+    return (FSCalendarCellStyle)self.appearance.cellShape;
 }
 
 @end

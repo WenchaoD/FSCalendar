@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSMutableDictionary *backgroundColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
 @property (strong, nonatomic) NSMutableDictionary *subtitleColors;
+@property (strong, nonatomic) NSMutableDictionary *borderColors;
 
 - (void)adjustTitleIfNecessary;
 
@@ -63,8 +64,13 @@
         _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
         _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
         
-        _cellStyle = FSCalendarCellStyleCircle;
+        _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
+        _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
+        
+        _cellShape = FSCalendarCellShapeCircle;
         _eventColor = [kBlue colorWithAlphaComponent:0.75];
+        
+        _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
     }
     return self;
@@ -276,6 +282,36 @@
     }
 }
 
+- (void)setBorderDefaultColor:(UIColor *)color
+{
+    if (color) {
+        _borderColors[@(FSCalendarCellStateNormal)] = color;
+    } else {
+        [_borderColors removeObjectForKey:@(FSCalendarCellStateNormal)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)borderDefaultColor
+{
+    return _borderColors[@(FSCalendarCellStateNormal)];
+}
+
+- (void)setBorderSelectionColor:(UIColor *)color
+{
+    if (color) {
+        _borderColors[@(FSCalendarCellStateSelected)] = color;
+    } else {
+        [_borderColors removeObjectForKey:@(FSCalendarCellStateSelected)];
+    }
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
+- (UIColor *)borderSelectionColor
+{
+    return _borderColors[@(FSCalendarCellStateSelected)];
+}
+
 - (void)setTitleTextSize:(CGFloat)titleTextSize
 {
     if (_titleTextSize != titleTextSize) {
@@ -298,10 +334,10 @@
     }
 }
 
-- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+- (void)setCellShape:(FSCalendarCellShape)cellShape
 {
-    if (_cellStyle != cellStyle) {
-        _cellStyle = cellStyle;
+    if (_cellShape != cellShape) {
+        _cellShape = cellShape;
         [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
@@ -336,7 +372,7 @@
 {
     if (![_headerTitleColor isEqual:color]) {
         _headerTitleColor = color;
-        [_calendar.header.collectionView reloadData];
+        [_calendar.header reloadData];
     }
 }
 - (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
@@ -373,7 +409,7 @@
 
 - (void)adjustTitleIfNecessary
 {
-    if (self.calendar.pagingEnabled) {
+    if (!self.calendar.floatingMode) {
         if (_autoAdjustTitleSize) {
             CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
             _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
@@ -392,4 +428,30 @@
     [_calendar.weekdays setValue:[UIFont systemFontOfSize:_weekdayTextSize] forKeyPath:@"font"];
 }
 
+- (void)invalidateAppearance
+{
+    [_calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [_calendar invalidateAppearanceForCell:obj];
+    }];
+    [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
 @end
+
+
+@implementation FSCalendarAppearance (Deprecated)
+
+- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+{
+    self.cellShape = (FSCalendarCellShape)cellStyle;
+}
+
+- (FSCalendarCellStyle)cellStyle
+{
+    return (FSCalendarCellStyle)self.cellShape;
+}
+
+@end
+
+

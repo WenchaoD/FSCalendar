@@ -43,7 +43,11 @@
 //    _calendar.scope = FSCalendarScopeWeek;
 //    _calendar.allowsMultipleSelection = YES;
     
-//    [_calendar selectDate:[NSDate date]];
+    [_calendar selectDate:[NSDate date]];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_calendar deselectDate:[NSDate date]];
+    });
     
 #if 0
     FSCalendarTestSelectDate
@@ -144,7 +148,7 @@
                 _calendar.appearance.selectionColor = kBlue;
                 _calendar.appearance.headerDateFormat = @"MMMM yyyy";
                 _calendar.appearance.todayColor = kPink;
-                _calendar.appearance.cellStyle = FSCalendarCellStyleCircle;
+                _calendar.appearance.cellShape = FSCalendarCellShapeCircle;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 0.2;
                 break;
             }
@@ -155,7 +159,7 @@
                 _calendar.appearance.selectionColor = [UIColor blueColor];
                 _calendar.appearance.headerDateFormat = @"yyyy-MM";
                 _calendar.appearance.todayColor = [UIColor redColor];
-                _calendar.appearance.cellStyle = FSCalendarCellStyleCircle;
+                _calendar.appearance.cellShape = FSCalendarCellShapeCircle;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
 
                 break;
@@ -167,7 +171,7 @@
                 _calendar.appearance.selectionColor = [UIColor blueColor];
                 _calendar.appearance.headerDateFormat = @"yyyy/MM";
                 _calendar.appearance.todayColor = [UIColor orangeColor];
-                _calendar.appearance.cellStyle = FSCalendarCellStyleRectangle;
+                _calendar.appearance.cellShape = FSCalendarCellShapeRectangle;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
                 break;
             }

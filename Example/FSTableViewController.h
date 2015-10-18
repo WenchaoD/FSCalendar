@@ -10,4 +10,6 @@
 
 @interface FSTableViewController : UITableViewController
 
+@property (strong, nonatomic) NSArray *viewControllers;
+
 @end

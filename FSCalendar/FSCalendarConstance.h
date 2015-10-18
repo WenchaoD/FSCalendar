@@ -14,3 +14,5 @@ UIKIT_EXTERN CGFloat const kFSCalendarDefaultStickyHeaderHeight;
 UIKIT_EXTERN CGFloat const kFSCalendarMinimumRowHeight;
 UIKIT_EXTERN CGFloat const kFSCalendarDefaultWeekHeight;
 UIKIT_EXTERN CGFloat const kFSCalendarDefaultBounceAnimationDuration;
+
+#define FSCalendarDeprecated(message) __attribute((deprecated(message)))

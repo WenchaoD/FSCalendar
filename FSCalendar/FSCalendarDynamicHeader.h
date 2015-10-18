@@ -25,17 +25,20 @@
 @property (readonly, nonatomic) CGFloat rowHeight;
 @property (readonly, nonatomic) NSCalendar *calendar;
 @property (readonly, nonatomic) BOOL ibEditing;
-@property (readonly, nonatomic) BOOL isVerticallyFlowing;
+@property (readonly, nonatomic) BOOL floatingMode;
+@property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 
 - (void)invalidateWeekdaySymbols;
+- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
 @end
 
 @interface FSCalendarAppearance (Dynamic)
 
-@property (readonly, nonatomic) NSMutableDictionary *backgroundColors;
-@property (readonly, nonatomic) NSMutableDictionary *titleColors;
-@property (readonly, nonatomic) NSMutableDictionary *subtitleColors;
+@property (readonly, nonatomic) NSDictionary *backgroundColors;
+@property (readonly, nonatomic) NSDictionary *titleColors;
+@property (readonly, nonatomic) NSDictionary *subtitleColors;
+@property (readonly, nonatomic) NSDictionary *borderColors;
 
 - (void)adjustTitleIfNecessary;
 
