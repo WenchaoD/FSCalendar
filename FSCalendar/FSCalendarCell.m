@@ -19,7 +19,7 @@
 @property (readonly, nonatomic) UIColor *colorForTitleLabel;
 @property (readonly, nonatomic) UIColor *colorForSubtitleLabel;
 @property (readonly, nonatomic) UIColor *colorForCellBorder;
-@property (readonly, nonatomic) FSCalendarCellStyle cellStyle;
+@property (readonly, nonatomic) FSCalendarCellShape cellShape;
 
 @end
 
@@ -174,7 +174,7 @@
     UIColor *borderColor = self.colorForCellBorder;
     _backgroundLayer.hidden = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor;
     if (!_backgroundLayer.hidden) {
-        _backgroundLayer.path = self.cellStyle == FSCalendarCellStyleCircle ?
+        _backgroundLayer.path = self.cellShape == FSCalendarCellShapeCircle ?
         [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
         [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
         _backgroundLayer.fillColor = self.colorForBackgroundLayer.CGColor;
@@ -248,9 +248,9 @@
     return _preferedBorderDefaultColor ?: _appearance.borderDefaultColor;
 }
 
-- (FSCalendarCellStyle)cellStyle
+- (FSCalendarCellShape)cellShape
 {
-    return _preferedCellStyle ?: _appearance.cellStyle;
+    return _preferedCellShape ?: _appearance.cellShape;
 }
 
 @end

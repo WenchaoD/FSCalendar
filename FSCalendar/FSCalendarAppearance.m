@@ -67,7 +67,7 @@
         _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
         _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
         
-        _cellStyle = FSCalendarCellStyleCircle;
+        _cellShape = FSCalendarCellShapeCircle;
         _eventColor = [kBlue colorWithAlphaComponent:0.75];
         
         _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
@@ -334,10 +334,10 @@
     }
 }
 
-- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+- (void)setCellShape:(FSCalendarCellShape)cellShape
 {
-    if (_cellStyle != cellStyle) {
-        _cellStyle = cellStyle;
+    if (_cellShape != cellShape) {
+        _cellShape = cellShape;
         [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
@@ -428,4 +428,30 @@
     [_calendar.weekdays setValue:[UIFont systemFontOfSize:_weekdayTextSize] forKeyPath:@"font"];
 }
 
+- (void)invalidateAppearance
+{
+    [_calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [_calendar invalidateAppearanceForCell:obj];
+    }];
+    [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
+}
+
 @end
+
+
+@implementation FSCalendarAppearance (Deprecated)
+
+- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+{
+    self.cellShape = (FSCalendarCellShape)cellStyle;
+}
+
+- (FSCalendarCellStyle)cellStyle
+{
+    return (FSCalendarCellStyle)self.cellShape;
+}
+
+@end
+
+

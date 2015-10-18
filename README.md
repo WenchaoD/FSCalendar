@@ -5,8 +5,13 @@
 [![Platform](https://img.shields.io/cocoapods/p/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
+# Screenshots
+
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
 
+# New Feature
+
+![fscalendar-roll](https://cloud.githubusercontent.com/assets/5186464/10562289/1885c3aa-7588-11e5-8505-ef030bd183c7.gif)
 # Installation
 
 ## Cocoapods:
@@ -36,7 +41,7 @@ Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Ha
 
 # Setup
 
-## Use Interface Builder (Recommended)
+## Use Interface Builder
 
 1. Drag an UIView object to ViewController Scene
 2. Change the `Custom Class` to `FSCalendar`<br/>
@@ -52,7 +57,7 @@ Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Ha
 @property (weak , nonatomic) FSCalendar *calendar;
 ```
 ```objective-c
-// In loadView or viewDidLoad
+// In loadView(Recommended) or viewDidLoad
 FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
 calendar.dataSource = self;
 calendar.delegate = self;

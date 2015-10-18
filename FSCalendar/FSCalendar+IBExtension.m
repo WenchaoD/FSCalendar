@@ -313,14 +313,14 @@
 
 #pragma mark - cellStyle
 
-- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+- (void)setCellShape:(FSCalendarCellShape)cellShape
 {
-    self.appearance.cellStyle = cellStyle;
+    self.appearance.cellShape = cellShape;
 }
 
-- (FSCalendarCellStyle)cellStyle
+- (FSCalendarCellShape)cellShape
 {
-    return self.appearance.cellStyle;
+    return self.appearance.cellShape;
 }
 
 #pragma mark - useVeryShortWeekdaySymbols
@@ -357,6 +357,18 @@
 - (NSInteger)fakedSelectedDay
 {
     return self.appearance.fakedSelectedDay;
+}
+
+#pragma mark - cellStyle
+
+- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+{
+    self.appearance.cellShape = (FSCalendarCellShape)cellStyle;
+}
+
+- (FSCalendarCellStyle)cellStyle
+{
+    return (FSCalendarCellStyle)self.appearance.cellShape;
 }
 
 @end

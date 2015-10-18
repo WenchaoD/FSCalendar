@@ -8,6 +8,7 @@
 //  Warning: For IB usage only. Directly calling these methods is deprecated. Use calendar.appearance(FSCalendarAppearance) instead
 
 #import "FSCalendar.h"
+#import "FSCalendarConstance.h"
 
 IB_DESIGNABLE
 @interface FSCalendar (IBExtension)
@@ -44,11 +45,14 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor *borderDefaultColor;
 @property (strong, nonatomic) IBInspectable UIColor *borderSelectionColor;
 
-@property (assign, nonatomic) IBInspectable FSCalendarCellStyle cellStyle;
+@property (assign, nonatomic) IBInspectable FSCalendarCellShape cellShape;
 @property (assign, nonatomic) IBInspectable BOOL useVeryShortWeekdaySymbols;
 
 // For IB Preview. Not actually affect.
 @property (assign, nonatomic) IBInspectable BOOL      fakeSubtitles;
 @property (assign, nonatomic) IBInspectable NSInteger fakedSelectedDay;
+
+// Deprecated
+@property (assign, nonatomic) IBInspectable FSCalendarCellStyle cellStyle FSCalendarDeprecated("use \'cellShape\' instead");
 
 @end

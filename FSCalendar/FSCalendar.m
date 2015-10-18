@@ -35,7 +35,7 @@
 - (UIColor *)preferedEventColorForDate:(NSDate *)date;
 - (UIColor *)preferedBorderDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferedBorderSelectionColorForDate:(NSDate *)date;
-- (FSCalendarCellStyle)preferedCellStyleForDate:(NSDate *)date;
+- (FSCalendarCellShape)preferedCellShapeForDate:(NSDate *)date;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
@@ -53,6 +53,7 @@
     NSDate *_maximumDate;
 }
 @property (strong, nonatomic) NSMutableArray             *weekdays;
+@property (strong, nonatomic) NSMapTable                 *stickyHeaderMapTable;
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
@@ -78,6 +79,7 @@
 @property (readonly, nonatomic) NSInteger currentSection;
 @property (readonly, nonatomic) CGFloat preferedHeaderHeight;
 @property (readonly, nonatomic) BOOL floatingMode;
+@property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 
 @property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
 
@@ -101,6 +103,7 @@
 
 - (void)invalidateLayout;
 - (void)invalidateWeekdaySymbols;
+- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
 @end
 
@@ -155,7 +158,7 @@
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
-
+    _stickyHeaderMapTable = [NSMapTable mapTableWithKeyOptions:NSMapTableStrongMemory valueOptions:NSMapTableWeakMemory];
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -428,17 +431,7 @@
     cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
     cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
     
-    cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
-    cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date];
-    cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
-    if (cell.subtitle) {
-        cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
-        cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
-    }
-    if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
-    cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
-    cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
-    cell.preferedCellStyle = [self preferedCellStyleForDate:cell.date];
+    [self invalidateAppearanceForCell:cell];
     
     switch (_scope) {
         case FSCalendarScopeMonth: {
@@ -473,6 +466,7 @@
             stickyHeader.calendar = self;
             stickyHeader.month = [_minimumDate fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents.fs_firstDayOfMonth;
             [stickyHeader setNeedsLayout];
+            [_stickyHeaderMapTable setObject:stickyHeader forKey:indexPath];
             return stickyHeader;
         }
     }
@@ -1120,9 +1114,10 @@
         [cell setNeedsLayout];
         
         [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-            if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:date]) {
-                cell.dateIsSelected = cell.dateIsSelected = NO;
+            if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:date] && cell.dateIsSelected) {
+                cell.dateIsSelected = NO;
                 [cell setNeedsLayout];
+                *stop = YES;
             }
         }];
     }
@@ -1164,7 +1159,7 @@
                 [self collectionView:_collectionView didSelectItemAtIndexPath:targetIndexPath];
             }
         }
-    } else {
+    } else if (![_selectedDates containsObject:targetDate]){
         // 手动选中日期时，需先反选已经选中的日期，但不触发事件
         if (self.selectedDate && !self.allowsMultipleSelection) {
             NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
@@ -1173,13 +1168,20 @@
             [cell setNeedsLayout];
             _daysContainer.clipsToBounds = NO;
             [_selectedDates removeLastObject];
-
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
         _daysContainer.clipsToBounds = NO;
         [cell performSelecting];
+        
+        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+            if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:targetDate] && !cell.dateIsSelected) {
+                cell.dateIsSelected = YES;
+                [cell performSelecting];
+                *stop = YES;
+            }
+        }];
         
         [self enqueueSelectedDate:targetDate];
     }
@@ -1481,6 +1483,22 @@
     }];
 }
 
+- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell
+{
+    cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
+    cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date];
+    cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
+    if (cell.subtitle) {
+        cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
+        cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
+    }
+    if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
+    cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
+    cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
+    cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
+    [cell setNeedsLayout];
+}
+
 - (void)enqueueSelectedDate:(NSDate *)date
 {
     if (!self.allowsMultipleSelection) {
@@ -1494,6 +1512,10 @@
     }];
 }
 
+- (NSArray *)visibleStickyHeaders
+{
+    return _stickyHeaderMapTable.objectEnumerator.allObjects;
+}
 
 #pragma mark - Delegate
 
@@ -1613,13 +1635,21 @@
     return nil;
 }
 
-- (FSCalendarCellStyle)preferedCellStyleForDate:(NSDate *)date
+- (FSCalendarCellShape)preferedCellShapeForDate:(NSDate *)date
 {
-    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellStyleForDate:)]) {
-        FSCalendarCellStyle cellStyle = [self.delegateAppearance calendar:self appearance:self.appearance cellStyleForDate:date];
-        return cellStyle;
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellShapeForDate:)]) {
+        FSCalendarCellShape cellShape = [self.delegateAppearance calendar:self appearance:self.appearance cellShapeForDate:date];
+        return cellShape;
     }
-    return FSCalendarCellStyleCircle;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    else if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellStyleForDate:)]) {
+        FSCalendarCellShape cellShape = (FSCalendarCellShape)[self.delegateAppearance calendar:self appearance:self.appearance cellStyleForDate:date];
+        return cellShape;
+    }
+#pragma GCC diagnostic pop
+    
+    return FSCalendarCellShapeCircle;
 }
 
 #pragma mark - DataSource

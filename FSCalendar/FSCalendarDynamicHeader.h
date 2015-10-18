@@ -26,8 +26,10 @@
 @property (readonly, nonatomic) NSCalendar *calendar;
 @property (readonly, nonatomic) BOOL ibEditing;
 @property (readonly, nonatomic) BOOL floatingMode;
+@property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 
 - (void)invalidateWeekdaySymbols;
+- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
 @end
 
