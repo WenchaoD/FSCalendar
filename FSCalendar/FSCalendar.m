@@ -84,6 +84,7 @@
 @property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
 
 - (void)orientationDidChange:(NSNotification *)notification;
+- (void)significantTimeChange:(NSNotification *)notification;
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
@@ -215,12 +216,13 @@
     [self invalidateLayout];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeChange:) name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 
 #pragma mark - Overriden methods
@@ -676,6 +678,12 @@
     [self setNeedsLayout];
     [self adjustRowHeight];
     [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell why?
+}
+
+- (void)significantTimeChange:(NSNotification *)notification
+{
+    [self setToday:[NSDate date].fs_dateByIgnoringTimeComponents];
+    [self reloadData];
 }
 
 #pragma mark - Properties
