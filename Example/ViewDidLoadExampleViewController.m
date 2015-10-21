@@ -50,9 +50,9 @@
     NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
 }
 
-- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
+- (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
 }
 
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date

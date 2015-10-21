@@ -10,11 +10,6 @@
 #import <Foundation/Foundation.h>
 #import "FSCalendarConstance.h"
 
-typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
-    FSCalendarCellShapeCircle    = 0,
-    FSCalendarCellShapeRectangle = 1
-};
-
 @class FSCalendar;
 
 @interface FSCalendarAppearance : NSObject
@@ -63,13 +58,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
 - (void)invalidateAppearance;
 
 @end
-
-
-FSCalendarDeprecated("use \'FSCalendarCellShape\' instead")
-typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
-    FSCalendarCellStyleCircle      = 0,
-    FSCalendarCellStyleRectangle   = 1
-};
 
 @interface FSCalendarAppearance (Deprecated)
 

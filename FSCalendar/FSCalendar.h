@@ -17,33 +17,9 @@ FOUNDATION_EXPORT double FSCalendarVersionNumber;
 FOUNDATION_EXPORT const unsigned char FSCalendarVersionString[];
 
 @class FSCalendar;
+@protocol FSCalendarDelegateDeprecatedProtocol,FSCalendarDelegateAppearanceDeprecatedProtocol;
 
-FSCalendarDeprecated("use \'FSCalendarScrollDirection\' instead")
-typedef NS_ENUM(NSInteger, FSCalendarFlow) {
-    FSCalendarFlowVertical,
-    FSCalendarFlowHorizontal
-};
-
-typedef NS_ENUM(NSInteger, FSCalendarScope) {
-    FSCalendarScopeMonth,
-    FSCalendarScopeWeek
-};
-
-typedef NS_ENUM(NSInteger, FSCalendarScrollDirection) {
-    FSCalendarScrollDirectionVertical,
-    FSCalendarScrollDirectionHorizontal
-};
-
-typedef NS_ENUM(NSInteger, FSCalendarCellState) {
-    FSCalendarCellStateNormal      = 0,
-    FSCalendarCellStateSelected    = 1,
-    FSCalendarCellStatePlaceholder = 1 << 1,
-    FSCalendarCellStateDisabled    = 1 << 2,
-    FSCalendarCellStateToday       = 1 << 3,
-    FSCalendarCellStateWeekend     = 1 << 4
-};
-
-@protocol FSCalendarDelegate <NSObject>
+@protocol FSCalendarDelegate <FSCalendarDelegateDeprecatedProtocol>
 
 @optional
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
@@ -52,8 +28,6 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date;
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated;
-
-- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated("use \'calendarCurrentPageDidChange\' instead");
 
 @end
 
@@ -68,7 +42,7 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 
 @end
 
-@protocol FSCalendarDelegateAppearance <NSObject>
+@protocol FSCalendarDelegateAppearance <FSCalendarDelegateAppearanceDeprecatedProtocol>
 
 @optional
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date;
@@ -80,8 +54,6 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date;
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSelectionColorForDate:(NSDate *)date;
 - (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date;
-
-- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated("use \'calendar:appearance:cellShapeForDate:\' instead");
 
 @end
 
@@ -124,15 +96,22 @@ IB_DESIGNABLE
 
 @end
 
+#pragma mark - Deprecate
 
 @interface FSCalendar (Deprecated)
-
 @property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated("use \'currentPage\' instead");
 @property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated("use \'scrollDirection\' instead");
-
 - (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated("use \'selectDate:\' instead");
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated("use \'selectDate:scrollToDate:\' instead");
-
 @end
 
+@protocol FSCalendarDelegateDeprecatedProtocol <NSObject>
+@optional
+- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated("use \'calendarCurrentPageDidChange\' instead");
+@end
+
+@protocol FSCalendarDelegateAppearanceDeprecatedProtocol <NSObject>
+@optional
+- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated("use \'calendar:appearance:cellShapeForDate:\' instead");
+@end
 

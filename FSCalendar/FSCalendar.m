@@ -84,7 +84,7 @@
 @property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
 
 - (void)orientationDidChange:(NSNotification *)notification;
-- (void)significantTimeChange:(NSNotification *)notification;
+- (void)significantTimeDidChange:(NSNotification *)notification;
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
@@ -216,7 +216,7 @@
     [self invalidateLayout];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeChange:) name:UIApplicationSignificantTimeChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeDidChange:) name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 
 - (void)dealloc
@@ -680,10 +680,9 @@
     [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell why?
 }
 
-- (void)significantTimeChange:(NSNotification *)notification
+- (void)significantTimeDidChange:(NSNotification *)notification
 {
-    [self setToday:[NSDate date].fs_dateByIgnoringTimeComponents];
-    [self reloadData];
+    self.today = [NSDate date];
 }
 
 #pragma mark - Properties
@@ -767,6 +766,11 @@
         }
         _needsAdjustingMonthPosition = YES;
         [self setNeedsLayout];
+        
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
+        [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        
     }
 }
 
