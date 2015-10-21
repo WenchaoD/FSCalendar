@@ -104,6 +104,7 @@
 
 - (void)invalidateLayout;
 - (void)invalidateWeekdaySymbols;
+- (void)invalidateHeaders;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
 @end
@@ -466,6 +467,7 @@
         if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
             FSCalendarStickyHeader *stickyHeader = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
             stickyHeader.calendar = self;
+            stickyHeader.appearance = self.appearance;
             stickyHeader.month = [_minimumDate fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents.fs_firstDayOfMonth;
             [stickyHeader setNeedsLayout];
             [_stickyHeaderMapTable setObject:stickyHeader forKey:indexPath];
@@ -1489,10 +1491,23 @@
 
 - (void)invalidateWeekdaySymbols
 {
-    NSArray *weekdaySymbols = _appearance.useVeryShortWeekdaySymbols ? _calendar.veryShortStandaloneWeekdaySymbols : _calendar.shortStandaloneWeekdaySymbols;
+    BOOL useVeryShortWeekdaySymbols = (_appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+    NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? _calendar.veryShortStandaloneWeekdaySymbols : _calendar.shortStandaloneWeekdaySymbols;
+    BOOL useDefaultWeekdayCase = (_appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
-        label.text = weekdaySymbols[index];
+        label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
     }];
+    if (_stickyHeaderMapTable.count) {
+        [_stickyHeaderMapTable.objectEnumerator.allObjects makeObjectsPerformSelector:@selector(reloadData)];
+    }
+}
+
+- (void)invalidateHeaders
+{
+    [_header.collectionView reloadData];
+    if (_stickyHeaderMapTable.count) {
+        [_stickyHeaderMapTable.objectEnumerator.allObjects makeObjectsPerformSelector:@selector(reloadData)];
+    }
 }
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell

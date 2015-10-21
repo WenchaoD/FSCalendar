@@ -138,28 +138,30 @@
     cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _dateFormatter.dateFormat = _appearance.headerDateFormat;
+    BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+    NSString *text = nil;
     switch (self.calendar.scope) {
         case FSCalendarScopeMonth: {
             if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
                 // 多出的两项需要制空
                 if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
-                    cell.titleLabel.text = nil;
+                    text = nil;
                 } else {
                     NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
-                    cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+                    text = [_dateFormatter stringFromDate:date];
                 }
             } else {
                 NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item].fs_dateByIgnoringTimeComponents;
-                cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+                text = [_dateFormatter stringFromDate:date];
             }
             break;
         }
         case FSCalendarScopeWeek: {
             if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
-                cell.titleLabel.text = nil;
+                text = nil;
             } else {
                 NSDate *date = [self.calendar.minimumDate.fs_firstDayOfWeek fs_dateByAddingWeeks:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
-                cell.titleLabel.text = [_dateFormatter stringFromDate:date];
+                text = [_dateFormatter stringFromDate:date];
             }
             break;
         }
@@ -167,6 +169,8 @@
             break;
         }
     }
+    text = usesUpperCase ? text.uppercaseString : text;
+    cell.titleLabel.text = text;
     [cell setNeedsLayout];
     return cell;
 }

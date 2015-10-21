@@ -16,6 +16,17 @@ FOUNDATION_EXPORT double FSCalendarVersionNumber;
 //! Project version string for FSCalendar.
 FOUNDATION_EXPORT const unsigned char FSCalendarVersionString[];
 
+typedef NS_ENUM(NSUInteger, FSCalendarScope) {
+    FSCalendarScopeMonth,
+    FSCalendarScopeWeek
+};
+
+typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
+    FSCalendarScrollDirectionVertical,
+    FSCalendarScrollDirectionHorizontal
+};
+
+
 @class FSCalendar;
 @protocol FSCalendarDelegateDeprecatedProtocol,FSCalendarDelegateAppearanceDeprecatedProtocol;
 

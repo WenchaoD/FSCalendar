@@ -42,6 +42,7 @@
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;
         _weekdayTextColor = kBlueText;
+        _caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesDefaultCase;
         
         _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _backgroundColors[@(FSCalendarCellStateNormal)]      = [UIColor clearColor];
@@ -383,14 +384,6 @@
     }
 }
 
-- (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
-{
-    if (_useVeryShortWeekdaySymbols != useVeryShortWeekdaySymbols) {
-        _useVeryShortWeekdaySymbols = useVeryShortWeekdaySymbols;
-        [self.calendar invalidateWeekdaySymbols];
-    }
-}
-
 - (void)setHeaderMinimumDissolvedAlpha:(CGFloat)headerMinimumDissolvedAlpha
 {
     if (_headerMinimumDissolvedAlpha != headerMinimumDissolvedAlpha) {
@@ -428,6 +421,15 @@
     [_calendar.weekdays setValue:[UIFont systemFontOfSize:_weekdayTextSize] forKeyPath:@"font"];
 }
 
+- (void)setCaseOptions:(FSCalendarCaseOptions)caseOptions
+{
+    if (_caseOptions != caseOptions) {
+        _caseOptions = caseOptions;
+        [_calendar invalidateWeekdaySymbols];
+        [_calendar invalidateHeaders];
+    }
+}
+
 - (void)invalidateAppearance
 {
     [_calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -450,6 +452,17 @@
 - (FSCalendarCellStyle)cellStyle
 {
     return (FSCalendarCellStyle)self.cellShape;
+}
+
+- (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
+{
+    _caseOptions &= 15;
+    self.caseOptions |= FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+}
+
+- (BOOL)useVeryShortWeekdaySymbols
+{
+    return (_caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
 }
 
 @end

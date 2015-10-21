@@ -28,6 +28,7 @@
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 
+- (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 

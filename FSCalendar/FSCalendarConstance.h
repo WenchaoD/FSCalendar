@@ -9,33 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-#pragma mark - NSEnum
-
-typedef NS_ENUM(NSInteger, FSCalendarScope) {
-    FSCalendarScopeMonth,
-    FSCalendarScopeWeek
-};
-
-typedef NS_ENUM(NSInteger, FSCalendarScrollDirection) {
-    FSCalendarScrollDirectionVertical,
-    FSCalendarScrollDirectionHorizontal
-};
-
-typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
-    FSCalendarCellShapeCircle    = 0,
-    FSCalendarCellShapeRectangle = 1
-};
-
-typedef NS_ENUM(NSInteger, FSCalendarCellState) {
-    FSCalendarCellStateNormal      = 0,
-    FSCalendarCellStateSelected    = 1,
-    FSCalendarCellStatePlaceholder = 1 << 1,
-    FSCalendarCellStateDisabled    = 1 << 2,
-    FSCalendarCellStateToday       = 1 << 3,
-    FSCalendarCellStateWeekend     = 1 << 4,
-    FSCalendarCellStateTodaySelected = FSCalendarCellStateToday|FSCalendarCellStateSelected
-};
-
 #pragma mark - Constance
 
 UIKIT_EXTERN CGFloat const kFSCalendarDefaultHeaderHeight;

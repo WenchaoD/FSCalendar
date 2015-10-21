@@ -34,6 +34,7 @@
     calendar.pagingEnabled = NO; // important
     calendar.allowsMultipleSelection = YES;
     calendar.backgroundColor = [UIColor whiteColor];
+//    calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
     [self.view addSubview:calendar];
     self.calendar = calendar;
 }
@@ -41,6 +42,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        _calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesDefaultCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
+//    });
     
 #if 0
     FSCalendarTestSelectDate
