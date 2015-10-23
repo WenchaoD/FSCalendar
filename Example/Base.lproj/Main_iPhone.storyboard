@@ -41,7 +41,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Roll" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1MA-EI-d9Y">
-                                                    <rect key="frame" x="15" y="12" width="157" height="20"/>
+                                                    <rect key="frame" x="15" y="12" width="27" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -234,6 +234,9 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="noP-KN-SwP">
                                 <rect key="frame" x="0.0" y="365" width="600" height="435"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="435" id="B9d-rT-Wom"/>
+                                </constraints>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="5Js-5e-oo9">
                                     <rect key="frame" x="0.0" y="148" width="600" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -302,6 +305,11 @@
                             <constraint firstItem="7hZ-tJ-5NZ" firstAttribute="top" secondItem="mb8-tO-gOh" secondAttribute="bottom" id="qGS-mB-3eB"/>
                             <constraint firstItem="noP-KN-SwP" firstAttribute="leading" secondItem="MiY-ip-WTw" secondAttribute="leading" id="sWp-fr-rlt"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="gSa-Uh-F2e"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="FSCalendar" id="W8S-6B-A6Z"/>
                     <connections>
@@ -341,6 +349,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="useVeryShortWeekdaySymbols" value="NO"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="pagingEnabled" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="scrollEnabled" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="fakeSubtitles" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="CT5-P9-sbn"/>

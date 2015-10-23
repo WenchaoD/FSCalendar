@@ -10,7 +10,8 @@ Pod::Spec.new do |s|
   s.author           = { "Wenchao Ding" => "f33chobits@gmail.com" }
   s.source           = { :git => "https://github.com/f33chobits/FSCalendar.git", :tag => s.version.to_s }
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios
+  s.ios.deployment_target = '7.0'
   s.requires_arc = true
   s.framework    = 'UIKit', 'QuartzCore'
   s.source_files = 'FSCalendar/*.{h,m}'

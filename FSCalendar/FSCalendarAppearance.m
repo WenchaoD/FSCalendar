@@ -34,10 +34,10 @@
         
         _autoAdjustTitleSize = YES;
         
-        _titleTextSize    = 13.5;
-        _subtitleTextSize = 10;
-        _weekdayTextSize  = 14;
-        _headerTitleTextSize = 16;
+        _titleTextSize    = kFSCalendarStandardTitleTextSize;
+        _subtitleTextSize = kFSCalendarStandardSubtitleTextSize;
+        _weekdayTextSize  = kFSCalendarStandardWeekdayTextSize;
+        _headerTitleTextSize = kFSCalendarStandardHeaderTextSize;
         _headerTitleColor = kBlueText;
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;
@@ -406,8 +406,10 @@
         if (_autoAdjustTitleSize) {
             CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
             _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
+            _titleTextSize       -= (_titleTextSize-kFSCalendarStandardTitleTextSize)*0.5;
             _subtitleTextSize    = _calendar.collectionView.fs_height/4.5/factor;
-            _headerTitleTextSize = _titleTextSize + 3;
+            _subtitleTextSize    -= (_subtitleTextSize-kFSCalendarStandardSubtitleTextSize)*0.5;
+            _headerTitleTextSize = _titleTextSize * 1.25;
             _weekdayTextSize     = _titleTextSize;
             
         }
@@ -457,7 +459,7 @@
 - (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
 {
     _caseOptions &= 15;
-    self.caseOptions |= FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+    self.caseOptions |= (useVeryShortWeekdaySymbols*FSCalendarCaseOptionsWeekdayUsesSingleUpperCase);
 }
 
 - (BOOL)useVeryShortWeekdaySymbols

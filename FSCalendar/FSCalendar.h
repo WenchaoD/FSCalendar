@@ -82,6 +82,7 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScope scope;
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
 @property (assign, nonatomic) IBInspectable CGFloat headerHeight;
+@property (assign, nonatomic) IBInspectable CGFloat weekdayHeight;
 @property (assign, nonatomic) IBInspectable BOOL allowsSelection;
 @property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
 @property (assign, nonatomic) IBInspectable BOOL pagingEnabled;

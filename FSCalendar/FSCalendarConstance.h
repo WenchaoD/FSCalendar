@@ -11,11 +11,18 @@
 
 #pragma mark - Constance
 
-UIKIT_EXTERN CGFloat const kFSCalendarDefaultHeaderHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarDefaultStickyHeaderHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarMinimumRowHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarDefaultWeekHeight;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardHeaderHeight;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardWeekdayHeight;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardMonthlyPageHeight;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardWeeklyPageHeight;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardCellDiameter;
+UIKIT_EXTERN CGFloat const kFSCalendarAutomaticDimension;
 UIKIT_EXTERN CGFloat const kFSCalendarDefaultBounceAnimationDuration;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardRowHeight;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardTitleTextSize;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardSubtitleTextSize;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardWeekdayTextSize;
+UIKIT_EXTERN CGFloat const kFSCalendarStandardHeaderTextSize;
 
 
 #pragma mark - Deprecated

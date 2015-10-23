@@ -27,6 +27,8 @@
 
 @implementation FSCalendarHeader
 
+#pragma mark - Life cycle
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -94,6 +96,14 @@
         }
     }
 }
+
+- (void)dealloc
+{
+    _collectionView.dataSource = nil;
+    _collectionView.delegate = nil;
+}
+
+#pragma mark - <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -183,6 +193,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+
 }
 
 #pragma mark - Properties
@@ -224,7 +235,6 @@
 {
     [_collectionView reloadData];
 }
-
 
 #pragma mark - Private
 
