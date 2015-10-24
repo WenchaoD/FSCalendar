@@ -136,6 +136,7 @@
     
 #define m_calculateTitleHeight \
         CGFloat titleHeight = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}].height;
+    
 #define m_adjustLabelFrame \
     if (_subtitle) { \
         _subtitleLabel.hidden = NO; \

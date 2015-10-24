@@ -99,8 +99,6 @@
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder;
 - (void)enqueueSelectedDate:(NSDate *)date;
 
-//- (void)adjustRowHeight;
-
 - (void)invalidateLayout;
 - (void)invalidateWeekdaySymbols;
 - (void)invalidateHeaders;
@@ -162,7 +160,7 @@
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
-    _stickyHeaderMapTable = [NSMapTable mapTableWithKeyOptions:NSMapTableStrongMemory valueOptions:NSMapTableWeakMemory];
+    _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -475,6 +473,12 @@
             stickyHeader.appearance = self.appearance;
             stickyHeader.month = [_minimumDate fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents.fs_firstDayOfMonth;
             [stickyHeader setNeedsLayout];
+            NSArray *allKeys = [_stickyHeaderMapTable.dictionaryRepresentation allKeysForObject:stickyHeader];
+            if (allKeys.count) {
+                [allKeys enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
+                    [_stickyHeaderMapTable removeObjectForKey:indexPath];
+                }];
+            }
             [_stickyHeaderMapTable setObject:stickyHeader forKey:indexPath];
             return stickyHeader;
         }
@@ -578,29 +582,33 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     _daysContainer.clipsToBounds = YES;
-    if (_supressEvent) {
+    if (_supressEvent || !self.window) {
         return;
     }
     if (self.floatingMode && _collectionView.indexPathsForVisibleItems.count) {
         
-        NSMutableOrderedSet *visibleSections = [NSMutableOrderedSet orderedSetWithCapacity:2];
-        [_collectionView.indexPathsForVisibleItems enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-            if (indexPath.item == 0) {
-                [visibleSections addObject:@(indexPath.section)];
-            }
-        }];
-        [visibleSections sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            return [obj1 compare:obj2] == NSOrderedDescending;
-        }];
-        NSInteger minimumSectionOnScreen = [visibleSections[0] integerValue];
-        CGRect cellFrame = [_collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:minimumSectionOnScreen]].frame;
-        CGFloat headerTop = cellFrame.origin.y-_collectionViewLayout.headerReferenceSize.height;
-        CGRect headerFrame = CGRectMake(0, headerTop, _collectionView.fs_width, _collectionViewLayout.headerReferenceSize.height);
-        CGRect headerFrameOnScreen = [_collectionView convertRect:headerFrame toView:_daysContainer];
-        if (headerFrameOnScreen.origin.y >= MIN(self.preferedRowHeight*2.5,_collectionView.fs_height*0.5)) {
-            minimumSectionOnScreen--;
+        // Do nothing on bouncing
+        if (_collectionView.contentOffset.y < 0 || _collectionView.contentOffset.y > _collectionView.contentSize.height-_collectionView.fs_height) {
+            return;
         }
-        NSDate *currentPage = [self.minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:minimumSectionOnScreen];
+        NSDate *currentPage = _currentPage;
+        CGPoint significantPoint = CGPointMake(_collectionView.fs_width*0.5,MIN(self.preferedRowHeight*2.75, _collectionView.fs_height*0.5)+_collectionView.contentOffset.y);
+        NSIndexPath *significantIndexPath = [_collectionView indexPathForItemAtPoint:significantPoint];
+        if (significantIndexPath) {
+            currentPage = [self.minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:significantIndexPath.section];
+        } else {
+            __block FSCalendarStickyHeader *significantHeader = nil;
+            [_stickyHeaderMapTable.dictionaryRepresentation.allValues enumerateObjectsUsingBlock:^(FSCalendarStickyHeader *header, NSUInteger idx, BOOL *stop) {
+                if (CGRectContainsPoint(header.frame, significantPoint)) {
+                    significantHeader = header;
+                    *stop = YES;
+                }
+            }];
+            if (significantHeader) {
+                currentPage = significantHeader.month;
+            }
+        }
+        
         if (![currentPage fs_isEqualToDateForMonth:_currentPage]) {
             [self willChangeValueForKey:@"currentPage"];
             _currentPage = currentPage;
