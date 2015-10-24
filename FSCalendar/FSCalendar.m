@@ -1237,6 +1237,8 @@
                 [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
                 [self collectionView:_collectionView didSelectItemAtIndexPath:targetIndexPath];
             }
+        } else {
+            [self didSelectDate:targetDate];
         }
     } else if (![_selectedDates containsObject:targetDate]){
         // 手动选中日期时，需先反选已经选中的日期，但不触发事件
@@ -1253,16 +1255,18 @@
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
         _daysContainer.clipsToBounds = NO;
         [cell performSelecting];
-        
-        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-            if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:targetDate] && !cell.dateIsSelected) {
-                cell.dateIsSelected = YES;
-                [cell performSelecting];
-                *stop = YES;
-            }
-        }];
-        
         [self enqueueSelectedDate:targetDate];
+        
+        if (!self.floatingMode) {
+            [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+                if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:targetDate] && !cell.dateIsSelected) {
+                    cell.dateIsSelected = YES;
+                    [cell performSelecting];
+                    *stop = YES;
+                }
+            }];
+        }
+        
     } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath]) {
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
@@ -1324,7 +1328,7 @@
         }
         
     } else {
-        CGRect itemFrame = [_collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
+        CGRect itemFrame = [_collectionViewLayout layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
         if (self.floatingMode && CGRectEqualToRect(itemFrame, CGRectZero)) {
             _currentPage = targetDate;
             _needsAdjustingMonthPosition = YES;
