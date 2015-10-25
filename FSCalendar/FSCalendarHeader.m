@@ -6,10 +6,11 @@
 //
 //
 
-#import "FSCalendarHeader.h"
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
 #import "NSDate+FSExtension.h"
+#import "FSCalendarHeader.h"
+#import "FSCalendarCollectionView.h"
 
 #define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
 
@@ -61,13 +62,12 @@
     collectionViewFlowLayout.itemSize = CGSizeMake(1, 1);
     self.collectionViewFlowLayout = collectionViewFlowLayout;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
+    UICollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
     collectionView.scrollEnabled = NO;
     collectionView.userInteractionEnabled = NO;
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    collectionView.contentInset = UIEdgeInsetsZero;
     collectionView.scrollsToTop = NO;
     [self addSubview:collectionView];
     [collectionView registerClass:[FSCalendarHeaderCell class] forCellWithReuseIdentifier:@"cell"];
@@ -80,7 +80,6 @@
     
     if (_collectionView) {
         _collectionView.frame = CGRectMake(0, self.fs_height*0.1, self.fs_width, self.fs_height*0.9);
-        _collectionView.contentInset = UIEdgeInsetsZero;
         _collectionViewFlowLayout.itemSize = CGSizeMake(
                                                         _collectionView.fs_width*((_scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
                                                         _collectionView.fs_height
@@ -145,6 +144,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    cell.header = self;
     cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _dateFormatter.dateFormat = _appearance.headerDateFormat;
@@ -288,15 +288,6 @@
         self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
     }
     
-}
-
-- (FSCalendarHeader *)header
-{
-    UIView *superview = self.superview;
-    while (superview && ![superview isKindOfClass:[FSCalendarHeader class]]) {
-        superview = superview.superview;
-    }
-    return (FSCalendarHeader *)superview;
 }
 
 @end

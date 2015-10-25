@@ -25,6 +25,6 @@
 @interface FSCalendarHeaderCell : UICollectionViewCell
 
 @property (weak, nonatomic) UILabel *titleLabel;
-@property (readonly, nonatomic) FSCalendarHeader *header;
+@property (weak, nonatomic) FSCalendarHeader *header;
 
 @end

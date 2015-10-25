@@ -14,8 +14,10 @@
 #import "UIView+FSExtension.h"
 #import "NSDate+FSExtension.h"
 #import "NSString+FSExtension.h"
+#import "FSCalendarFlowLayout.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarHeaderTouchDeliver.h"
+#import "FSCalendarCollectionView.h"
 
 @interface FSCalendar (DataSourceAndDelegate)
 
@@ -59,7 +61,7 @@
 @property (weak  , nonatomic) UIView                     *topBorder;
 @property (weak  , nonatomic) UIView                     *bottomBorder;
 @property (weak  , nonatomic) UICollectionView           *collectionView;
-@property (weak  , nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
+@property (weak  , nonatomic) FSCalendarFlowLayout       *collectionViewLayout;
 
 @property (weak  , nonatomic) FSCalendarHeader           *header;
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
@@ -176,14 +178,10 @@
     [contentView addSubview:daysContainer];
     self.daysContainer = daysContainer;
     
-    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
-    collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    collectionViewLayout.minimumInteritemSpacing = 0;
-    collectionViewLayout.minimumLineSpacing = 0;
-    collectionViewLayout.itemSize = CGSizeMake(1, 1);
-    collectionViewLayout.sectionInset = UIEdgeInsetsZero;
+    FSCalendarFlowLayout *collectionViewLayout = [[FSCalendarFlowLayout alloc] init];
+    collectionViewLayout.calendar = self;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+    UICollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
                                                           collectionViewLayout:collectionViewLayout];
     collectionView.dataSource = self;
     collectionView.delegate = self;
@@ -257,28 +255,19 @@
         _deliver.frame = _header.frame;
         _deliver.hidden = _header.hidden;
         
-        _collectionView.contentInset = UIEdgeInsetsZero;
-        _collectionViewLayout.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
-        [_collectionViewLayout invalidateLayout];
         if (_pagingEnabled) {
             
-            _collectionViewLayout.headerReferenceSize = CGSizeZero;
             switch (_scope) {
                 case FSCalendarScopeMonth: {
                     CGFloat contentHeight = rowHeight*6 + padding*2;
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, contentHeight);
                     _collectionView.frame = _daysContainer.bounds;
-                    _collectionViewLayout.itemSize = CGSizeMake(
-                                                                _collectionView.fs_width/7-(_collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
-                                                                rowHeight
-                                                               );
                     break;
                 }
                 case FSCalendarScopeWeek: {
                     CGFloat contentHeight = rowHeight + padding*2;
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, contentHeight);
                     _collectionView.frame = _daysContainer.bounds;
-                    _collectionViewLayout.itemSize = CGSizeMake(_collectionView.fs_width/7, rowHeight);
                     break;
                 }
                 default: {
@@ -286,15 +275,9 @@
                 }
             }
         } else {
-            
-            _collectionViewLayout.headerReferenceSize = CGSizeMake(_contentView.fs_width, self.preferedHeaderHeight+10+self.preferedWeekdayHeight);
             CGFloat contentHeight = _contentView.fs_height;
             _daysContainer.frame = CGRectMake(0, 0, self.fs_width, contentHeight);
             _collectionView.frame = _daysContainer.bounds;
-            _collectionViewLayout.itemSize = CGSizeMake(
-                                                        _collectionView.fs_width/7-(_collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
-                                                        rowHeight
-                                                       );
             
         }
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
@@ -1779,6 +1762,7 @@
 
 @end
 
+#pragma mark - Deprecate
 
 @implementation FSCalendar (Deprecated)
 
