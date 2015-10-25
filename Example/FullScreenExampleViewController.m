@@ -47,6 +47,12 @@
 //        _calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesDefaultCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
 //    });
 //    [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:9 day:30] scrollToDate:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"reload");
+        [_calendar reloadData];
+        //        _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+    });
 #if 0
     FSCalendarTestSelectDate
 #endif

@@ -139,14 +139,14 @@
     _minimumDate = [NSDate fs_dateWithYear:1970 month:1 day:1];
     _maximumDate = [NSDate fs_dateWithYear:2099 month:12 day:31];
     
-    _headerHeight     = kFSCalendarAutomaticDimension;
-    _weekdayHeight    = kFSCalendarAutomaticDimension;
+    _headerHeight     = FSCalendarAutomaticDimension;
+    _weekdayHeight    = FSCalendarAutomaticDimension;
     _calendar         = [NSCalendar fs_sharedCalendar];
     _firstWeekday     = _calendar.firstWeekday;
     
-    _preferedHeaderHeight  = kFSCalendarAutomaticDimension;
-    _preferedWeekdayHeight = kFSCalendarAutomaticDimension;
-    _preferedRowHeight     = kFSCalendarAutomaticDimension;
+    _preferedHeaderHeight  = FSCalendarAutomaticDimension;
+    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
+    _preferedRowHeight     = FSCalendarAutomaticDimension;
     
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
     _firstWeekday = [_calendar firstWeekday];
@@ -692,9 +692,9 @@
     _needsAdjustingTextSize = YES;
     [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell why?
     
-    _preferedWeekdayHeight = kFSCalendarAutomaticDimension;
-    _preferedRowHeight = kFSCalendarAutomaticDimension;
-    _preferedHeaderHeight = kFSCalendarAutomaticDimension;
+    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
+    _preferedRowHeight = FSCalendarAutomaticDimension;
+    _preferedHeaderHeight = FSCalendarAutomaticDimension;
     [self setNeedsLayout];
 }
 
@@ -919,13 +919,13 @@
 
 - (CGFloat)preferedHeaderHeight
 {
-    if (_headerHeight == kFSCalendarAutomaticDimension) {
-        if (_preferedWeekdayHeight == kFSCalendarAutomaticDimension) {
+    if (_headerHeight == FSCalendarAutomaticDimension) {
+        if (_preferedWeekdayHeight == FSCalendarAutomaticDimension) {
             if (_pagingEnabled) {
-                CGFloat divider = _scope == FSCalendarScopeMonth ? kFSCalendarStandardMonthlyPageHeight : kFSCalendarStandardWeeklyPageHeight;
-                _preferedHeaderHeight = (kFSCalendarStandardHeaderHeight/divider)*self.fs_height;
+                CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
+                _preferedHeaderHeight = (FSCalendarStandardHeaderHeight/divider)*self.fs_height;
             } else {
-                _preferedHeaderHeight = kFSCalendarStandardHeaderHeight;
+                _preferedHeaderHeight = FSCalendarStandardHeaderHeight;
             }
         }
         return _preferedHeaderHeight;
@@ -935,13 +935,13 @@
 
 - (CGFloat)preferedWeekdayHeight
 {
-    if (_weekdayHeight == kFSCalendarAutomaticDimension) {
-        if (_preferedWeekdayHeight == kFSCalendarAutomaticDimension) {
+    if (_weekdayHeight == FSCalendarAutomaticDimension) {
+        if (_preferedWeekdayHeight == FSCalendarAutomaticDimension) {
             if (_pagingEnabled) {
-                CGFloat divider = _scope == FSCalendarScopeMonth ? kFSCalendarStandardMonthlyPageHeight : kFSCalendarStandardWeeklyPageHeight;
-                _preferedWeekdayHeight = (kFSCalendarStandardWeekdayHeight/divider)*self.fs_height;
+                CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
+                _preferedWeekdayHeight = (FSCalendarStandardWeekdayHeight/divider)*self.fs_height;
             } else {
-                _preferedWeekdayHeight = kFSCalendarStandardWeekdayHeight;
+                _preferedWeekdayHeight = FSCalendarStandardWeekdayHeight;
             }
         }
         return _preferedWeekdayHeight;
@@ -951,11 +951,11 @@
 
 - (CGFloat)preferedRowHeight
 {
-    if (_preferedRowHeight == kFSCalendarAutomaticDimension) {
+    if (_preferedRowHeight == FSCalendarAutomaticDimension) {
         CGFloat headerHeight = self.preferedHeaderHeight;
         CGFloat weekdayHeight = self.preferedWeekdayHeight;
         CGFloat contentHeight = self.fs_height-headerHeight-weekdayHeight;
-        CGFloat padding = kFSCalendarStandardWeekdayHeight*0.1;
+        CGFloat padding = FSCalendarStandardWeekdayHeight*0.1;
         if (!self.floatingMode) {
             switch (_scope) {
                 case FSCalendarScopeMonth: {
@@ -971,7 +971,7 @@
                 }
             }
         } else {
-            _preferedRowHeight = kFSCalendarStandardRowHeight;
+            _preferedRowHeight = FSCalendarStandardRowHeight;
         }
     }
     return _preferedRowHeight;
@@ -1000,7 +1000,7 @@
     [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
     
     CGFloat width = self.fs_width/_weekdays.count;
-    CGFloat height = kFSCalendarStandardWeekdayHeight;
+    CGFloat height = FSCalendarStandardWeekdayHeight;
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
         NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
         weekdayLabel.frame = CGRectMake(absoluteIndex * width,
@@ -1217,7 +1217,6 @@
     
     BOOL shouldSelect = !_supressEvent;
     if (forPlaceholder) {
-        
         // 跨月份选中日期，需要触发各类事件
         if (self.allowsMultipleSelection && [self isDateSelected:targetDate]) {
             // 在多选模式下，点击了已经选中的跨月日期
@@ -1249,6 +1248,7 @@
             [cell setNeedsLayout];
             _daysContainer.clipsToBounds = NO;
             [_selectedDates removeLastObject];
+            [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
@@ -1532,9 +1532,9 @@
         
     }
     
-    _preferedHeaderHeight = kFSCalendarAutomaticDimension;
-    _preferedWeekdayHeight = kFSCalendarAutomaticDimension;
-    _preferedRowHeight = kFSCalendarAutomaticDimension;
+    _preferedHeaderHeight = FSCalendarAutomaticDimension;
+    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
+    _preferedRowHeight = FSCalendarAutomaticDimension;
     _needsAdjustingViewFrame = YES;
     [self setNeedsLayout];
 }

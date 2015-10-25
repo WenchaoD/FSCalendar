@@ -34,10 +34,10 @@
         
         _autoAdjustTitleSize = YES;
         
-        _titleTextSize    = kFSCalendarStandardTitleTextSize;
-        _subtitleTextSize = kFSCalendarStandardSubtitleTextSize;
-        _weekdayTextSize  = kFSCalendarStandardWeekdayTextSize;
-        _headerTitleTextSize = kFSCalendarStandardHeaderTextSize;
+        _titleTextSize    = FSCalendarStandardTitleTextSize;
+        _subtitleTextSize = FSCalendarStandardSubtitleTextSize;
+        _weekdayTextSize  = FSCalendarStandardWeekdayTextSize;
+        _headerTitleTextSize = FSCalendarStandardHeaderTextSize;
         _headerTitleColor = kBlueText;
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;
@@ -406,9 +406,9 @@
         if (_autoAdjustTitleSize) {
             CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
             _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
-            _titleTextSize       -= (_titleTextSize-kFSCalendarStandardTitleTextSize)*0.5;
+            _titleTextSize       -= (_titleTextSize-FSCalendarStandardTitleTextSize)*0.5;
             _subtitleTextSize    = _calendar.collectionView.fs_height/4.5/factor;
-            _subtitleTextSize    -= (_subtitleTextSize-kFSCalendarStandardSubtitleTextSize)*0.5;
+            _subtitleTextSize    -= (_subtitleTextSize-FSCalendarStandardSubtitleTextSize)*0.5;
             _headerTitleTextSize = _titleTextSize * 1.25;
             _weekdayTextSize     = _titleTextSize;
             

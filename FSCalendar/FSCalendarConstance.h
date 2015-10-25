@@ -11,18 +11,18 @@
 
 #pragma mark - Constance
 
-UIKIT_EXTERN CGFloat const kFSCalendarStandardHeaderHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardWeekdayHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardMonthlyPageHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardWeeklyPageHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardCellDiameter;
-UIKIT_EXTERN CGFloat const kFSCalendarAutomaticDimension;
-UIKIT_EXTERN CGFloat const kFSCalendarDefaultBounceAnimationDuration;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardRowHeight;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardTitleTextSize;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardSubtitleTextSize;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardWeekdayTextSize;
-UIKIT_EXTERN CGFloat const kFSCalendarStandardHeaderTextSize;
+UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderHeight;
+UIKIT_EXTERN CGFloat const FSCalendarStandardWeekdayHeight;
+UIKIT_EXTERN CGFloat const FSCalendarStandardMonthlyPageHeight;
+UIKIT_EXTERN CGFloat const FSCalendarStandardWeeklyPageHeight;
+UIKIT_EXTERN CGFloat const FSCalendarStandardCellDiameter;
+UIKIT_EXTERN CGFloat const FSCalendarAutomaticDimension;
+UIKIT_EXTERN CGFloat const FSCalendarDefaultBounceAnimationDuration;
+UIKIT_EXTERN CGFloat const FSCalendarStandardRowHeight;
+UIKIT_EXTERN CGFloat const FSCalendarStandardTitleTextSize;
+UIKIT_EXTERN CGFloat const FSCalendarStandardSubtitleTextSize;
+UIKIT_EXTERN CGFloat const FSCalendarStandardWeekdayTextSize;
+UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 
 
 #pragma mark - Deprecated
