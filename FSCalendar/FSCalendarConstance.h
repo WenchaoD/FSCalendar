@@ -30,7 +30,7 @@ UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 #define FSCalendarDeprecated(message) __attribute((deprecated(message)))
 
 FSCalendarDeprecated("use \'FSCalendarCellShape\' instead")
-typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
+typedef NS_ENUM(NSInteger, FSCalendarCellStyle) {
     FSCalendarCellStyleCircle      = 0,
     FSCalendarCellStyleRectangle   = 1
 };

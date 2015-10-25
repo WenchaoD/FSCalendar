@@ -73,7 +73,7 @@
 		EEC9C0341BDC8F7000383A07 /* FSCalendarFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC9C0321BDC8F7000383A07 /* FSCalendarFlowLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EEC9C0351BDC8F7000383A07 /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0331BDC8F7000383A07 /* FSCalendarFlowLayout.m */; };
 		EEC9C0361BDC8F7000383A07 /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0331BDC8F7000383A07 /* FSCalendarFlowLayout.m */; };
-		EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC9C0371BDC9E7000383A07 /* FSCalendarCollectionView.h */; };
+		EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC9C0371BDC9E7000383A07 /* FSCalendarCollectionView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
 		EEC9C03B1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
 		EECA10F81BA9C0E400945B83 /* FullScreenExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */; };
@@ -449,11 +449,11 @@
 				30B0BB011B8D9B6C004B9476 /* FSCalendarAppearance.h in Headers */,
 				3092253A1B905C4300123031 /* FSCalendarConstance.h in Headers */,
 				30B0BB071B8D9B6D004B9476 /* UIView+FSExtension.h in Headers */,
-				EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */,
 				30B0BB061B8D9B6D004B9476 /* NSDate+FSExtension.h in Headers */,
 				EE89AF9E1B9162B90001B657 /* NSString+FSExtension.h in Headers */,
 				30B0BB021B8D9B6C004B9476 /* FSCalendarCell.h in Headers */,
 				30B0BB031B8D9B6D004B9476 /* FSCalendarDynamicHeader.h in Headers */,
+				EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */,
 				EEC9C0341BDC8F7000383A07 /* FSCalendarFlowLayout.h in Headers */,
 				30B0BB041B8D9B6D004B9476 /* FSCalendarHeader.h in Headers */,
 				30B0BB051B8D9B6D004B9476 /* FSCalendarHeaderTouchDeliver.h in Headers */,

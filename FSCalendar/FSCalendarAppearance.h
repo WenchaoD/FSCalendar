@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
     FSCalendarCellShapeRectangle = 1
 };
 
-typedef NS_ENUM(NSUInteger, FSCalendarCaseOptions) {
+typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsHeaderUsesDefaultCase      = 0,
     FSCalendarCaseOptionsHeaderUsesUpperCase        = 1,
     

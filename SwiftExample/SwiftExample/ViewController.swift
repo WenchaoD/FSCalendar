@@ -18,6 +18,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         calendar.selectDate(NSDate())
         calendar.scrollDirection = .Vertical
         calendar.scope = .Month
+        calendar.appearance.caseOptions = FSCalendarCaseOptions.HeaderUsesUpperCase|FSCalendarCaseOptions.WeekdayUsesUpperCase
     }
 
     
