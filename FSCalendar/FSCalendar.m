@@ -60,7 +60,7 @@
 @property (weak  , nonatomic) CAShapeLayer               *maskLayer;
 @property (weak  , nonatomic) UIView                     *topBorder;
 @property (weak  , nonatomic) UIView                     *bottomBorder;
-@property (weak  , nonatomic) UICollectionView           *collectionView;
+@property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
 @property (weak  , nonatomic) FSCalendarFlowLayout       *collectionViewLayout;
 
 @property (weak  , nonatomic) FSCalendarHeader           *header;
@@ -111,7 +111,7 @@
 @implementation FSCalendar
 
 @dynamic locale, selectedDate;
-@synthesize scrollDirection = _scrollDirection, firstWeekday = _firstWeekday, headerHeight =_headerHeight;
+@synthesize scrollDirection = _scrollDirection, firstWeekday = _firstWeekday, headerHeight = _headerHeight;
 
 #pragma mark - Life Cycle && Initialize
 
@@ -181,7 +181,7 @@
     FSCalendarFlowLayout *collectionViewLayout = [[FSCalendarFlowLayout alloc] init];
     collectionViewLayout.calendar = self;
     
-    UICollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
+    FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
                                                           collectionViewLayout:collectionViewLayout];
     collectionView.dataSource = self;
     collectionView.delegate = self;
@@ -193,7 +193,6 @@
     collectionView.showsVerticalScrollIndicator = NO;
     collectionView.delaysContentTouches = NO;
     collectionView.canCancelContentTouches = YES;
-    collectionView.scrollsToTop = NO;
     collectionView.allowsMultipleSelection = NO;
     [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:@"cell"];
     [collectionView registerClass:[FSCalendarStickyHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];

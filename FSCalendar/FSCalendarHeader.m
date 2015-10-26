@@ -17,7 +17,7 @@
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (copy, nonatomic) NSDateFormatter            *dateFormatter;
-@property (weak, nonatomic) UICollectionView           *collectionView;
+@property (weak, nonatomic) FSCalendarCollectionView   *collectionView;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 @property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
@@ -62,13 +62,12 @@
     collectionViewFlowLayout.itemSize = CGSizeMake(1, 1);
     self.collectionViewFlowLayout = collectionViewFlowLayout;
     
-    UICollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
+    FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
     collectionView.scrollEnabled = NO;
     collectionView.userInteractionEnabled = NO;
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    collectionView.scrollsToTop = NO;
     [self addSubview:collectionView];
     [collectionView registerClass:[FSCalendarHeaderCell class] forCellWithReuseIdentifier:@"cell"];
     self.collectionView = collectionView;

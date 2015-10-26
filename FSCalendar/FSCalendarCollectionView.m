@@ -10,9 +10,26 @@
 
 @implementation FSCalendarCollectionView
 
+@synthesize scrollsToTop = _scrollsToTop, contentInset = _contentInset;
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _scrollsToTop = NO;
+        _contentInset = UIEdgeInsetsZero;
+    }
+    return self;
+}
+
 - (void)setContentInset:(UIEdgeInsets)contentInset
 {
     [super setContentInset:UIEdgeInsetsZero];
+}
+
+- (void)setScrollsToTop:(BOOL)scrollsToTop
+{
+    [super setScrollsToTop:NO];
 }
 
 @end

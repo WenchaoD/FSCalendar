@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class FSCalendarHeader, FSCalendar, FSCalendarAppearance;
+@class FSCalendar, FSCalendarAppearance;
 
 @interface FSCalendarHeader : UIView
 
 @property (assign, nonatomic) CGFloat scrollOffset;
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
-@property (weak, nonatomic) FSCalendarAppearance *appearance;
+@property (weak  , nonatomic) FSCalendarAppearance *appearance;
 @property (assign, nonatomic) BOOL scrollEnabled;
 
 - (void)reloadData;
