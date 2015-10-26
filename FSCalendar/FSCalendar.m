@@ -239,11 +239,16 @@
     if (_needsAdjustingViewFrame) {
     
         _contentView.frame = self.bounds;
+
+        if (_needsLayoutForWeekMode) _scope = FSCalendarScopeMonth;
+        
         CGFloat headerHeight = self.preferedHeaderHeight;
         CGFloat weekdayHeight = self.preferedWeekdayHeight;
         CGFloat rowHeight = self.preferedRowHeight;
         CGFloat weekdayWidth = _contentView.fs_width/_weekdays.count;
         CGFloat padding = weekdayHeight*0.1;
+        
+        if (_needsLayoutForWeekMode) _scope = FSCalendarScopeWeek;
         
         _header.frame = CGRectMake(0, 0, self.fs_width, headerHeight);
         [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
@@ -1024,6 +1029,7 @@
         FSCalendarScope prevScope = _scope;
         
         if (CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero) && prevScope == FSCalendarScopeMonth && scope == FSCalendarScopeWeek) {
+            m_set_scope
             _needsLayoutForWeekMode = YES;
             [self setNeedsLayout];
             return;
