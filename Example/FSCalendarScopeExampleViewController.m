@@ -14,8 +14,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    _calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     _calendar.firstWeekday = 1;
+//    _calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+//    _calendar.scope = FSCalendarScopeWeek;
 }
 
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated

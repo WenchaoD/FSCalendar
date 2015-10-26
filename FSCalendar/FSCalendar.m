@@ -73,6 +73,7 @@
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsReloadingSelectingDates;
+@property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
 @property (assign, nonatomic) BOOL                       supressEvent;
 @property (assign, nonatomic) CGFloat                    preferedHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferedWeekdayHeight;
@@ -105,6 +106,8 @@
 - (void)invalidateWeekdaySymbols;
 - (void)invalidateHeaders;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
+
+- (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
 
 @end
 
@@ -298,6 +301,12 @@
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
         [self scrollToDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate)];
+    }
+    
+    if (_needsLayoutForWeekMode) {
+        _needsLayoutForWeekMode = NO;
+        _scope = FSCalendarScopeWeek;
+        [self performScopeTransitionFromScope:FSCalendarScopeMonth toScope:FSCalendarScopeWeek animated:NO];
     }
     
     _supressEvent = NO;
@@ -836,10 +845,10 @@
 {
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            return [_currentPage fs_monthsFrom:_minimumDate];
+            return [_currentPage fs_monthsFrom:_minimumDate.fs_firstDayOfMonth];
         }
         case FSCalendarScopeWeek: {
-            return [_currentPage fs_weeksFrom:_minimumDate];
+            return [_currentPage fs_weeksFrom:_minimumDate.fs_firstDayOfWeek];
         }
         default: {
             break;
@@ -1006,147 +1015,158 @@
         [self willChangeValueForKey:@"scope"]; \
         _scope = scope; \
         [self didChangeValueForKey:@"scope"]; \
-        
-        
+
         if (self.floatingMode) {
             m_set_scope
             return;
         }
         
         FSCalendarScope prevScope = _scope;
-        NSInteger section = self.currentSection;
+        
+        if (CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero) && prevScope == FSCalendarScopeMonth && scope == FSCalendarScopeWeek) {
+            _needsLayoutForWeekMode = YES;
+            [self setNeedsLayout];
+            return;
+        }
+        
+        [self performScopeTransitionFromScope:prevScope toScope:scope animated:animated];
         
         m_set_scope
         
-        void(^completion)(void) = ^{
-            switch (scope) {
-                case FSCalendarScopeMonth: {
-                    _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)_scrollDirection;
-                    _header.scrollDirection = _collectionViewLayout.scrollDirection;
-                    break;
-                }
-                case FSCalendarScopeWeek: {
-                    _collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-                    _header.scrollDirection = _collectionViewLayout.scrollDirection;
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
-            _needsAdjustingMonthPosition = YES;
-            _needsAdjustingViewFrame = YES;
-            [self reloadData];
-        };
-        
-        BOOL weekToMonth = prevScope == FSCalendarScopeWeek && scope == FSCalendarScopeMonth;
-        NSInteger rowNumber = -1;
-        
-        if (weekToMonth) {
-            NSDate *currentPage = _currentPage;
-            if (rowNumber == -1) {
-                NSDate *firstDayOfMonth = [currentPage fs_dateByAddingMonths:1].fs_firstDayOfMonth;
-                NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ?: 7;
-                NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
-                for (int i = 0; i < 6; i++) {
-                    if ([currentPage fs_isEqualToDateForDay:[firstDateOfPage fs_dateByAddingDays:7*i]]) {
-                        rowNumber = i;
-                        _currentPage = firstDayOfMonth;
-                        break;
-                    }
-                }
-            }
-            if (rowNumber == -1) {
-                NSDate *firstDayOfMonth = currentPage.fs_firstDayOfMonth;
-                NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ?: 7;
-                NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
-                for (int i = 0; i < 6; i++) {
-                    if ([currentPage fs_isEqualToDateForDay:[firstDateOfPage fs_dateByAddingDays:7*i]]) {
-                        rowNumber = i;
-                        _currentPage = firstDayOfMonth;
-                        break;
-                    }
-                }
-            }
-            _currentPage = _currentPage ?: _today;
-            completion();
-            
-        } else {
-            
-            FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-            _currentPage = cell.date ?: _today;
-        }
-    
-        void(^resizeBlock)() = ^{
-            
-            CGSize size = [self sizeThatFits:self.frame.size];
-            void(^transitionCompletion)() = ^{
-                _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
-                _daysContainer.clipsToBounds = _collectionView.isDecelerating || _collectionView.isTracking || _collectionView.isDragging;
-                if (!weekToMonth) {
-                    completion();
-                }
-            };
-            
-            if (animated) {
+    }
+}
 
-                CABasicAnimation *path = [CABasicAnimation animationWithKeyPath:@"path"];
-                path.fromValue = (id)_maskLayer.path;
-                path.toValue = (id)[UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
-                path.duration = 0.3;
-                path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                
-                CABasicAnimation *translation = nil;
-                if (weekToMonth && rowNumber != -1) {
-                    translation = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
-                    translation.fromValue = @(-rowNumber*self.preferedRowHeight);
-                    translation.toValue = @0;
-                    translation.duration = 0.3;
-                }
-                
-                [CATransaction begin];
-                [CATransaction setCompletionBlock:transitionCompletion];
-                
-                _needsAdjustingViewFrame = weekToMonth;
-                
-                [_maskLayer addAnimation:path forKey:@"path"];
-                
-                if (translation) {
-                    [_collectionView.layer addAnimation:translation forKey:@"translation"];
-                }
-                
-                [CATransaction commit];
-                
-                if (_delegate && [_delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
-                    [UIView beginAnimations:@"delegateTranslation" context:"translation"];
-                    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                    [UIView setAnimationDuration:0.3];
-                    _bottomBorder.frame = CGRectMake(0, size.height, self.fs_width, 1);
-                    [_delegate calendarCurrentScopeWillChange:self animated:animated];
-                    [UIView commitAnimations];
-                }
-                
-            } else {
-                
-                _needsAdjustingViewFrame = weekToMonth;
-                _bottomBorder.frame = CGRectMake(0, size.height, self.fs_width, 1);
-                transitionCompletion();
-                
-                if (_delegate && [_delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
-                    [_delegate calendarCurrentScopeWillChange:self animated:animated];
-                }
-                
+- (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated
+{
+    NSInteger section = self.currentSection;
+    void(^completion)(void) = ^{
+        switch (toScope) {
+            case FSCalendarScopeMonth: {
+                _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)_scrollDirection;
+                _header.scrollDirection = _collectionViewLayout.scrollDirection;
+                break;
             }
-            
+            case FSCalendarScopeWeek: {
+                _collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+                _header.scrollDirection = _collectionViewLayout.scrollDirection;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        _needsAdjustingMonthPosition = YES;
+        _needsAdjustingViewFrame = YES;
+        [self reloadData];
+    };
+    
+    BOOL weekToMonth = fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth;
+    NSInteger rowNumber = -1;
+    
+    if (weekToMonth) {
+        NSDate *currentPage = _currentPage;
+        if (rowNumber == -1) {
+            NSDate *firstDayOfMonth = [currentPage fs_dateByAddingMonths:1].fs_firstDayOfMonth;
+            NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ?: 7;
+            NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
+            for (int i = 0; i < 6; i++) {
+                if ([currentPage fs_isEqualToDateForDay:[firstDateOfPage fs_dateByAddingDays:7*i]]) {
+                    rowNumber = i;
+                    _currentPage = firstDayOfMonth;
+                    break;
+                }
+            }
+        }
+        if (rowNumber == -1) {
+            NSDate *firstDayOfMonth = currentPage.fs_firstDayOfMonth;
+            NSInteger numberOfPlaceholdersForPrev = ((firstDayOfMonth.fs_weekday - _firstWeekday) + 7) % 7 ?: 7;
+            NSDate *firstDateOfPage = [firstDayOfMonth fs_dateBySubtractingDays:numberOfPlaceholdersForPrev];
+            for (int i = 0; i < 6; i++) {
+                if ([currentPage fs_isEqualToDateForDay:[firstDateOfPage fs_dateByAddingDays:7*i]]) {
+                    rowNumber = i;
+                    _currentPage = firstDayOfMonth;
+                    break;
+                }
+            }
+        }
+        _currentPage = _currentPage ?: _today;
+        completion();
+        
+    } else {
+        
+        FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+        _currentPage = cell.date ?: _today;
+    }
+    
+    void(^resizeBlock)() = ^{
+        
+        CGSize size = [self sizeThatFits:self.frame.size];
+        void(^transitionCompletion)() = ^{
+            _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
+            _daysContainer.clipsToBounds = _collectionView.isDecelerating || _collectionView.isTracking || _collectionView.isDragging;
+            if (!weekToMonth) {
+                completion();
+            }
         };
         
         if (animated) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                resizeBlock();
-            });
+            
+            CABasicAnimation *path = [CABasicAnimation animationWithKeyPath:@"path"];
+            path.fromValue = (id)_maskLayer.path;
+            path.toValue = (id)[UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
+            path.duration = 0.3;
+            path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+            
+            CABasicAnimation *translation = nil;
+            if (weekToMonth && rowNumber != -1) {
+                translation = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
+                translation.fromValue = @(-rowNumber*self.preferedRowHeight);
+                translation.toValue = @0;
+                translation.duration = 0.3;
+            }
+            
+            [CATransaction begin];
+            [CATransaction setCompletionBlock:transitionCompletion];
+            
+            _needsAdjustingViewFrame = weekToMonth;
+            
+            [_maskLayer addAnimation:path forKey:@"path"];
+            
+            if (translation) {
+                [_collectionView.layer addAnimation:translation forKey:@"translation"];
+            }
+            
+            [CATransaction commit];
+            
+            if (_delegate && [_delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
+                [UIView beginAnimations:@"delegateTranslation" context:"translation"];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                [UIView setAnimationDuration:0.3];
+                _bottomBorder.frame = CGRectMake(0, size.height, self.fs_width, 1);
+                [_delegate calendarCurrentScopeWillChange:self animated:animated];
+                [UIView commitAnimations];
+            }
+            
         } else {
-            resizeBlock();
+            
+            _needsAdjustingViewFrame = weekToMonth;
+            _bottomBorder.frame = CGRectMake(0, size.height, self.fs_width, 1);
+            transitionCompletion();
+            
+            if (_delegate && [_delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
+                [_delegate calendarCurrentScopeWillChange:self animated:animated];
+            }
+            
         }
+        
+    };
+    
+    if (animated) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            resizeBlock();
+        });
+    } else {
+        resizeBlock();
     }
 }
 
