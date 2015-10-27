@@ -11,8 +11,7 @@
 #import "NSDate+FSExtension.h"
 #import "FSCalendarHeader.h"
 #import "FSCalendarCollectionView.h"
-
-#define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
+#import "FSCalendarDynamicHeader.h"
 
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
@@ -290,4 +289,19 @@
 }
 
 @end
+
+
+@implementation FSCalendarHeaderTouchDeliver
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    UIView *hitView = [super hitTest:point withEvent:event];
+    if (hitView == self) {
+        return _calendar.collectionView ?: hitView;
+    }
+    return hitView;
+}
+
+@end
+
 

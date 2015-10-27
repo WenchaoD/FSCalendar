@@ -16,7 +16,6 @@
 #import "NSString+FSExtension.h"
 #import "FSCalendarFlowLayout.h"
 #import "FSCalendarDynamicHeader.h"
-#import "FSCalendarHeaderTouchDeliver.h"
 #import "FSCalendarCollectionView.h"
 
 @interface FSCalendar (DataSourceAndDelegate)
@@ -188,7 +187,6 @@
                                                           collectionViewLayout:collectionViewLayout];
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    collectionView.clipsToBounds = NO;
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.bounces = YES;
     collectionView.pagingEnabled = YES;
@@ -487,8 +485,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    _daysContainer.clipsToBounds = NO;
-    
+    cell.dateIsSelected = YES;
     [cell performSelecting];
     if (!_supressEvent) {
         [self didSelectDate:[self dateForIndexPath:indexPath]];
@@ -545,7 +542,6 @@
     }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
-        _daysContainer.clipsToBounds = NO;
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
     }
@@ -577,7 +573,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    _daysContainer.clipsToBounds = YES;
     if (_supressEvent || !self.window) {
         return;
     }
@@ -633,7 +628,6 @@
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    _daysContainer.clipsToBounds = YES;
     if (!_pagingEnabled || !_scrollEnabled) {
         return;
     }
@@ -725,6 +719,7 @@
                 _supressEvent = YES;
 
                 _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)scrollDirection;
+                [_collectionViewLayout invalidateLayout];
                 _header.scrollDirection = _collectionViewLayout.scrollDirection;
                 if (!CGRectEqualToRect(_collectionView.frame, CGRectZero)) {
                     _needsAdjustingMonthPosition = YES;
@@ -951,7 +946,7 @@
         CGFloat headerHeight = self.preferedHeaderHeight;
         CGFloat weekdayHeight = self.preferedWeekdayHeight;
         CGFloat contentHeight = self.fs_height-headerHeight-weekdayHeight;
-        CGFloat padding = FSCalendarStandardWeekdayHeight*0.1;
+        CGFloat padding = weekdayHeight*0.1;
         if (!self.floatingMode) {
             switch (_scope) {
                 case FSCalendarScopeMonth: {
@@ -1109,7 +1104,6 @@
         CGSize size = [self sizeThatFits:self.frame.size];
         void(^transitionCompletion)() = ^{
             _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
-            _daysContainer.clipsToBounds = _collectionView.isDecelerating || _collectionView.isTracking || _collectionView.isDragging;
             if (!weekToMonth) {
                 completion();
             }
@@ -1254,14 +1248,12 @@
             FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
             cell.dateIsSelected = NO;
             [cell setNeedsLayout];
-            _daysContainer.clipsToBounds = NO;
             [_selectedDates removeLastObject];
             [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
-        _daysContainer.clipsToBounds = NO;
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
         

@@ -66,6 +66,7 @@
         
         self.clipsToBounds = NO;
         self.contentView.clipsToBounds = NO;
+        
     }
     return self;
 }

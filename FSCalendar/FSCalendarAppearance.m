@@ -10,10 +10,6 @@
 #import "FSCalendarDynamicHeader.h"
 #import "UIView+FSExtension.h"
 
-#define kBlueText   [UIColor colorWithRed:14/255.0  green:69/255.0  blue:221/255.0    alpha:1.0]
-#define kPink       [UIColor colorWithRed:198/255.0 green:51/255.0  blue:42/255.0     alpha:1.0]
-#define kBlue       [UIColor colorWithRed:31/255.0  green:119/255.0 blue:219/255.0    alpha:1.0]
-
 @interface FSCalendarAppearance ()
 
 @property (strong, nonatomic) NSMutableDictionary *backgroundColors;
@@ -38,18 +34,18 @@
         _subtitleTextSize = FSCalendarStandardSubtitleTextSize;
         _weekdayTextSize  = FSCalendarStandardWeekdayTextSize;
         _headerTitleTextSize = FSCalendarStandardHeaderTextSize;
-        _headerTitleColor = kBlueText;
+        _headerTitleColor = FSCalendarStandardTitleTextColor;
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;
-        _weekdayTextColor = kBlueText;
+        _weekdayTextColor = FSCalendarStandardTitleTextColor;
         _caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesDefaultCase;
         
         _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _backgroundColors[@(FSCalendarCellStateNormal)]      = [UIColor clearColor];
-        _backgroundColors[@(FSCalendarCellStateSelected)]    = kBlue;
+        _backgroundColors[@(FSCalendarCellStateSelected)]    = FSCalendarStandardSelectionCellColor;
         _backgroundColors[@(FSCalendarCellStateDisabled)]    = [UIColor clearColor];
         _backgroundColors[@(FSCalendarCellStatePlaceholder)] = [UIColor clearColor];
-        _backgroundColors[@(FSCalendarCellStateToday)]       = kPink;
+        _backgroundColors[@(FSCalendarCellStateToday)]       = FSCalendarStandardTodayCellColor;
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];
@@ -69,7 +65,7 @@
         _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
         
         _cellShape = FSCalendarCellShapeCircle;
-        _eventColor = [kBlue colorWithAlphaComponent:0.75];
+        _eventColor = FSCalendarStandardEventDotColor;
         
         _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
@@ -408,7 +404,7 @@
             _titleTextSize       = _calendar.collectionView.fs_height/3/factor;
             _titleTextSize       -= (_titleTextSize-FSCalendarStandardTitleTextSize)*0.5;
             _subtitleTextSize    = _calendar.collectionView.fs_height/4.5/factor;
-            _subtitleTextSize    -= (_subtitleTextSize-FSCalendarStandardSubtitleTextSize)*0.5;
+            _subtitleTextSize    -= (_subtitleTextSize-FSCalendarStandardSubtitleTextSize)*0.75;
             _headerTitleTextSize = _titleTextSize * 1.25;
             _weekdayTextSize     = _titleTextSize;
             

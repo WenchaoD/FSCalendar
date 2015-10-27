@@ -28,3 +28,12 @@
 @property (weak, nonatomic) FSCalendarHeader *header;
 
 @end
+
+
+
+@interface FSCalendarHeaderTouchDeliver : UIView
+
+@property (weak, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) FSCalendarHeader *header;
+
+@end
