@@ -1102,7 +1102,9 @@
     void(^resizeBlock)() = ^{
         
         CGSize size = [self sizeThatFits:self.frame.size];
+        _daysContainer.clipsToBounds = YES;
         void(^transitionCompletion)() = ^{
+            _daysContainer.clipsToBounds = NO;
             _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
             if (!weekToMonth) {
                 completion();
@@ -1245,11 +1247,18 @@
         // 手动选中日期时，需先反选已经选中的日期，但不触发事件
         if (self.selectedDate && !self.allowsMultipleSelection) {
             NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
+            [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
+            [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+                if (cell.dateIsPlaceholder && cell.dateIsSelected) {
+                    cell.dateIsSelected = NO;
+                    [cell setNeedsLayout];
+                    *stop = YES;
+                }
+            }];
             FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
             cell.dateIsSelected = NO;
             [cell setNeedsLayout];
             [_selectedDates removeLastObject];
-            [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
