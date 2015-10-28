@@ -28,9 +28,9 @@ UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 #define FSCalendarStandardSelectionCellColor FSColorRGBA(31,119,219,1.0)
 #define FSCalendarStandardTodayCellColor     FSColorRGBA(198,51,42 ,1.0)
 #define FSCalendarStandardTitleTextColor     FSColorRGBA(14,69,221 ,1.0)
-#define FSCalendarStandardEventDotColor     FSColorRGBA(31,119,219,0.75)
+#define FSCalendarStandardEventDotColor      FSColorRGBA(31,119,219,0.75)
 
-#define FSColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:219/255.0 alpha:a]
+#define FSColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 
 #pragma mark - Deprecated
 
