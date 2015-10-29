@@ -6,16 +6,33 @@
 //
 //
 
-#import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
 #import "FSCalendarConstance.h"
+
+@class FSCalendar;
+
+typedef NS_ENUM(NSInteger, FSCalendarCellState) {
+    FSCalendarCellStateNormal      = 0,
+    FSCalendarCellStateSelected    = 1,
+    FSCalendarCellStatePlaceholder = 1 << 1,
+    FSCalendarCellStateDisabled    = 1 << 2,
+    FSCalendarCellStateToday       = 1 << 3,
+    FSCalendarCellStateWeekend     = 1 << 4,
+    FSCalendarCellStateTodaySelected = FSCalendarCellStateToday|FSCalendarCellStateSelected
+};
 
 typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
     FSCalendarCellShapeCircle    = 0,
     FSCalendarCellShapeRectangle = 1
 };
 
-@class FSCalendar;
+typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
+    FSCalendarCaseOptionsHeaderUsesDefaultCase      = 0,
+    FSCalendarCaseOptionsHeaderUsesUpperCase        = 1,
+    
+    FSCalendarCaseOptionsWeekdayUsesDefaultCase     = 0 << 4,
+    FSCalendarCaseOptionsWeekdayUsesUpperCase       = 1 << 4,
+    FSCalendarCaseOptionsWeekdayUsesSingleUpperCase = 2 << 4,
+};
 
 @interface FSCalendarAppearance : NSObject
 
@@ -53,8 +70,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
 @property (strong, nonatomic) UIColor *borderSelectionColor;
 
 @property (assign, nonatomic) FSCalendarCellShape cellShape;
+@property (assign, nonatomic) FSCalendarCaseOptions caseOptions;
 @property (assign, nonatomic) BOOL autoAdjustTitleSize;
-@property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols;
 
 // For preview only
 @property (assign, nonatomic) BOOL      fakeSubtitles;
@@ -64,16 +81,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
 
 @end
 
-
-FSCalendarDeprecated("use \'FSCalendarCellShape\' instead")
-typedef NS_OPTIONS(NSInteger, FSCalendarCellStyle) {
-    FSCalendarCellStyleCircle      = 0,
-    FSCalendarCellStyleRectangle   = 1
-};
-
 @interface FSCalendarAppearance (Deprecated)
 
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated("use \'cellShape\' instead");
+@property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated("use \'caseOptions\' instead");
 
 @end
 

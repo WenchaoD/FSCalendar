@@ -12,10 +12,6 @@
 #import "CalendarConfigViewController.h"
 #import "FSCalendarTestMacros.h"
 
-#define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
-#define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
-#define kBlueText [UIColor colorWithRed:14/255.0 green:69/255.0 blue:221/255.0 alpha:1.0]
-
 @interface StoryboardExampleViewController ()
 
 @property (strong, nonatomic) NSCalendar *currentCalendar;
@@ -42,11 +38,12 @@
 //    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
 //    _calendar.scope = FSCalendarScopeWeek;
 //    _calendar.allowsMultipleSelection = YES;
-    
+    _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     [_calendar selectDate:[NSDate date]];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [_calendar deselectDate:[NSDate date]];
+//        _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
     });
     
 #if 0
@@ -114,9 +111,9 @@
     
 }
 
-- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
+- (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to month %@",[calendar.currentMonth fs_stringWithFormat:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
 }
 
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
@@ -142,12 +139,12 @@
         _theme = theme;
         switch (theme) {
             case 0: {
-                _calendar.appearance.weekdayTextColor = kBlueText;
-                _calendar.appearance.headerTitleColor = kBlueText;
-                _calendar.appearance.eventColor = [kBlueText colorWithAlphaComponent:0.75];
-                _calendar.appearance.selectionColor = kBlue;
+                _calendar.appearance.weekdayTextColor = FSCalendarStandardTitleTextColor;
+                _calendar.appearance.headerTitleColor = FSCalendarStandardTitleTextColor;
+                _calendar.appearance.eventColor = FSCalendarStandardEventDotColor;
+                _calendar.appearance.selectionColor = FSCalendarStandardSelectionCellColor;
                 _calendar.appearance.headerDateFormat = @"MMMM yyyy";
-                _calendar.appearance.todayColor = kPink;
+                _calendar.appearance.todayColor = FSCalendarStandardTodayCellColor;
                 _calendar.appearance.cellShape = FSCalendarCellShapeCircle;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 0.2;
                 break;

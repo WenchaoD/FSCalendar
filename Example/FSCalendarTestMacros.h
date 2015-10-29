@@ -9,7 +9,7 @@
 #ifndef FSCalendarTestMacros_h
 #define FSCalendarTestMacros_h
 
-#define kFSCalendarShouldEnableTestMacros YES
+#define FSCalendarShouldEnableTestMacros YES
 
 #import "FSCalendarSelectDateTest.h"
 

@@ -66,6 +66,7 @@
         
         self.clipsToBounds = NO;
         self.contentView.clipsToBounds = NO;
+        
     }
     return self;
 }
@@ -75,6 +76,7 @@
     [super setBounds:bounds];
     CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
     CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
+    diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
     _backgroundLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
                                         (titleHeight-diameter)/2,
                                         diameter,
@@ -108,7 +110,7 @@
     _backgroundLayer.path = [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath;
     _backgroundLayer.fillColor = self.colorForBackgroundLayer.CGColor;
     
-#define kAnimationDuration kFSCalendarDefaultBounceAnimationDuration
+#define kAnimationDuration FSCalendarDefaultBounceAnimationDuration
     
     CAAnimationGroup *group = [CAAnimationGroup animation];
     CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
@@ -135,6 +137,7 @@
     
 #define m_calculateTitleHeight \
         CGFloat titleHeight = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}].height;
+    
 #define m_adjustLabelFrame \
     if (_subtitle) { \
         _subtitleLabel.hidden = NO; \

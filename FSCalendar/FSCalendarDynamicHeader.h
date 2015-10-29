@@ -22,12 +22,15 @@
 @property (readonly, nonatomic) UICollectionView *collectionView;
 @property (readonly, nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
 @property (readonly, nonatomic) NSArray *weekdays;
-@property (readonly, nonatomic) CGFloat rowHeight;
 @property (readonly, nonatomic) NSCalendar *calendar;
 @property (readonly, nonatomic) BOOL ibEditing;
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
+@property (readonly, nonatomic) CGFloat preferedHeaderHeight;
+@property (readonly, nonatomic) CGFloat preferedWeekdayHeight;
+@property (readonly, nonatomic) CGFloat preferedRowHeight;
 
+- (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
@@ -43,7 +46,6 @@
 - (void)adjustTitleIfNecessary;
 
 @end
-
 
 
 @interface FSCalendarHeader (Dynamic)

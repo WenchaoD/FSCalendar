@@ -6,13 +6,11 @@
 //  Copyright (c) 2015 wenchaoios. All rights reserved.
 //
 
-#import "RollViewController.h"
+#import "DelegateAppearanceViewController.h"
 
-#define kPink [UIColor colorWithRed:198/255.0 green:51/255.0 blue:42/255.0 alpha:1.0]
-#define kBlue [UIColor colorWithRed:31/255.0 green:119/255.0 blue:219/255.0 alpha:1.0]
 #define kViolet [UIColor colorWithRed:170/255.0 green:114/255.0 blue:219/255.0 alpha:1.0]
 
-@interface RollViewController ()
+@interface DelegateAppearanceViewController ()
 
 @property (assign, nonatomic) NSInteger step;
 @property (strong, nonatomic) NSArray *dates;
@@ -52,7 +50,7 @@
 
 @end
 
-@implementation RollViewController
+@implementation DelegateAppearanceViewController
 
 - (instancetype)init
 {
@@ -178,8 +176,8 @@
                                       [UIColor clearColor],
                                       [UIColor clearColor],
                                       [UIColor clearColor],
-                                      kPink,
-                                      kBlue,
+                                      FSCalendarStandardTodayCellColor,
+                                      FSCalendarStandardSelectionCellColor,
                                       [UIColor blackColor],
                                       kViolet,
                                       [UIColor greenColor],
@@ -192,10 +190,10 @@
                                       [UIColor clearColor],
                                       [UIColor clearColor],
                                       [UIColor clearColor],
-                                      kBlue,
+                                      FSCalendarStandardSelectionCellColor,
                                       [UIColor blackColor],
                                       kViolet,
-                                      kPink,
+                                      FSCalendarStandardTodayCellColor,
                                       [UIColor cyanColor],
                                       [UIColor clearColor],
                                       [UIColor clearColor],
@@ -233,8 +231,8 @@
                              @(FSCalendarCellShapeCircle)
                             ];
     
-    self.upperSelectionColors = @[kBlue,kPink,[UIColor blackColor],kViolet,kBlue,kPink,kViolet,[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor]];
-    self.lowerSelectionColors = @[kBlue,kPink,[UIColor blackColor],kBlue,kViolet,kBlue,kPink,[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor]];
+    self.upperSelectionColors = @[FSCalendarStandardSelectionCellColor,FSCalendarStandardTodayCellColor,[UIColor blackColor],kViolet,FSCalendarStandardSelectionCellColor,FSCalendarStandardTodayCellColor,kViolet,[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor]];
+    self.lowerSelectionColors = @[FSCalendarStandardSelectionCellColor,FSCalendarStandardTodayCellColor,[UIColor blackColor],FSCalendarStandardSelectionCellColor,kViolet,FSCalendarStandardSelectionCellColor,FSCalendarStandardTodayCellColor,[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor],[UIColor blackColor]];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)([_stepDurations[0] doubleValue] * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.step = 0;

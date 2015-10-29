@@ -11,7 +11,7 @@
 #import "ViewDidLoadExampleViewController.h"
 #import "MultipleSelectionViewController.h"
 #import "FullScreenExampleViewController.h"
-#import "RollViewController.h"
+#import "DelegateAppearanceViewController.h"
 
 @implementation FSTableViewController
 
@@ -22,7 +22,7 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
     self.viewControllers = @[
-                             [RollViewController class],
+                             [DelegateAppearanceViewController class],
                              [FullScreenExampleViewController class],
                              [MultipleSelectionViewController class],
                              [NSObject class],

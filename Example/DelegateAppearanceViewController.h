@@ -10,7 +10,7 @@
 #import "FSCalendar.h"
 #import "NSDate+FSExtension.h"
 
-@interface RollViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+@interface DelegateAppearanceViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 
 @property (weak, nonatomic) FSCalendar *calendar;
 

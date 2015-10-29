@@ -327,12 +327,18 @@
 
 - (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     self.appearance.useVeryShortWeekdaySymbols = useVeryShortWeekdaySymbols;
+#pragma GCC diagnostic pop
 }
 
 - (BOOL)useVeryShortWeekdaySymbols
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     return self.appearance.useVeryShortWeekdaySymbols;
+#pragma GCC diagnostic pop
 }
 
 #pragma mark - fakeSubtitles
