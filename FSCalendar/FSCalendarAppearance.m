@@ -42,10 +42,10 @@
         
         _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _backgroundColors[@(FSCalendarCellStateNormal)]      = [UIColor clearColor];
-        _backgroundColors[@(FSCalendarCellStateSelected)]    = FSCalendarStandardSelectionCellColor;
+        _backgroundColors[@(FSCalendarCellStateSelected)]    = FSCalendarStandardSelectionColor;
         _backgroundColors[@(FSCalendarCellStateDisabled)]    = [UIColor clearColor];
         _backgroundColors[@(FSCalendarCellStatePlaceholder)] = [UIColor clearColor];
-        _backgroundColors[@(FSCalendarCellStateToday)]       = FSCalendarStandardTodayCellColor;
+        _backgroundColors[@(FSCalendarCellStateToday)]       = FSCalendarStandardTodayColor;
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:4];
         _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];

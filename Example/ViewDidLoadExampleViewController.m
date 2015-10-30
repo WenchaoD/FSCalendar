@@ -36,7 +36,8 @@
 {
     [super viewDidLoad];
     
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 300)];
+    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 400 : 300;
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;    
     [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
