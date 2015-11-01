@@ -142,9 +142,9 @@
                 _calendar.appearance.weekdayTextColor = FSCalendarStandardTitleTextColor;
                 _calendar.appearance.headerTitleColor = FSCalendarStandardTitleTextColor;
                 _calendar.appearance.eventColor = FSCalendarStandardEventDotColor;
-                _calendar.appearance.selectionColor = FSCalendarStandardSelectionCellColor;
+                _calendar.appearance.selectionColor = FSCalendarStandardSelectionColor;
                 _calendar.appearance.headerDateFormat = @"MMMM yyyy";
-                _calendar.appearance.todayColor = FSCalendarStandardTodayCellColor;
+                _calendar.appearance.todayColor = FSCalendarStandardTodayColor;
                 _calendar.appearance.cellShape = FSCalendarCellShapeCircle;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 0.2;
                 break;
