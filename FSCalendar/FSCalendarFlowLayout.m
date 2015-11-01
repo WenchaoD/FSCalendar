@@ -53,7 +53,8 @@
         
     } else {
         
-        self.headerReferenceSize = CGSizeMake(self.collectionView.fs_width, _calendar.preferedHeaderHeight+10+_calendar.preferedWeekdayHeight);
+        CGFloat headerHeight = _calendar.preferedWeekdayHeight*1.34+_calendar.preferedHeaderHeight*1.04;
+        self.headerReferenceSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
         self.itemSize = CGSizeMake(
                                    self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
                                    _calendar.preferedRowHeight
