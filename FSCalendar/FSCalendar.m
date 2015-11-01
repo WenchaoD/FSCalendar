@@ -73,6 +73,7 @@
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsReloadingSelectingDates;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
+@property (assign, nonatomic) BOOL                       asyncronous;
 @property (assign, nonatomic) BOOL                       supressEvent;
 @property (assign, nonatomic) CGFloat                    preferedHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferedWeekdayHeight;
@@ -170,6 +171,7 @@
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
+    _asyncronous = YES;
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -477,8 +479,11 @@
         }
         return NO;
     }
+    if (!self.allowsMultipleSelection && self.selectedDate) {
+        [self deselectDate:self.selectedDate];
+    }
     if ([collectionView.indexPathsForSelectedItems containsObject:indexPath] || [self.selectedDates containsObject:[self dateForIndexPath:indexPath]]) {
-        if (!self.allowsMultipleSelection) {
+        if (self.allowsMultipleSelection) {
             if ([self collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath]) {
                 [collectionView deselectItemAtIndexPath:indexPath animated:YES];
                 [self collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
@@ -1006,6 +1011,7 @@
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated
 {
+    _asyncronous = NO;
     NSInteger section = self.currentSection;
     void(^completion)(void) = ^{
         switch (toScope) {
@@ -1029,6 +1035,9 @@
         _needsAdjustingViewFrame = YES;
         _needsReloadingSelectingDates = YES;
         [self setNeedsLayout];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _asyncronous = YES;
+        });
     };
     
     BOOL weekToMonth = fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth;
@@ -1165,7 +1174,7 @@
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
-        [self deselectCounterpartDate:cell.date];
+        [self deselectCounterpartDate:date];
     }
 }
 
@@ -1522,55 +1531,88 @@
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell
 {
-    cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
-    cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date];
-    cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
-    if (cell.subtitle) {
-        cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
-        cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
+    void(^configure)() = ^{
+        
+        cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
+        cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date];
+        cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
+        if (cell.subtitle) {
+            cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
+            cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
+        }
+        if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
+        cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
+        cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
+        cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
+        
+    };
+    if (_asyncronous) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            configure();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cell setNeedsLayout];
+            });
+        });
+    } else {
+        configure();
+        [cell setNeedsLayout];
     }
-    if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
-    cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
-    cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
-    cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
-    [cell setNeedsLayout];
 }
 
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.calendar = self;
-    cell.appearance = _appearance;
-    cell.date = [self dateForIndexPath:indexPath];
-    cell.image = [self imageForDate:cell.date];
-    cell.subtitle  = [self subtitleForDate:cell.date];
-    cell.hasEvent = [self hasEventForDate:cell.date];
-    cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
-    cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
-    
-    [self invalidateAppearanceForCell:cell];
-    
-    switch (_scope) {
-        case FSCalendarScopeMonth: {
-            NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
-            cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month] || ![self isDateInRange:cell.date];
-            if (cell.dateIsPlaceholder) {
-                cell.dateIsSelected &= _pagingEnabled;
-                cell.dateIsToday &= _pagingEnabled;
+    void(^configure)() = ^{
+        
+        cell.calendar = self;
+        cell.appearance = _appearance;
+        cell.date = [self dateForIndexPath:indexPath];
+        cell.image = [self imageForDate:cell.date];
+        cell.subtitle  = [self subtitleForDate:cell.date];
+        cell.hasEvent = [self hasEventForDate:cell.date];
+        cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
+        cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
+        
+        switch (_scope) {
+            case FSCalendarScopeMonth: {
+                NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
+                cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month] || ![self isDateInRange:cell.date];
+                if (cell.dateIsPlaceholder) {
+                    cell.dateIsSelected &= _pagingEnabled;
+                    cell.dateIsToday &= _pagingEnabled;
+                }
+                break;
             }
-            break;
-        }
-        case FSCalendarScopeWeek: {
-            if (_pagingEnabled) {
-                cell.dateIsPlaceholder = ![self isDateInRange:cell.date];
+            case FSCalendarScopeWeek: {
+                if (_pagingEnabled) {
+                    cell.dateIsPlaceholder = ![self isDateInRange:cell.date];
+                }
+                break;
             }
-            break;
+            default: {
+                break;
+            }
         }
-        default: {
-            break;
-        }
+        
+    };
+    
+    void(^layout)() = ^{
+        
+        [self invalidateAppearanceForCell:cell];
+        cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder);
+        [cell setNeedsLayout];
+        
+    };
+    if (_asyncronous) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            configure();
+            dispatch_async(dispatch_get_main_queue(), ^{
+                layout();
+            });
+        });
+    } else {
+        configure();
+        layout();
     }
-    cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder);
-    [cell setNeedsLayout];
 }
 
 - (void)reloadVisibleCells
