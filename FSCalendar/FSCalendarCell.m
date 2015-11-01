@@ -100,6 +100,7 @@
 {
     [super prepareForReuse];
     [CATransaction setDisableActions:YES];
+    _backgroundLayer.hidden = YES;
 }
 
 #pragma mark - Public
