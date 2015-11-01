@@ -249,9 +249,8 @@
         if (_needsLayoutForWeekMode) _scope = FSCalendarScopeWeek;
         
         _header.frame = CGRectMake(0, 0, self.fs_width, headerHeight);
-        [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
-            NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
-            weekdayLabel.frame = CGRectMake(absoluteIndex*weekdayWidth,
+        [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
+            weekdayLabel.frame = CGRectMake(index*weekdayWidth,
                                             _header.fs_height,
                                             weekdayWidth,
                                             weekdayHeight);
@@ -453,7 +452,7 @@
             break;
         }
     }
-    cell.selected &= (cell.dateIsSelected && !cell.dateIsPlaceholder);
+    cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder);
     [cell setNeedsLayout];
     return cell;
 }
@@ -722,8 +721,10 @@
                 [_collectionViewLayout invalidateLayout];
                 _header.scrollDirection = _collectionViewLayout.scrollDirection;
                 if (!CGRectEqualToRect(_collectionView.frame, CGRectZero)) {
+                    [_collectionView reloadData];
+                    [_header reloadData];
                     _needsAdjustingMonthPosition = YES;
-                    [self reloadData];
+                    [self setNeedsLayout];
                 }
                 _supressEvent = NO;
                 break;
@@ -748,7 +749,8 @@
     if (_firstWeekday != firstWeekday) {
         _firstWeekday = firstWeekday;
         [_calendar setFirstWeekday:firstWeekday];
-        [self reloadData];
+        [_collectionView reloadData];
+        [self invalidateWeekdaySymbols];
     }
 }
 
@@ -831,8 +833,8 @@
     if (![_calendar.locale isEqual:locale]) {
         _calendar.locale = locale;
         _header.dateFormatter.locale = locale;
+        [_header reloadData];
         [self invalidateWeekdaySymbols];
-        [self reloadData];
     }
 }
 
@@ -985,26 +987,24 @@
 
 - (void)reloadData
 {
-    _minimumDate = self.minimumDateForCalendar;
-    _maximumDate = self.maximumDateForCalendar;
+    NSDate *minimumDate = self.minimumDateForCalendar;
+    NSDate *maximumDate = self.maximumDateForCalendar;
+    if (![minimumDate fs_isEqualToDateForMonth:_minimumDate] || ![maximumDate fs_isEqualToDateForMonth:_maximumDate]) {
+        
+        _minimumDate = minimumDate;
+        _maximumDate = maximumDate;
+        [_collectionView reloadData];
+        [_header.collectionView reloadData];
+        _needsReloadingSelectingDates = YES;
+        [self setNeedsLayout];
+        
+    } else {
+        [_collectionView reloadVisibleItems];
+        [_header.collectionView reloadVisibleItems];
+    }
     
     [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
-    
-    CGFloat width = self.fs_width/_weekdays.count;
-    CGFloat height = FSCalendarStandardWeekdayHeight;
-    [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger idx, BOOL *stop) {
-        NSUInteger absoluteIndex = ((idx-(_firstWeekday-1))+7)%7;
-        weekdayLabel.frame = CGRectMake(absoluteIndex * width,
-                                        _header.fs_height,
-                                        width,
-                                        height);
-    }];
-    
-    [_collectionView reloadData];
-    [_header reloadData];
-    
-    _needsReloadingSelectingDates = YES;
-    [self setNeedsLayout];
+    [self invalidateWeekdaySymbols];
 }
 
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
@@ -1056,9 +1056,12 @@
                 break;
             }
         }
+        [_collectionView reloadData];
+        [_header reloadData];
         _needsAdjustingMonthPosition = YES;
         _needsAdjustingViewFrame = YES;
-        [self reloadData];
+        _needsReloadingSelectingDates = YES;
+        [self setNeedsLayout];
     };
     
     BOOL weekToMonth = fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth;
@@ -1554,6 +1557,8 @@
     NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? _calendar.veryShortStandaloneWeekdaySymbols : _calendar.shortStandaloneWeekdaySymbols;
     BOOL useDefaultWeekdayCase = (_appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
     [_weekdays enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
+        index += _firstWeekday-1;
+        index %= 7;
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
     }];
     if (_stickyHeaderMapTable.count) {

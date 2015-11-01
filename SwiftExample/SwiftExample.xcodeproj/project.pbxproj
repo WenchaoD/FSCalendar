@@ -19,7 +19,6 @@
 		EE0954E61B97DDF4007F6964 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D41B97DDF4007F6964 /* FSCalendarCell.m */; };
 		EE0954E71B97DDF4007F6964 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D61B97DDF4007F6964 /* FSCalendarConstance.m */; };
 		EE0954E81B97DDF4007F6964 /* FSCalendarHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D91B97DDF4007F6964 /* FSCalendarHeader.m */; };
-		EE0954E91B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954DB1B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m */; };
 		EE0954EA1B97DDF4007F6964 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE0954DC1B97DDF4007F6964 /* Info.plist */; };
 		EE0954EB1B97DDF4007F6964 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954DE1B97DDF4007F6964 /* NSDate+FSExtension.m */; };
 		EE0954EC1B97DDF4007F6964 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E01B97DDF4007F6964 /* NSString+FSExtension.m */; };
@@ -307,7 +306,6 @@
 				EEC9C0411BDCA2D600383A07 /* FSCalendarFlowLayout.m in Sources */,
 				EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */,
 				EE0954E51B97DDF4007F6964 /* FSCalendarAppearance.m in Sources */,
-				EE0954E91B97DDF4007F6964 /* FSCalendarHeaderTouchDeliver.m in Sources */,
 				EE0954E71B97DDF4007F6964 /* FSCalendarConstance.m in Sources */,
 				EE0954EB1B97DDF4007F6964 /* NSDate+FSExtension.m in Sources */,
 			);

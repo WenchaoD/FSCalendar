@@ -10,4 +10,6 @@
 
 @interface FSCalendarCollectionView : UICollectionView
 
+- (void)reloadVisibleItems;
+
 @end

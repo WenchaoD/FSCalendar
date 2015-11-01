@@ -361,7 +361,7 @@
 {
     if (_headerTitleTextSize != headerTitleTextSize) {
         _headerTitleTextSize = headerTitleTextSize;
-        [_calendar.header.collectionView reloadData];
+        [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -369,7 +369,7 @@
 {
     if (![_headerTitleColor isEqual:color]) {
         _headerTitleColor = color;
-        [_calendar.header reloadData];
+        [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 - (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
@@ -384,7 +384,7 @@
 {
     if (_headerMinimumDissolvedAlpha != headerMinimumDissolvedAlpha) {
         _headerMinimumDissolvedAlpha = headerMinimumDissolvedAlpha;
-        [_calendar.header.collectionView reloadData];
+        [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -392,7 +392,7 @@
 {
     if (![_headerDateFormat isEqual:headerDateFormat]) {
         _headerDateFormat = headerDateFormat;
-        [_calendar.header reloadData];
+        [_calendar.header.collectionView reloadVisibleItems];
     }
 }
 
@@ -415,7 +415,7 @@
     
     // reload appearance
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-    [_calendar.header.collectionView reloadData];
+    [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     [_calendar.weekdays setValue:[UIFont systemFontOfSize:_weekdayTextSize] forKeyPath:@"font"];
 }
 

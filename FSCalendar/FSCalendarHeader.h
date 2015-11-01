@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FSCalendarCollectionView.h"
 
-@class FSCalendar, FSCalendarAppearance;
+@class FSCalendar,FSCalendarAppearance;
 
 @interface FSCalendarHeader : UIView
 
 @property (assign, nonatomic) CGFloat scrollOffset;
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
+@property (weak  , nonatomic) FSCalendarCollectionView *collectionView;
 @property (weak  , nonatomic) FSCalendarAppearance *appearance;
 @property (assign, nonatomic) BOOL scrollEnabled;
 
