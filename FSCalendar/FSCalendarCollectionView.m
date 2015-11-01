@@ -32,15 +32,5 @@
     [super setScrollsToTop:NO];
 }
 
-- (void)reloadVisibleItems
-{
-    if (!self.indexPathsForVisibleItems.count || !self.dataSource) {
-        return;
-    }
-    [self.indexPathsForVisibleItems enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-        [self.dataSource collectionView:self cellForItemAtIndexPath:indexPath];
-    }];
-}
-
 @end
 

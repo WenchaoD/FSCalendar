@@ -111,6 +111,9 @@
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
 
+- (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)reloadVisibleCells;
+
 @end
 
 @implementation FSCalendar
@@ -424,39 +427,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.calendar = self;
-    cell.appearance = _appearance;
-    cell.date = [self dateForIndexPath:indexPath];
-    cell.image = [self imageForDate:cell.date];
-    cell.subtitle  = [self subtitleForDate:cell.date];
-    cell.hasEvent = [self hasEventForDate:cell.date];
-    cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
-    cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
-    
-    [self invalidateAppearanceForCell:cell];
-    
-    switch (_scope) {
-        case FSCalendarScopeMonth: {
-            NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
-            cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month] || ![self isDateInRange:cell.date];
-            if (cell.dateIsPlaceholder) {
-                cell.dateIsSelected &= _pagingEnabled;
-                cell.dateIsToday &= _pagingEnabled;
-            }
-            break;
-        }
-        case FSCalendarScopeWeek: {
-            if (_pagingEnabled) {
-                cell.dateIsPlaceholder = ![self isDateInRange:cell.date];
-            }
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder);
-    [cell setNeedsLayout];
+    [self reloadDataForCell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -995,10 +966,10 @@
         [self setNeedsLayout];
         
     } else {
-        [_collectionView reloadVisibleItems];
-        [_header.collectionView reloadVisibleItems];
+        [self reloadVisibleCells];
     }
     
+    [_header reloadData];
     [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
     [self invalidateWeekdaySymbols];
 }
@@ -1563,6 +1534,51 @@
     cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
     cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
     [cell setNeedsLayout];
+}
+
+- (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    cell.calendar = self;
+    cell.appearance = _appearance;
+    cell.date = [self dateForIndexPath:indexPath];
+    cell.image = [self imageForDate:cell.date];
+    cell.subtitle  = [self subtitleForDate:cell.date];
+    cell.hasEvent = [self hasEventForDate:cell.date];
+    cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
+    cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
+    
+    [self invalidateAppearanceForCell:cell];
+    
+    switch (_scope) {
+        case FSCalendarScopeMonth: {
+            NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
+            cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month] || ![self isDateInRange:cell.date];
+            if (cell.dateIsPlaceholder) {
+                cell.dateIsSelected &= _pagingEnabled;
+                cell.dateIsToday &= _pagingEnabled;
+            }
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            if (_pagingEnabled) {
+                cell.dateIsPlaceholder = ![self isDateInRange:cell.date];
+            }
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder);
+    [cell setNeedsLayout];
+}
+
+- (void)reloadVisibleCells
+{
+    [_collectionView.indexPathsForVisibleItems enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
+        FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+        [self reloadDataForCell:cell atIndexPath:indexPath];
+    }];
 }
 
 - (void)selectCounterpartDate:(NSDate *)date

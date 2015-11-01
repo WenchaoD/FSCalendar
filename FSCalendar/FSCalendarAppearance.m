@@ -392,7 +392,7 @@
 {
     if (![_headerDateFormat isEqual:headerDateFormat]) {
         _headerDateFormat = headerDateFormat;
-        [_calendar.header.collectionView reloadVisibleItems];
+        [_calendar.header.collectionView reloadData];
     }
 }
 
