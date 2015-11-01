@@ -17,15 +17,15 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         super.viewDidLoad()
         calendar.selectDate(NSDate())
         calendar.scrollDirection = .Vertical
-        calendar.scope = .Month
-        calendar.appearance.caseOptions = FSCalendarCaseOptions.HeaderUsesUpperCase|FSCalendarCaseOptions.WeekdayUsesUpperCase
+//        calendar.scope = .Month
+//        calendar.allowsMultipleSelection = true
+        calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
     }
 
     
     func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
         return date.fs_day == 5
     }
-
 
     func calendarCurrentPageDidChange(calendar: FSCalendar!) {
         NSLog("change page to \(calendar.currentPage.fs_string())")
@@ -37,6 +37,10 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     func calendarCurrentScopeWillChange(calendar: FSCalendar!, animated: Bool) {
         calendarHeightConstraint.constant = calendar.sizeThatFits(CGSizeZero).height
+    }
+    
+    func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
+        return (date.fs_day == 13 || date.fs_day == 24) ? UIImage(named: "icon_cat") : nil
     }
     
 }

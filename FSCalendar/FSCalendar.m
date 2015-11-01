@@ -106,6 +106,9 @@
 - (void)invalidateHeaders;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
+- (void)selectCounterpartDate:(NSDate *)date;
+- (void)deselectCounterpartDate:(NSDate *)date;
+
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
 
 @end
@@ -489,16 +492,7 @@
     if (!_supressEvent) {
         [self didSelectDate:[self dateForIndexPath:indexPath]];
     }
-    
-    if (!self.floatingMode) {
-        [collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-            if (cell.dateIsPlaceholder) {
-                cell.dateIsSelected = [self.selectedDates containsObject:cell.date];
-                cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today];
-                [cell setNeedsLayout];
-            }
-        }];
-    }
+    [self selectCounterpartDate:cell.date];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -513,7 +507,7 @@
         return NO;
     }
     if ([collectionView.indexPathsForSelectedItems containsObject:indexPath] || [self.selectedDates containsObject:[self dateForIndexPath:indexPath]]) {
-        if (self.allowsMultipleSelection) {
+        if (!self.allowsMultipleSelection) {
             if ([self collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath]) {
                 [collectionView deselectItemAtIndexPath:indexPath animated:YES];
                 [self collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
@@ -634,14 +628,14 @@
     switch (_collectionViewLayout.scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal: {
             pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].x;
-            targetOffset = (*targetContentOffset).x;
+            targetOffset = targetContentOffset->x;
             currentOffset = scrollView.contentOffset.x;
             contentSize = scrollView.fs_width;
             break;
         }
         case UICollectionViewScrollDirectionVertical: {
             pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].y;
-            targetOffset = (*targetContentOffset).y;
+            targetOffset = targetContentOffset->y;
             currentOffset = scrollView.contentOffset.y;
             contentSize = scrollView.fs_height;
             break;
@@ -723,9 +717,11 @@
                 if (!CGRectEqualToRect(_collectionView.frame, CGRectZero)) {
                     [_collectionView reloadData];
                     [_header reloadData];
-                    _needsAdjustingMonthPosition = YES;
-                    [self setNeedsLayout];
                 }
+                _needsAdjustingMonthPosition = YES;
+                _needsReloadingSelectingDates = YES;
+                [self setNeedsLayout];
+                
                 _supressEvent = NO;
                 break;
             }
@@ -1198,14 +1194,7 @@
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
-        
-        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-            if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:date] && cell.dateIsSelected) {
-                cell.dateIsSelected = NO;
-                [cell setNeedsLayout];
-                *stop = YES;
-            }
-        }];
+        [self deselectCounterpartDate:cell.date];
     }
 }
 
@@ -1251,33 +1240,18 @@
         if (self.selectedDate && !self.allowsMultipleSelection) {
             NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
             [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
-            [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-                if (cell.dateIsPlaceholder && cell.dateIsSelected) {
-                    cell.dateIsSelected = NO;
-                    [cell setNeedsLayout];
-                    *stop = YES;
-                }
-            }];
             FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
             cell.dateIsSelected = NO;
             [cell setNeedsLayout];
-            [_selectedDates removeLastObject];
+            [_selectedDates removeObject:cell.date];
+            [self deselectCounterpartDate:cell.date];
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
-        
-        if (!self.floatingMode) {
-            [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-                if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:targetDate] && !cell.dateIsSelected) {
-                    cell.dateIsSelected = YES;
-                    [cell performSelecting];
-                    *stop = YES;
-                }
-            }];
-        }
+        [self selectCounterpartDate:targetDate];
         
     } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath]) {
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
@@ -1542,6 +1516,7 @@
         _collectionView.pagingEnabled = NO;
         _collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         
+        [self deselectCounterpartDate:nil];
     }
     
     _preferedHeaderHeight = FSCalendarAutomaticDimension;
@@ -1588,6 +1563,40 @@
     cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
     cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
     [cell setNeedsLayout];
+}
+
+- (void)selectCounterpartDate:(NSDate *)date
+{
+    if (!self.floatingMode) {
+        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *c, NSUInteger idx, BOOL *stop) {
+            if (c.dateIsPlaceholder && [c.date fs_isEqualToDateForDay:date] && !c.dateIsSelected) {
+                c.dateIsSelected = YES;
+                [c setNeedsLayout];
+                *stop = YES;
+            }
+        }];
+    }
+}
+
+- (void)deselectCounterpartDate:(NSDate *)date
+{
+    if (self.floatingMode) {
+        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger index, BOOL *stop) {
+            if (cell.dateIsPlaceholder) {
+                cell.dateIsSelected = NO;
+                cell.selected = NO;
+            }
+        }];
+    } else {
+        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+            if (cell.dateIsPlaceholder && [cell.date fs_isEqualToDateForDay:date] && cell.dateIsSelected) {
+                cell.dateIsSelected = NO;
+                cell.selected = NO;
+                [cell setNeedsLayout];
+                *stop = YES;
+            }
+        }];
+    }
 }
 
 - (void)enqueueSelectedDate:(NSDate *)date
