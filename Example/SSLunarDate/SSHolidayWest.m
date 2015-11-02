@@ -285,7 +285,7 @@
     // if that day was monday, it equal to zero.
     // if that day was tue, it equal to 1, minor 1 =
     NSDateComponents *ccc = [NSDateComponents new];
-    int reminder = cc.weekday - 2;
+    int reminder = (int)cc.weekday - 2;
     if (reminder >= 0)
         ccc.day  = - (cc.weekday - 2);
     else

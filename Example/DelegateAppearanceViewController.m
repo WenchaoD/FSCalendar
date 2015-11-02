@@ -27,7 +27,7 @@
     view.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.95 alpha:1.0];
     self.view = view;
     
-    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 400 : 300;
+    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;

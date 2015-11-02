@@ -32,7 +32,6 @@ typedef struct {
 #define Nyear	150	/* number of years covered by the table */
 #define Nmonth  13	/* maximum number of months in a lunar year */
 
-
 typedef struct LibLunarContext {
     SSLunarSimpleDate _solar;
     SSLunarSimpleDate _lunar;

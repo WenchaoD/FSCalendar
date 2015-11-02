@@ -266,9 +266,6 @@ func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
 }
 ```
 
-### `FSCalendar` can be used on `iPad`.
-![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/6502151/b4ce3092-c35b-11e4-827a-498d73579d78.jpg)
-
 * `fakeSubtitles` and `fakedSelectedDay` is only used for preview in Interface Builder
 
 ## Known issues

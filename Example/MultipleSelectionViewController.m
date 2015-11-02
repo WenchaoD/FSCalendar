@@ -9,6 +9,10 @@
 #import "MultipleSelectionViewController.h"
 #import "FSCalendarTestMacros.h"
 
+@interface MultipleSelectionViewController () <FSCalendarDelegateAppearance>
+
+@end
+
 @implementation MultipleSelectionViewController
 
 - (instancetype)init
@@ -26,7 +30,7 @@
     view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     self.view = view;
     
-    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 400 : 300;
+    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), view.bounds.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
@@ -82,6 +86,22 @@
         [selectedDates addObject:[obj fs_stringWithFormat:@"yyyy/MM/dd"]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
+}
+
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date
+{
+    if (date.fs_day % 2 == 0) {
+        return appearance.selectionColor;
+    }
+    return [UIColor purpleColor];
+}
+
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date
+{
+    if (date.fs_day == 17 || date.fs_day == 18 || date.fs_day == 19) {
+        return [UIColor magentaColor];
+    }
+    return appearance.borderDefaultColor;
 }
 
 @end
