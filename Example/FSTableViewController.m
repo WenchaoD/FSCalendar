@@ -30,6 +30,8 @@
                              [LoadViewExampleViewController class],
                              [ViewDidLoadExampleViewController class] // Deprecated
                             ];
+    
+    self.tableView.rowHeight = [[UIDevice currentDevice].model hasSuffix:@"iPad"] ? 60.0 : 44.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

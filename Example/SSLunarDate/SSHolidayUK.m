@@ -36,7 +36,7 @@
 
     NSAssert(c.year != 0, @"should not zero");
     if (_cachedYear != c.year) {
-        _cachedYear = c.year;
+        _cachedYear = (int)c.year;
         _variableHoliday = nil;
     }
     

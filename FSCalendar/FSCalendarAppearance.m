@@ -414,6 +414,12 @@
         }
     } else {
         _headerTitleTextSize = 20;
+        if (FSCalendarDeviceIsIPad) {
+            _headerTitleTextSize = FSCalendarStandardHeaderTextSize * 1.5;
+            _titleTextSize = FSCalendarStandardTitleTextSize * 1.3;
+            _subtitleTextSize = FSCalendarStandardSubtitleTextSize * 1.15;
+            _weekdayTextSize = _titleTextSize;
+        }
     }
     
     // reload appearance

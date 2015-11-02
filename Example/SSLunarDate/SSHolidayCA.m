@@ -37,7 +37,7 @@
     NSDateComponents *c = [self.calendar components:NSYearCalendarUnit fromDate:date];
     
     if (_cachedYear != c.year) {
-        _cachedYear = c.year;
+        _cachedYear = (int)c.year;
         _variableHoliday = nil;
     }
     

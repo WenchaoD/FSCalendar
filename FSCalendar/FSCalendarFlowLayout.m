@@ -28,22 +28,26 @@
 - (void)prepareLayout
 {
     [super prepareLayout];
+
+    CGFloat rowHeight = _calendar.preferedRowHeight;
     
-    CGFloat padding = _calendar.preferedWeekdayHeight*0.1;
-    self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
-    if (_calendar.pagingEnabled) {
+    if (!_calendar.floatingMode) {
         
         self.headerReferenceSize = CGSizeZero;
         switch (_calendar.scope) {
             case FSCalendarScopeMonth: {
                 self.itemSize = CGSizeMake(
                                            self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
-                                           _calendar.preferedRowHeight
+                                           rowHeight
                                           );
+                CGFloat padding = (self.collectionView.fs_height-rowHeight*6)/2;
+                self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
                 break;
             }
             case FSCalendarScopeWeek: {
-                self.itemSize = CGSizeMake(self.collectionView.fs_width/7, _calendar.preferedRowHeight);
+                self.itemSize = CGSizeMake(self.collectionView.fs_width/7, rowHeight);
+                CGFloat padding = (self.collectionView.fs_height-rowHeight)/2;
+                self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
                 break;
             }
             default: {
@@ -53,11 +57,11 @@
         
     } else {
         
-        CGFloat headerHeight = _calendar.preferedWeekdayHeight*1.34+_calendar.preferedHeaderHeight*1.04;
+        CGFloat headerHeight = _calendar.preferedWeekdayHeight*1.5+_calendar.preferedHeaderHeight;
         self.headerReferenceSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
         self.itemSize = CGSizeMake(
                                    self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
-                                   _calendar.preferedRowHeight
+                                   rowHeight
                                   );
         
     }

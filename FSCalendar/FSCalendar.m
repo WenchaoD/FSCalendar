@@ -886,11 +886,11 @@
 {
     if (_headerHeight == FSCalendarAutomaticDimension) {
         if (_preferedWeekdayHeight == FSCalendarAutomaticDimension) {
-            if (_pagingEnabled) {
+            if (!self.floatingMode) {
                 CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
                 _preferedHeaderHeight = (FSCalendarStandardHeaderHeight/divider)*self.fs_height;
             } else {
-                _preferedHeaderHeight = FSCalendarStandardHeaderHeight;
+                _preferedHeaderHeight = FSCalendarStandardHeaderHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
             }
         }
         return _preferedHeaderHeight;
@@ -902,11 +902,11 @@
 {
     if (_weekdayHeight == FSCalendarAutomaticDimension) {
         if (_preferedWeekdayHeight == FSCalendarAutomaticDimension) {
-            if (_pagingEnabled) {
+            if (!self.floatingMode) {
                 CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
                 _preferedWeekdayHeight = (FSCalendarStandardWeekdayHeight/divider)*self.fs_height;
             } else {
-                _preferedWeekdayHeight = FSCalendarStandardWeekdayHeight;
+                _preferedWeekdayHeight = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
             }
         }
         return _preferedWeekdayHeight;
@@ -936,7 +936,7 @@
                 }
             }
         } else {
-            _preferedRowHeight = FSCalendarStandardRowHeight;
+            _preferedRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
         }
     }
     return _preferedRowHeight;
@@ -1300,7 +1300,7 @@
             _needsAdjustingMonthPosition = YES;
             [self setNeedsLayout];
         } else {
-            CGRect headerFrame = CGRectOffset(itemFrame, 0, -_collectionViewLayout.headerReferenceSize.height);
+            CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
             [_collectionView setContentOffset:headerFrame.origin animated:animated];
         }
     }

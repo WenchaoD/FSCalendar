@@ -34,7 +34,7 @@
     calendar.pagingEnabled = NO; // important
     calendar.allowsMultipleSelection = YES;
     calendar.backgroundColor = [UIColor whiteColor];
-//    calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+    calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
     [self.view addSubview:calendar];
     self.calendar = calendar;
 }
@@ -56,6 +56,12 @@
     FSCalendarTestSelectDate
 #endif
 
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    _calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height);
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date

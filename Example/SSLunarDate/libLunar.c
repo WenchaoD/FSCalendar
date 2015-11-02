@@ -593,7 +593,7 @@ void Day2Lunar(LibLunarContext *ctx,
     }
     
     d->month = m;
-    d->day = offset + 1;
+    d->day = (int)offset + 1;
 }
 
 
@@ -627,7 +627,7 @@ void Day2Solar(LibLunarContext *ctx,
         if (offset<days)
         {
             d->month = m;
-            d->day = offset + 1;
+            d->day = (int)offset + 1;
             return;
         }
         offset -= days;

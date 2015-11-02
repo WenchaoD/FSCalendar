@@ -158,10 +158,10 @@
         | NSHourCalendarUnit;
     NSDateComponents *parts = [_calendar components:flags fromDate:date];
     
-    lunarDate->year = parts.year;
-    lunarDate->month = parts.month;
-    lunarDate->day = parts.day;
-    lunarDate->hour = parts.hour;
+    lunarDate->year = (int)parts.year;
+    lunarDate->month = (int)parts.month;
+    lunarDate->day = (int)parts.day;
+    lunarDate->hour = (int)parts.hour;
 }
 
 - (BOOL) isLunarHolidayWithRegion:(SSHolidayRegion) region
