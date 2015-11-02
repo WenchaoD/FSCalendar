@@ -48,6 +48,7 @@
         CAShapeLayer *backgroundLayer = [CAShapeLayer layer];
         backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
         backgroundLayer.hidden = YES;
+        backgroundLayer.actions = @{@"fillColor":[NSNull null]};
         [self.contentView.layer insertSublayer:backgroundLayer below:_titleLabel.layer];
         self.backgroundLayer = backgroundLayer;
         
