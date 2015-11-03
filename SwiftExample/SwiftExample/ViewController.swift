@@ -22,13 +22,14 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         
         /*
         calendar.allowsMultipleSelection = true
-        var dateArray = ["20151121", "20151115", "20151211", "20151201", "20151103", "20151105"]
+        var dateArray = ["20160101", "20151115", "20151211", "20151201", "20151107", "20160105"]
         for (var i = 0 ; i < dateArray.count; i++) {
             let dateString =  dateArray[i] as NSString
             let date = dateString.fs_dateWithFormat("yyyyMMdd");
             calendar.selectDate(date)
         }
         */
+
     }
     
     /*

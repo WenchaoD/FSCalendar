@@ -879,7 +879,7 @@
 
 - (NSArray *)selectedDates
 {
-    return _selectedDates;
+    return [NSArray arrayWithArray:_selectedDates];
 }
 
 - (CGFloat)preferedHeaderHeight
@@ -1666,9 +1666,6 @@
     if (![_selectedDates containsObject:date]) {
         [_selectedDates addObject:date];
     }
-    [_selectedDates sortUsingComparator:^NSComparisonResult(NSDate *d1, NSDate *d2) {
-        return [d1 compare:d2] == NSOrderedDescending;
-    }];
 }
 
 - (NSArray *)visibleStickyHeaders
