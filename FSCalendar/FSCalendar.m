@@ -474,7 +474,7 @@
     if (cell.dateIsPlaceholder) {
         if ([self isDateInRange:cell.date]) {
             [self selectDate:cell.date scrollToDate:YES forPlaceholder:YES];
-        } else if (![cell.date fs_isEqualToDateForMonth:_currentPage]) {
+        } else if (![cell.date fs_isEqualToDateForMonth:_currentPage]){
             [self scrollToPageForDate:cell.date animated:YES];
         }
         return NO;
@@ -1187,7 +1187,7 @@
         [NSException raise:@"selectedDate out of range" format:@""];
     }
     NSDate *targetDate = [date fs_daysFrom:_minimumDate] < 0 ? _minimumDate.copy : date;
-    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate.copy : date;
+    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate.copy : targetDate;
     targetDate = targetDate.fs_dateByIgnoringTimeComponents;
     NSIndexPath *targetIndexPath = [self indexPathForDate:targetDate];
     
@@ -1261,7 +1261,7 @@
     
     _supressEvent = !animated;
     NSDate * targetDate = [date fs_daysFrom:_minimumDate] < 0 ? _minimumDate : date;
-    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate : date;
+    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate : targetDate;
     NSInteger scrollOffset = 0;
     switch (_scope) {
         case FSCalendarScopeMonth: {
@@ -1301,7 +1301,8 @@
             [self setNeedsLayout];
         } else {
             CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
-            [_collectionView setContentOffset:headerFrame.origin animated:animated];
+            CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,_collectionView.contentSize.height-_collectionView.fs_bottom));
+            [_collectionView setContentOffset:targetOffset animated:animated];
         }
     }
     
@@ -1546,7 +1547,7 @@
         cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
         
     };
-    if (_asyncronous) {
+    if (_asyncronous && !self.ibEditing) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             configure();
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -1602,7 +1603,7 @@
         [cell setNeedsLayout];
         
     };
-    if (_asyncronous) {
+    if (_asyncronous && !self.ibEditing) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             configure();
             dispatch_async(dispatch_get_main_queue(), ^{

@@ -28,7 +28,7 @@
     view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     self.view = view;
     
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height)];
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64)];
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.pagingEnabled = NO; // important
@@ -61,7 +61,17 @@
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    _calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height);
+    _calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64);
+}
+
+- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
+{
+    return [NSDate date];
+}
+
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+{
+    return [[NSDate date] fs_dateByAddingMonths:3];
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date

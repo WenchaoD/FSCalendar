@@ -15,14 +15,31 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        calendar.selectDate(NSDate())
         calendar.scrollDirection = .Vertical
-//        calendar.scope = .Month
-//        calendar.allowsMultipleSelection = true
         calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
+        
+        calendar.selectDate(NSDate())
+        /*
+        calendar.allowsMultipleSelection = true
+        let date1 = NSDate().fs_dateByAddingDays(1)
+        let date2 = NSDate().fs_dateByAddingDays(2)
+        let date3 = NSDate().fs_dateByAddingDays(3)
+        calendar.selectDate(date1)
+        calendar.selectDate(date2)
+        calendar.selectDate(date3)
+        */
     }
-
     
+    /*
+    func minimumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
+        return NSDate().fs_firstDayOfMonth
+    }
+    
+    func maximumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
+        return NSDate().fs_dateByAddingMonths(3).fs_lastDayOfMonth
+    }
+    */
+
     func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
         return date.fs_day == 5
     }

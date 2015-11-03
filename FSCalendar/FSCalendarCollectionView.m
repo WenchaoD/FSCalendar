@@ -16,8 +16,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _scrollsToTop = NO;
-        _contentInset = UIEdgeInsetsZero;
+        self.scrollsToTop = NO;
+        self.contentInset = UIEdgeInsetsZero;
     }
     return self;
 }
