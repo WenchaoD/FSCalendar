@@ -19,14 +19,15 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
         
         calendar.selectDate(NSDate())
+        
         /*
         calendar.allowsMultipleSelection = true
-        let date1 = NSDate().fs_dateByAddingDays(1)
-        let date2 = NSDate().fs_dateByAddingDays(2)
-        let date3 = NSDate().fs_dateByAddingDays(3)
-        calendar.selectDate(date1)
-        calendar.selectDate(date2)
-        calendar.selectDate(date3)
+        var dateArray = ["20151121", "20151115", "20151211", "20151201", "20151103", "20151105"]
+        for (var i = 0 ; i < dateArray.count; i++) {
+            let dateString =  dateArray[i] as NSString
+            let date = dateString.fs_dateWithFormat("yyyyMMdd");
+            calendar.selectDate(date)
+        }
         */
     }
     

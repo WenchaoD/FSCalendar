@@ -11,5 +11,6 @@
 
 #import "FSCalendar.h"
 #import "NSDate+FSExtension.h"
+#import "NSString+FSExtension.h"
 
 #endif
