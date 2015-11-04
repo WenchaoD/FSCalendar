@@ -12,6 +12,16 @@
 
 @synthesize scrollsToTop = _scrollsToTop, contentInset = _contentInset;
 
+- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
+{
+    self = [super initWithFrame:frame collectionViewLayout:layout];
+    if (self) {
+        self.scrollsToTop = NO;
+        self.contentInset = UIEdgeInsetsZero;
+    }
+    return self;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

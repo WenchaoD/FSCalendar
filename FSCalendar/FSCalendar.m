@@ -650,7 +650,7 @@
     _needsAdjustingMonthPosition = YES;
     _needsAdjustingTextSize = YES;
     [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell why?
-    
+    [_stickyHeaderMapTable.dictionaryRepresentation.allValues setValue:@YES forKey:@"needsAdjustingFrames"];
     _preferedWeekdayHeight = FSCalendarAutomaticDimension;
     _preferedRowHeight = FSCalendarAutomaticDimension;
     _preferedHeaderHeight = FSCalendarAutomaticDimension;
