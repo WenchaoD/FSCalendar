@@ -12,7 +12,7 @@
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
 
 ## iPad
-![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10878242/5d087f44-8187-11e5-8c24-29bac5024a95.jpg)
+![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
 
 # Installation

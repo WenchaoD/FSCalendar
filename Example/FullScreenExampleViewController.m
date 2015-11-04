@@ -64,6 +64,7 @@
     _calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64);
 }
 
+/*
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
     return [NSDate date];
@@ -73,6 +74,7 @@
 {
     return [[NSDate date] fs_dateByAddingMonths:3];
 }
+*/
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
