@@ -72,15 +72,15 @@
 //    return date.fs_day % 5 == 0;
 //}
 
-//- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
-//{
-//    return [NSDate fs_dateWithYear:2015 month:6 day:15];
-//}
-//
-//- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
-//{
-//    return [NSDate fs_dateWithYear:2025 month:7 day:15];
-//}
+- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
+{
+    return [NSDate date];
+}
+
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+{
+    return [[NSDate date] fs_dateByAddingMonths:3];
+}
 
 
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
