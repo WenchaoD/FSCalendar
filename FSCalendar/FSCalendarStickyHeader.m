@@ -91,7 +91,7 @@
             }];
             
 #define m_calculate \
-        CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:_appearance.titleTextSize]}].height*1.5 + weekdayMargin*3;
+        CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:_appearance.titleFontName size:_appearance.titleTextSize]}].height*1.5 + weekdayMargin*3;
             
 #define m_adjust \
         _separator.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0); \
@@ -142,10 +142,10 @@
 
 - (void)reloadAppearance
 {
-    _titleLabel.font = [UIFont systemFontOfSize:self.appearance.headerTitleTextSize];
+    _titleLabel.font = [UIFont fontWithName:self.appearance.headerTitleFontName size:self.appearance.headerTitleTextSize];
     _titleLabel.textColor = self.appearance.headerTitleColor;
     [_weekdayLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
-        label.font = [UIFont systemFontOfSize:self.appearance.weekdayTextSize];
+		label.font = [UIFont fontWithName:self.appearance.weekdayFontName size:self.appearance.weekdayTextSize];
         label.textColor = self.appearance.weekdayTextColor;
     }];
 }

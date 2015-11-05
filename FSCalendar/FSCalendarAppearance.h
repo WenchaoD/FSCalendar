@@ -38,6 +38,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 @property (weak  , nonatomic) FSCalendar *calendar;
 
+@property (copy, nonatomic) NSString   *titleFontName;
+@property (copy, nonatomic) NSString   *subtitleFontName;
+@property (copy, nonatomic) NSString   *weekdayFontName;
+@property (copy, nonatomic) NSString   *headerTitleFontName;
+
 @property (assign, nonatomic) CGFloat  titleTextSize;
 @property (assign, nonatomic) CGFloat  subtitleTextSize;
 @property (assign, nonatomic) CGFloat  weekdayTextSize;
