@@ -142,7 +142,7 @@
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.header = self;
-    cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
+    cell.titleLabel.font = [UIFont fontWithName:_appearance.headerTitleFontName size:_appearance.headerTitleTextSize];
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _dateFormatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;

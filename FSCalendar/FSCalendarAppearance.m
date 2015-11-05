@@ -309,6 +309,47 @@
     return _borderColors[@(FSCalendarCellStateSelected)];
 }
 
+- (void)setTitleFontName:(NSString *)titleFontName
+{
+	if (![_titleFontName isEqualToString:titleFontName]) {
+		_titleFontName = titleFontName;
+		if (_autoAdjustTitleSize) {
+			return;
+		}
+		[_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+	}
+}
+
+- (void)setSubtitleFontName:(NSString *)subtitleFontName
+{
+	if (![_subtitleFontName isEqualToString:subtitleFontName]) {
+		_subtitleFontName = subtitleFontName;
+		if (_autoAdjustTitleSize) {
+			return;
+		}
+		[_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+	}
+}
+
+- (void)setWeekdayFontName:(NSString *)weekdayFontName
+{
+	if (![_weekdayFontName isEqualToString:weekdayFontName]) {
+		_weekdayFontName = weekdayFontName;
+		UIFont *font = [UIFont fontWithName:weekdayFontName size:self.weekdayTextSize];
+		[_calendar.weekdays setValue:font forKey:@"font"];
+	}
+}
+
+- (void)setHeaderTitleFontName:(NSString *)headerTitleFontName
+{
+	if (![_headerTitleFontName isEqualToString:headerTitleFontName]) {
+		_headerTitleFontName = headerTitleFontName;
+		[_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+		[_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
+	}
+}
+
+
 - (void)setTitleTextSize:(CGFloat)titleTextSize
 {
     if (_titleTextSize != titleTextSize) {
@@ -344,7 +385,7 @@
 {
     if (_weekdayTextSize != weekdayTextSize) {
         _weekdayTextSize = weekdayTextSize;
-        UIFont *font = [UIFont systemFontOfSize:weekdayTextSize];
+		UIFont *font = [UIFont fontWithName:self.weekdayFontName size:weekdayTextSize];
         [_calendar.weekdays setValue:font forKey:@"font"];
     }
 }
@@ -426,7 +467,7 @@
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     [_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
-    [_calendar.weekdays setValue:[UIFont systemFontOfSize:_weekdayTextSize] forKeyPath:@"font"];
+    [_calendar.weekdays setValue:[UIFont fontWithName:_weekdayFontName size:_weekdayTextSize] forKeyPath:@"font"];
 }
 
 - (void)setCaseOptions:(FSCalendarCaseOptions)caseOptions

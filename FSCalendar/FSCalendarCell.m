@@ -134,7 +134,7 @@
 
 - (void)configureCell
 {
-    _titleLabel.font = [UIFont systemFontOfSize:_appearance.titleTextSize];
+	_titleLabel.font = [UIFont fontWithName:_appearance.titleFontName size:_appearance.titleTextSize];
     _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
     
 #define m_calculateTitleHeight \
@@ -144,7 +144,7 @@
     if (_subtitle) { \
         _subtitleLabel.hidden = NO; \
         _subtitleLabel.text = _subtitle; \
-        _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize]; \
+        _subtitleLabel.font = [UIFont fontWithName:_appearance.subtitleFontName size:_appearance.subtitleTextSize]; \
         CGFloat subtitleHeight = [_subtitleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.subtitleLabel.font}].height;\
         CGFloat height = titleHeight + subtitleHeight; \
         _titleLabel.frame = CGRectMake(0, \

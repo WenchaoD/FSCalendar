@@ -975,7 +975,7 @@
     }
     
     [_header reloadData];
-    [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
+    [_weekdays setValue:[UIFont fontWithName:_appearance.weekdayFontName size:_appearance.weekdayTextSize] forKey:@"font"];
     [self invalidateWeekdaySymbols];
 }
 
@@ -1467,7 +1467,7 @@
         if (!_weekdays.count) {
             NSArray *weekSymbols = _calendar.shortStandaloneWeekdaySymbols;
             _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
-            UIFont *weekdayFont = [UIFont systemFontOfSize:_appearance.weekdayTextSize];
+            UIFont *weekdayFont = [UIFont fontWithName:_appearance.weekdayFontName size:_appearance.weekdayTextSize];
             for (int i = 0; i < weekSymbols.count; i++) {
                 UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
                 weekdayLabel.text = weekSymbols[i];
