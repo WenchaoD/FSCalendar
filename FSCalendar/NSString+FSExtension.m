@@ -7,12 +7,13 @@
 //
 
 #import "NSString+FSExtension.h"
+#import "NSDate+FSExtension.h"
 
 @implementation NSString (FSExtension)
 
 - (NSDate *)fs_dateWithFormat:(NSString *)format
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *formatter = [NSDateFormatter fs_sharedDateFormatter];
     formatter.dateFormat = format;
     return [formatter dateFromString:self];
 }

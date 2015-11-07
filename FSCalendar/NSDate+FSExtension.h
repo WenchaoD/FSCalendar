@@ -59,3 +59,9 @@
 
 @end
 
+@interface NSDateFormatter (FSExtension)
+
++ (instancetype)fs_sharedDateFormatter;
+
+@end
+

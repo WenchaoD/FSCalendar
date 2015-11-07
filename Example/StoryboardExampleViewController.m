@@ -30,21 +30,36 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
     _currentCalendar = [NSCalendar currentCalendar];
+    _scrollDirection = _calendar.scrollDirection;
+    _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
+    
+    [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:10 day:5]];
 //    _firstWeekday = _calendar.firstWeekday;
 //    _calendar.firstWeekday = 2; // Monday
 //    _calendar.flow = FSCalendarFlowVertical;
 //    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
-    _scrollDirection = _calendar.scrollDirection;
 //    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
 //    _calendar.scope = FSCalendarScopeWeek;
 //    _calendar.allowsMultipleSelection = YES;
-    _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
-    [_calendar selectDate:[NSDate date]];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_calendar deselectDate:[NSDate date]];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [_calendar deselectDate:[NSDate date]];
 //        _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-    });
+//    });
+    
+    
+    _datesShouldNotBeSelected = @[@"2015/08/07",
+                                  @"2015/09/07",
+                                  @"2015/10/07",
+                                  @"2015/11/07",
+                                  @"2015/12/07",
+                                  @"2016/01/07",
+                                  @"2016/02/07"];
+    
+    _datesWithEvent = @[@"2015-10-03",
+                        @"2015-10-07",
+                        @"2015-10-15",
+                        @"2015-10-25"];
     
 #if 0
     FSCalendarTestSelectDate
@@ -67,21 +82,22 @@
     return _lunarDate.dayString;
 }
 
-//- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
-//{
-//    return date.fs_day % 5 == 0;
-//}
+- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
+{
+    return [_datesWithEvent containsObject:[date fs_stringWithFormat:@"yyyy-MM-dd"]];
+}
 
+/*
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate date];
+    return [NSDate fs_dateWithYear:2015 month:2 day:1];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
     return [[NSDate date] fs_dateByAddingMonths:3];
 }
-
+*/
 
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
 {
@@ -92,7 +108,7 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    BOOL shouldSelect = date.fs_day != 7;
+    BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[date fs_stringWithFormat:@"yyyy/MM/dd"]];
     if (!shouldSelect) {
         [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
                                     message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]

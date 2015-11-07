@@ -134,7 +134,7 @@
 
 + (instancetype)fs_dateFromString:(NSString *)string format:(NSString *)format
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *formatter = [NSDateFormatter fs_sharedDateFormatter];
     formatter.dateFormat = format;
     return [formatter dateFromString:string];
 }
@@ -243,7 +243,7 @@
 
 - (NSString *)fs_stringWithFormat:(NSString *)format
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSDateFormatter *formatter = [NSDateFormatter fs_sharedDateFormatter];
     formatter.dateFormat = format;
     return [formatter stringFromDate:self];
 }
@@ -280,6 +280,21 @@
     static dispatch_once_t fs_sharedCalendar_onceToken;
     dispatch_once(&fs_sharedCalendar_onceToken, ^{
         instance = [NSCalendar currentCalendar];
+    });
+    return instance;
+}
+
+@end
+
+
+@implementation NSDateFormatter (FSExtension)
+
++ (instancetype)fs_sharedDateFormatter
+{
+    static id instance;
+    static dispatch_once_t fs_sharedDateFormatter_onceToken;
+    dispatch_once(&fs_sharedDateFormatter_onceToken, ^{
+        instance = [[NSDateFormatter alloc] init];
     });
     return instance;
 }

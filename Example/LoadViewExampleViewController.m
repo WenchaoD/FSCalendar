@@ -22,6 +22,10 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
+        self.images = @{@"2015/02/01":[UIImage imageNamed:@"icon_cat"],
+                        @"2015/02/05":[UIImage imageNamed:@"icon_footprint"],
+                        @"2015/02/20":[UIImage imageNamed:@"icon_cat"],
+                        @"2015/03/07":[UIImage imageNamed:@"icon_footprint"]};
     }
     return self;
 }
@@ -40,7 +44,7 @@
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
 //    calendar.scrollEnabled = NO;
 //    calendar.scope = FSCalendarScopeWeek;
-    [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
+    [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:6]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -89,13 +93,7 @@
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
-    if (date.fs_day == 5) {
-        return [UIImage imageNamed:@"icon_footprint"];
-    }
-    if (date.fs_day == 10 || date.fs_day == 15) {
-        return [UIImage imageNamed:@"icon_cat"];
-    }
-    return nil;
+    return self.images[[date fs_stringWithFormat:@"yyyy/MM/dd"]];
 }
 
 @end
