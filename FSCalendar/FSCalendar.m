@@ -1214,13 +1214,14 @@
     } else if (![_selectedDates containsObject:targetDate]){
         // 手动选中日期时，需先反选已经选中的日期，但不触发事件
         if (self.selectedDate && !self.allowsMultipleSelection) {
-            NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
+            NSDate *selectedDate = self.selectedDate;
+            NSIndexPath *currentIndexPath = [self indexPathForDate:selectedDate];
             [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
             FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
             cell.dateIsSelected = NO;
             [cell setNeedsLayout];
-            [_selectedDates removeObject:cell.date];
-            [self deselectCounterpartDate:cell.date];
+            [_selectedDates removeObject:selectedDate];
+            [self deselectCounterpartDate:selectedDate];
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
@@ -1601,7 +1602,7 @@
 {
     if (self.floatingMode) {
         [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger index, BOOL *stop) {
-            if (cell.dateIsPlaceholder) {
+            if (cell.dateIsPlaceholder && cell.dateIsSelected) {
                 cell.dateIsSelected = NO;
                 cell.selected = NO;
                 [cell setNeedsLayout];
