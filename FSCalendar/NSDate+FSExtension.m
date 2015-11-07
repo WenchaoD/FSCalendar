@@ -301,3 +301,18 @@
 
 @end
 
+@implementation NSDateComponents (FSExtension)
+
++ (instancetype)fs_sharedDateComponents
+{
+    static id instance;
+    static dispatch_once_t fs_sharedDateFormatter_onceToken;
+    dispatch_once(&fs_sharedDateFormatter_onceToken, ^{
+        instance = [[NSDateComponents alloc] init];
+    });
+    return instance;
+}
+
+@end
+
+

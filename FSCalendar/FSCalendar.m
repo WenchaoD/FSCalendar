@@ -262,7 +262,7 @@
                                             weekdayHeight);
         }];
         
-        _deliver.frame = _header.frame;
+        _deliver.frame = CGRectMake(_header.fs_left, _header.fs_top, _header.fs_width, headerHeight+weekdayHeight);
         _deliver.hidden = _header.hidden;
         
         if (_pagingEnabled) {
@@ -1604,6 +1604,7 @@
             if (cell.dateIsPlaceholder) {
                 cell.dateIsSelected = NO;
                 cell.selected = NO;
+                [cell setNeedsLayout];
             }
         }];
     } else {

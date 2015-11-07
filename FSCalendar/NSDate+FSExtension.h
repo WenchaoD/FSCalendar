@@ -65,3 +65,11 @@
 
 @end
 
+@interface NSDateComponents (FSExtension)
+
++ (instancetype)fs_sharedDateComponents;
+
+@end
+
+
+
