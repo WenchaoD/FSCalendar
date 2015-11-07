@@ -1202,6 +1202,7 @@
             if (_collectionView.indexPathsForSelectedItems.count && self.selectedDate && !self.allowsMultipleSelection) {
                 NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
                 [_collectionView deselectItemAtIndexPath:currentIndexPath animated:YES];
+                [self deselectCounterpartDate:self.selectedDate];
                 [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndexPath];
             }
             if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:targetIndexPath]) {
@@ -1574,7 +1575,6 @@
     [self invalidateAppearanceForCell:cell];
     cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder);
     [cell setNeedsLayout];
-    
 }
 
 - (void)reloadVisibleCells
