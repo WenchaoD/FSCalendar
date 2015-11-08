@@ -1236,7 +1236,7 @@
         [self selectCounterpartDate:targetDate];
         
     } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath]) {
-        // 调用代码选中以选中日期
+        // 调用代码选中已选中日期
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
     
@@ -1320,28 +1320,30 @@
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
-    if (!_collectionView.tracking && !_collectionView.decelerating) {
-        if (!self.floatingMode && [self isDateInDifferentPage:date]) {
-            [self willChangeValueForKey:@"currentPage"];
-            switch (_scope) {
-                case FSCalendarScopeMonth: {
-                    _currentPage = date.fs_firstDayOfMonth;
-                    break;
+    if (!_collectionView.tracking) {
+        if (!self.floatingMode) {
+            if ([self isDateInDifferentPage:date]) {
+                [self willChangeValueForKey:@"currentPage"];
+                switch (_scope) {
+                    case FSCalendarScopeMonth: {
+                        _currentPage = date.fs_firstDayOfMonth;
+                        break;
+                    }
+                    case FSCalendarScopeWeek: {
+                        _currentPage = date.fs_firstDayOfWeek;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
-                case FSCalendarScopeWeek: {
-                    _currentPage = date.fs_firstDayOfWeek;
-                    break;
+                if (!_supressEvent && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero)) {
+                    _supressEvent = YES;
+                    [self currentPageDidChange];
+                    _supressEvent = NO;
                 }
-                default: {
-                    break;
-                }
+                [self didChangeValueForKey:@"currentPage"];
             }
-            if (!_supressEvent && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero)) {
-                _supressEvent = YES;
-                [self currentPageDidChange];
-                _supressEvent = NO;
-            }
-            [self didChangeValueForKey:@"currentPage"];
             [self scrollToDate:_currentPage animated:animated];
         } else {
             [self scrollToDate:date.fs_firstDayOfMonth animated:animated];
