@@ -108,6 +108,19 @@
     return beginningOfWeek;
 }
 
+- (NSDate *)fs_middleOfWeek
+{
+    NSCalendar *calendar = [NSCalendar fs_sharedCalendar];
+    NSDateComponents *weekdayComponents = [calendar components:NSCalendarUnitWeekday fromDate:self];
+    NSDateComponents *componentsToSubtract = [NSDateComponents fs_sharedDateComponents];
+    componentsToSubtract.day = - (weekdayComponents.weekday - calendar.firstWeekday) + 3;
+    NSDate *middleOfWeek = [calendar dateByAddingComponents:componentsToSubtract toDate:self options:0];
+    NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:middleOfWeek];
+    middleOfWeek = [calendar dateFromComponents:components];
+    componentsToSubtract.day = NSIntegerMax;
+    return middleOfWeek;
+}
+
 - (NSDate *)fs_tomorrow
 {
     NSCalendar *calendar = [NSCalendar fs_sharedCalendar];

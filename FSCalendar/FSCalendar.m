@@ -265,7 +265,7 @@
         _deliver.frame = CGRectMake(_header.fs_left, _header.fs_top, _header.fs_width, headerHeight+weekdayHeight);
         _deliver.hidden = _header.hidden;
         
-        if (_pagingEnabled) {
+        if (!self.floatingMode) {
             
             switch (_scope) {
                 case FSCalendarScopeMonth: {
