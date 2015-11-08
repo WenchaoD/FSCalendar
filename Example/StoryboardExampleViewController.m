@@ -130,7 +130,7 @@
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
     NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
-    [calendar selectDate:calendar.currentPage];
+//    [calendar selectDate:calendar.currentPage];
 }
 
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated

@@ -477,19 +477,22 @@
         }
         return NO;
     }
-    if ([collectionView.indexPathsForSelectedItems containsObject:indexPath] || [_selectedDates containsObject:[self dateForIndexPath:indexPath]]) {
+    NSDate *targetDate = [self dateForIndexPath:indexPath];
+    if ([self isDateSelected:targetDate]) {
+        // 这个if几乎不会调用到
         if (self.allowsMultipleSelection) {
             if ([self collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath]) {
                 [collectionView deselectItemAtIndexPath:indexPath animated:YES];
                 [self collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
             }
         } else {
+            // 点击了已经选择的日期，直接触发事件
             [self didSelectDate:self.selectedDate];
         }
         return NO;
     }
     BOOL shouldSelect = YES;
-    if (shouldSelect && cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
+    if (cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
         shouldSelect &= [self shouldSelectDate:cell.date];
     }
     if (shouldSelect) {
@@ -516,6 +519,7 @@
     }
     NSDate *selectedDate = cell.date ?: [self dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
+    [self deselectCounterpartDate:selectedDate];
     [self didDeselectDate:selectedDate];
 }
 
@@ -1182,60 +1186,62 @@
     if (![self isDateInRange:date]) {
         [NSException raise:@"selectedDate out of range" format:@""];
     }
-    NSDate *targetDate = [date fs_daysFrom:_minimumDate] < 0 ? _minimumDate.copy : date;
-    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate.copy : targetDate;
-    targetDate = targetDate.fs_dateByIgnoringTimeComponents;
+    NSDate *targetDate = date.fs_dateByIgnoringTimeComponents;
     NSIndexPath *targetIndexPath = [self indexPathForDate:targetDate];
     
     BOOL shouldSelect = !_supressEvent;
+    // 跨月份点击
     if (forPlaceholder) {
-        // 跨月份选中日期，需要触发各类事件
-        if (self.allowsMultipleSelection && [self isDateSelected:targetDate]) {
-            // 在多选模式下，点击了已经选中的跨月日期
-            BOOL shouldDeselect = [self shouldDeselectDate:targetDate];
-            if (!shouldDeselect) {
+        if (self.allowsMultipleSelection) {
+            // 处理多选模式
+            if ([self isDateSelected:targetDate]) {
+                BOOL shouldDeselect = [self shouldDeselectDate:targetDate];
+                if (!shouldDeselect) {
+                    return;
+                }
+            } else {
+                shouldSelect &= [self shouldSelectDate:targetDate];
+                if (!shouldSelect) {
+                    return;
+                }
+            }
+        } else {
+            // 处理单选模式
+            shouldSelect &= [self shouldSelectDate:targetDate];
+            if (shouldSelect) {
+                if ([self isDateSelected:targetDate]) {
+                    [self didSelectDate:targetDate];
+                } else {
+                    NSDate *selectedDate = self.selectedDate;
+                    if (selectedDate) {
+                        [self deselectDate:selectedDate];
+                    }
+                    [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+                    [self collectionView:_collectionView didSelectItemAtIndexPath:targetIndexPath];
+                }
+            } else {
                 return;
             }
         }
-        shouldSelect &= [self shouldSelectDate:targetDate];
-        if (shouldSelect && ![self isDateSelected:targetDate]) {
-            if (_collectionView.indexPathsForSelectedItems.count && self.selectedDate && !self.allowsMultipleSelection) {
-                NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
-                [_collectionView deselectItemAtIndexPath:currentIndexPath animated:YES];
-                [self deselectCounterpartDate:self.selectedDate];
-                [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndexPath];
-            }
-            if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:targetIndexPath]) {
-                [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-                [self collectionView:_collectionView didSelectItemAtIndexPath:targetIndexPath];
-            }
-        } else {
-            [self didSelectDate:targetDate];
-        }
-    } else if (![_selectedDates containsObject:targetDate]){
-        // 手动选中日期时，需先反选已经选中的日期，但不触发事件
+        
+    } else if (![self isDateSelected:targetDate]){
+        // 调用代码选中未选中日期
         if (self.selectedDate && !self.allowsMultipleSelection) {
-            NSDate *selectedDate = self.selectedDate;
-            NSIndexPath *currentIndexPath = [self indexPathForDate:selectedDate];
-            [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
-            FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
-            cell.dateIsSelected = NO;
-            [cell setNeedsLayout];
-            [_selectedDates removeObject:selectedDate];
-            [self deselectCounterpartDate:selectedDate];
+            [self deselectDate:self.selectedDate];
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-        
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
         [self selectCounterpartDate:targetDate];
         
     } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath]) {
+        // 调用代码选中以选中日期
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
     
     if (scrollToDate) {
+        // 如果跨月份点击日期，并且该日期不应该选中，则不跳转页面，其他情况均跳转
         if (forPlaceholder && !shouldSelect) {
             return;
         }
@@ -1275,7 +1281,7 @@
         }
     }
     
-    if (_pagingEnabled) {
+    if (!self.floatingMode) {
         
         switch (_collectionViewLayout.scrollDirection) {
             case UICollectionViewScrollDirectionVertical: {
@@ -1292,16 +1298,18 @@
         }
         
     } else {
-        CGRect itemFrame = [_collectionViewLayout layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
-        if (self.floatingMode && CGRectEqualToRect(itemFrame, CGRectZero)) {
+        // 全屏模式中，切换页面时需要将该月份提升到视图最上方
+        CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
+        if (CGSizeEqualToSize(headerFrame.size, CGSizeZero)) {
+            // 如果在loadView或者viewDidLoad中调用需要切换月份的方法, 这时UICollectionView并没有准备好自己的单元格和空间大小，这时不能直接调用setContentOffset,而是等到在layoutSubviews之后再去调用
             _currentPage = targetDate;
             _needsAdjustingMonthPosition = YES;
             [self setNeedsLayout];
         } else {
-            CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
             CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,_collectionView.contentSize.height-_collectionView.fs_bottom));
             [_collectionView setContentOffset:targetOffset animated:animated];
         }
+        
     }
     
     if (_header && !animated) {
@@ -1335,7 +1343,7 @@
             }
             [self didChangeValueForKey:@"currentPage"];
             [self scrollToDate:_currentPage animated:animated];
-        } else if (!_pagingEnabled) {
+        } else {
             [self scrollToDate:date.fs_firstDayOfMonth animated:animated];
         }
     }
