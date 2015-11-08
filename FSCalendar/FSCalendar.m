@@ -73,7 +73,6 @@
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsReloadingSelectingDates;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
-@property (assign, nonatomic) BOOL                       asyncronous;
 @property (assign, nonatomic) BOOL                       supressEvent;
 @property (assign, nonatomic) CGFloat                    preferedHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferedWeekdayHeight;
@@ -171,7 +170,6 @@
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
-    _asyncronous = YES;
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -264,7 +262,7 @@
                                             weekdayHeight);
         }];
         
-        _deliver.frame = _header.frame;
+        _deliver.frame = CGRectMake(_header.fs_left, _header.fs_top, _header.fs_width, headerHeight+weekdayHeight);
         _deliver.hidden = _header.hidden;
         
         if (_pagingEnabled) {
@@ -303,7 +301,7 @@
     
     if (_needsReloadingSelectingDates) {
         _needsReloadingSelectingDates = NO;
-        [self.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [_selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             [self selectDate:obj scrollToDate:NO];
         }];
     }
@@ -479,23 +477,28 @@
         }
         return NO;
     }
-    if (!self.allowsMultipleSelection && self.selectedDate) {
-        [self deselectDate:self.selectedDate];
-    }
-    if ([collectionView.indexPathsForSelectedItems containsObject:indexPath] || [self.selectedDates containsObject:[self dateForIndexPath:indexPath]]) {
+    NSDate *targetDate = [self dateForIndexPath:indexPath];
+    if ([self isDateSelected:targetDate]) {
+        // 这个if几乎不会调用到
         if (self.allowsMultipleSelection) {
             if ([self collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath]) {
                 [collectionView deselectItemAtIndexPath:indexPath animated:YES];
                 [self collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
             }
         } else {
+            // 点击了已经选择的日期，直接触发事件
             [self didSelectDate:self.selectedDate];
         }
         return NO;
     }
     BOOL shouldSelect = YES;
-    if (shouldSelect && cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
+    if (cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
         shouldSelect &= [self shouldSelectDate:cell.date];
+    }
+    if (shouldSelect) {
+        if (!self.allowsMultipleSelection && self.selectedDate) {
+            [self deselectDate:self.selectedDate];
+        }
     }
     return shouldSelect && [self isDateInRange:cell.date];
 }
@@ -516,6 +519,7 @@
     }
     NSDate *selectedDate = cell.date ?: [self dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
+    [self deselectCounterpartDate:selectedDate];
     [self didDeselectDate:selectedDate];
 }
 
@@ -874,7 +878,7 @@
 
 - (NSDate *)selectedDate
 {
-    return self.selectedDates.lastObject;
+    return _selectedDates.lastObject;
 }
 
 - (NSArray *)selectedDates
@@ -1011,7 +1015,6 @@
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated
 {
-    _asyncronous = NO;
     NSInteger section = self.currentSection;
     void(^completion)(void) = ^{
         switch (toScope) {
@@ -1035,9 +1038,6 @@
         _needsAdjustingViewFrame = YES;
         _needsReloadingSelectingDates = YES;
         [self setNeedsLayout];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _asyncronous = YES;
-        });
     };
     
     BOOL weekToMonth = fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth;
@@ -1186,58 +1186,62 @@
     if (![self isDateInRange:date]) {
         [NSException raise:@"selectedDate out of range" format:@""];
     }
-    NSDate *targetDate = [date fs_daysFrom:_minimumDate] < 0 ? _minimumDate.copy : date;
-    targetDate = [targetDate fs_daysFrom:_maximumDate] > 0 ? _maximumDate.copy : targetDate;
-    targetDate = targetDate.fs_dateByIgnoringTimeComponents;
+    NSDate *targetDate = date.fs_dateByIgnoringTimeComponents;
     NSIndexPath *targetIndexPath = [self indexPathForDate:targetDate];
     
     BOOL shouldSelect = !_supressEvent;
+    // 跨月份点击
     if (forPlaceholder) {
-        // 跨月份选中日期，需要触发各类事件
-        if (self.allowsMultipleSelection && [self isDateSelected:targetDate]) {
-            // 在多选模式下，点击了已经选中的跨月日期
-            BOOL shouldDeselect = [self shouldDeselectDate:targetDate];
-            if (!shouldDeselect) {
+        if (self.allowsMultipleSelection) {
+            // 处理多选模式
+            if ([self isDateSelected:targetDate]) {
+                BOOL shouldDeselect = [self shouldDeselectDate:targetDate];
+                if (!shouldDeselect) {
+                    return;
+                }
+            } else {
+                shouldSelect &= [self shouldSelectDate:targetDate];
+                if (!shouldSelect) {
+                    return;
+                }
+            }
+        } else {
+            // 处理单选模式
+            shouldSelect &= [self shouldSelectDate:targetDate];
+            if (shouldSelect) {
+                if ([self isDateSelected:targetDate]) {
+                    [self didSelectDate:targetDate];
+                } else {
+                    NSDate *selectedDate = self.selectedDate;
+                    if (selectedDate) {
+                        [self deselectDate:selectedDate];
+                    }
+                    [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+                    [self collectionView:_collectionView didSelectItemAtIndexPath:targetIndexPath];
+                }
+            } else {
                 return;
             }
         }
-        shouldSelect &= [self shouldSelectDate:targetDate];
-        if (shouldSelect && ![self isDateSelected:targetDate]) {
-            if (_collectionView.indexPathsForSelectedItems.count && self.selectedDate && !self.allowsMultipleSelection) {
-                NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
-                [_collectionView deselectItemAtIndexPath:currentIndexPath animated:YES];
-                [self collectionView:_collectionView didDeselectItemAtIndexPath:currentIndexPath];
-            }
-            if ([self collectionView:_collectionView shouldSelectItemAtIndexPath:targetIndexPath]) {
-                [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-                [self collectionView:_collectionView didSelectItemAtIndexPath:targetIndexPath];
-            }
-        } else {
-            [self didSelectDate:targetDate];
-        }
-    } else if (![_selectedDates containsObject:targetDate]){
-        // 手动选中日期时，需先反选已经选中的日期，但不触发事件
+        
+    } else if (![self isDateSelected:targetDate]){
+        // 调用代码选中未选中日期
         if (self.selectedDate && !self.allowsMultipleSelection) {
-            NSIndexPath *currentIndexPath = [self indexPathForDate:self.selectedDate];
-            [_collectionView deselectItemAtIndexPath:currentIndexPath animated:NO];
-            FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:currentIndexPath];
-            cell.dateIsSelected = NO;
-            [cell setNeedsLayout];
-            [_selectedDates removeObject:cell.date];
-            [self deselectCounterpartDate:cell.date];
+            [self deselectDate:self.selectedDate];
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
-        
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
         [self selectCounterpartDate:targetDate];
         
     } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath]) {
+        // 调用代码选中已选中日期
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
     
     if (scrollToDate) {
+        // 如果跨月份点击日期，并且该日期不应该选中，则不跳转页面，其他情况均跳转
         if (forPlaceholder && !shouldSelect) {
             return;
         }
@@ -1277,7 +1281,7 @@
         }
     }
     
-    if (_pagingEnabled) {
+    if (!self.floatingMode) {
         
         switch (_collectionViewLayout.scrollDirection) {
             case UICollectionViewScrollDirectionVertical: {
@@ -1294,16 +1298,18 @@
         }
         
     } else {
-        CGRect itemFrame = [_collectionViewLayout layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
-        if (self.floatingMode && CGRectEqualToRect(itemFrame, CGRectZero)) {
+        // 全屏模式中，切换页面时需要将该月份提升到视图最上方
+        CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
+        if (CGSizeEqualToSize(headerFrame.size, CGSizeZero)) {
+            // 如果在loadView或者viewDidLoad中调用需要切换月份的方法, 这时UICollectionView并没有准备好自己的单元格和空间大小，这时不能直接调用setContentOffset,而是等到在layoutSubviews之后再去调用
             _currentPage = targetDate;
             _needsAdjustingMonthPosition = YES;
             [self setNeedsLayout];
         } else {
-            CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
             CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,_collectionView.contentSize.height-_collectionView.fs_bottom));
             [_collectionView setContentOffset:targetOffset animated:animated];
         }
+        
     }
     
     if (_header && !animated) {
@@ -1314,30 +1320,32 @@
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
-    if (!_collectionView.tracking && !_collectionView.decelerating) {
-        if (!self.floatingMode && [self isDateInDifferentPage:date]) {
-            [self willChangeValueForKey:@"currentPage"];
-            switch (_scope) {
-                case FSCalendarScopeMonth: {
-                    _currentPage = date.fs_firstDayOfMonth;
-                    break;
+    if (!_collectionView.tracking) {
+        if (!self.floatingMode) {
+            if ([self isDateInDifferentPage:date]) {
+                [self willChangeValueForKey:@"currentPage"];
+                switch (_scope) {
+                    case FSCalendarScopeMonth: {
+                        _currentPage = date.fs_firstDayOfMonth;
+                        break;
+                    }
+                    case FSCalendarScopeWeek: {
+                        _currentPage = date.fs_firstDayOfWeek;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
-                case FSCalendarScopeWeek: {
-                    _currentPage = date.fs_firstDayOfWeek;
-                    break;
+                if (!_supressEvent && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero)) {
+                    _supressEvent = YES;
+                    [self currentPageDidChange];
+                    _supressEvent = NO;
                 }
-                default: {
-                    break;
-                }
+                [self didChangeValueForKey:@"currentPage"];
             }
-            if (!_supressEvent && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero)) {
-                _supressEvent = YES;
-                [self currentPageDidChange];
-                _supressEvent = NO;
-            }
-            [self didChangeValueForKey:@"currentPage"];
             [self scrollToDate:_currentPage animated:animated];
-        } else if (!_pagingEnabled) {
+        } else {
             [self scrollToDate:date.fs_firstDayOfMonth animated:animated];
         }
     }
@@ -1422,7 +1430,7 @@
 
 - (BOOL)isDateSelected:(NSDate *)date
 {
-    return [self.selectedDates containsObject:date] || [_collectionView.indexPathsForSelectedItems containsObject:[self indexPathForDate:date]];
+    return [_selectedDates containsObject:date] || [_collectionView.indexPathsForSelectedItems containsObject:[self indexPathForDate:date]];
 }
 
 - (BOOL)isDateInDifferentPage:(NSDate *)date
@@ -1530,31 +1538,19 @@
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell
 {
-#define m_async_background1 \
-\
-        cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date]; \
-        cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date]; \
-        cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date]; \
-        if (cell.subtitle) { \
-            cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date]; \
-            cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date]; \
-        } \
-        if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date]; \
-        cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date]; \
-        cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date]; \
-        cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
-
-    if (_asyncronous && !self.ibEditing) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            m_async_background1
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [cell setNeedsLayout];
-            });
-        });
-    } else {
-        m_async_background1
-        [cell setNeedsLayout];
+    cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
+    cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date];
+    cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
+    if (cell.subtitle) {
+        cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
+        cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
     }
+    if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
+    cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
+    cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
+    cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
+    
+    [cell setNeedsLayout];
 }
 
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath
@@ -1562,48 +1558,33 @@
     cell.calendar = self;
     cell.appearance = _appearance;
     cell.date = [self dateForIndexPath:indexPath];
-#define m_async_background2 \
-\
-        cell.image = [self imageForDate:cell.date]; \
-        cell.subtitle  = [self subtitleForDate:cell.date]; \
-        cell.hasEvent = [self hasEventForDate:cell.date]; \
-        cell.dateIsSelected = [self.selectedDates containsObject:cell.date]; \
-        cell.dateIsToday = [cell.date fs_isEqualToDateForDay:_today]; \
-\
-        switch (_scope) { \
-            case FSCalendarScopeMonth: { \
-                NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents; \
-                cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month] || ![self isDateInRange:cell.date]; \
-                if (cell.dateIsPlaceholder) { \
-                    cell.dateIsSelected &= _pagingEnabled; \
-                    cell.dateIsToday &= _pagingEnabled; \
-                } \
-                break; \
-            } \
-            case FSCalendarScopeWeek: { \
-                if (_pagingEnabled) { \
-                    cell.dateIsPlaceholder = ![self isDateInRange:cell.date]; \
-                } \
-                break; \
-            } \
-        }
     
-#define m_async_main2 \
-        [self invalidateAppearanceForCell:cell]; \
-        cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder); \
-        [cell setNeedsLayout];
-        
-    if (_asyncronous && !self.ibEditing) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            m_async_background2
-            dispatch_async(dispatch_get_main_queue(), ^{
-                m_async_main2
-            });
-        });
-    } else {
-        m_async_background2
-        m_async_main2
+    cell.image = [self imageForDate:cell.date];
+    cell.hasEvent = [self hasEventForDate:cell.date];
+    cell.subtitle  = [self subtitleForDate:cell.date];
+    cell.dateIsSelected = [_selectedDates containsObject:cell.date];
+    cell.dateIsToday = [cell.date isEqual:_today];
+    switch (_scope) {
+        case FSCalendarScopeMonth: {
+            NSDate *month = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section].fs_dateByIgnoringTimeComponents;
+            cell.dateIsPlaceholder = ![cell.date fs_isEqualToDateForMonth:month] || ![self isDateInRange:cell.date];
+            if (cell.dateIsPlaceholder) {
+                cell.dateIsSelected &= _pagingEnabled;
+                cell.dateIsToday &= _pagingEnabled;
+            }
+            break;
+        } \
+        case FSCalendarScopeWeek: {
+            if (_pagingEnabled) {
+                cell.dateIsPlaceholder = ![self isDateInRange:cell.date];
+            }
+            break;
+        }
     }
+    
+    [self invalidateAppearanceForCell:cell];
+    cell.selected = (cell.dateIsSelected && !cell.dateIsPlaceholder);
+    [cell setNeedsLayout];
 }
 
 - (void)reloadVisibleCells
@@ -1631,9 +1612,10 @@
 {
     if (self.floatingMode) {
         [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger index, BOOL *stop) {
-            if (cell.dateIsPlaceholder) {
+            if (cell.dateIsPlaceholder && cell.dateIsSelected) {
                 cell.dateIsSelected = NO;
                 cell.selected = NO;
+                [cell setNeedsLayout];
             }
         }];
     } else {

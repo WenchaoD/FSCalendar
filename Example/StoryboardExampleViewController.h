@@ -19,6 +19,9 @@
 @property (strong, nonatomic) NSDate         *selectedDate;
 @property (assign, nonatomic) NSUInteger     firstWeekday;
 
+@property (strong, nonatomic) NSArray *datesShouldNotBeSelected;
+@property (strong, nonatomic) NSArray *datesWithEvent;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
 @end
