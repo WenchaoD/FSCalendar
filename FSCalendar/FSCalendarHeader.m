@@ -15,8 +15,7 @@
 
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
-
+@property (weak, nonatomic) NSDateFormatter *dateFormatter;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 @property (assign, nonatomic) BOOL needsAdjustingMonthPosition;

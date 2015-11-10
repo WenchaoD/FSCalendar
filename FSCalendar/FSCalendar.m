@@ -65,7 +65,7 @@
 @property (weak  , nonatomic) FSCalendarHeader           *header;
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
 
-@property (strong, nonatomic) NSCalendar                 *calendar;
+@property (weak  , nonatomic) NSCalendar                 *calendar;
 
 @property (assign, nonatomic) BOOL                       ibEditing;
 @property (assign, nonatomic) BOOL                       needsAdjustingMonthPosition;
