@@ -79,7 +79,6 @@
 @property (assign, nonatomic) CGFloat                    preferedRowHeight;
 @property (assign, nonatomic) UIInterfaceOrientation     interfaceOrientation;
 
-@property (readonly, nonatomic) NSInteger currentSection;
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 
@@ -302,22 +301,21 @@
         [_appearance adjustTitleIfNecessary];
     }
     
-    if (_needsReloadingSelectingDates) {
-        _needsReloadingSelectingDates = NO;
-        [_selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            [self selectDate:obj scrollToDate:NO];
-        }];
-    }
-    
-    if (_needsAdjustingMonthPosition) {
-        _needsAdjustingMonthPosition = NO;
-        [self scrollToDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate)];
-    }
-    
     if (_needsLayoutForWeekMode) {
         _needsLayoutForWeekMode = NO;
         _scope = FSCalendarScopeWeek;
         [self performScopeTransitionFromScope:FSCalendarScopeMonth toScope:FSCalendarScopeWeek animated:NO];
+    } else {
+        if (_needsReloadingSelectingDates) {
+            _needsReloadingSelectingDates = NO;
+            [_selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                [self selectDate:obj scrollToDate:NO];
+            }];
+        }
+        if (_needsAdjustingMonthPosition) {
+            _needsAdjustingMonthPosition = NO;
+            [self scrollToDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate)];
+        }
     }
     
     _supressEvent = NO;
@@ -817,22 +815,6 @@
     return _calendar.locale;
 }
 
-- (NSInteger)currentSection
-{
-    switch (_scope) {
-        case FSCalendarScopeMonth: {
-            return [_currentPage fs_monthsFrom:_minimumDate.fs_firstDayOfMonth];
-        }
-        case FSCalendarScopeWeek: {
-            return [_currentPage fs_weeksFrom:_minimumDate.fs_firstDayOfWeek];
-        }
-        default: {
-            break;
-        }
-    }
-    return 0;
-}
-
 - (void)setAllowsMultipleSelection:(BOOL)allowsMultipleSelection
 {
     _collectionView.allowsMultipleSelection = allowsMultipleSelection;
@@ -1033,7 +1015,8 @@
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated
 {
-    NSInteger section = self.currentSection;
+    BOOL weekToMonth = fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth;
+    BOOL monthToWeek = !weekToMonth;
     void(^completion)(void) = ^{
         switch (toScope) {
             case FSCalendarScopeMonth: {
@@ -1050,6 +1033,7 @@
                 break;
             }
         }
+        
         [_collectionView reloadData];
         [_header reloadData];
         _needsAdjustingMonthPosition = YES;
@@ -1058,7 +1042,6 @@
         [self setNeedsLayout];
     };
     
-    BOOL weekToMonth = fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth;
     NSInteger rowNumber = -1;
     
     if (weekToMonth) {
@@ -1092,20 +1075,24 @@
         
     } else {
         
-        FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
-        _currentPage = cell.date ?: _today;
+        NSInteger visibleSection = [_currentPage fs_monthsFrom:_minimumDate.fs_firstDayOfMonth];
+        NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:visibleSection];
+        NSDate *firstDateForWeekMode = [self dateForIndexPath:firstIndexPath scope:fromScope];
+        _currentPage = firstDateForWeekMode;
+        
     }
     
     void(^resizeBlock)() = ^{
         
         CGSize size = [self sizeThatFits:self.frame.size];
-        _daysContainer.clipsToBounds = YES;
         void(^transitionCompletion)() = ^{
-            _daysContainer.clipsToBounds = NO;
             _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
-            if (!weekToMonth) {
-                completion();
+            if (monthToWeek) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion();
+                });
             }
+            _contentView.clipsToBounds = NO;
         };
         
         if (animated) {
@@ -1148,25 +1135,22 @@
             
         } else {
             
-            _needsAdjustingViewFrame = weekToMonth;
+            _needsAdjustingViewFrame = YES;
             _bottomBorder.frame = CGRectMake(0, size.height, self.fs_width, 1);
+
             transitionCompletion();
             
             if (_delegate && [_delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
                 [_delegate calendarCurrentScopeWillChange:self animated:animated];
             }
-            
         }
-        
     };
     
-    if (animated) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            resizeBlock();
-        });
-    } else {
+    _contentView.clipsToBounds = YES;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
         resizeBlock();
-    }
+    });
 }
 
 - (void)selectDate:(NSDate *)date
@@ -1369,9 +1353,9 @@
     }
 }
 
-- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
+- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath scope:(FSCalendarScope)scope
 {
-    switch (_scope) {
+    switch (scope) {
         case FSCalendarScopeMonth: {
             NSDate *currentPage = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:indexPath.section];
             NSDate *firstDayOfMonth = currentPage.fs_firstDayOfMonth;
@@ -1400,6 +1384,13 @@
         }
     }
     return nil;
+}
+
+
+
+- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
+{
+    return [self dateForIndexPath:indexPath scope:_scope];
 }
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date

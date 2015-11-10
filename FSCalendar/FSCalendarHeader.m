@@ -167,7 +167,7 @@
             if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
                 text = nil;
             } else {
-                NSDate *date = [self.calendar.minimumDate.fs_firstDayOfWeek fs_dateByAddingWeeks:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
+                NSDate *date = [self.calendar.minimumDate.fs_middleOfWeek fs_dateByAddingWeeks:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
                 text = [_dateFormatter stringFromDate:date];
             }
             break;
