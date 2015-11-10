@@ -77,6 +77,7 @@
 @property (assign, nonatomic) CGFloat                    preferedHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferedWeekdayHeight;
 @property (assign, nonatomic) CGFloat                    preferedRowHeight;
+@property (assign, nonatomic) UIInterfaceOrientation     interfaceOrientation;
 
 @property (readonly, nonatomic) NSInteger currentSection;
 @property (readonly, nonatomic) BOOL floatingMode;
@@ -171,6 +172,7 @@
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
+    _interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -219,6 +221,7 @@
     self.bottomBorder = view;
     
     [self invalidateLayout];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeDidChange:) name:UIApplicationSignificantTimeChangeNotification object:nil];
@@ -650,15 +653,7 @@
 
 - (void)orientationDidChange:(NSNotification *)notification
 {
-    _needsAdjustingViewFrame = YES;
-    _needsAdjustingMonthPosition = YES;
-    _needsAdjustingTextSize = YES;
-    [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell why?
-    [_stickyHeaderMapTable.dictionaryRepresentation.allValues setValue:@YES forKey:@"needsAdjustingFrames"];
-    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
-    _preferedRowHeight = FSCalendarAutomaticDimension;
-    _preferedHeaderHeight = FSCalendarAutomaticDimension;
-    [self setNeedsLayout];
+    self.interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
 }
 
 - (void)significantTimeDidChange:(NSNotification *)notification
@@ -807,9 +802,12 @@
 - (void)setLocale:(NSLocale *)locale
 {
     if (![_calendar.locale isEqual:locale]) {
-        _calendar.locale = locale;
-        _header.dateFormatter.locale = locale;
+        // Everything needs to be relocaled
+        [NSCalendar fs_sharedCalendar].locale = locale;
+        [NSDateFormatter fs_sharedDateFormatter].locale = locale;
+        // End
         [_header reloadData];
+        [_stickyHeaderMapTable.dictionaryRepresentation.allValues makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [self invalidateWeekdaySymbols];
     }
 }
@@ -873,6 +871,26 @@
         _header.scrollEnabled = scrollEnabled;
         
         [self invalidateLayout];
+    }
+}
+
+- (void)setInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (_interfaceOrientation != interfaceOrientation) {
+        _interfaceOrientation = interfaceOrientation;
+        
+        if (interfaceOrientation != UIInterfaceOrientationUnknown) {
+            _needsAdjustingViewFrame = YES;
+            _needsAdjustingMonthPosition = YES;
+            _needsAdjustingTextSize = YES;
+            [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell why?
+            [_stickyHeaderMapTable.dictionaryRepresentation.allValues setValue:@YES forKey:@"needsAdjustingFrames"];
+            _preferedWeekdayHeight = FSCalendarAutomaticDimension;
+            _preferedRowHeight = FSCalendarAutomaticDimension;
+            _preferedHeaderHeight = FSCalendarAutomaticDimension;
+            [self setNeedsLayout];
+        }
+
     }
 }
 

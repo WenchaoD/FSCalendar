@@ -15,7 +15,8 @@
 
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
-@property (copy, nonatomic) NSDateFormatter            *dateFormatter;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 @property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
@@ -48,7 +49,7 @@
 
 - (void)initialize
 {
-    _dateFormatter = [[NSDateFormatter alloc] init];
+    _dateFormatter = [NSDateFormatter fs_sharedDateFormatter];
     _scrollDirection = UICollectionViewScrollDirectionHorizontal;
     _scrollEnabled = YES;
     

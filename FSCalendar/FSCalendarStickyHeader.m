@@ -35,7 +35,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.dateFormatter = [[NSDateFormatter alloc] init];
+        self.dateFormatter = [NSDateFormatter fs_sharedDateFormatter];
         self.needsReloadingAppearance = YES;
         self.needsAdjustingFrames = YES;
         
