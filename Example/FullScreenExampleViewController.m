@@ -34,6 +34,7 @@
     calendar.pagingEnabled = NO; // important
     calendar.allowsMultipleSelection = YES;
     calendar.backgroundColor = [UIColor whiteColor];
+    calendar.firstWeekday = 2;
     calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
     [self.view addSubview:calendar];
     self.calendar = calendar;

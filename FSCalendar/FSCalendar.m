@@ -89,6 +89,7 @@
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
+- (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 
 - (void)scrollToDate:(NSDate *)date;
 - (void)scrollToDate:(NSDate *)date animated:(BOOL)animated;
@@ -179,6 +180,7 @@
     self.contentView = contentView;
     
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.actions = @{@"path":[NSNull null]};
     contentView.layer.mask = maskLayer;
     self.maskLayer = maskLayer;
     
@@ -357,13 +359,18 @@
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
+    return [self sizeThatFits:size scope:_scope];
+}
+
+- (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope
+{
     CGFloat headerHeight = self.preferedHeaderHeight;
     CGFloat weekdayHeight = self.preferedWeekdayHeight;
     CGFloat rowHeight = self.preferedRowHeight;
     CGFloat paddings = weekdayHeight * 0.2;
- 
+    
     if (!self.floatingMode) {
-        switch (_scope) {
+        switch (scope) {
             case FSCalendarScopeMonth: {
                 CGFloat height = weekdayHeight + headerHeight + 6*rowHeight + paddings;
                 return CGSizeMake(size.width, height);
@@ -416,10 +423,9 @@
         }
     } else {
         NSDate *currentPage = [_minimumDate.fs_firstDayOfMonth fs_dateByAddingMonths:section];
-        NSDate *firstDayOfMonth = [NSDate fs_dateWithYear:currentPage.fs_year
-                                                    month:currentPage.fs_month
-                                                      day:1];
-        NSInteger numberOfRows = (firstDayOfMonth.fs_weekday-_calendar.firstWeekday+currentPage.fs_numberOfDaysInMonth)/7 + ((firstDayOfMonth.fs_weekday-_calendar.firstWeekday+currentPage.fs_numberOfDaysInMonth)%7 !=0 );
+        NSDate *firstDayOfMonth = currentPage.fs_firstDayOfMonth;
+        NSInteger numberOfPlaceholdersForPrev = (firstDayOfMonth.fs_weekday-_calendar.firstWeekday + 7) % 7;
+        NSInteger numberOfRows = (numberOfPlaceholdersForPrev+firstDayOfMonth.fs_numberOfDaysInMonth)/7 + ((numberOfPlaceholdersForPrev+firstDayOfMonth.fs_numberOfDaysInMonth)%7!=0);
         return numberOfRows * 7;
     }
     return 7;
@@ -717,7 +723,7 @@
 {
     if (_firstWeekday != firstWeekday) {
         _firstWeekday = firstWeekday;
-        [_calendar setFirstWeekday:firstWeekday];
+        _calendar.firstWeekday = firstWeekday;
         [_collectionView reloadData];
         [self invalidateWeekdaySymbols];
     }
@@ -1084,13 +1090,17 @@
     
     void(^resizeBlock)() = ^{
         
-        CGSize size = [self sizeThatFits:self.frame.size];
+        CGSize size = [self sizeThatFits:self.frame.size scope:toScope];
         void(^transitionCompletion)() = ^{
             _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
             if (monthToWeek) {
-                dispatch_async(dispatch_get_main_queue(), ^{
+                if (animated) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completion();
+                    });
+                } else {
                     completion();
-                });
+                }
             }
             _contentView.clipsToBounds = NO;
         };
@@ -1151,6 +1161,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         resizeBlock();
     });
+    
 }
 
 - (void)selectDate:(NSDate *)date
@@ -1385,8 +1396,6 @@
     }
     return nil;
 }
-
-
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
