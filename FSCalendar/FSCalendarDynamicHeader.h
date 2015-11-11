@@ -51,7 +51,6 @@
 @interface FSCalendarHeader (Dynamic)
 
 @property (readonly, nonatomic) UICollectionView *collectionView;
-@property (readonly, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 

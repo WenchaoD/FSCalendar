@@ -61,6 +61,17 @@
                         @"2015-10-15",
                         @"2015-10-25"];
     
+    // Uncomment this to test the month->week & week->month transition
+    /*
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_calendar setScope:FSCalendarScopeWeek animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [_calendar setScope:FSCalendarScopeMonth animated:YES];
+        });
+    });
+     */
+    
+    
 #if 0
     FSCalendarTestSelectDate
 #endif

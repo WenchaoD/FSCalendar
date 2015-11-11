@@ -18,7 +18,7 @@
 @property (weak, nonatomic) UIView *contentView;
 @property (weak, nonatomic) UIView *separator;
 
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (weak, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (assign, nonatomic) BOOL needsReloadingAppearance;
 @property (assign, nonatomic) BOOL needsAdjustingFrames;
@@ -35,9 +35,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.dateFormatter = [[NSDateFormatter alloc] init];
-        self.needsReloadingAppearance = YES;
-        self.needsAdjustingFrames = YES;
+        _dateFormatter = [NSDateFormatter fs_sharedDateFormatter];
+        _needsReloadingAppearance = YES;
+        _needsAdjustingFrames = YES;
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
         view.backgroundColor = [UIColor clearColor];

@@ -17,16 +17,16 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         super.viewDidLoad()
         calendar.scrollDirection = .Vertical
         calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
-        
         calendar.selectDate(NSDate())
+//        calendar.allowsMultipleSelection = true
         
+        // Uncomment this to test month->week and week->month transition
         /*
-        calendar.allowsMultipleSelection = true
-        var dateArray = ["20160101", "20151115", "20151211", "20151201", "20151107", "20160105"]
-        for (var i = 0 ; i < dateArray.count; i++) {
-            let dateString =  dateArray[i] as NSString
-            let date = dateString.fs_dateWithFormat("yyyyMMdd");
-            calendar.selectDate(date)
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(1.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+            self.calendar.setScope(.Week, animated: true)
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(1.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+                self.calendar.setScope(.Month, animated: true)
+            }
         }
         */
 
@@ -56,6 +56,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     
     func calendarCurrentScopeWillChange(calendar: FSCalendar!, animated: Bool) {
         calendarHeightConstraint.constant = calendar.sizeThatFits(CGSizeZero).height
+        view.layoutIfNeeded()
     }
     
     func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
