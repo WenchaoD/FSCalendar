@@ -9,7 +9,6 @@
 #import "FSCalendarCell.h"
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
-#import "NSDate+FSExtension.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarConstance.h"
 
@@ -31,6 +30,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:14];
@@ -48,7 +48,6 @@
         CAShapeLayer *backgroundLayer = [CAShapeLayer layer];
         backgroundLayer.backgroundColor = [UIColor clearColor].CGColor;
         backgroundLayer.hidden = YES;
-        backgroundLayer.actions = @{@"fillColor":[NSNull null]};
         [self.contentView.layer insertSublayer:backgroundLayer below:_titleLabel.layer];
         self.backgroundLayer = backgroundLayer;
         
@@ -135,17 +134,25 @@
 - (void)configureCell
 {
     _titleLabel.font = [UIFont systemFontOfSize:_appearance.titleTextSize];
-    _titleLabel.text = [NSString stringWithFormat:@"%@",@(_date.fs_day)];
+    _titleLabel.text = [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
+    
+    __block CGFloat titleHeight = 0;
+    __block CGFloat subtitleHeight = 0;
+    
+    if (_subtitle) {
+        _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize];
+    }
     
 #define m_calculateTitleHeight \
-        CGFloat titleHeight = [_titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}].height;
-    
+    if (_subtitle) { \
+        titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_titleLabel.font}].height; \
+        subtitleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_subtitleLabel.font}].height;\
+    }
+
 #define m_adjustLabelFrame \
     if (_subtitle) { \
         _subtitleLabel.hidden = NO; \
         _subtitleLabel.text = _subtitle; \
-        _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize]; \
-        CGFloat subtitleHeight = [_subtitleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.subtitleLabel.font}].height;\
         CGFloat height = titleHeight + subtitleHeight; \
         _titleLabel.frame = CGRectMake(0, \
                                        (self.contentView.fs_height*5.0/6.0-height)*0.5, \
@@ -196,7 +203,7 @@
 
 - (BOOL)isWeekend
 {
-    return self.date.fs_weekday == 1 || self.date.fs_weekday == 7;
+    return [_calendar weekdayOfDate:_date] == 1 || [_calendar weekdayOfDate:_date] == 7;
 }
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
@@ -256,6 +263,14 @@
 - (FSCalendarCellShape)cellShape
 {
     return _preferedCellShape ?: _appearance.cellShape;
+}
+
+- (void)setCalendar:(FSCalendar *)calendar
+{
+    if (![_calendar isEqual:calendar]) {
+        _calendar = calendar;
+        _appearance = calendar.appearance;
+    }
 }
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "LoadViewExampleViewController.h"
-#import "NSDate+FSExtension.h"
 #import "FSCalendarTestMacros.h"
 
 @implementation LoadViewExampleViewController
@@ -44,7 +43,7 @@
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
 //    calendar.scrollEnabled = NO;
 //    calendar.scope = FSCalendarScopeWeek;
-    [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:6]];
+    [calendar selectDate:[calendar dateWithYear:2015 month:2 day:6]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -62,18 +61,18 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    NSLog(@"should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     return YES;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM YYYY"]);
 }
 
 //- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
@@ -93,7 +92,7 @@
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
-    return self.images[[date fs_stringWithFormat:@"yyyy/MM/dd"]];
+    return self.images[[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
 }
 
 @end

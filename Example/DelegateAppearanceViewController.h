@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
-#import "NSDate+FSExtension.h"
 
 @interface DelegateAppearanceViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 
 @property (weak, nonatomic) FSCalendar *calendar;
+
+@property (strong, nonatomic) NSDictionary *selectionColors;
+@property (strong, nonatomic) NSDictionary *borderDefaultColors;
+@property (strong, nonatomic) NSDictionary *borderSelectionColors;
 
 @end

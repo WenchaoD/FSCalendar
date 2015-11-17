@@ -7,7 +7,6 @@
 //
 
 #import "FSCalendarScopeExampleViewController.h"
-#import "NSDate+FSExtension.h"
 
 @implementation FSCalendarScopeExampleViewController
 
@@ -28,11 +27,11 @@
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[obj fs_stringWithFormat:@"yyyy/MM/dd"]];
+        [selectedDates addObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
     

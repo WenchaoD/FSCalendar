@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
-#import "NSDate+FSExtension.h"
 
 @interface MultipleSelectionViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate>
 

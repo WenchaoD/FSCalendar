@@ -13,11 +13,13 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
+    let datesWithCat = ["20150505","20150605","20150705","20150805","20150905","20151005","20151105","20151205","20160106",
+    "20160206","20160306","20160406","20160506","20160606","20160706"]
     override func viewDidLoad() {
         super.viewDidLoad()
         calendar.scrollDirection = .Vertical
         calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
-        calendar.selectDate(NSDate())
+        calendar.selectDate(calendar.dateWithYear(2015, month: 10, day: 10))
 //        calendar.allowsMultipleSelection = true
         
         // Uncomment this to test month->week and week->month transition
@@ -32,26 +34,26 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
 
     }
     
-    /*
+
     func minimumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
-        return NSDate().fs_firstDayOfMonth
+        return calendar.dateWithYear(2015, month: 1, day: 1)
     }
     
     func maximumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
-        return NSDate().fs_dateByAddingMonths(3).fs_lastDayOfMonth
+        return calendar.dateWithYear(2016, month: 10, day: 31)
     }
-    */
+    
 
     func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
-        return date.fs_day == 5
+        return calendar.dayOfDate(date) == 5
     }
 
     func calendarCurrentPageDidChange(calendar: FSCalendar!) {
-        NSLog("change page to \(calendar.currentPage.fs_string())")
+        NSLog("change page to \(calendar.stringFromDate(calendar.currentPage))")
     }
     
     func calendar(calendar: FSCalendar!, didSelectDate date: NSDate!) {
-        NSLog("calendar did select date \(date.fs_string())")
+        NSLog("calendar did select date \(calendar.stringFromDate(date))")
     }
     
     func calendarCurrentScopeWillChange(calendar: FSCalendar!, animated: Bool) {
@@ -60,7 +62,7 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     }
     
     func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
-        return (date.fs_day == 13 || date.fs_day == 24) ? UIImage(named: "icon_cat") : nil
+        return [13,24].containsObject(calendar.dayOfDate(date)) ? UIImage(named: "icon_cat") : nil
     }
     
 }

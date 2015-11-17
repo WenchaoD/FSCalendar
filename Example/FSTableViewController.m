@@ -12,6 +12,7 @@
 #import "MultipleSelectionViewController.h"
 #import "FullScreenExampleViewController.h"
 #import "DelegateAppearanceViewController.h"
+#import "CalendarIdentifierViewController.h"
 
 @implementation FSTableViewController
 
@@ -22,6 +23,7 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
     self.viewControllers = @[
+                             [CalendarIdentifierViewController class],
                              [DelegateAppearanceViewController class],
                              [FullScreenExampleViewController class],
                              [MultipleSelectionViewController class],

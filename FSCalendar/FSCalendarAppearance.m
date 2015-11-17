@@ -12,6 +12,8 @@
 
 @interface FSCalendarAppearance ()
 
+@property (weak  , nonatomic) FSCalendar *calendar;
+
 @property (strong, nonatomic) NSMutableDictionary *backgroundColors;
 @property (strong, nonatomic) NSMutableDictionary *titleColors;
 @property (strong, nonatomic) NSMutableDictionary *subtitleColors;

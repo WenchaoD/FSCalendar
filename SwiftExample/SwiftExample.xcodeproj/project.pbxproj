@@ -165,7 +165,6 @@
 				EE0954D41B97DDF4007F6964 /* FSCalendarCell.m */,
 				EE0954D51B97DDF4007F6964 /* FSCalendarConstance.h */,
 				EE0954D61B97DDF4007F6964 /* FSCalendarConstance.m */,
-				EE0954D71B97DDF4007F6964 /* FSCalendarDynamicHeader.h */,
 				EEC9C03C1BDCA2D600383A07 /* FSCalendarCollectionView.h */,
 				EEC9C03D1BDCA2D600383A07 /* FSCalendarCollectionView.m */,
 				EEC9C03E1BDCA2D600383A07 /* FSCalendarFlowLayout.h */,
@@ -182,6 +181,7 @@
 				EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */,
 				EE0954CD1B97DDF4007F6964 /* FSCalendar+IBExtension.h */,
 				EE0954CE1B97DDF4007F6964 /* FSCalendar+IBExtension.m */,
+				EE0954D71B97DDF4007F6964 /* FSCalendarDynamicHeader.h */,
 				EE0954DC1B97DDF4007F6964 /* Info.plist */,
 			);
 			name = FSCalendar;

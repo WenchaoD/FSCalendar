@@ -13,4 +13,6 @@
 
 @property (weak, nonatomic) FSCalendar *calendar;
 
+- (void)todayItemClicked:(id)sender;
+
 @end
