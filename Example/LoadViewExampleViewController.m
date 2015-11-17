@@ -40,8 +40,6 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-//    calendar.scrollEnabled = NO;
-//    calendar.scope = FSCalendarScopeWeek;
     [calendar selectDate:[calendar dateWithYear:2015 month:2 day:6]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];

@@ -10,14 +10,6 @@
 
 @implementation FSCalendarScopeExampleViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    _calendar.firstWeekday = 1;
-//    _calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-//    _calendar.scope = FSCalendarScopeWeek;
-}
-
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
 {
     CGSize size = [calendar sizeThatFits:calendar.frame.size];
@@ -67,7 +59,6 @@
     [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
     
     FSCalendarScope selectedScope = indexPath.row == 0 ? FSCalendarScopeMonth : FSCalendarScopeWeek;
-    //    _calendar.scope = selectedScope;
     [_calendar setScope:selectedScope animated:_animationSwitch.on];
     
 }

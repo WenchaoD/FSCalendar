@@ -32,18 +32,6 @@
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     
     [_calendar selectDate:[_calendar dateWithYear:2015 month:10 day:5]];
-//    _firstWeekday = _calendar.firstWeekday;
-//    _calendar.firstWeekday = 2; // Monday
-//    _calendar.flow = FSCalendarFlowVertical;
-//    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
-//    _calendar.scope = FSCalendarScopeWeek;
-//    _calendar.allowsMultipleSelection = YES;
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [_calendar deselectDate:[NSDate date]];
-//        _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-//    });
-    
     
     _datesShouldNotBeSelected = @[@"2015/08/07",
                                   @"2015/09/07",
@@ -103,7 +91,7 @@
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [calendar dateWithYear:2015 month:5 day:31];
+    return [calendar dateWithYear:2016 month:5 day:31];
 }
 
 
