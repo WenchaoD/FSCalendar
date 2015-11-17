@@ -7,8 +7,6 @@
 //
 
 #import "LoadViewExampleViewController.h"
-#import "NSDate+FSExtension.h"
-#import "FSCalendarTestMacros.h"
 
 @implementation LoadViewExampleViewController
 
@@ -42,9 +40,7 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-//    calendar.scrollEnabled = NO;
-//    calendar.scope = FSCalendarScopeWeek;
-    [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:6]];
+    [calendar selectDate:[calendar dateWithYear:2015 month:2 day:6]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -62,18 +58,18 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    NSLog(@"should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     return YES;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM YYYY"]);
 }
 
 //- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
@@ -83,17 +79,17 @@
 
 //- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [NSDate fs_dateWithYear:2015 month:1 day:1];
+//    return [_calendar dateWithYear:2015 month:1 day:1];
 //}
 //
 //- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [NSDate fs_dateWithYear:2015 month:10 day:31];
+//    return [_calendar dateWithYear:2016 month:12 day:31];
 //}
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
-    return self.images[[date fs_stringWithFormat:@"yyyy/MM/dd"]];
+    return self.images[[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
 }
 
 @end

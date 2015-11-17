@@ -7,9 +7,6 @@
 //
 
 #import "FullScreenExampleViewController.h"
-#import "NSDate+FSExtension.h"
-
-#import "FSCalendarTestMacros.h"
 
 @implementation FullScreenExampleViewController
 
@@ -29,34 +26,32 @@
     self.view = view;
     
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64)];
+    calendar.backgroundColor = [UIColor whiteColor];
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.pagingEnabled = NO; // important
     calendar.allowsMultipleSelection = YES;
-    calendar.backgroundColor = [UIColor whiteColor];
     calendar.firstWeekday = 2;
     calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
     [self.view addSubview:calendar];
     self.calendar = calendar;
+    
+    UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStyleBordered target:self action:@selector(todayItemClicked:)];
+    self.navigationItem.rightBarButtonItem = todayItem;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        _calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesDefaultCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
-//    });
-//    [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:9 day:30] scrollToDate:YES];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_calendar reloadData];
-        //        _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-    });
 #if 0
     FSCalendarTestSelectDate
 #endif
 
+}
+
+- (void)todayItemClicked:(id)sender
+{
+    [_calendar setCurrentPage:[NSDate date] animated:YES];
 }
 
 - (void)viewWillLayoutSubviews
@@ -73,18 +68,18 @@
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [[NSDate date] fs_dateByAddingMonths:3];
+    return [calendar dateByAddingMonths:3 toDate:[NSDate date]];
 }
 */
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change page %@",[calendar.currentPage fs_stringWithFormat:@"yyyy-MM"]);
+    NSLog(@"did change page %@",[calendar stringFromDate:calendar.currentPage format:@"yyyy-MM"]);
 }
 
 @end

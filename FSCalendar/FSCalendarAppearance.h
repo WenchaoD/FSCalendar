@@ -36,8 +36,6 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 @interface FSCalendarAppearance : NSObject
 
-@property (weak  , nonatomic) FSCalendar *calendar;
-
 @property (assign, nonatomic) CGFloat  titleTextSize;
 @property (assign, nonatomic) CGFloat  subtitleTextSize;
 @property (assign, nonatomic) CGFloat  weekdayTextSize;

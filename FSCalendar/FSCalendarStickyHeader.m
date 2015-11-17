@@ -9,7 +9,6 @@
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
-#import "NSDate+FSExtension.h"
 #import "FSCalendarConstance.h"
 #import "FSCalendarDynamicHeader.h"
 
@@ -17,8 +16,6 @@
 
 @property (weak, nonatomic) UIView *contentView;
 @property (weak, nonatomic) UIView *separator;
-
-@property (weak, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (assign, nonatomic) BOOL needsReloadingAppearance;
 @property (assign, nonatomic) BOOL needsAdjustingFrames;
@@ -35,7 +32,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        _dateFormatter = [NSDateFormatter fs_sharedDateFormatter];
         _needsReloadingAppearance = YES;
         _needsAdjustingFrames = YES;
         
@@ -65,12 +61,6 @@
         self.weekdayLabels = weekdayLabels.copy;
     }
     return self;
-}
-
-- (void)setBounds:(CGRect)bounds
-{
-    [super setBounds:bounds];
-    
 }
 
 - (void)layoutSubviews
@@ -119,6 +109,16 @@
     }
 }
 
+#pragma mark - Properties
+
+- (void)setCalendar:(FSCalendar *)calendar
+{
+    if (![_calendar isEqual:calendar]) {
+        _calendar = calendar;
+        _appearance = calendar.appearance;
+    }
+}
+
 #pragma mark - Public methods
 
 - (void)reloadData
@@ -132,10 +132,9 @@
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
     }];
 
-    _dateFormatter.dateFormat = _appearance.headerDateFormat;
-    _dateFormatter.locale = self.calendar.locale;
+    _calendar.formatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
-    NSString *text = [_dateFormatter stringFromDate:_month];
+    NSString *text = [_calendar.formatter stringFromDate:_month];
     text = usesUpperCase ? text.uppercaseString : text;
     _titleLabel.text = text;
 }

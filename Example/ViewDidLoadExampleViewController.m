@@ -7,7 +7,6 @@
 //
 
 #import "ViewDidLoadExampleViewController.h"
-#import "NSDate+FSExtension.h"
 
 @implementation ViewDidLoadExampleViewController
 
@@ -40,7 +39,7 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;    
-    [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
+    [calendar selectDate:[calendar dateWithYear:2015 month:2 day:1]];
     [self.view addSubview:calendar];
     self.calendar = calendar;
     
@@ -48,17 +47,17 @@
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM YYYY"]);
 }
 
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
 {
-    return date.fs_day == 5;
+    return [calendar dayOfDate:date] == 5;
 }
 
 @end

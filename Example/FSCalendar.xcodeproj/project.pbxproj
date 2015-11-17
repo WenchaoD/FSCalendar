@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */; };
+		3084BD191BF9AB8100C956F7 /* CalendarIdentifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3084BD181BF9AB8100C956F7 /* CalendarIdentifierViewController.m */; };
 		3092253A1B905C4300123031 /* FSCalendarConstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 309225381B905C4300123031 /* FSCalendarConstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3092253B1B905C4300123031 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 309225391B905C4300123031 /* FSCalendarConstance.m */; };
 		3092253C1B905C4300123031 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 309225391B905C4300123031 /* FSCalendarConstance.m */; };
@@ -103,6 +104,8 @@
 /* Begin PBXFileReference section */
 		30024F931BD1015300B1C04C /* DelegateAppearanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelegateAppearanceViewController.h; sourceTree = SOURCE_ROOT; };
 		30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelegateAppearanceViewController.m; sourceTree = SOURCE_ROOT; };
+		3084BD171BF9AB8100C956F7 /* CalendarIdentifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarIdentifierViewController.h; sourceTree = SOURCE_ROOT; };
+		3084BD181BF9AB8100C956F7 /* CalendarIdentifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarIdentifierViewController.m; sourceTree = SOURCE_ROOT; };
 		309225381B905C4300123031 /* FSCalendarConstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarConstance.h; sourceTree = "<group>"; };
 		309225391B905C4300123031 /* FSCalendarConstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarConstance.m; sourceTree = "<group>"; };
 		30B0BABD1B8D8E22004B9476 /* FSCalendar+IBExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FSCalendar+IBExtension.h"; sourceTree = "<group>"; };
@@ -188,8 +191,6 @@
 		EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarCollectionView.m; sourceTree = "<group>"; };
 		EECA10F61BA9C0E400945B83 /* FullScreenExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenExampleViewController.h; sourceTree = SOURCE_ROOT; };
 		EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenExampleViewController.m; sourceTree = SOURCE_ROOT; };
-		EEF1EB571BBCBBC600F1B357 /* FSCalendarSelectDateTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarSelectDateTest.h; sourceTree = SOURCE_ROOT; };
-		EEF1EB581BBCBCBA00F1B357 /* FSCalendarTestMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSCalendarTestMacros.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +218,15 @@
 				30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */,
 			);
 			name = "Delegate Appearance";
+			sourceTree = "<group>";
+		};
+		3084BD161BF9AB2200C956F7 /* Calendar Identifiers */ = {
+			isa = PBXGroup;
+			children = (
+				3084BD171BF9AB8100C956F7 /* CalendarIdentifierViewController.h */,
+				3084BD181BF9AB8100C956F7 /* CalendarIdentifierViewController.m */,
+			);
+			name = "Calendar Identifiers";
 			sourceTree = "<group>";
 		};
 		30B0BABC1B8D8E22004B9476 /* FSCalendar */ = {
@@ -292,13 +302,13 @@
 		EE0D7FC91B89C5D3003C287B /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				EEF1EB561BBCBB9C00F1B357 /* FSCalendarTestMacro */,
 				EE638CD51B89DC090006DD1A /* Main_iPad.storyboard */,
 				EE638CD71B89DC090006DD1A /* Main_iPhone.storyboard */,
 				EE638CCF1B89DBE90006DD1A /* AppDelegate.h */,
 				EE638CD01B89DBE90006DD1A /* AppDelegate.m */,
 				EE638CD11B89DBE90006DD1A /* FSTableViewController.h */,
 				EE638CD21B89DBE90006DD1A /* FSTableViewController.m */,
+				3084BD161BF9AB2200C956F7 /* Calendar Identifiers */,
 				30024F921BD1013D00B1C04C /* Delegate Appearance */,
 				EECA10F51BA9BF9B00945B83 /* Fullscreen Example */,
 				30F5D8571B9FC48C00C1C201 /* MultipleSelection Example */,
@@ -420,15 +430,6 @@
 				EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */,
 			);
 			name = "Fullscreen Example";
-			sourceTree = "<group>";
-		};
-		EEF1EB561BBCBB9C00F1B357 /* FSCalendarTestMacro */ = {
-			isa = PBXGroup;
-			children = (
-				EEF1EB581BBCBCBA00F1B357 /* FSCalendarTestMacros.h */,
-				EEF1EB571BBCBBC600F1B357 /* FSCalendarSelectDateTest.h */,
-			);
-			name = FSCalendarTestMacro;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -574,6 +575,7 @@
 				30B0BAD21B8D8E23004B9476 /* FSCalendarCell.m in Sources */,
 				30B0BAD71B8D8E23004B9476 /* UIView+FSExtension.m in Sources */,
 				EE638CD41B89DBE90006DD1A /* FSTableViewController.m in Sources */,
+				3084BD191BF9AB8100C956F7 /* CalendarIdentifierViewController.m in Sources */,
 				EE638CCB1B89DBAC0006DD1A /* main.m in Sources */,
 				EE638CB51B89DB450006DD1A /* SSHolidayChina.m in Sources */,
 				30B0BAD11B8D8E23004B9476 /* FSCalendarAppearance.m in Sources */,
@@ -748,7 +750,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.FSCalendarExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -762,7 +764,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.FSCalendarExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -8,19 +8,15 @@
 
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
-#import "NSDate+FSExtension.h"
 #import "FSCalendarHeader.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarDynamicHeader.h"
 
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
-@property (weak, nonatomic) NSDateFormatter *dateFormatter;
 @property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
 
 @property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
-
-@property (readonly, nonatomic) FSCalendar *calendar;
 
 @end
 
@@ -48,7 +44,6 @@
 
 - (void)initialize
 {
-    _dateFormatter = [NSDateFormatter fs_sharedDateFormatter];
     _scrollDirection = UICollectionViewScrollDirectionHorizontal;
     _scrollEnabled = YES;
     
@@ -112,13 +107,15 @@
         case FSCalendarScopeMonth: {
             switch (_scrollDirection) {
                 case UICollectionViewScrollDirectionVertical: {
-                    NSInteger count = [self.calendar.maximumDate fs_monthsFrom:self.calendar.minimumDate.fs_firstDayOfMonth] + 1;
+                    NSDate *minimumPage = [_calendar beginingOfMonthOfDate:_calendar.minimumDate];
+                    NSInteger count = [_calendar monthsFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
                     return count;
                 }
                 case UICollectionViewScrollDirectionHorizontal: {
                     // 这里需要默认多出两项，否则当contentOffset为负时，切换到其他页面时会自动归零
                     // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
-                    NSInteger count = [self.calendar.maximumDate fs_monthsFrom:self.calendar.minimumDate.fs_firstDayOfMonth] + 1;
+                    NSDate *minimumPage = [_calendar beginingOfMonthOfDate:_calendar.minimumDate];
+                    NSInteger count = [_calendar monthsFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
                     return count + 2;
                 }
                 default: {
@@ -128,7 +125,8 @@
             break;
         }
         case FSCalendarScopeWeek: {
-            NSInteger count = [self.calendar.maximumDate fs_weeksFrom:self.calendar.minimumDate.fs_firstDayOfWeek] + 1;
+            NSDate *minimumPage = [_calendar beginingOfMonthOfDate:_calendar.minimumDate];
+            NSInteger count = [_calendar weeksFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
             return count + 2;
         }
         default: {
@@ -144,7 +142,7 @@
     cell.header = self;
     cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
     cell.titleLabel.textColor = _appearance.headerTitleColor;
-    _dateFormatter.dateFormat = _appearance.headerDateFormat;
+    _calendar.formatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
     NSString *text = nil;
     switch (self.calendar.scope) {
@@ -154,12 +152,12 @@
                 if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
                     text = nil;
                 } else {
-                    NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
-                    text = [_dateFormatter stringFromDate:date];
+                    NSDate *date = [_calendar dateByAddingMonths:indexPath.item-1 toDate:_calendar.minimumDate];
+                    text = [_calendar.formatter stringFromDate:date];
                 }
             } else {
-                NSDate *date = [self.calendar.minimumDate fs_dateByAddingMonths:indexPath.item].fs_dateByIgnoringTimeComponents;
-                text = [_dateFormatter stringFromDate:date];
+                NSDate *date = [_calendar dateByAddingMonths:indexPath.item toDate:_calendar.minimumDate];
+                text = [_calendar.formatter stringFromDate:date];
             }
             break;
         }
@@ -167,8 +165,9 @@
             if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
                 text = nil;
             } else {
-                NSDate *date = [self.calendar.minimumDate.fs_middleOfWeek fs_dateByAddingWeeks:indexPath.item - 1].fs_dateByIgnoringTimeComponents;
-                text = [_dateFormatter stringFromDate:date];
+                NSDate *firstPage = [_calendar middleOfWeekFromDate:_calendar.minimumDate];
+                NSDate *date = [_calendar dateByAddingWeeks:indexPath.item-1 toDate:firstPage];
+                text = [_calendar.formatter stringFromDate:date];
             }
             break;
         }
@@ -194,6 +193,16 @@
 }
 
 #pragma mark - Properties
+
+
+- (void)setCalendar:(FSCalendar *)calendar
+{
+    if (![_calendar isEqual:calendar]) {
+        _calendar = calendar;
+        _appearance  = calendar.appearance;
+    }
+}
+
 
 - (void)setScrollOffset:(CGFloat)scrollOffset
 {
@@ -231,13 +240,6 @@
 - (void)reloadData
 {
     [_collectionView reloadData];
-}
-
-#pragma mark - Private
-
-- (FSCalendar *)calendar
-{
-    return (FSCalendar *)self.superview.superview;
 }
 
 @end

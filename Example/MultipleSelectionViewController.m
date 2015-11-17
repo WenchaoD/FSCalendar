@@ -7,11 +7,6 @@
 //
 
 #import "MultipleSelectionViewController.h"
-#import "FSCalendarTestMacros.h"
-
-@interface MultipleSelectionViewController () <FSCalendarDelegateAppearance>
-
-@end
 
 @implementation MultipleSelectionViewController
 
@@ -43,7 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_calendar selectDate:[[NSDate date] fs_dateByAddingDays:1]];
+    [_calendar selectDate:[_calendar dateByAddingDays:1 toDate:[NSDate date]]];
     
 #if 0
     FSCalendarTestSelectDate
@@ -52,9 +47,9 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    BOOL shouldDedeselect = date.fs_day != 5;
+    BOOL shouldDedeselect = [_calendar dayOfDate:date] != 5;
     if (!shouldDedeselect) {
-        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be selected",date.fs_string] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be selected",[calendar stringFromDate:date]] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
         return NO;
     }
     return YES;
@@ -62,9 +57,9 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date
 {
-    BOOL shouldDedeselect = date.fs_day != 7;
+    BOOL shouldDedeselect = [_calendar dayOfDate:date] != 7;
     if (!shouldDedeselect) {
-        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be deselected",date.fs_string] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be deselected",[calendar stringFromDate:date]] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
         return NO;
     }
     return YES;
@@ -74,7 +69,7 @@
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[obj fs_stringWithFormat:@"yyyy/MM/dd"]];
+        [selectedDates addObject:[calendar stringFromDate:obj format:@"yyyy/MM/dd"]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
 }
@@ -83,14 +78,14 @@
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[obj fs_stringWithFormat:@"yyyy/MM/dd"]];
+        [selectedDates addObject:[calendar stringFromDate:obj format:@"yyyy/MM/dd"]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
 }
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date
 {
-    if (date.fs_day % 2 == 0) {
+    if ([_calendar dayOfDate:date] % 2 == 0) {
         return appearance.selectionColor;
     }
     return [UIColor purpleColor];
@@ -98,7 +93,7 @@
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date
 {
-    if (date.fs_day == 17 || date.fs_day == 18 || date.fs_day == 19) {
+    if ([@[@17,@18,@19] containsObject:@([calendar dayOfDate:date])]) {
         return [UIColor magentaColor];
     }
     return appearance.borderDefaultColor;

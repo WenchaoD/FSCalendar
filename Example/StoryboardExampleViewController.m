@@ -7,10 +7,8 @@
 //
 
 #import "StoryboardExampleViewController.h"
-#import "NSDate+FSExtension.h"
 #import "SSLunarDate.h"
 #import "CalendarConfigViewController.h"
-#import "FSCalendarTestMacros.h"
 
 @interface StoryboardExampleViewController ()
 
@@ -33,20 +31,7 @@
     _scrollDirection = _calendar.scrollDirection;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     
-    [_calendar selectDate:[NSDate fs_dateWithYear:2015 month:10 day:5]];
-//    _firstWeekday = _calendar.firstWeekday;
-//    _calendar.firstWeekday = 2; // Monday
-//    _calendar.flow = FSCalendarFlowVertical;
-//    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
-//    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
-//    _calendar.scope = FSCalendarScopeWeek;
-//    _calendar.allowsMultipleSelection = YES;
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        [_calendar deselectDate:[NSDate date]];
-//        _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-//    });
-    
+    [_calendar selectDate:[_calendar dateWithYear:2015 month:10 day:5]];
     
     _datesShouldNotBeSelected = @[@"2015/08/07",
                                   @"2015/09/07",
@@ -95,53 +80,52 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
 {
-    return [_datesWithEvent containsObject:[date fs_stringWithFormat:@"yyyy-MM-dd"]];
+    return [_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]];
 }
 
-/*
+
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate fs_dateWithYear:2015 month:2 day:1];
+    return [calendar dateWithYear:2015 month:2 day:1];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [[NSDate date] fs_dateByAddingMonths:3];
+    return [calendar dateWithYear:2016 month:5 day:31];
 }
-*/
+
 
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
 {
-    NSLog(@"Did deselect date %@",date.fs_string);
+    NSLog(@"Did deselect date %@",[calendar stringFromDate:date]);
 }
 
 #pragma mark - FSCalendarDelegate
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[date fs_stringWithFormat:@"yyyy/MM/dd"]];
+    BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
     if (!shouldSelect) {
         [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
+                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[calendar stringFromDate:date format:@"yyyy/MM/dd"]]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil, nil] show];
     } else {
-        NSLog(@"Should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+        NSLog(@"Should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     }
     return shouldSelect;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
-//    [calendar selectDate:calendar.currentPage];
+    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM yyyy"]);
 }
 
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated

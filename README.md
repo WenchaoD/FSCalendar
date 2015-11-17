@@ -14,7 +14,6 @@
 ## iPad
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
-
 # Installation
 
 ## Cocoapods:
@@ -85,6 +84,31 @@ calendar.delegate = self
 view.addSubview(calendar)
 self.calendar = calendar
 ```
+
+## Indian
+```objective-c
+calendar.identifier = NSCalendarIdentifierIndian;
+```
+![indian](https://cloud.githubusercontent.com/assets/5186464/11204305/59158ab4-8d38-11e5-97d0-9af3e800c49a.jpg)
+
+## Persian
+```objective-c
+calendar.identifier = NSCalendarIdentifierPesian;
+```
+![persian](https://cloud.githubusercontent.com/assets/5186464/11204304/5914a0ea-8d38-11e5-8e6c-e354fe910290.jpg)
+
+## Hebrew
+```objective-c
+calendar.identifier = NSCalendarIdentifierHebrew;
+```
+![hebrew](https://cloud.githubusercontent.com/assets/5186464/11204307/59254760-8d38-11e5-83c4-e3b963c29206.jpg)
+
+## Islamic
+```objective-c
+calendar.identifier = NSCalendarIdentifierIslamic;
+```
+![islamic](https://cloud.githubusercontent.com/assets/5186464/11204306/592386c8-8d38-11e5-8dd5-68b99b3b83c1.jpg)
+
 ### <a id="roll_with_interface_builder"></a> Roll with Interface Builder
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
