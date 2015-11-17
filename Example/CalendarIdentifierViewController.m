@@ -32,7 +32,6 @@
     calendar.delegate = self;
     calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     calendar.backgroundColor = [UIColor whiteColor];
-    calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
     [self.view addSubview:calendar];
     self.calendar = calendar;
     

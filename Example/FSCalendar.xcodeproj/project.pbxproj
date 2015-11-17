@@ -191,8 +191,6 @@
 		EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarCollectionView.m; sourceTree = "<group>"; };
 		EECA10F61BA9C0E400945B83 /* FullScreenExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenExampleViewController.h; sourceTree = SOURCE_ROOT; };
 		EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenExampleViewController.m; sourceTree = SOURCE_ROOT; };
-		EEF1EB571BBCBBC600F1B357 /* FSCalendarSelectDateTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarSelectDateTest.h; sourceTree = SOURCE_ROOT; };
-		EEF1EB581BBCBCBA00F1B357 /* FSCalendarTestMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSCalendarTestMacros.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,7 +302,6 @@
 		EE0D7FC91B89C5D3003C287B /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				EEF1EB561BBCBB9C00F1B357 /* FSCalendarTestMacro */,
 				EE638CD51B89DC090006DD1A /* Main_iPad.storyboard */,
 				EE638CD71B89DC090006DD1A /* Main_iPhone.storyboard */,
 				EE638CCF1B89DBE90006DD1A /* AppDelegate.h */,
@@ -433,15 +430,6 @@
 				EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */,
 			);
 			name = "Fullscreen Example";
-			sourceTree = "<group>";
-		};
-		EEF1EB561BBCBB9C00F1B357 /* FSCalendarTestMacro */ = {
-			isa = PBXGroup;
-			children = (
-				EEF1EB581BBCBCBA00F1B357 /* FSCalendarTestMacros.h */,
-				EEF1EB571BBCBBC600F1B357 /* FSCalendarSelectDateTest.h */,
-			);
-			name = FSCalendarTestMacro;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -7,7 +7,6 @@
 //
 
 #import "LoadViewExampleViewController.h"
-#import "FSCalendarTestMacros.h"
 
 @implementation LoadViewExampleViewController
 
@@ -82,12 +81,12 @@
 
 //- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [NSDate fs_dateWithYear:2015 month:1 day:1];
+//    return [_calendar dateWithYear:2015 month:1 day:1];
 //}
 //
 //- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [NSDate fs_dateWithYear:2015 month:10 day:31];
+//    return [_calendar dateWithYear:2016 month:12 day:31];
 //}
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date

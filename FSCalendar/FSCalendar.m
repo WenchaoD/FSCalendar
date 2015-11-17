@@ -161,7 +161,7 @@
     
     _headerHeight     = FSCalendarAutomaticDimension;
     _weekdayHeight    = FSCalendarAutomaticDimension;
-    _firstWeekday     = 1;
+    _firstWeekday     = _calendar.firstWeekday;
     
     _preferedHeaderHeight  = FSCalendarAutomaticDimension;
     _preferedWeekdayHeight = FSCalendarAutomaticDimension;
@@ -2158,7 +2158,7 @@
 
 - (NSString *)stringFromDate:(NSDate *)date
 {
-    return [self stringFromDate:date format:@"yyyy-MM-dd mm:dd"];
+    return [self stringFromDate:date format:@"yyyy-MM-dd"];
 }
 
 @end

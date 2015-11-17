@@ -9,7 +9,6 @@
 #import "StoryboardExampleViewController.h"
 #import "SSLunarDate.h"
 #import "CalendarConfigViewController.h"
-#import "FSCalendarTestMacros.h"
 
 @interface StoryboardExampleViewController ()
 
@@ -36,7 +35,6 @@
 //    _firstWeekday = _calendar.firstWeekday;
 //    _calendar.firstWeekday = 2; // Monday
 //    _calendar.flow = FSCalendarFlowVertical;
-//    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
 //    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
 //    _calendar.scope = FSCalendarScopeWeek;
 //    _calendar.allowsMultipleSelection = YES;
@@ -97,17 +95,17 @@
     return [_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]];
 }
 
-/*
+
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate fs_dateWithYear:2015 month:2 day:1];
+    return [calendar dateWithYear:2015 month:2 day:1];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [[NSDate date] fs_dateByAddingMonths:3];
+    return [calendar dateWithYear:2015 month:5 day:31];
 }
-*/
+
 
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
 {

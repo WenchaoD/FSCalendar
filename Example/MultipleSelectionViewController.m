@@ -7,11 +7,6 @@
 //
 
 #import "MultipleSelectionViewController.h"
-#import "FSCalendarTestMacros.h"
-
-@interface MultipleSelectionViewController () <FSCalendarDelegateAppearance>
-
-@end
 
 @implementation MultipleSelectionViewController
 
@@ -74,7 +69,7 @@
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
+        [selectedDates addObject:[calendar stringFromDate:obj format:@"yyyy/MM/dd"]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
 }
@@ -83,7 +78,7 @@
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
+        [selectedDates addObject:[calendar stringFromDate:obj format:@"yyyy/MM/dd"]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
 }
