@@ -51,7 +51,6 @@
 }
 @property (strong, nonatomic) NSMutableArray             *weekdays;
 @property (strong, nonatomic) NSMapTable                 *stickyHeaderMapTable;
-@property (strong, nonatomic) NSMutableDictionary        *sectionFirstPageDaysCache;
 
 @property (strong, nonatomic) NSCalendar *calendar;
 @property (strong, nonatomic) NSDateFormatter *formatter;
@@ -181,7 +180,6 @@
     _needsAdjustingTextSize = YES;
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     _interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
-    _sectionFirstPageDaysCache = [NSMutableDictionary dictionary];
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -811,8 +809,8 @@
 
 - (void)setLocale:(NSLocale *)locale
 {
-    if (![self.locale isEqual:locale]) {
-        _calendar.locale = locale;
+    if (![_locale isEqual:locale]) {
+        _locale = locale;
         [self invalidateDateTools];
         [self invalidateWeekdaySymbols];
         if (self.hasValidateVisibleLayout) {
@@ -1056,6 +1054,7 @@
                 break;
             }
         }
+        
         [_collectionView reloadData];
         [_header reloadData];
         _needsAdjustingMonthPosition = YES;
@@ -1172,6 +1171,7 @@
     
     _contentView.clipsToBounds = YES;
     _daysContainer.clipsToBounds = YES;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         resizeBlock();
     });

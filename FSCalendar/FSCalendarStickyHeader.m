@@ -31,6 +31,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
         _needsReloadingAppearance = YES;
         _needsAdjustingFrames = YES;
         
