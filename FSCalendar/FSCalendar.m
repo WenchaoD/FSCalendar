@@ -154,6 +154,7 @@
     _formatter = [[NSDateFormatter alloc] init];
     _timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
     _locale = [NSLocale currentLocale];
+    _firstWeekday = 1;
     [self invalidateDateTools];
     
     _minimumDate = [self dateWithYear:1970 month:1 day:1];
@@ -161,7 +162,6 @@
     
     _headerHeight     = FSCalendarAutomaticDimension;
     _weekdayHeight    = FSCalendarAutomaticDimension;
-    _firstWeekday     = _calendar.firstWeekday;
     
     _preferedHeaderHeight  = FSCalendarAutomaticDimension;
     _preferedWeekdayHeight = FSCalendarAutomaticDimension;
