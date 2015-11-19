@@ -133,14 +133,14 @@
 
 - (void)configureCell
 {
-    _titleLabel.font = [UIFont systemFontOfSize:_appearance.titleTextSize];
+    _titleLabel.font = _appearance.cellFont;
     _titleLabel.text = [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
     
     __block CGFloat titleHeight = 0;
     __block CGFloat subtitleHeight = 0;
     
     if (_subtitle) {
-        _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize];
+        _subtitleLabel.font = _appearance.subtitleFont;
     }
     
 #define m_calculateTitleHeight \

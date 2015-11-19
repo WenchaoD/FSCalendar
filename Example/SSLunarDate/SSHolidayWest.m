@@ -41,7 +41,7 @@
 
 - (NSDate *) getDateFromYear:(int) year month: (int) month day: (int) day
 {
-    unsigned int flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+    unsigned int flags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
     NSCalendar *cal = currentCalendar;
     NSDateComponents *parts = [cal components:flags
 				     fromDate:[NSDate date]];

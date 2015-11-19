@@ -31,6 +31,8 @@
 @property (weak, nonatomic) UILabel *titleLabel;
 @property (weak, nonatomic) FSCalendarHeader *header;
 
+@property (weak, nonatomic) FSCalendarAppearance *appearance;
+
 @end
 
 
