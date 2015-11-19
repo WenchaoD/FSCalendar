@@ -42,7 +42,7 @@
     self.pickerView = pickerView;
     
     
-    UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStyleBordered target:self action:@selector(todayItemClicked:)];
+    UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStylePlain target:self action:@selector(todayItemClicked:)];
     self.navigationItem.rightBarButtonItem = todayItem;
     
 }

@@ -34,7 +34,7 @@
                                                                  calendar:self.calendar
                                                                      dict:[self solarHolidayCA]]];
     
-    NSDateComponents *c = [self.calendar components:NSYearCalendarUnit fromDate:date];
+    NSDateComponents *c = [self.calendar components:NSCalendarUnitYear fromDate:date];
     
     if (_cachedYear != c.year) {
         _cachedYear = (int)c.year;

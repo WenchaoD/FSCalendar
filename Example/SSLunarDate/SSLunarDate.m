@@ -153,9 +153,9 @@
 
 - (void) NSDataToLunarDate:(NSDate *) date withDate:(SSLunarSimpleDate *) lunarDate
 {
-    unsigned int flags = NSYearCalendarUnit             \
-        | NSMonthCalendarUnit | NSDayCalendarUnit       \
-        | NSHourCalendarUnit;
+    unsigned int flags = NSCalendarUnitYear             \
+        | NSCalendarUnitMonth | NSCalendarUnitDay       \
+        | NSCalendarUnitHour;
     NSDateComponents *parts = [_calendar components:flags fromDate:date];
     
     lunarDate->year = (int)parts.year;

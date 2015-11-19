@@ -40,6 +40,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) CGFloat  subtitleTextSize;
 @property (assign, nonatomic) CGFloat  weekdayTextSize;
 @property (assign, nonatomic) CGFloat  headerTitleTextSize;
+@property (assign, nonatomic) CGFloat  cellTextSize;
 
 @property (strong, nonatomic) UIColor  *eventColor;
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
@@ -74,6 +75,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 // For preview only
 @property (assign, nonatomic) BOOL      fakeSubtitles;
 @property (assign, nonatomic) NSInteger fakedSelectedDay;
+
+@property (strong, nonatomic) UIFont  *cellFont;
+@property (strong, nonatomic) UIFont  *weekdayFont;
+@property (strong, nonatomic) UIFont  *titleFont;
+@property (strong, nonatomic) UIFont  *subtitleFont;
 
 - (void)invalidateAppearance;
 

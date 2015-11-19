@@ -29,7 +29,7 @@
     SSLunarDate *lunarDate = [[SSLunarDate alloc] initWithDate:date
                                                       calendar:self.calendar];
 
-        NSDateComponents *c = [self.calendar components:NSYearCalendarUnit fromDate:date];
+        NSDateComponents *c = [self.calendar components:NSCalendarUnitYear fromDate:date];
 
     NSAssert(c.year != 0, @"should not zero");
     if (_cachedYear != c.year) {

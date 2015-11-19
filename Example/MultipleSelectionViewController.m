@@ -49,7 +49,23 @@
 {
     BOOL shouldDedeselect = [_calendar dayOfDate:date] != 5;
     if (!shouldDedeselect) {
-        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be selected",[calendar stringFromDate:date]] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be selected",[calendar stringFromDate:date]]
+                                    message:@""
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancel = [UIAlertAction
+                                 actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleCancel
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                     
+                                 }];
+        
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        
         return NO;
     }
     return YES;
@@ -59,7 +75,22 @@
 {
     BOOL shouldDedeselect = [_calendar dayOfDate:date] != 7;
     if (!shouldDedeselect) {
-        [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be deselected",[calendar stringFromDate:date]] message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:[NSString stringWithFormat:@"Forbidden date %@ to be selected",[calendar stringFromDate:date]]
+                                    message:@""
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancel = [UIAlertAction
+                                 actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleCancel
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                     
+                                 }];
+        
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
         return NO;
     }
     return YES;

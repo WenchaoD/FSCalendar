@@ -42,6 +42,12 @@
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     [calendar selectDate:[calendar dateWithYear:2015 month:2 day:6]];
     calendar.backgroundColor = [UIColor whiteColor];
+    
+    calendar.appearance.cellFont = [UIFont systemFontOfSize:14 weight:UIFontWeightThin];
+    calendar.appearance.weekdayFont = [UIFont systemFontOfSize:14 weight:UIFontWeightThin];
+    calendar.appearance.titleFont = [UIFont systemFontOfSize:16 weight:UIFontWeightThin];
+    calendar.appearance.autoAdjustTitleSize = NO;
+    
     [view addSubview:calendar];
     self.calendar = calendar;
 }

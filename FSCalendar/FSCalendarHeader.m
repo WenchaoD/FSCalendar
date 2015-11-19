@@ -75,7 +75,7 @@
         _collectionViewFlowLayout.itemSize = CGSizeMake(
                                                         _collectionView.fs_width*((_scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
                                                         _collectionView.fs_height
-                                                       );
+                                                        );
     }
     
     if (_needsAdjustingMonthPosition) {
@@ -140,8 +140,7 @@
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.header = self;
-    cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
-    cell.titleLabel.textColor = _appearance.headerTitleColor;
+    cell.appearance = _appearance;
     _calendar.formatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
     NSString *text = nil;
@@ -287,6 +286,14 @@
         self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
     }
     
+}
+
+- (void)setAppearance:(FSCalendarAppearance *)appearance
+{
+    _appearance = appearance;
+    NSLog(@"%@", _appearance.titleFont);
+    self.titleLabel.font = _appearance.titleFont;
+    self.titleLabel.textColor = _appearance.headerTitleColor;
 }
 
 @end

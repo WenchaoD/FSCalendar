@@ -25,7 +25,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     _currentCalendar = [NSCalendar currentCalendar];
     _scrollDirection = _calendar.scrollDirection;
@@ -106,11 +106,22 @@
 {
     BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
     if (!shouldSelect) {
-        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:@"FSCalendar"
                                     message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[calendar stringFromDate:date format:@"yyyy/MM/dd"]]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancel = [UIAlertAction
+                                 actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleCancel
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                     
+                                 }];
+        
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
     } else {
         NSLog(@"Should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     }
@@ -204,11 +215,23 @@
     if (_scrollDirection != scrollDirection) {
         _scrollDirection = scrollDirection;
         _calendar.scrollDirection = scrollDirection;
-        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+        
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:@"FSCalendar"
                                     message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][_calendar.scrollDirection]]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancel = [UIAlertAction
+                                 actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleCancel
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [alert dismissViewControllerAnimated:YES completion:nil];
+                                     
+                                 }];
+        
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 

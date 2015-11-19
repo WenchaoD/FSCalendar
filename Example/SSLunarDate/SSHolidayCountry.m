@@ -50,8 +50,8 @@
 {
     NSString *index;
     NSMutableArray *result = [[NSMutableArray alloc] init];
-    unsigned int flags = NSYearCalendarUnit
-        | NSMonthCalendarUnit | NSDayCalendarUnit;
+    unsigned int flags = NSCalendarUnitYear
+        | NSCalendarUnitMonth | NSCalendarUnitDay;
     NSDateComponents *parts = [cal components:flags fromDate:date];
     index = [SSLunarDateHoliday convertIndexFrom:(int)parts.month day:(int)parts.day];
 
@@ -63,7 +63,7 @@
 
 -(NSString *) convertDateIndex:(NSDate *)date
 {
-    NSDateComponents *c = [self.calendar components: NSDayCalendarUnit | NSMonthCalendarUnit fromDate:date];
+    NSDateComponents *c = [self.calendar components: NSCalendarUnitDay | NSCalendarUnitMonth fromDate:date];
     return [SSLunarDateHoliday convertIndexFrom:(int)c.month day:(int)c.day];
 }
 
