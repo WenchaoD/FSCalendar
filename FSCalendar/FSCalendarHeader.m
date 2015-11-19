@@ -291,7 +291,6 @@
 - (void)setAppearance:(FSCalendarAppearance *)appearance
 {
     _appearance = appearance;
-    NSLog(@"%@", _appearance.titleFont);
     self.titleLabel.font = _appearance.titleFont;
     self.titleLabel.textColor = _appearance.headerTitleColor;
 }
