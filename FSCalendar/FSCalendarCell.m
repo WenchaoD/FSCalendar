@@ -33,14 +33,12 @@
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.font = [UIFont systemFontOfSize:14];
         titleLabel.textColor = [UIColor darkTextColor];
         [self.contentView addSubview:titleLabel];
         self.titleLabel = titleLabel;
         
         UILabel *subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         subtitleLabel.textAlignment = NSTextAlignmentCenter;
-        subtitleLabel.font = [UIFont systemFontOfSize:10];
         subtitleLabel.textColor = [UIColor lightGrayColor];
         [self.contentView addSubview:subtitleLabel];
         self.subtitleLabel = subtitleLabel;
@@ -133,14 +131,14 @@
 
 - (void)configureCell
 {
-    _titleLabel.font = [UIFont systemFontOfSize:_appearance.titleTextSize];
+    _titleLabel.font = _appearance.preferredTitleFont;
     _titleLabel.text = [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
     
     __block CGFloat titleHeight = 0;
     __block CGFloat subtitleHeight = 0;
     
     if (_subtitle) {
-        _subtitleLabel.font = [UIFont systemFontOfSize:_appearance.subtitleTextSize];
+        _subtitleLabel.font = _appearance.preferredSubtitleFont;
     }
     
 #define m_calculateTitleHeight \
@@ -155,17 +153,17 @@
         _subtitleLabel.text = _subtitle; \
         CGFloat height = titleHeight + subtitleHeight; \
         _titleLabel.frame = CGRectMake(0, \
-                                       (self.contentView.fs_height*5.0/6.0-height)*0.5, \
+                                       (self.contentView.fs_height*5.0/6.0-height)*0.5+_appearance.titleVerticalOffset, \
                                        self.fs_width, \
                                        titleHeight); \
     \
         _subtitleLabel.frame = CGRectMake(0, \
-                                          _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize),\
+                                          _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize)+_appearance.subtitleVerticalOffset,\
                                           self.fs_width,\
                                           subtitleHeight);\
         _subtitleLabel.textColor = self.colorForSubtitleLabel; \
     } else { \
-        _titleLabel.frame = CGRectMake(0, 0, self.fs_width, floor(self.contentView.fs_height*5.0/6.0)); \
+        _titleLabel.frame = CGRectMake(0, _appearance.titleVerticalOffset, self.fs_width, floor(self.contentView.fs_height*5.0/6.0)); \
         _subtitleLabel.hidden = YES; \
     }
     

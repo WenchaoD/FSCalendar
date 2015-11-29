@@ -7,13 +7,13 @@
 //
 
 #import "StoryboardExampleViewController.h"
-#import "SSLunarDate.h"
+
 #import "CalendarConfigViewController.h"
 
 @interface StoryboardExampleViewController ()
 
-@property (strong, nonatomic) NSCalendar *currentCalendar;
-@property (strong, nonatomic) SSLunarDate *lunarDate;
+@property (strong, nonatomic) NSCalendar *lunarCalendar;
+@property (strong, nonatomic) NSArray *lunarChars;
 
 @end
 
@@ -27,7 +27,10 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
-    _currentCalendar = [NSCalendar currentCalendar];
+    _lunarCalendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierChinese];
+    _lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+    _lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
+
     _scrollDirection = _calendar.scrollDirection;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     
@@ -74,8 +77,8 @@
     if (!_lunar) {
         return nil;
     }
-    _lunarDate = [[SSLunarDate alloc] initWithDate:date calendar:_currentCalendar];
-    return _lunarDate.dayString;
+    NSInteger day = [_lunarCalendar component:NSCalendarUnitDay fromDate:date];
+    return _lunarChars[day-1];
 }
 
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date

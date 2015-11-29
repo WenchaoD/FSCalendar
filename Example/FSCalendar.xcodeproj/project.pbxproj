@@ -41,20 +41,6 @@
 		30FCB3971BAAD112002B87AD /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FCB3951BAAD112002B87AD /* FSCalendarStickyHeader.m */; };
 		30FCB3981BAAD112002B87AD /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FCB3951BAAD112002B87AD /* FSCalendarStickyHeader.m */; };
 		EE52AE181B91E68A00016662 /* FSCalendarScopeExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE52AE171B91E68A00016662 /* FSCalendarScopeExampleViewController.m */; };
-		EE638CB21B89DB450006DD1A /* LunarDateFormatter.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE638C911B89DB450006DD1A /* LunarDateFormatter.strings */; };
-		EE638CB31B89DB450006DD1A /* libLunar.c in Sources */ = {isa = PBXBuildFile; fileRef = EE638C941B89DB450006DD1A /* libLunar.c */; };
-		EE638CB41B89DB450006DD1A /* SSHolidayCA.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638C971B89DB450006DD1A /* SSHolidayCA.m */; };
-		EE638CB51B89DB450006DD1A /* SSHolidayChina.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638C991B89DB450006DD1A /* SSHolidayChina.m */; };
-		EE638CB61B89DB450006DD1A /* SSHolidayCountry.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638C9B1B89DB450006DD1A /* SSHolidayCountry.m */; };
-		EE638CB71B89DB450006DD1A /* SSHolidayHK.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638C9D1B89DB450006DD1A /* SSHolidayHK.m */; };
-		EE638CB81B89DB450006DD1A /* SSHolidayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638C9F1B89DB450006DD1A /* SSHolidayManager.m */; };
-		EE638CB91B89DB450006DD1A /* SSHolidayTW.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CA11B89DB450006DD1A /* SSHolidayTW.m */; };
-		EE638CBA1B89DB450006DD1A /* SSHolidayUK.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CA31B89DB450006DD1A /* SSHolidayUK.m */; };
-		EE638CBB1B89DB450006DD1A /* SSHolidayUS.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CA51B89DB450006DD1A /* SSHolidayUS.m */; };
-		EE638CBC1B89DB450006DD1A /* SSHolidayWest.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CA71B89DB450006DD1A /* SSHolidayWest.m */; };
-		EE638CBD1B89DB450006DD1A /* SSLunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CAA1B89DB450006DD1A /* SSLunarDate.m */; };
-		EE638CBE1B89DB450006DD1A /* SSLunarDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CAC1B89DB450006DD1A /* SSLunarDateFormatter.m */; };
-		EE638CBF1B89DB450006DD1A /* SSLunarDateHoliday.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CAE1B89DB450006DD1A /* SSLunarDateHoliday.m */; };
 		EE638CC31B89DB6E0006DD1A /* LoadViewExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CC21B89DB6E0006DD1A /* LoadViewExampleViewController.m */; };
 		EE638CC61B89DB7D0006DD1A /* ViewDidLoadExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CC51B89DB7D0006DD1A /* ViewDidLoadExampleViewController.m */; };
 		EE638CC91B89DB940006DD1A /* CalendarConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CC81B89DB940006DD1A /* CalendarConfigViewController.m */; };
@@ -132,38 +118,6 @@
 		EE0D7FCB1B89C5D3003C287B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE52AE161B91E68A00016662 /* FSCalendarScopeExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarScopeExampleViewController.h; sourceTree = SOURCE_ROOT; };
 		EE52AE171B91E68A00016662 /* FSCalendarScopeExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarScopeExampleViewController.m; sourceTree = SOURCE_ROOT; };
-		EE638C921B89DB450006DD1A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LunarDateFormatter.strings; sourceTree = "<group>"; };
-		EE638C931B89DB450006DD1A /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LunarDateFormatter.strings; sourceTree = "<group>"; };
-		EE638C941B89DB450006DD1A /* libLunar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libLunar.c; sourceTree = "<group>"; };
-		EE638C951B89DB450006DD1A /* libLunar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libLunar.h; sourceTree = "<group>"; };
-		EE638C961B89DB450006DD1A /* SSHolidayCA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayCA.h; sourceTree = "<group>"; };
-		EE638C971B89DB450006DD1A /* SSHolidayCA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayCA.m; sourceTree = "<group>"; };
-		EE638C981B89DB450006DD1A /* SSHolidayChina.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayChina.h; sourceTree = "<group>"; };
-		EE638C991B89DB450006DD1A /* SSHolidayChina.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayChina.m; sourceTree = "<group>"; };
-		EE638C9A1B89DB450006DD1A /* SSHolidayCountry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayCountry.h; sourceTree = "<group>"; };
-		EE638C9B1B89DB450006DD1A /* SSHolidayCountry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayCountry.m; sourceTree = "<group>"; };
-		EE638C9C1B89DB450006DD1A /* SSHolidayHK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayHK.h; sourceTree = "<group>"; };
-		EE638C9D1B89DB450006DD1A /* SSHolidayHK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayHK.m; sourceTree = "<group>"; };
-		EE638C9E1B89DB450006DD1A /* SSHolidayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayManager.h; sourceTree = "<group>"; };
-		EE638C9F1B89DB450006DD1A /* SSHolidayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayManager.m; sourceTree = "<group>"; };
-		EE638CA01B89DB450006DD1A /* SSHolidayTW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayTW.h; sourceTree = "<group>"; };
-		EE638CA11B89DB450006DD1A /* SSHolidayTW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayTW.m; sourceTree = "<group>"; };
-		EE638CA21B89DB450006DD1A /* SSHolidayUK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayUK.h; sourceTree = "<group>"; };
-		EE638CA31B89DB450006DD1A /* SSHolidayUK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayUK.m; sourceTree = "<group>"; };
-		EE638CA41B89DB450006DD1A /* SSHolidayUS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayUS.h; sourceTree = "<group>"; };
-		EE638CA51B89DB450006DD1A /* SSHolidayUS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayUS.m; sourceTree = "<group>"; };
-		EE638CA61B89DB450006DD1A /* SSHolidayWest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSHolidayWest.h; sourceTree = "<group>"; };
-		EE638CA71B89DB450006DD1A /* SSHolidayWest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSHolidayWest.m; sourceTree = "<group>"; };
-		EE638CA81B89DB450006DD1A /* SSLunarDate-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SSLunarDate-Prefix.pch"; sourceTree = "<group>"; };
-		EE638CA91B89DB450006DD1A /* SSLunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLunarDate.h; sourceTree = "<group>"; };
-		EE638CAA1B89DB450006DD1A /* SSLunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSLunarDate.m; sourceTree = "<group>"; };
-		EE638CAB1B89DB450006DD1A /* SSLunarDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLunarDateFormatter.h; sourceTree = "<group>"; };
-		EE638CAC1B89DB450006DD1A /* SSLunarDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSLunarDateFormatter.m; sourceTree = "<group>"; };
-		EE638CAD1B89DB450006DD1A /* SSLunarDateHoliday.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLunarDateHoliday.h; sourceTree = "<group>"; };
-		EE638CAE1B89DB450006DD1A /* SSLunarDateHoliday.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSLunarDateHoliday.m; sourceTree = "<group>"; };
-		EE638CAF1B89DB450006DD1A /* SSLunarDateType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSLunarDateType.h; sourceTree = "<group>"; };
-		EE638CB01B89DB450006DD1A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LunarDateFormatter.strings"; sourceTree = "<group>"; };
-		EE638CB11B89DB450006DD1A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LunarDateFormatter.strings"; sourceTree = "<group>"; };
 		EE638CC11B89DB6E0006DD1A /* LoadViewExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadViewExampleViewController.h; sourceTree = SOURCE_ROOT; };
 		EE638CC21B89DB6E0006DD1A /* LoadViewExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadViewExampleViewController.m; sourceTree = SOURCE_ROOT; };
 		EE638CC41B89DB7D0006DD1A /* ViewDidLoadExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewDidLoadExampleViewController.h; sourceTree = SOURCE_ROOT; };
@@ -316,7 +270,6 @@
 				EE0D80241B89C868003C287B /* Storyboard Example */,
 				EE0D80231B89C853003C287B /* LoadView Example */,
 				EE0D80251B89C874003C287B /* ViewDidLoad Example */,
-				EE638C901B89DB450006DD1A /* SSLunarDate */,
 				EE638CDB1B89DC230006DD1A /* Images.xcassets */,
 				EE0D7FCA1B89C5D3003C287B /* Supporting Files */,
 			);
@@ -369,42 +322,6 @@
 			);
 			name = "FSCalendarScope Example";
 			sourceTree = "<group>";
-		};
-		EE638C901B89DB450006DD1A /* SSLunarDate */ = {
-			isa = PBXGroup;
-			children = (
-				EE638C911B89DB450006DD1A /* LunarDateFormatter.strings */,
-				EE638C941B89DB450006DD1A /* libLunar.c */,
-				EE638C951B89DB450006DD1A /* libLunar.h */,
-				EE638C961B89DB450006DD1A /* SSHolidayCA.h */,
-				EE638C971B89DB450006DD1A /* SSHolidayCA.m */,
-				EE638C981B89DB450006DD1A /* SSHolidayChina.h */,
-				EE638C991B89DB450006DD1A /* SSHolidayChina.m */,
-				EE638C9A1B89DB450006DD1A /* SSHolidayCountry.h */,
-				EE638C9B1B89DB450006DD1A /* SSHolidayCountry.m */,
-				EE638C9C1B89DB450006DD1A /* SSHolidayHK.h */,
-				EE638C9D1B89DB450006DD1A /* SSHolidayHK.m */,
-				EE638C9E1B89DB450006DD1A /* SSHolidayManager.h */,
-				EE638C9F1B89DB450006DD1A /* SSHolidayManager.m */,
-				EE638CA01B89DB450006DD1A /* SSHolidayTW.h */,
-				EE638CA11B89DB450006DD1A /* SSHolidayTW.m */,
-				EE638CA21B89DB450006DD1A /* SSHolidayUK.h */,
-				EE638CA31B89DB450006DD1A /* SSHolidayUK.m */,
-				EE638CA41B89DB450006DD1A /* SSHolidayUS.h */,
-				EE638CA51B89DB450006DD1A /* SSHolidayUS.m */,
-				EE638CA61B89DB450006DD1A /* SSHolidayWest.h */,
-				EE638CA71B89DB450006DD1A /* SSHolidayWest.m */,
-				EE638CA81B89DB450006DD1A /* SSLunarDate-Prefix.pch */,
-				EE638CA91B89DB450006DD1A /* SSLunarDate.h */,
-				EE638CAA1B89DB450006DD1A /* SSLunarDate.m */,
-				EE638CAB1B89DB450006DD1A /* SSLunarDateFormatter.h */,
-				EE638CAC1B89DB450006DD1A /* SSLunarDateFormatter.m */,
-				EE638CAD1B89DB450006DD1A /* SSLunarDateHoliday.h */,
-				EE638CAE1B89DB450006DD1A /* SSLunarDateHoliday.m */,
-				EE638CAF1B89DB450006DD1A /* SSLunarDateType.h */,
-			);
-			path = SSLunarDate;
-			sourceTree = SOURCE_ROOT;
 		};
 		EE638CF21B8A1F550006DD1A /* FSCalendarTests */ = {
 			isa = PBXGroup;
@@ -543,7 +460,6 @@
 				EE638CDC1B89DC230006DD1A /* Images.xcassets in Resources */,
 				EE638CD91B89DC0A0006DD1A /* Main_iPad.storyboard in Resources */,
 				30B0BAD51B8D8E23004B9476 /* Info.plist in Resources */,
-				EE638CB21B89DB450006DD1A /* LunarDateFormatter.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,34 +486,21 @@
 				3092253B1B905C4300123031 /* FSCalendarConstance.m in Sources */,
 				30F5D85A1B9FC4BB00C1C201 /* MultipleSelectionViewController.m in Sources */,
 				30FCB3971BAAD112002B87AD /* FSCalendarStickyHeader.m in Sources */,
-				EE638CBC1B89DB450006DD1A /* SSHolidayWest.m in Sources */,
-				EE638CBB1B89DB450006DD1A /* SSHolidayUS.m in Sources */,
 				30B0BAD21B8D8E23004B9476 /* FSCalendarCell.m in Sources */,
 				30B0BAD71B8D8E23004B9476 /* UIView+FSExtension.m in Sources */,
 				EE638CD41B89DBE90006DD1A /* FSTableViewController.m in Sources */,
 				3084BD191BF9AB8100C956F7 /* CalendarIdentifierViewController.m in Sources */,
 				EE638CCB1B89DBAC0006DD1A /* main.m in Sources */,
-				EE638CB51B89DB450006DD1A /* SSHolidayChina.m in Sources */,
 				30B0BAD11B8D8E23004B9476 /* FSCalendarAppearance.m in Sources */,
 				EEC9C0351BDC8F7000383A07 /* FSCalendarFlowLayout.m in Sources */,
-				EE638CB31B89DB450006DD1A /* libLunar.c in Sources */,
-				EE638CBA1B89DB450006DD1A /* SSHolidayUK.m in Sources */,
 				EE638CC61B89DB7D0006DD1A /* ViewDidLoadExampleViewController.m in Sources */,
-				EE638CB91B89DB450006DD1A /* SSHolidayTW.m in Sources */,
 				30B0BACF1B8D8E23004B9476 /* FSCalendar+IBExtension.m in Sources */,
-				EE638CBE1B89DB450006DD1A /* SSLunarDateFormatter.m in Sources */,
-				EE638CB71B89DB450006DD1A /* SSHolidayHK.m in Sources */,
 				EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */,
 				EE89AF9F1B9162B90001B657 /* NSString+FSExtension.m in Sources */,
-				EE638CB81B89DB450006DD1A /* SSHolidayManager.m in Sources */,
 				EE52AE181B91E68A00016662 /* FSCalendarScopeExampleViewController.m in Sources */,
-				EE638CBF1B89DB450006DD1A /* SSLunarDateHoliday.m in Sources */,
-				EE638CB41B89DB450006DD1A /* SSHolidayCA.m in Sources */,
 				30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */,
 				EE638CC31B89DB6E0006DD1A /* LoadViewExampleViewController.m in Sources */,
 				30B0BAD31B8D8E23004B9476 /* FSCalendarHeader.m in Sources */,
-				EE638CBD1B89DB450006DD1A /* SSLunarDate.m in Sources */,
-				EE638CB61B89DB450006DD1A /* SSHolidayCountry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,17 +534,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		EE638C911B89DB450006DD1A /* LunarDateFormatter.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EE638C921B89DB450006DD1A /* en */,
-				EE638C931B89DB450006DD1A /* ja */,
-				EE638CB01B89DB450006DD1A /* zh-Hans */,
-				EE638CB11B89DB450006DD1A /* zh-Hant */,
-			);
-			name = LunarDateFormatter.strings;
-			sourceTree = "<group>";
-		};
 		EE638CD51B89DC090006DD1A /* Main_iPad.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -786,7 +678,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.FSCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -807,7 +699,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wenchao.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.FSCalendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

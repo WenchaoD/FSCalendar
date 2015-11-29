@@ -61,6 +61,8 @@
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.dataSource = self;
     collectionView.delegate = self;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    collectionView.showsVerticalScrollIndicator = NO;
     [self addSubview:collectionView];
     [collectionView registerClass:[FSCalendarHeaderCell class] forCellWithReuseIdentifier:@"cell"];
     self.collectionView = collectionView;
@@ -140,7 +142,7 @@
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.header = self;
-    cell.titleLabel.font = [UIFont systemFontOfSize:_appearance.headerTitleTextSize];
+    cell.titleLabel.font = _appearance.preferredHeaderTitleFont;
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _calendar.formatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
@@ -181,7 +183,7 @@
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [cell setNeedsLayout];
 }
@@ -189,7 +191,6 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-
 }
 
 #pragma mark - Properties

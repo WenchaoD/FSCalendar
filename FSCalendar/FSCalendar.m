@@ -152,8 +152,8 @@
     _calendar = [NSCalendar currentCalendar];
     _components = [[NSDateComponents alloc] init];
     _formatter = [[NSDateFormatter alloc] init];
-    _timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
     _locale = [NSLocale currentLocale];
+    _timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
     _firstWeekday = 1;
     [self invalidateDateTools];
     
@@ -828,7 +828,7 @@
         if (self.hasValidateVisibleLayout) {
             [self reloadData];
         }
-        [self scrollToPageForDate:_today animated:YES];
+        [self scrollToPageForDate:_today animated:NO];
     }
 }
 
@@ -999,7 +999,7 @@
         [self reloadVisibleCells];
     }
     
-    [_weekdays setValue:[UIFont systemFontOfSize:_appearance.weekdayTextSize] forKey:@"font"];
+    [_weekdays setValue:_appearance.preferredWeekdayFont forKey:@"font"];
     [self invalidateHeaders];
     [self invalidateWeekdaySymbols];
 }
@@ -1353,7 +1353,7 @@
 {
     if (!_collectionView.tracking) {
         if (!self.floatingMode) {
-            if ([self isDateInDifferentPage:date]) {
+            if ([self isDateInDifferentPage:date] && [self isDateInRange:date]) {
                 [self willChangeValueForKey:@"currentPage"];
                 switch (_scope) {
                     case FSCalendarScopeMonth: {
@@ -1538,7 +1538,7 @@
         if (!_weekdays.count) {
             NSArray *weekSymbols = self.calendar.shortStandaloneWeekdaySymbols;
             _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
-            UIFont *weekdayFont = [UIFont systemFontOfSize:_appearance.weekdayTextSize];
+            UIFont *weekdayFont = _appearance.preferredWeekdayFont;
             for (int i = 0; i < weekSymbols.count; i++) {
                 UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
                 weekdayLabel.text = weekSymbols[i];

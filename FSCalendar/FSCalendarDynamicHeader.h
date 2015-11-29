@@ -48,6 +48,11 @@
 @property (readonly, nonatomic) NSDictionary *subtitleColors;
 @property (readonly, nonatomic) NSDictionary *borderColors;
 
+@property (readonly, nonatomic) UIFont *preferredTitleFont;
+@property (readonly, nonatomic) UIFont *preferredSubtitleFont;
+@property (readonly, nonatomic) UIFont *preferredWeekdayFont;
+@property (readonly, nonatomic) UIFont *preferredHeaderTitleFont;
+
 - (void)adjustTitleIfNecessary;
 
 @end

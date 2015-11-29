@@ -10,65 +10,16 @@
 
 @implementation FSCalendar (IBExtension)
 
-#pragma mark -  autoAdjustTitleSize
+#pragma mark - adjustsFontSizeToFitCellSize
 
-- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
+- (void)setAdjustsFontSizeToFitCellSize:(BOOL)adjustsFontSizeToFitCellSize
 {
-    self.appearance.autoAdjustTitleSize = autoAdjustTitleSize;
+    self.appearance.adjustsFontSizeToFitCellSize = adjustsFontSizeToFitCellSize;
 }
 
-- (BOOL)autoAdjustTitleSize
+- (BOOL)adjustsFontSizeToFitCellSize
 {
-    return self.appearance.autoAdjustTitleSize;
-}
-
-
-#pragma mark - titleTextSize
-
-- (void)setTitleTextSize:(CGFloat)titleTextSize
-{
-    self.appearance.titleTextSize = titleTextSize;
-}
-
-- (CGFloat)titleTextSize
-{
-    return self.appearance.titleTextSize;
-}
-
-#pragma mark - subtitleTextSize
-
-- (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
-{
-    self.appearance.subtitleTextSize = subtitleTextSize;
-}
-
-- (CGFloat)subtitleTextSize
-{
-    return self.appearance.subtitleTextSize;
-}
-
-#pragma mark - weekdayTextSize
-
-- (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
-{
-    self.appearance.weekdayTextSize = weekdayTextSize;
-}
-
-- (CGFloat)weekdayTextSize
-{
-    return self.appearance.weekdayTextSize;
-}
-
-#pragma mark - headerTitleTextSize
-
-- (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
-{
-    self.appearance.headerTitleTextSize = headerTitleTextSize;
-}
-
-- (CGFloat)headerTitleTextSize
-{
-    return self.appearance.headerTitleTextSize;
+    return self.appearance.adjustsFontSizeToFitCellSize;
 }
 
 #pragma mark -  eventColor
@@ -376,6 +327,65 @@
 {
     return (FSCalendarCellStyle)self.appearance.cellShape;
 }
+
+#pragma mark -  autoAdjustTitleSize
+
+- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
+{
+    self.appearance.adjustsFontSizeToFitCellSize = autoAdjustTitleSize;
+}
+
+- (BOOL)autoAdjustTitleSize
+{
+    return self.appearance.adjustsFontSizeToFitCellSize;
+}
+
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
+- (void)setTitleTextSize:(CGFloat)titleTextSize
+{
+    self.appearance.titleTextSize = titleTextSize;
+}
+
+- (CGFloat)titleTextSize
+{
+    return self.appearance.titleTextSize;
+}
+
+
+- (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
+{
+    self.appearance.subtitleTextSize = subtitleTextSize;
+}
+
+- (CGFloat)subtitleTextSize
+{
+    return self.appearance.subtitleTextSize;
+}
+
+- (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
+{
+    self.appearance.weekdayTextSize = weekdayTextSize;
+}
+
+- (CGFloat)weekdayTextSize
+{
+    return self.appearance.weekdayTextSize;
+}
+
+- (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
+{
+    self.appearance.headerTitleTextSize = headerTitleTextSize;
+}
+
+- (CGFloat)headerTitleTextSize
+{
+    return self.appearance.headerTitleTextSize;
+}
+
+#pragma GCC diagnostic pop
 
 @end
 
