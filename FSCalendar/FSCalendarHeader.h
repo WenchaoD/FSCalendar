@@ -20,6 +20,7 @@
 @property (assign, nonatomic) CGFloat scrollOffset;
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
 @property (assign, nonatomic) BOOL scrollEnabled;
+@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
 - (void)reloadData;
 

@@ -46,6 +46,8 @@
 {
     _scrollDirection = UICollectionViewScrollDirectionHorizontal;
     _scrollEnabled = YES;
+    _needsAdjustingMonthPosition = YES;
+    _needsAdjustingViewFrame = YES;
     
     UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -72,7 +74,8 @@
 {
     [super layoutSubviews];
     
-    if (_collectionView) {
+    if (_needsAdjustingViewFrame) {
+        _needsAdjustingViewFrame = NO;
         _collectionView.frame = CGRectMake(0, self.fs_height*0.1, self.fs_width, self.fs_height*0.9);
         _collectionViewFlowLayout.itemSize = CGSizeMake(
                                                         _collectionView.fs_width*((_scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
@@ -83,9 +86,9 @@
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
         if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-            _collectionView.contentOffset = CGPointMake((_scrollOffset+0.5)*_collectionViewFlowLayout.itemSize.width, 0);
+            [_collectionView setContentOffset:CGPointMake((_scrollOffset+0.5)*_collectionViewFlowLayout.itemSize.width, 0) animated:NO];
         } else {
-            _collectionView.contentOffset = CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height);
+            [_collectionView setContentOffset:CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height) animated:NO];
         }
     }
 }

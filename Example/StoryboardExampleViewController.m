@@ -27,7 +27,7 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
-    _lunarCalendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierChinese];
+    _lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     _lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
     _lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
 
@@ -77,7 +77,7 @@
     if (!_lunar) {
         return nil;
     }
-    NSInteger day = [_lunarCalendar component:NSCalendarUnitDay fromDate:date];
+    NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
     return _lunarChars[day-1];
 }
 

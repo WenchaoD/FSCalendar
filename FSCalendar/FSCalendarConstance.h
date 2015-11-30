@@ -24,6 +24,8 @@ UIKIT_EXTERN CGFloat const FSCalendarStandardSubtitleTextSize;
 UIKIT_EXTERN CGFloat const FSCalendarStandardWeekdayTextSize;
 UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 
+UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
+
 #define FSCalendarDeviceIsIPad [[UIDevice currentDevice].model hasPrefix:@"iPad"]
 
 #define FSCalendarStandardSelectionColor  FSColorRGBA(31,119,219,1.0)

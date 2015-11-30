@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
-        self.identifiers = @[NSCalendarIdentifierGregorian,NSCalendarIdentifierIslamicCivil,NSCalendarIdentifierHebrew,NSCalendarIdentifierPersian,NSCalendarIdentifierIndian];
+        self.identifiers = @[NSCalendarIdentifierGregorian,NSCalendarIdentifierIslamic,NSCalendarIdentifierHebrew,NSCalendarIdentifierPersian,NSCalendarIdentifierIndian];
     }
     return self;
 }
@@ -59,7 +59,7 @@
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"%s %@", __FUNCTION__, [calendar stringFromDate:calendar.currentPage format:@"MMMM yyyy"]);
+    NSLog(@"%s %@", __FUNCTION__, [calendar stringFromDate:calendar.currentPage format:@"MMMM yyyy dd"]);
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
