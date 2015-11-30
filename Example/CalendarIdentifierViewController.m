@@ -15,7 +15,7 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
-        self.identifiers = @[NSCalendarIdentifierGregorian,NSCalendarIdentifierIslamic,NSCalendarIdentifierHebrew,NSCalendarIdentifierPersian,NSCalendarIdentifierIndian];
+        self.identifiers = @[NSCalendarIdentifierGregorian,NSCalendarIdentifierIslamicCivil,NSCalendarIdentifierHebrew,NSCalendarIdentifierPersian,NSCalendarIdentifierIndian];
     }
     return self;
 }
