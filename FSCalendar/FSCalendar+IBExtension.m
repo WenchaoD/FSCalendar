@@ -10,16 +10,16 @@
 
 @implementation FSCalendar (IBExtension)
 
-#pragma mark - adjustsFontSizeToFitCellSize
+#pragma mark - adjustsFontSizeToFitContentSize
 
-- (void)setAdjustsFontSizeToFitCellSize:(BOOL)adjustsFontSizeToFitCellSize
+- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize
 {
-    self.appearance.adjustsFontSizeToFitCellSize = adjustsFontSizeToFitCellSize;
+    self.appearance.adjustsFontSizeToFitContentSize = adjustsFontSizeToFitContentSize;
 }
 
-- (BOOL)adjustsFontSizeToFitCellSize
+- (BOOL)adjustsFontSizeToFitContentSize
 {
-    return self.appearance.adjustsFontSizeToFitCellSize;
+    return self.appearance.adjustsFontSizeToFitContentSize;
 }
 
 #pragma mark -  eventColor
@@ -332,12 +332,12 @@
 
 - (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
 {
-    self.appearance.adjustsFontSizeToFitCellSize = autoAdjustTitleSize;
+    self.appearance.adjustsFontSizeToFitContentSize = autoAdjustTitleSize;
 }
 
 - (BOOL)autoAdjustTitleSize
 {
-    return self.appearance.adjustsFontSizeToFitCellSize;
+    return self.appearance.adjustsFontSizeToFitContentSize;
 }
 
 

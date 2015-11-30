@@ -13,7 +13,7 @@
 IB_DESIGNABLE
 @interface FSCalendar (IBExtension)
 
-@property (assign, nonatomic) IBInspectable BOOL     adjustsFontSizeToFitCellSize;
+@property (assign, nonatomic) IBInspectable BOOL     adjustsFontSizeToFitContentSize;
 @property (assign, nonatomic) IBInspectable CGFloat  titleTextSize;
 @property (assign, nonatomic) IBInspectable CGFloat  subtitleTextSize;
 @property (assign, nonatomic) IBInspectable CGFloat  weekdayTextSize;
@@ -54,6 +54,6 @@ IB_DESIGNABLE
 
 // Deprecated
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated("use \'cellShape\' instead");
-@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated("use \'adjustsFontSizeToFitCellSize\' instead");
+@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated("use \'adjustsFontSizeToFitContentSize\' instead");
 
 @end

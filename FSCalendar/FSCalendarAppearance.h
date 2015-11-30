@@ -72,7 +72,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 @property (assign, nonatomic) FSCalendarCellShape cellShape;
 @property (assign, nonatomic) FSCalendarCaseOptions caseOptions;
-@property (assign, nonatomic) BOOL adjustsFontSizeToFitCellSize;
+@property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize;
 
 // For preview only
 @property (assign, nonatomic) BOOL      fakeSubtitles;
@@ -87,6 +87,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated("use \'cellShape\' instead");
 @property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated("use \'caseOptions\' instead");
 @property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated("use \'adjustFontSizeToFitCellSize\' instead");
+@property (assign, nonatomic) BOOL adjustsFontSizeToFitCellSize FSCalendarDeprecated("use \'adjustFontSizeToFitContentSize\' instead");
 
 @property (assign, nonatomic) CGFloat titleTextSize FSCalendarDeprecated("use \'titleFont\' instead");
 @property (assign, nonatomic) CGFloat subtitleTextSize FSCalendarDeprecated("use \'subtitleFont\' instead");

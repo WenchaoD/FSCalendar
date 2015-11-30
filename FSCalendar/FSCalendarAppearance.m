@@ -50,7 +50,7 @@
     self = [super init];
     if (self) {
         
-        _adjustsFontSizeToFitCellSize = YES;
+        _adjustsFontSizeToFitContentSize = YES;
         
         _titleFontSize = _preferredTitleFontSize  = FSCalendarStandardTitleTextSize;
         _subtitleFontSize = _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize;
@@ -478,28 +478,28 @@
 
 - (UIFont *)preferredTitleFont
 {
-    return [UIFont fontWithName:_titleFontName size:_adjustsFontSizeToFitCellSize?_preferredTitleFontSize:_titleFontSize];
+    return [UIFont fontWithName:_titleFontName size:_adjustsFontSizeToFitContentSize?_preferredTitleFontSize:_titleFontSize];
 }
 
 - (UIFont *)preferredSubtitleFont
 {
-    return [UIFont fontWithName:_subtitleFontName size:_adjustsFontSizeToFitCellSize?_preferredSubtitleFontSize:_subtitleFontSize];
+    return [UIFont fontWithName:_subtitleFontName size:_adjustsFontSizeToFitContentSize?_preferredSubtitleFontSize:_subtitleFontSize];
 }
 
 - (UIFont *)preferredWeekdayFont
 {
-    return [UIFont fontWithName:_weekdayFontName size:_adjustsFontSizeToFitCellSize?_preferredWeekdayFontSize:_weekdayFontSize];
+    return [UIFont fontWithName:_weekdayFontName size:_adjustsFontSizeToFitContentSize?_preferredWeekdayFontSize:_weekdayFontSize];
 }
 
 - (UIFont *)preferredHeaderTitleFont
 {
-    return [UIFont fontWithName:_headerTitleFontName size:_adjustsFontSizeToFitCellSize?_preferredHeaderTitleFontSize:_headerTitleFontSize];
+    return [UIFont fontWithName:_headerTitleFontName size:_adjustsFontSizeToFitContentSize?_preferredHeaderTitleFontSize:_headerTitleFontSize];
 }
 
 - (void)adjustTitleIfNecessary
 {
     if (!self.calendar.floatingMode) {
-        if (_adjustsFontSizeToFitCellSize) {
+        if (_adjustsFontSizeToFitContentSize) {
             CGFloat factor       = (_calendar.scope==FSCalendarScopeMonth) ? 6 : 1.1;
             _preferredTitleFontSize       = _calendar.collectionView.fs_height/3/factor;
             _preferredTitleFontSize       -= (_preferredTitleFontSize-FSCalendarStandardTitleTextSize)*0.5;
@@ -572,12 +572,12 @@
 
 - (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
 {
-    self.adjustsFontSizeToFitCellSize = autoAdjustTitleSize;
+    self.adjustsFontSizeToFitContentSize = autoAdjustTitleSize;
 }
 
 - (BOOL)autoAdjustTitleSize
 {
-    return self.adjustsFontSizeToFitCellSize;
+    return self.adjustsFontSizeToFitContentSize;
 }
 
 - (void)setTitleTextSize:(CGFloat)titleTextSize
@@ -618,6 +618,16 @@
 - (CGFloat)headerTitleTextSize
 {
     return _headerTitleFontSize;
+}
+
+- (void)setAdjustsFontSizeToFitCellSize:(BOOL)adjustsFontSizeToFitCellSize
+{
+    self.adjustsFontSizeToFitContentSize = adjustsFontSizeToFitCellSize;
+}
+
+- (BOOL)adjustsFontSizeToFitCellSize
+{
+    return self.adjustsFontSizeToFitContentSize;
 }
 
 @end

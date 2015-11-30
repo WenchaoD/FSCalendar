@@ -153,7 +153,7 @@
     _components = [[NSDateComponents alloc] init];
     _formatter = [[NSDateFormatter alloc] init];
     _locale = [NSLocale currentLocale];
-    _timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    _timeZone = [NSTimeZone localTimeZone];
     _firstWeekday = 1;
     [self invalidateDateTools];
     
@@ -828,7 +828,10 @@
         if (self.hasValidateVisibleLayout) {
             [self reloadData];
         }
+        BOOL suppress = _supressEvent;
+        _supressEvent = YES;
         [self scrollToPageForDate:_today animated:NO];
+        _supressEvent = suppress;
     }
 }
 
@@ -1620,12 +1623,11 @@
 {
     cell.calendar = self;
     cell.date = [self dateForIndexPath:indexPath];
-    
     cell.image = [self imageForDate:cell.date];
     cell.hasEvent = [self hasEventForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.dateIsSelected = [_selectedDates containsObject:cell.date];
-    cell.dateIsToday = [cell.date isEqual:_today];
+    cell.dateIsToday = [self date:cell.date sharesSameDayWithDate:_today];
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *firstPage = [self beginingOfMonthOfDate:_minimumDate];
