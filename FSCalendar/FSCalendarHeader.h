@@ -32,6 +32,9 @@
 @property (weak, nonatomic) UILabel *titleLabel;
 @property (weak, nonatomic) FSCalendarHeader *header;
 
+- (void)invalidateHeaderFont;
+- (void)invalidateHeaderTextColor;
+
 @end
 
 

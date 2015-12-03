@@ -293,6 +293,16 @@
     
 }
 
+- (void)invalidateHeaderFont
+{
+    _titleLabel.font = self.header.appearance.headerTitleFont;
+}
+
+- (void)invalidateHeaderTextColor
+{
+    _titleLabel.textColor = self.header.appearance.headerTitleColor;
+}
+
 @end
 
 

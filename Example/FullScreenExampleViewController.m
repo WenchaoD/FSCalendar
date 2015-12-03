@@ -8,6 +8,13 @@
 
 #import "FullScreenExampleViewController.h"
 
+@interface FullScreenExampleViewController()
+
+@property (strong, nonatomic) NSCalendar *lunarCalendar;
+@property (strong, nonatomic) NSArray *lunarChars;
+
+@end
+
 @implementation FullScreenExampleViewController
 
 - (instancetype)init
@@ -15,6 +22,9 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
+        _lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
+        _lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+        _lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
     }
     return self;
 }
@@ -71,6 +81,12 @@
     return [calendar dateByAddingMonths:3 toDate:[NSDate date]];
 }
 */
+
+- (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
+{
+    NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
+    return _lunarChars[day-1];
+}
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {

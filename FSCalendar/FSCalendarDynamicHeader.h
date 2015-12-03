@@ -14,7 +14,7 @@
 #import "FSCalendar.h"
 #import "FSCalendarCell.h"
 #import "FSCalendarHeader.h"
-
+#import "FSCalendarStickyHeader.h"
 
 @interface FSCalendar (Dynamic)
 
@@ -32,6 +32,9 @@
 @property (readonly, nonatomic) NSCalendar *calendar;
 @property (readonly, nonatomic) NSDateComponents *components;
 @property (readonly, nonatomic) NSDateFormatter *formatter;
+
+- (void)invalidateWeekdayFont;
+- (void)invalidateWeekdayTextColor;
 
 - (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;
@@ -63,4 +66,5 @@
 @property (readonly, nonatomic) UICollectionView *collectionView;
 
 @end
+
 

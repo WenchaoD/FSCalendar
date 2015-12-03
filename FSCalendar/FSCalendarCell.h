@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSString *subtitle;
 @property (strong, nonatomic) UIImage  *image;
 
+@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL hasEvent;
 
 @property (assign, nonatomic) BOOL dateIsPlaceholder;
@@ -42,6 +43,18 @@
 @property (strong, nonatomic) UIColor *preferedBorderDefaultColor;
 @property (strong, nonatomic) UIColor *preferedBorderSelectionColor;
 @property (assign, nonatomic) FSCalendarCellShape preferedCellShape;
+
+- (void)invalidateTitleFont;
+- (void)invalidateSubtitleFont;
+- (void)invalidateTitleTextColor;
+- (void)invalidateSubtitleTextColor;
+
+- (void)invalidateBorderColors;
+- (void)invalidateBackgroundColors;
+- (void)invalidateEventColors;
+- (void)invalidateCellShapes;
+
+- (void)invalidateImage;
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 - (void)performSelecting;

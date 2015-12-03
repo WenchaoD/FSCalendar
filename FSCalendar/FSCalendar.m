@@ -109,6 +109,9 @@
 - (void)invalidateHeaders;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
+- (void)invalidateWeekdayFont;
+- (void)invalidateWeekdayTextColor;
+
 - (void)selectCounterpartDate:(NSDate *)date;
 - (void)deselectCounterpartDate:(NSDate *)date;
 
@@ -230,7 +233,6 @@
     
     [self invalidateLayout];
     
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeDidChange:) name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
@@ -278,6 +280,7 @@
         
         if (!self.floatingMode) {
             
+            [_collectionViewLayout invalidateLayout];
             switch (_scope) {
                 case FSCalendarScopeMonth: {
                     CGFloat contentHeight = rowHeight*6 + padding*2;
@@ -296,6 +299,7 @@
                 }
             }
         } else {
+            
             CGFloat contentHeight = _contentView.fs_height;
             _daysContainer.frame = CGRectMake(0, 0, self.fs_width, contentHeight);
             _collectionView.frame = _daysContainer.bounds;
@@ -348,6 +352,8 @@
     if (self.window) {
         _needsAdjustingViewFrame = YES;
         _needsAdjustingMonthPosition = YES;
+        [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self setNeedsLayout];
     }
 }
@@ -896,8 +902,8 @@
             _preferedWeekdayHeight = FSCalendarAutomaticDimension;
             _preferedRowHeight = FSCalendarAutomaticDimension;
             _preferedHeaderHeight = FSCalendarAutomaticDimension;
-            [_collectionViewLayout invalidateLayout]; // Necessary in Swift. Anyone can tell why?
-            [_stickyHeaderMapTable.dictionaryRepresentation.allValues setValue:@YES forKey:@"needsAdjustingFrames"];
+            [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
+            [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
             _header.needsAdjustingViewFrame = YES;
             [self setNeedsLayout];
         }
@@ -1006,9 +1012,10 @@
         [self reloadVisibleCells];
     }
     
-    [_weekdays setValue:_appearance.preferredWeekdayFont forKey:@"font"];
-    [self invalidateHeaders];
+    [self invalidateWeekdayFont];
+    [self invalidateWeekdayTextColor];
     [self invalidateWeekdaySymbols];
+    [self invalidateHeaders];
 }
 
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
@@ -1337,8 +1344,9 @@
         
     } else {
         // 全屏模式中，切换页面时需要将该月份提升到视图最上方
-        CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
         if (self.hasValidateVisibleLayout) {
+//            [_collectionViewLayout invalidateLayout];
+            CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
             CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,_collectionView.contentSize.height-_collectionView.fs_bottom));
             [_collectionView setContentOffset:targetOffset animated:animated];
         } else {
@@ -1593,8 +1601,8 @@
         index %= 7;
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
     }];
-    if (_stickyHeaderMapTable.count) {
-        [_stickyHeaderMapTable.objectEnumerator.allObjects makeObjectsPerformSelector:@selector(reloadData)];
+    if (self.visibleStickyHeaders.count) {
+        [self.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
     }
 }
 
@@ -1716,6 +1724,17 @@
 - (NSArray *)visibleStickyHeaders
 {
     return _stickyHeaderMapTable.objectEnumerator.allObjects;
+}
+
+
+- (void)invalidateWeekdayFont
+{
+    [_weekdays makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.weekdayFont];
+}
+
+- (void)invalidateWeekdayTextColor
+{
+    [_weekdays makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
 }
 
 #pragma mark - Delegate
