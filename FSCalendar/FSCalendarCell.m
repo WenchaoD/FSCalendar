@@ -180,9 +180,24 @@
         _backgroundLayer.hidden = shouldHiddenBackgroundLayer;
     }
     if (!shouldHiddenBackgroundLayer) {
-        [self invalidateCellShapes];
-        [self invalidateBackgroundColors];
-        [self invalidateBorderColors];
+        
+        CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
+        [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
+        [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
+        if (!CGPathEqualToPath(_backgroundLayer.path,path)) {
+            _backgroundLayer.path = path;
+        }
+        
+        CGColorRef backgroundColor = self.colorForBackgroundLayer.CGColor;
+        if (!CGColorEqualToColor(_backgroundLayer.fillColor, backgroundColor)) {
+            _backgroundLayer.fillColor = backgroundColor;
+        }
+        
+        CGColorRef borderColor = self.colorForCellBorder.CGColor;
+        if (!CGColorEqualToColor(_backgroundLayer.strokeColor, borderColor)) {
+            _backgroundLayer.strokeColor = borderColor;
+        }
+        
     }
     
     if (![_image isEqual:_imageView.image]) {
@@ -265,9 +280,7 @@
     CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
     [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
     [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-    if (!CGPathEqualToPath(_backgroundLayer.path,path)) {
-        _backgroundLayer.path = path;
-    }
+    _backgroundLayer.path = path;
 }
 
 - (void)invalidateImage

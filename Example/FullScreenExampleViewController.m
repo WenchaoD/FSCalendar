@@ -46,8 +46,11 @@
     [self.view addSubview:calendar];
     self.calendar = calendar;
     
-    UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStyleBordered target:self action:@selector(todayItemClicked:)];
-    self.navigationItem.rightBarButtonItem = todayItem;
+    UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStyleBordered target:self action:@selector(todayItemClicked:)];
+    
+    UIBarButtonItem *lunarItem = [[UIBarButtonItem alloc] initWithTitle:@"Lunar" style:UIBarButtonItemStyleBordered target:self action:@selector(lunarItemClicked:)];
+    [lunarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor magentaColor]} forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItems = @[lunarItem, todayItem];
 }
 
 - (void)viewDidLoad
@@ -62,6 +65,12 @@
 - (void)todayItemClicked:(id)sender
 {
     [_calendar setCurrentPage:[NSDate date] animated:YES];
+}
+
+- (void)lunarItemClicked:(UIBarButtonItem *)item
+{
+    _showsLunar = !_showsLunar;
+    [_calendar reloadData];
 }
 
 - (void)viewWillLayoutSubviews
@@ -84,8 +93,11 @@
 
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
-    NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
-    return _lunarChars[day-1];
+    if (_showsLunar) {
+        NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
+        return _lunarChars[day-1];
+    }
+    return nil;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date

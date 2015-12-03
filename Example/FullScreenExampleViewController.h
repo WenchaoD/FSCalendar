@@ -12,7 +12,9 @@
 @interface FullScreenExampleViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate>
 
 @property (weak, nonatomic) FSCalendar *calendar;
+@property (assign, nonatomic) BOOL showsLunar;
 
 - (void)todayItemClicked:(id)sender;
+- (void)lunarItemClicked:(id)sender;
 
 @end
