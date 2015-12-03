@@ -10,6 +10,12 @@
 
 @implementation FSCalendarScopeExampleViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    _calendar.scope = FSCalendarScopeWeek;
+}
+
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
 {
     CGSize size = [calendar sizeThatFits:calendar.frame.size];

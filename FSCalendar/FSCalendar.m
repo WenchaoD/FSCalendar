@@ -596,7 +596,7 @@
             [self didChangeValueForKey:@"currentPage"];
         }
         
-    } else {
+    } else if (self.hasValidateVisibleLayout) {
         CGFloat scrollOffset = 0;
         switch (_collectionViewLayout.scrollDirection) {
             case UICollectionViewScrollDirectionHorizontal: {
@@ -1660,7 +1660,8 @@
     }
     
     [self invalidateAppearanceForCell:cell];
-    if (cell.dateIsSelected && !cell.dateIsPlaceholder) {
+    if (cell.dateIsSelected) {
+        if (cell.dateIsPlaceholder) indexPath = [self indexPathForDate:cell.date];
         [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     } else if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:NO];
