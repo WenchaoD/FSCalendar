@@ -90,7 +90,8 @@
         } else {
             [_collectionView setContentOffset:CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height) animated:NO];
         }
-    }
+    };
+    
 }
 
 - (void)dealloc
@@ -222,12 +223,9 @@
     if (_scrollDirection != scrollDirection) {
         _scrollDirection = scrollDirection;
         _collectionViewFlowLayout.scrollDirection = scrollDirection;
-        CGPoint newOffset = CGPointMake(
-                                        scrollDirection == UICollectionViewScrollDirectionHorizontal ? (_scrollOffset-0.5)*_collectionViewFlowLayout.itemSize.width : 0,
-                                        scrollDirection == UICollectionViewScrollDirectionVertical ? _scrollOffset * _collectionViewFlowLayout.itemSize.height : 0
-                                        );
-        _collectionView.contentOffset = newOffset;
-        [_collectionView reloadData];
+        _needsAdjustingMonthPosition = YES;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
     }
 }
 
