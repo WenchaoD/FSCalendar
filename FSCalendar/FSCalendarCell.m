@@ -136,15 +136,23 @@
 - (void)configureCell
 {
     _titleLabel.text = [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
-    
+    if (_subtitle) {
+        _subtitleLabel.text = _subtitle;
+        if (_subtitleLabel.hidden) {
+            _subtitleLabel.hidden = NO;
+        }
+    } else {
+        if (!_subtitleLabel.hidden) {
+            _subtitleLabel.hidden = YES;
+        }
+    }
     if (_needsAdjustingViewFrame || CGSizeEqualToSize(_titleLabel.frame.size, CGSizeZero)) {
         _needsAdjustingViewFrame = NO;
         
         if (_subtitle) {
             CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_titleLabel.font}].height;
             CGFloat subtitleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_subtitleLabel.font}].height;
-            _subtitleLabel.hidden = NO;
-            _subtitleLabel.text = _subtitle;
+
             CGFloat height = titleHeight + subtitleHeight;
             _titleLabel.frame = CGRectMake(0,
                                            (self.contentView.fs_height*5.0/6.0-height)*0.5+_appearance.titleVerticalOffset,
@@ -157,7 +165,6 @@
                                               subtitleHeight);
         } else {
             _titleLabel.frame = CGRectMake(0, _appearance.titleVerticalOffset, self.fs_width, floor(self.contentView.fs_height*5.0/6.0));
-            _subtitleLabel.hidden = YES;
         }
         
     }
