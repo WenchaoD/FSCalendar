@@ -66,23 +66,24 @@
     [super layoutSubviews];
     
     if (_needsAdjustingViewFrame) {
-        if (!CGSizeEqualToSize(self.frame.size, CGSizeZero)) {
-            _needsAdjustingViewFrame = NO;
-            _contentView.frame = self.bounds;
-            CGFloat weekdayWidth = self.fs_width / 7.0;
-            CGFloat weekdayHeight = _calendar.preferedWeekdayHeight;
-            CGFloat weekdayMargin = weekdayHeight * 0.1;
-            CGFloat titleWidth = _contentView.fs_width;
-            
-            [_weekdayLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) { \
-                label.frame = CGRectMake(index*weekdayWidth, _contentView.fs_height-weekdayHeight-weekdayMargin, weekdayWidth, weekdayHeight);
-            }];
-            
-            CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_appearance.preferredHeaderTitleFont}].height*1.5 + weekdayMargin*3;
-            
-            _separator.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
-            _titleLabel.frame = CGRectMake(0, _separator.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
-        }
+        
+        _needsAdjustingViewFrame = NO;
+        _contentView.frame = self.bounds;
+
+        CGFloat weekdayWidth = self.fs_width / 7.0;
+        CGFloat weekdayHeight = _calendar.preferedWeekdayHeight;
+        CGFloat weekdayMargin = weekdayHeight * 0.1;
+        CGFloat titleWidth = _contentView.fs_width;
+        
+        [_weekdayLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) { \
+            label.frame = CGRectMake(index*weekdayWidth, _contentView.fs_height-weekdayHeight-weekdayMargin, weekdayWidth, weekdayHeight);
+        }];
+        
+        CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_appearance.preferredHeaderTitleFont}].height*1.5 + weekdayMargin*3;
+        
+        _separator.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
+        _titleLabel.frame = CGRectMake(0, _separator.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
+        
     }
     
     [self reloadData];

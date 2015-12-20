@@ -17,6 +17,11 @@
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarCollectionView.h"
 
+typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
+    FSCalendarOrientationLandscape,
+    FSCalendarOrientationPortrait
+};
+
 @interface FSCalendar (DataSourceAndDelegate)
 
 - (BOOL)hasEventForDate:(NSDate *)date;
@@ -77,11 +82,12 @@
 @property (assign, nonatomic) CGFloat                    preferedHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferedWeekdayHeight;
 @property (assign, nonatomic) CGFloat                    preferedRowHeight;
-@property (assign, nonatomic) UIInterfaceOrientation     interfaceOrientation;
+@property (assign, nonatomic) FSCalendarOrientation      orientation;
 
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) BOOL hasValidateVisibleLayout;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
+@property (readonly, nonatomic) FSCalendarOrientation currentCalendarOrientation;
 
 @property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
 
@@ -182,7 +188,7 @@
     _needsAdjustingTextSize = YES;
     _needsAdjustingMonthPosition = YES;
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
-    _interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    _orientation = self.currentCalendarOrientation;
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -274,7 +280,7 @@
                                             weekdayWidth,
                                             weekdayHeight);
         }];
-        
+
         _deliver.frame = CGRectMake(_header.fs_left, _header.fs_top, _header.fs_width, headerHeight+weekdayHeight);
         _deliver.hidden = _header.hidden;
         
@@ -668,7 +674,7 @@
 
 - (void)orientationDidChange:(NSNotification *)notification
 {
-    self.interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
+    self.orientation = self.currentCalendarOrientation;
 }
 
 - (void)significantTimeDidChange:(NSNotification *)notification
@@ -890,24 +896,22 @@
     }
 }
 
-- (void)setInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)setOrientation:(FSCalendarOrientation)orientation
 {
-    if (_interfaceOrientation != interfaceOrientation) {
-        _interfaceOrientation = interfaceOrientation;
+    if (_orientation != orientation) {
+        _orientation = orientation;
         
-        if (interfaceOrientation != UIInterfaceOrientationUnknown) {
-            _needsAdjustingViewFrame = YES;
-            _needsAdjustingMonthPosition = YES;
-            _needsAdjustingTextSize = YES;
-            _preferedWeekdayHeight = FSCalendarAutomaticDimension;
-            _preferedRowHeight = FSCalendarAutomaticDimension;
-            _preferedHeaderHeight = FSCalendarAutomaticDimension;
-            [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
-            [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
-            _header.needsAdjustingViewFrame = YES;
-            [self setNeedsLayout];
-        }
-
+        _needsAdjustingViewFrame = YES;
+        _needsAdjustingMonthPosition = YES;
+        _needsAdjustingTextSize = YES;
+        _preferedWeekdayHeight = FSCalendarAutomaticDimension;
+        _preferedRowHeight = FSCalendarAutomaticDimension;
+        _preferedHeaderHeight = FSCalendarAutomaticDimension;
+        [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        _header.needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+        
     }
 }
 
@@ -1345,7 +1349,6 @@
     } else {
         // 全屏模式中，切换页面时需要将该月份提升到视图最上方
         if (self.hasValidateVisibleLayout) {
-//            [_collectionViewLayout invalidateLayout];
             CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
             CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,_collectionView.contentSize.height-_collectionView.fs_bottom));
             [_collectionView setContentOffset:targetOffset animated:animated];
@@ -1736,6 +1739,17 @@
 - (void)invalidateWeekdayTextColor
 {
     [_weekdays makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
+}
+
+// The best way to detect orientation
+// http://stackoverflow.com/questions/25830448/what-is-the-best-way-to-detect-orientation-in-an-app-extension/26023538#26023538
+- (FSCalendarOrientation)currentCalendarOrientation
+{
+    CGFloat scale = [UIScreen mainScreen].scale;
+    CGSize nativeSize = [UIScreen mainScreen].currentMode.size;
+    CGSize sizeInPoints = [UIScreen mainScreen].bounds.size;
+    FSCalendarOrientation orientation = scale * sizeInPoints.width == nativeSize.width ? FSCalendarOrientationPortrait : FSCalendarOrientationLandscape;
+    return orientation;
 }
 
 #pragma mark - Delegate
