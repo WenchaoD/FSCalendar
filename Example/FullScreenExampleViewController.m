@@ -76,7 +76,7 @@
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    _calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64);
+    _calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, self.view.bounds.size.height-CGRectGetMaxY(self.navigationController.navigationBar.frame));
 }
 
 /*

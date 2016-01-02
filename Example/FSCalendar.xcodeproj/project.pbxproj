@@ -54,9 +54,6 @@
 		EE89AF9E1B9162B90001B657 /* NSString+FSExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = EE89AF9C1B9162B90001B657 /* NSString+FSExtension.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EE89AF9F1B9162B90001B657 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */; };
 		EE89AFA01B9162B90001B657 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */; };
-		EEC9C0341BDC8F7000383A07 /* FSCalendarFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC9C0321BDC8F7000383A07 /* FSCalendarFlowLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		EEC9C0351BDC8F7000383A07 /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0331BDC8F7000383A07 /* FSCalendarFlowLayout.m */; };
-		EEC9C0361BDC8F7000383A07 /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0331BDC8F7000383A07 /* FSCalendarFlowLayout.m */; };
 		EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC9C0371BDC9E7000383A07 /* FSCalendarCollectionView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
 		EEC9C03B1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
@@ -139,8 +136,6 @@
 		EE638CF51B8A1F550006DD1A /* FSCalendarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSCalendarTests.m; sourceTree = "<group>"; };
 		EE89AF9C1B9162B90001B657 /* NSString+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FSExtension.h"; sourceTree = "<group>"; };
 		EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FSExtension.m"; sourceTree = "<group>"; };
-		EEC9C0321BDC8F7000383A07 /* FSCalendarFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarFlowLayout.h; sourceTree = "<group>"; };
-		EEC9C0331BDC8F7000383A07 /* FSCalendarFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarFlowLayout.m; sourceTree = "<group>"; };
 		EEC9C0371BDC9E7000383A07 /* FSCalendarCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarCollectionView.h; sourceTree = "<group>"; };
 		EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarCollectionView.m; sourceTree = "<group>"; };
 		EECA10F61BA9C0E400945B83 /* FullScreenExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenExampleViewController.h; sourceTree = SOURCE_ROOT; };
@@ -200,8 +195,6 @@
 				EE89AF9D1B9162B90001B657 /* NSString+FSExtension.m */,
 				30B0BAC31B8D8E22004B9476 /* FSCalendarCell.h */,
 				30B0BAC41B8D8E22004B9476 /* FSCalendarCell.m */,
-				EEC9C0321BDC8F7000383A07 /* FSCalendarFlowLayout.h */,
-				EEC9C0331BDC8F7000383A07 /* FSCalendarFlowLayout.m */,
 				EEC9C0371BDC9E7000383A07 /* FSCalendarCollectionView.h */,
 				EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */,
 				30B0BAC61B8D8E22004B9476 /* FSCalendarHeader.h */,
@@ -365,7 +358,6 @@
 				30B0BB021B8D9B6C004B9476 /* FSCalendarCell.h in Headers */,
 				30B0BB031B8D9B6D004B9476 /* FSCalendarDynamicHeader.h in Headers */,
 				EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */,
-				EEC9C0341BDC8F7000383A07 /* FSCalendarFlowLayout.h in Headers */,
 				30B0BB041B8D9B6D004B9476 /* FSCalendarHeader.h in Headers */,
 				30FCB3961BAAD112002B87AD /* FSCalendarStickyHeader.h in Headers */,
 				30B0BB001B8D9B6C004B9476 /* FSCalendar+IBExtension.h in Headers */,
@@ -492,7 +484,6 @@
 				3084BD191BF9AB8100C956F7 /* CalendarIdentifierViewController.m in Sources */,
 				EE638CCB1B89DBAC0006DD1A /* main.m in Sources */,
 				30B0BAD11B8D8E23004B9476 /* FSCalendarAppearance.m in Sources */,
-				EEC9C0351BDC8F7000383A07 /* FSCalendarFlowLayout.m in Sources */,
 				EE638CC61B89DB7D0006DD1A /* ViewDidLoadExampleViewController.m in Sources */,
 				30B0BACF1B8D8E23004B9476 /* FSCalendar+IBExtension.m in Sources */,
 				EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */,
@@ -514,7 +505,6 @@
 				EEC9C03B1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */,
 				30B0BAF71B8D9AC1004B9476 /* FSCalendarCell.m in Sources */,
 				30B0BAF81B8D9AC1004B9476 /* FSCalendarHeader.m in Sources */,
-				EEC9C0361BDC8F7000383A07 /* FSCalendarFlowLayout.m in Sources */,
 				3092253C1B905C4300123031 /* FSCalendarConstance.m in Sources */,
 				30B0BAFA1B8D9AC1004B9476 /* NSDate+FSExtension.m in Sources */,
 				EE89AFA01B9162B90001B657 /* NSString+FSExtension.m in Sources */,

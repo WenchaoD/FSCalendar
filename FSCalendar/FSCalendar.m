@@ -13,7 +13,6 @@
 
 #import "UIView+FSExtension.h"
 #import "NSString+FSExtension.h"
-#import "FSCalendarFlowLayout.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarCollectionView.h"
 
@@ -68,7 +67,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (weak  , nonatomic) UIView                     *topBorder;
 @property (weak  , nonatomic) UIView                     *bottomBorder;
 @property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
-@property (weak  , nonatomic) FSCalendarFlowLayout       *collectionViewLayout;
+@property (weak  , nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
 
 @property (weak  , nonatomic) FSCalendarHeader           *header;
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
@@ -205,8 +204,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [contentView addSubview:daysContainer];
     self.daysContainer = daysContainer;
     
-    FSCalendarFlowLayout *collectionViewLayout = [[FSCalendarFlowLayout alloc] init];
-    collectionViewLayout.calendar = self;
+    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    collectionViewLayout.minimumInteritemSpacing = 0;
+    collectionViewLayout.minimumLineSpacing = 0;
+    collectionViewLayout.itemSize = CGSizeMake(1, 1);
+    collectionViewLayout.sectionInset = UIEdgeInsetsZero;
     
     FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
                                                           collectionViewLayout:collectionViewLayout];
@@ -285,8 +288,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _deliver.hidden = _header.hidden;
         
         if (!self.floatingMode) {
-            
-            [_collectionViewLayout invalidateLayout];
+
             switch (_scope) {
                 case FSCalendarScopeMonth: {
                     CGFloat contentHeight = rowHeight*6 + padding*2;
@@ -309,9 +311,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             CGFloat contentHeight = _contentView.fs_height;
             _daysContainer.frame = CGRectMake(0, 0, self.fs_width, contentHeight);
             _collectionView.frame = _daysContainer.bounds;
-            _collectionViewLayout.headerReferenceSize = CGSizeMake(_collectionView.fs_width, _collectionViewLayout.headerReferenceSize.height);
             
         }
+        [_collectionViewLayout invalidateLayout];
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
         _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
         
@@ -350,18 +352,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
             
         }
-    }
-}
-
-- (void)didMoveToWindow
-{
-    [super didMoveToWindow];
-    if (self.window) {
-        _needsAdjustingViewFrame = YES;
-        _needsAdjustingMonthPosition = YES;
-        [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
-        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
-        [self setNeedsLayout];
     }
 }
 
@@ -565,6 +555,69 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+#pragma mark - <UICollectionViewDelegateFlowLayout>
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    CGFloat rowHeight = self.preferedRowHeight;
+    
+    if (!self.floatingMode) {
+        switch (self.scope) {
+            case FSCalendarScopeMonth: {
+                CGSize itemSize = CGSizeMake(
+                                             self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
+                                             rowHeight
+                                            );
+                return itemSize;
+            }
+            case FSCalendarScopeWeek: {
+                CGSize itemSize = CGSizeMake(self.collectionView.fs_width/7, rowHeight);
+                return itemSize;
+            }
+        }
+    } else {
+        CGSize itemSize = CGSizeMake(
+                                     self.collectionView.fs_width/7-(_collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
+                                     rowHeight
+                                    );
+        return itemSize;
+    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    if (!self.floatingMode) {
+        return CGSizeZero;
+    } else {
+        CGFloat headerHeight = self.preferedWeekdayHeight*1.5+self.preferedHeaderHeight;
+        return CGSizeMake(self.collectionView.fs_width, headerHeight);
+    }
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    
+    if (!self.floatingMode) {
+        CGFloat rowHeight = self.preferedRowHeight;
+        UIEdgeInsets sectionInsets;
+        switch (self.scope) {
+            case FSCalendarScopeMonth: {
+                CGFloat padding = (self.collectionView.fs_height-rowHeight*6)/2;
+                sectionInsets = UIEdgeInsetsMake(padding, 0, padding, 0);
+                return sectionInsets;
+            }
+            case FSCalendarScopeWeek: {
+                CGFloat padding = (self.collectionView.fs_height-rowHeight)/2;
+                sectionInsets = UIEdgeInsetsMake(padding, 0, padding, 0);
+                return sectionInsets;
+            }
+        }
+    } else {
+        return UIEdgeInsetsZero;
+    }
+}
+
 #pragma mark - <UIScrollViewDelegate>
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -709,7 +762,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 _supressEvent = YES;
 
                 _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)scrollDirection;
-                [_collectionViewLayout invalidateLayout];
                 _header.scrollDirection = _collectionViewLayout.scrollDirection;
                 if (self.hasValidateVisibleLayout) {
                     [_collectionView reloadData];
@@ -717,7 +769,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 }
                 _needsAdjustingMonthPosition = YES;
                 [self setNeedsLayout];
-                
                 _supressEvent = NO;
                 break;
             }
@@ -912,7 +963,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         _header.needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
-        
     }
 }
 
@@ -1350,9 +1400,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else {
         // 全屏模式中，切换页面时需要将该月份提升到视图最上方
         if (self.hasValidateVisibleLayout) {
+            // Force layout to avoid crash on orientation changing
+            [_collectionViewLayout layoutAttributesForElementsInRect:_collectionView.bounds];
             CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
             CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,_collectionView.contentSize.height-_collectionView.fs_bottom));
             [_collectionView setContentOffset:targetOffset animated:animated];
+            
         } else {
             // 如果在loadView或者viewDidLoad中调用需要切换月份的方法, 这时UICollectionView并没有准备好自己的单元格和空间大小，这时不能直接调用setContentOffset,而是等到在layoutSubviews之后再去调用
             _currentPage = targetDate;
