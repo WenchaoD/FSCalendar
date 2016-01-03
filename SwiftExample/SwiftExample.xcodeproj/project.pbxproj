@@ -25,7 +25,6 @@
 		EE0954ED1B97DDF4007F6964 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */; };
 		EE2B62831BB6D7FE00ACB430 /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EE2B62821BB6D7FE00ACB430 /* FSCalendarStickyHeader.m */; };
 		EEC9C0401BDCA2D600383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C03D1BDCA2D600383A07 /* FSCalendarCollectionView.m */; };
-		EEC9C0411BDCA2D600383A07 /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C03F1BDCA2D600383A07 /* FSCalendarFlowLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -298,7 +297,6 @@
 				EE0954ED1B97DDF4007F6964 /* UIView+FSExtension.m in Sources */,
 				EE2B62831BB6D7FE00ACB430 /* FSCalendarStickyHeader.m in Sources */,
 				EE0954E41B97DDF4007F6964 /* FSCalendar.m in Sources */,
-				EEC9C0411BDCA2D600383A07 /* FSCalendarFlowLayout.m in Sources */,
 				EE0954E51B97DDF4007F6964 /* FSCalendarAppearance.m in Sources */,
 				EE0954E71B97DDF4007F6964 /* FSCalendarConstance.m in Sources */,
 				EE0954EB1B97DDF4007F6964 /* NSDate+FSExtension.m in Sources */,
