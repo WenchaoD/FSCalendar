@@ -88,7 +88,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
 @property (assign, nonatomic) IBInspectable BOOL pagingEnabled;
 @property (assign, nonatomic) IBInspectable BOOL scrollEnabled;
+/**
+ Defaults to NO. If YES and the calender is using horizontal scrollDirection and a week scope the month labels will stick while swiping through month. They will only change dependend on the scroll offset of calendar when the month in the calendar view is about to change.
+ */
 @property (assign, nonatomic) IBInspectable BOOL focusOnSingleSelectedDate;
+@property (assign, nonatomic) BOOL useStickyMonthLabelsInWeekScope;
 
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
 @property (readonly, nonatomic) NSDate *minimumDate;
