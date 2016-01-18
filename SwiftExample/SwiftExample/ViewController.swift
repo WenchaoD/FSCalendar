@@ -17,9 +17,12 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     "20160206","20160306","20160406","20160506","20160606","20160706"]
     override func viewDidLoad() {
         super.viewDidLoad()
-        calendar.scrollDirection = .Vertical
+        calendar.scrollDirection = .Horizontal
+        calendar.scope = .Week
+        calendar.useStickyMonthLabelsInWeekScope = true
         calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
-        calendar.selectDate(calendar.dateWithYear(2015, month: 10, day: 10))
+//        calendar.selectDate(calendar.dateWithYear(2015, month: 10, day: 10))
+        calendar.selectDate(NSDate())
 //        calendar.allowsMultipleSelection = true
         
         // Uncomment this to test month->week and week->month transition
@@ -33,23 +36,23 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         */
 
     }
-    
+    private let monthTimeInterval: NSTimeInterval = 30 * 24 * 60 * 60
 
     func minimumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
-        return calendar.dateWithYear(2015, month: 1, day: 1)
+        return NSDate(timeIntervalSinceNow: -monthTimeInterval)
     }
     
     func maximumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
-        return calendar.dateWithYear(2016, month: 10, day: 31)
+        return NSDate(timeIntervalSinceNow: monthTimeInterval)
     }
-    
+
 
     func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
         return calendar.dayOfDate(date) == 5
     }
 
     func calendarCurrentPageDidChange(calendar: FSCalendar!) {
-        NSLog("change page to \(calendar.stringFromDate(calendar.currentPage))")
+//        NSLog("change page to \(calendar.stringFromDate(calendar.currentPage))")
     }
     
     func calendar(calendar: FSCalendar!, didSelectDate date: NSDate!) {

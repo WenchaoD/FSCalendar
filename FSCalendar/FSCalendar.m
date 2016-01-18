@@ -1178,14 +1178,17 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSInteger pageStartMonth = [self monthOfDate:pageStartDate];
     NSInteger pageEndMonth = [self monthOfDate:pageEndDate];
     
-    NSInteger monthOffset = pageStartMonth;
+    NSInteger monthOffset = pageStartMonth + 1;
     NSInteger minYear = [self yearOfDate:self.minimumDate];
     NSInteger currentYear = [self yearOfDate:pageStartDate];
     
     // get month value (total number, beginning from minimum date of calendar)
     if (currentYear < minYear) {
-        monthOffset = 0;
-    } else  if (currentYear > minYear) {
+        monthOffset = 1;
+    } else if (currentYear == minYear) {
+        NSInteger minMonth = [self monthOfDate:self.minimumDate];
+        monthOffset = pageStartMonth - minMonth + 1;
+    } else if (currentYear > minYear) {
         NSInteger totalYearDiff = currentYear - minYear;
         // add months for complete years
         if (currentYear - minYear > 1) {
@@ -1194,7 +1197,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
         // add months from first year
         NSInteger minMonth = [self monthOfDate:self.minimumDate];
-        monthOffset += 12 - minMonth + 1;
+        monthOffset += 12 - minMonth;
     }
     
     if (pageStartMonth == pageEndMonth) {

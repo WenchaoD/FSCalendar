@@ -135,11 +135,11 @@
             NSInteger count;
             
             if (_calendar.scope == FSCalendarScopeWeek && _calendar.useStickyMonthLabelsInWeekScope) {
-                count = [_calendar monthsFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
+                count = [_calendar monthsFromDate:minimumPage toDate:_calendar.maximumDate] + 3;
             } else {
-                count = [_calendar weeksFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
+                count = [_calendar weeksFromDate:minimumPage toDate:_calendar.maximumDate];
             }
-
+            
             return count + 2;
         }
         default: {
@@ -182,7 +182,7 @@
                 NSDate *date = nil;
                 
                 if (_calendar.scope == FSCalendarScopeWeek && _calendar.useStickyMonthLabelsInWeekScope) {
-                    date = [_calendar dateByAddingMonths:indexPath.item-1 toDate:firstPage];
+                    date = [_calendar dateByAddingMonths:indexPath.item-2 toDate:firstPage];
                 } else {
                     date = [_calendar dateByAddingWeeks:indexPath.item-1 toDate:firstPage];
                 }
