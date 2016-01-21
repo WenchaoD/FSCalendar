@@ -18,6 +18,7 @@
 
 @interface FSCalendar (Dynamic)
 
+@property (readonly, nonatomic) CAShapeLayer *maskLayer;
 @property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) UICollectionView *collectionView;
 @property (readonly, nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
@@ -28,10 +29,17 @@
 @property (readonly, nonatomic) CGFloat preferedHeaderHeight;
 @property (readonly, nonatomic) CGFloat preferedWeekdayHeight;
 @property (readonly, nonatomic) CGFloat preferedRowHeight;
+@property (readonly, nonatomic) UIView *bottomBorder;
 
 @property (readonly, nonatomic) NSCalendar *calendar;
 @property (readonly, nonatomic) NSDateComponents *components;
 @property (readonly, nonatomic) NSDateFormatter *formatter;
+
+@property (readonly, nonatomic) UIView *contentView;
+@property (readonly, nonatomic) UIView *daysContainer;
+
+@property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
+@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
@@ -39,6 +47,16 @@
 - (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
+
+- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
+- (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath scope:(FSCalendarScope)scope;
+- (NSIndexPath *)indexPathForDate:(NSDate *)date;
+- (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope;
+
+- (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
+
+- (void)_setCurrentPage:(NSDate *)currentPage;
+- (NSDate *)findMonthForWeek:(NSDate *)week withRow:(NSInteger *)row;
 
 @end
 

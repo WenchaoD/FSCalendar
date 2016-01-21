@@ -26,7 +26,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
     FSCalendarScrollDirectionHorizontal
 };
 
-
 @class FSCalendar;
 @protocol FSCalendarDelegateDeprecatedProtocol,FSCalendarDelegateAppearanceDeprecatedProtocol;
 
@@ -89,6 +88,7 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
 @property (assign, nonatomic) IBInspectable BOOL pagingEnabled;
 @property (assign, nonatomic) IBInspectable BOOL scrollEnabled;
+@property (assign, nonatomic) IBInspectable BOOL focusOnSingleSelectedDate;
 
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
 @property (readonly, nonatomic) NSDate *minimumDate;

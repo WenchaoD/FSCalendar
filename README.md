@@ -14,6 +14,24 @@
 ## iPad
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
+## New Feature - Focus on selected date
+![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
+
+### How to use
+* Use ***`focusOnSingleSelectedDate`***, default is `YES`
+```objective-c
+calendar.focusOnSingleSelectedDate = YES;
+```
+* Only available on ***single selection*** mode (by default)
+```objective-c
+calendar.allowsSelection = YES;
+calendar.allowsMultipleSelection = NO;
+```
+* Try to change `scope`
+```objective-c
+[calendar setScope:FSCalendarScopeWeek animated:YES];
+```
+
 # Installation
 
 ## Cocoapods:

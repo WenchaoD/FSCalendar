@@ -40,7 +40,7 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-    [calendar selectDate:[calendar dateWithYear:2015 month:2 day:6]];
+    [calendar selectDate:[calendar dateWithYear:2015 month:2 day:16]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -50,9 +50,14 @@
 {
     [super viewDidLoad];
     
-#if 0
-    FSCalendarTestSelectDate
-#endif
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.calendar setScope:FSCalendarScopeWeek animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.calendar setScope:FSCalendarScopeMonth animated:YES];
+        });
+    });
+    
     
 }
 
@@ -72,10 +77,11 @@
     NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM YYYY"]);
 }
 
-//- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
-//{
-//    calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, [calendar sizeThatFits:CGSizeZero].height);
-//}
+- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+{
+    CGFloat height = [calendar sizeThatFits:CGSizeZero].height;
+    calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, height);
+}
 
 //- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 //{
