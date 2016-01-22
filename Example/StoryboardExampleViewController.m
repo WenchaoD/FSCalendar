@@ -94,7 +94,7 @@
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [calendar dateWithYear:2016 month:5 day:31];
+    return [calendar dateWithYear:2039 month:5 day:31];
 }
 
 

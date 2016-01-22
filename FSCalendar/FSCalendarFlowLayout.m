@@ -215,37 +215,28 @@
             
         case FSCalendarTransitionWeekToMonth: {
             
-            NSInteger focusedRowNumber = -1;
+            NSInteger focusedRowNumber = 0;
             NSDate *currentPage = self.calendar.currentPage;
-            if (focusedRowNumber == -1) {
-                NSDate *firstDayOfMonth = [self.calendar beginingOfMonthOfDate:[self.calendar dateByAddingMonths:1 toDate:currentPage]];
-                NSInteger weekdayOfFirstDay = [self.calendar weekdayOfDate:firstDayOfMonth];
-                NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.calendar.firstWeekday) + 7) % 7 ?: 7;
-                NSDate *firstDateOfPage = [self.calendar dateBySubstractingDays:numberOfPlaceholdersForPrev fromDate:firstDayOfMonth];
-                for (int i = 0; i < 6; i++) {
-                    NSDate *currentRow = [self.calendar dateByAddingWeeks:i toDate:firstDateOfPage];
-                    if ([self.calendar date:currentRow sharesSameDayWithDate:currentPage]) {
-                        focusedRowNumber = i;
-                        currentPage = firstDayOfMonth;
-                        break;
-                    }
+            NSDate *firstDayOfMonth = nil;
+            if (self.calendar.focusOnSingleSelectedDate && self.calendar.selectedDate) {
+                UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:self.calendar.selectedDate scope:FSCalendarScopeWeek]];
+                CGPoint selectedCenter = attributes.center;
+                if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
+                    firstDayOfMonth = [self.calendar beginingOfMonthOfDate:self.calendar.selectedDate];
                 }
             }
-            if (focusedRowNumber == -1) {
-                NSDate *firstDayOfMonth = [self.calendar beginingOfMonthOfDate:currentPage];
-                NSInteger weekdayOfFirstDay = [self.calendar weekdayOfDate:firstDayOfMonth];
-                NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.calendar.firstWeekday) + 7) % 7 ?: 7;
-                NSDate *firstDateOfPage = [self.calendar dateBySubstractingDays:numberOfPlaceholdersForPrev fromDate:firstDayOfMonth];
-                for (int i = 0; i < 6; i++) {
-                    NSDate *currentRow = [self.calendar dateByAddingWeeks:i toDate:firstDateOfPage];
-                    if ([self.calendar date:currentRow sharesSameDayWithDate:currentPage]) {
-                        focusedRowNumber = i;
-                        currentPage = firstDayOfMonth;
-                        break;
-                    }
+            firstDayOfMonth = firstDayOfMonth ?: [self.calendar beginingOfMonthOfDate:currentPage];
+            NSInteger weekdayOfFirstDay = [self.calendar weekdayOfDate:firstDayOfMonth];
+            NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.calendar.firstWeekday) + 7) % 7 ?: 7;
+            NSDate *firstDateOfPage = [self.calendar dateBySubstractingDays:numberOfPlaceholdersForPrev fromDate:firstDayOfMonth];
+            for (int i = 0; i < 6; i++) {
+                NSDate *currentRow = [self.calendar dateByAddingWeeks:i toDate:firstDateOfPage];
+                if ([self.calendar date:currentRow sharesSameDayWithDate:currentPage]) {
+                    focusedRowNumber = i;
+                    currentPage = firstDayOfMonth;
+                    break;
                 }
             }
-            focusedRowNumber = MAX(0, focusedRowNumber);
             
             [self.calendar _setCurrentPage:currentPage];
             

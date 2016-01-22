@@ -303,9 +303,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     _collectionView.frame = _daysContainer.bounds;
                     break;
                 }
-                default: {
-                    break;
-                }
+                    
             }
         } else {
             
@@ -372,8 +370,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             if (self.collectionViewLayout.state == FSCalendarTransitionStateInProgress) {
                 return [self sizeThatFits:size scope:FSCalendarScopeMonth];
             }
-        default:
-            break;
     }
     return [self sizeThatFits:size scope:FSCalendarScopeWeek];
 }
@@ -395,9 +391,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 CGFloat height = weekdayHeight + headerHeight + rowHeight + paddings;
                 return CGSizeMake(size.width, height);
             }
-            default: {
-                break;
-            }
         }
     } else {
         return CGSizeMake(size.width, self.fs_height);
@@ -411,22 +404,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (self.collectionViewLayout.transition == FSCalendarTransitionWeekToMonth) {
         return [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
-    } else {
-        NSInteger sections;
-        switch (_scope) {
-            case FSCalendarScopeMonth:
-                sections = [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
-                break;
-            case FSCalendarScopeWeek:
-                sections = [self weeksFromDate:[self beginingOfWeekOfDate:_minimumDate] toDate:_maximumDate] + 1;
-                break;
-            default: {
-                break;
-            }
-        }
-        return sections;
     }
-    
+    switch (_scope) {
+        case FSCalendarScopeMonth:
+            return [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
+        case FSCalendarScopeWeek:
+            return [self weeksFromDate:[self beginingOfWeekOfDate:_minimumDate] toDate:_maximumDate] + 1;
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -442,8 +426,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             case FSCalendarScopeWeek: {
                 return 7;
             }
-            default:
-                break;
         }
     } else {
         NSDate *currentPage = [self dateByAddingMonths:section toDate:[self beginingOfMonthOfDate:_minimumDate]];
@@ -623,9 +605,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 scrollOffset = scrollView.contentOffset.y/scrollView.fs_height;
                 break;
             }
-            default: {
-                break;
-            }
         }
         _header.scrollOffset = scrollOffset;
     }
@@ -652,9 +631,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             contentSize = scrollView.fs_height;
             break;
         }
-        default: {
-            break;
-        }
     }
     BOOL shouldTriggerPageChange = ((pannedOffset < 0 && targetOffset > currentOffset) ||
                                      (pannedOffset > 0 && targetOffset < currentOffset)) && _minimumDate;
@@ -669,9 +645,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             case FSCalendarScopeWeek: {
                 NSDate *minimumPage = [self beginingOfWeekOfDate:_minimumDate];
                 _currentPage = [self dateByAddingWeeks:targetOffset/contentSize toDate:minimumPage];
-                break;
-            }
-            default: {
                 break;
             }
         }
@@ -731,9 +704,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             case FSCalendarScopeWeek: {
                 break;
             }
-            default: {
-                break;
-            }
         }
     }
 }
@@ -769,9 +739,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
             case FSCalendarScopeWeek: {
                 _currentPage = [self beginingOfWeekOfDate:today];
-                break;
-            }
-            default: {
                 break;
             }
         }
@@ -986,9 +953,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     _preferedRowHeight = contentHeight-padding*2;
                     break;
                 }
-                default: {
-                    break;
-                }
             }
         } else {
             _preferedRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
@@ -1194,9 +1158,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             scrollOffset = [self weeksFromDate:[self beginingOfWeekOfDate:_minimumDate] toDate:targetDate];
             break;
         }
-        default: {
-            break;
-        }
     }
     
     if (!self.floatingMode) {
@@ -1208,9 +1169,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
             case UICollectionViewScrollDirectionHorizontal: {
                 [_collectionView setContentOffset:CGPointMake(scrollOffset * _collectionView.fs_width, 0) animated:animated];
-                break;
-            }
-            default: {
                 break;
             }
         }
@@ -1254,9 +1212,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                         _currentPage = [self beginingOfWeekOfDate:date];
                         break;
                     }
-                    default: {
-                        break;
-                    }
                 }
                 if (!_supressEvent && self.hasValidateVisibleLayout) {
                     _supressEvent = YES;
@@ -1291,17 +1246,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     NSUInteger daysOffset = indexPath.item;
                     return [self dateByAddingDays:daysOffset toDate:firstDateOfPage];
                 }
-                default:
-                    break;
             }
             break;
         }
         case FSCalendarScopeWeek: {
             NSDate *currentPage = [self dateByAddingWeeks:indexPath.section toDate:[self beginingOfWeekOfDate:_minimumDate]];
             return [self dateByAddingDays:indexPath.item toDate:currentPage];
-        }
-        default: {
-            break;
         }
     }
     return nil;
@@ -1338,17 +1288,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     item = [self daysFromDate:firstDateOfPage toDate:date];
                     break;
                 }
-                default:
-                    break;
             }
             break;
         }
         case FSCalendarScopeWeek: {
             section = [self weeksFromDate:[self beginingOfWeekOfDate:_minimumDate] toDate:date];
             item = (([self weekdayOfDate:date] - _firstWeekday) + 7) % 7;
-            break;
-        }
-        default: {
             break;
         }
     }
