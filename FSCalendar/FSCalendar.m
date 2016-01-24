@@ -370,6 +370,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             if (self.collectionViewLayout.state == FSCalendarTransitionStateInProgress) {
                 return [self sizeThatFits:size scope:FSCalendarScopeMonth];
             }
+        case FSCalendarTransitionMonthToWeek:
+            break;
     }
     return [self sizeThatFits:size scope:FSCalendarScopeWeek];
 }

@@ -163,19 +163,19 @@ IB_DESIGNABLE
 #pragma mark - Deprecate
 
 @interface FSCalendar (Deprecated)
-@property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated("use \'currentPage\' instead");
-@property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated("use \'scrollDirection\' instead");
-- (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated("use \'selectDate:\' instead");
-- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated("use \'selectDate:scrollToDate:\' instead");
+@property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated('currentPage');
+@property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated('scrollDirection');
+- (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);
+- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated(-selectDate:scrollToDate:);
 @end
 
 @protocol FSCalendarDelegateDeprecatedProtocol <NSObject>
 @optional
-- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated("use \'calendarCurrentPageDidChange\' instead");
+- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated(-calendarCurrentPageDidChange:);
 @end
 
 @protocol FSCalendarDelegateAppearanceDeprecatedProtocol <NSObject>
 @optional
-- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated("use \'calendar:appearance:cellShapeForDate:\' instead");
+- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:cellShapeForDate:);
 @end
 

@@ -53,15 +53,6 @@
     self.navigationItem.rightBarButtonItems = @[lunarItem, todayItem];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-#if 0
-    FSCalendarTestSelectDate
-#endif
-
-}
-
 - (void)todayItemClicked:(id)sender
 {
     [_calendar setCurrentPage:[NSDate date] animated:YES];

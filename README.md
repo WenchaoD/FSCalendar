@@ -14,24 +14,6 @@
 ## iPad
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
-## New Feature - Focus on selected date
-![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
-
-### How to use
-* Use ***`focusOnSingleSelectedDate`***, default is `YES`
-```objective-c
-calendar.focusOnSingleSelectedDate = YES;
-```
-* Only available on ***single selection*** mode (by default)
-```objective-c
-calendar.allowsSelection = YES;
-calendar.allowsMultipleSelection = NO;
-```
-* Try to change `scope`
-```objective-c
-[calendar setScope:FSCalendarScopeWeek animated:YES];
-```
-
 # Installation
 
 ## Cocoapods:
@@ -102,30 +84,33 @@ calendar.delegate = self
 view.addSubview(calendar)
 self.calendar = calendar
 ```
+<br/>
+## Focus on selected date on ***week mode***
+![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
 
-## Indian
+### How to use
+* Use ***`focusOnSingleSelectedDate`***, default is `YES`
 ```objective-c
-calendar.identifier = NSCalendarIdentifierIndian;
+calendar.focusOnSingleSelectedDate = YES;
 ```
-![indian](https://cloud.githubusercontent.com/assets/5186464/11204305/59158ab4-8d38-11e5-97d0-9af3e800c49a.jpg)
+* Implement `calendarCurrentScopeWillChange:animated:`
+```objective-c
+- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+{
+    CGFloat height = [calendar sizeThatFits:CGSizeZero].height;
+    calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, height);
+}
+```
 
-## Persian
+* Try to change `scope` to `week`
 ```objective-c
-calendar.identifier = NSCalendarIdentifierPesian;
+[calendar setScope:FSCalendarScopeWeek animated:YES];
 ```
-![persian](https://cloud.githubusercontent.com/assets/5186464/11204304/5914a0ea-8d38-11e5-8e6c-e354fe910290.jpg)
 
-## Hebrew
+* To change back
 ```objective-c
-calendar.identifier = NSCalendarIdentifierHebrew;
+[calendar setScope:FSCalendarScopeMonth animated:YES];
 ```
-![hebrew](https://cloud.githubusercontent.com/assets/5186464/11204307/59254760-8d38-11e5-83c4-e3b963c29206.jpg)
-
-## Islamic
-```objective-c
-calendar.identifier = NSCalendarIdentifierIslamic;
-```
-![islamic](https://cloud.githubusercontent.com/assets/5186464/11204306/592386c8-8d38-11e5-8dd5-68b99b3b83c1.jpg)
 
 ### <a id="roll_with_interface_builder"></a> Roll with Interface Builder
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)

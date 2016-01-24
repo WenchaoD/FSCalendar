@@ -91,7 +91,7 @@
 //
 //- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 //{
-//    return [_calendar dateWithYear:2016 month:12 day:31];
+//    return [_calendar dateWithYear:2026 month:12 day:31];
 //}
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date

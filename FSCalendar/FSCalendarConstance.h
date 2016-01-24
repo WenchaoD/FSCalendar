@@ -37,7 +37,7 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
 #pragma mark - Deprecated
 
-#define FSCalendarDeprecated(message) __attribute((deprecated(message)))
+#define FSCalendarDeprecated(instead) __attribute((deprecated(" Use " # instead " instead")))
 
 FSCalendarDeprecated("use \'FSCalendarCellShape\' instead")
 typedef NS_ENUM(NSInteger, FSCalendarCellStyle) {

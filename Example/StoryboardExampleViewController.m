@@ -59,10 +59,6 @@
     });
      */
     
-    
-#if 0
-    FSCalendarTestSelectDate
-#endif
 }
 
 - (void)dealloc
