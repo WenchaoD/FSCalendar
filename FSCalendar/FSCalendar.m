@@ -1889,6 +1889,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSDateComponents *weekdayComponents = [self.calendar components:NSCalendarUnitWeekday fromDate:date];
     NSDateComponents *componentsToSubtract = self.components;
     componentsToSubtract.day = - (weekdayComponents.weekday - self.calendar.firstWeekday);
+    componentsToSubtract.day = (componentsToSubtract.day-7) % 7;
     NSDate *beginningOfWeek = [self.calendar dateByAddingComponents:componentsToSubtract toDate:date options:0];
     NSDateComponents *components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:beginningOfWeek];
     beginningOfWeek = [self.calendar dateFromComponents:components];
