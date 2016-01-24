@@ -729,8 +729,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setToday:(NSDate *)today
 {
-    if (![self isDateInRange:today]) {
-        [NSException raise:@"currentDate out of range" format:@""];
+    if ([self daysFromDate:_minimumDate toDate:today] < 0) {
+        today = _minimumDate.copy;
+    } else if ([self daysFromDate:_maximumDate toDate:today] > 0) {
+        today = _maximumDate.copy;
     }
     if (![self date:_today sharesSameDayWithDate:today]) {
         _today = [self dateByIgnoringTimeComponentsOfDate:today];
@@ -761,8 +763,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated
 {
-    if (![self isDateInRange:currentPage]) {
-        [NSException raise:@"currentMonth out of range" format:@""];
+    if ([self daysFromDate:_minimumDate toDate:currentPage] < 0) {
+        currentPage = _minimumDate.copy;
+    } else if ([self daysFromDate:_maximumDate toDate:currentPage] > 0) {
+        currentPage = _maximumDate.copy;
     }
     if (self.floatingMode || [self isDateInDifferentPage:currentPage]) {
         currentPage = [self dateByIgnoringTimeComponentsOfDate:currentPage];
@@ -1063,8 +1067,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!self.allowsSelection) {
         return;
     }
-    if (![self isDateInRange:date]) {
-        [NSException raise:@"selectedDate out of range" format:@""];
+    if ([self daysFromDate:_minimumDate toDate:date] < 0) {
+        date = _minimumDate.copy;
+    } else if ([self daysFromDate:_maximumDate toDate:date] > 0) {
+        date = _maximumDate.copy;
     }
     NSDate *targetDate = [self dateByIgnoringTimeComponentsOfDate:date];
     NSIndexPath *targetIndexPath = [self indexPathForDate:targetDate];

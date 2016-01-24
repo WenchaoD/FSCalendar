@@ -40,7 +40,6 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-    [calendar selectDate:[calendar dateWithYear:2015 month:2 day:16]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -49,6 +48,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    [self.calendar selectDate:[self.calendar tomorrowOfDate:[NSDate date]]];
+     
     
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -84,15 +87,17 @@
     calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, height);
 }
 
-//- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
-//{
-//    return [_calendar dateWithYear:2015 month:1 day:1];
-//}
-//
-//- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
-//{
-//    return [_calendar dateWithYear:2026 month:12 day:31];
-//}
+- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
+{
+    return [calendar tomorrowOfDate:[NSDate date]];
+}
+
+/*
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+{
+    return [_calendar dateWithYear:2026 month:12 day:31];
+}
+ */
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
