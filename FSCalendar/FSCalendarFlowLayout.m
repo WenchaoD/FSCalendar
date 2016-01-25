@@ -224,10 +224,10 @@
             if (self.calendar.focusOnSingleSelectedDate && self.calendar.selectedDate) {
                 NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
                 if (focusedDate) {
-                    UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:self.calendar.selectedDate scope:FSCalendarScopeWeek]];
+                    UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeWeek]];
                     CGPoint selectedCenter = attributes.center;
                     if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
-                        firstDayOfMonth = [self.calendar beginingOfMonthOfDate:self.calendar.selectedDate];
+                        firstDayOfMonth = [self.calendar beginingOfMonthOfDate:focusedDate];
                     }
                 }
             }
