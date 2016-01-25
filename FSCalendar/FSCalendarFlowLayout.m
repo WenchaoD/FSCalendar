@@ -119,8 +119,8 @@
                 NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
                 if (focusedDate) {
                     UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeMonth]];
-                    CGPoint selectedCenter = attributes.center;
-                    if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
+                    CGPoint focuedCenter = attributes.center;
+                    if (CGRectContainsPoint(self.collectionView.bounds, focuedCenter)) {
                         switch (self.scrollDirection) {
                             case UICollectionViewScrollDirectionHorizontal: {
                                 focusedRowNumber = attributes.indexPath.item%6;
@@ -225,8 +225,8 @@
                 NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
                 if (focusedDate) {
                     UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeWeek]];
-                    CGPoint selectedCenter = attributes.center;
-                    if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
+                    CGPoint focuedCenter = attributes.center;
+                    if (CGRectContainsPoint(self.collectionView.bounds, focuedCenter)) {
                         firstDayOfMonth = [self.calendar beginingOfMonthOfDate:focusedDate];
                     }
                 }

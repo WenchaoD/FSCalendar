@@ -12,7 +12,7 @@
 		3092253A1B905C4300123031 /* FSCalendarConstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 309225381B905C4300123031 /* FSCalendarConstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3092253B1B905C4300123031 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 309225391B905C4300123031 /* FSCalendarConstance.m */; };
 		3092253C1B905C4300123031 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 309225391B905C4300123031 /* FSCalendarConstance.m */; };
-		3095398F1C38D66C00BD37AA /* FSCalendarFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 3095398D1C38D66C00BD37AA /* FSCalendarFlowLayout.h */; };
+		3095398F1C38D66C00BD37AA /* FSCalendarFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 3095398D1C38D66C00BD37AA /* FSCalendarFlowLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		309539901C38D66C00BD37AA /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3095398E1C38D66C00BD37AA /* FSCalendarFlowLayout.m */; };
 		309539911C38D66C00BD37AA /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3095398E1C38D66C00BD37AA /* FSCalendarFlowLayout.m */; };
 		30B0BA9B1B8D8BC9004B9476 /* FSCalendar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EE638CE21B8A1F550006DD1A /* FSCalendar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -362,12 +362,12 @@
 				30B0BB071B8D9B6D004B9476 /* UIView+FSExtension.h in Headers */,
 				30B0BB061B8D9B6D004B9476 /* NSDate+FSExtension.h in Headers */,
 				EE89AF9E1B9162B90001B657 /* NSString+FSExtension.h in Headers */,
-				3095398F1C38D66C00BD37AA /* FSCalendarFlowLayout.h in Headers */,
 				30B0BB021B8D9B6C004B9476 /* FSCalendarCell.h in Headers */,
 				30B0BB031B8D9B6D004B9476 /* FSCalendarDynamicHeader.h in Headers */,
 				EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */,
 				30B0BB041B8D9B6D004B9476 /* FSCalendarHeader.h in Headers */,
 				30FCB3961BAAD112002B87AD /* FSCalendarStickyHeader.h in Headers */,
+				3095398F1C38D66C00BD37AA /* FSCalendarFlowLayout.h in Headers */,
 				30B0BB001B8D9B6C004B9476 /* FSCalendar+IBExtension.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
