@@ -99,7 +99,7 @@
     } else if (fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth) {
         self.transition = FSCalendarTransitionWeekToMonth;
     }
-
+    
     [self performTransition:animated];
     
 }
@@ -115,18 +115,21 @@
         case FSCalendarTransitionMonthToWeek: {
             
             NSInteger focusedRowNumber = 0;
-            if (self.calendar.focusOnSingleSelectedDate && self.calendar.selectedDate) {
-                UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:self.calendar.selectedDate scope:FSCalendarScopeMonth]];
-                CGPoint selectedCenter = attributes.center;
-                if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
-                    switch (self.scrollDirection) {
-                        case UICollectionViewScrollDirectionHorizontal: {
-                            focusedRowNumber = attributes.indexPath.item%6;
-                            break;
-                        }
-                        case UICollectionViewScrollDirectionVertical: {
-                            focusedRowNumber = attributes.indexPath.item/7;
-                            break;
+            if (self.calendar.focusOnSingleSelectedDate) {
+                NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
+                if (focusedDate) {
+                    UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeMonth]];
+                    CGPoint selectedCenter = attributes.center;
+                    if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
+                        switch (self.scrollDirection) {
+                            case UICollectionViewScrollDirectionHorizontal: {
+                                focusedRowNumber = attributes.indexPath.item%6;
+                                break;
+                            }
+                            case UICollectionViewScrollDirectionVertical: {
+                                focusedRowNumber = attributes.indexPath.item/7;
+                                break;
+                            }
                         }
                     }
                 }
@@ -136,8 +139,8 @@
             NSDate *minimumPage = [self.calendar beginingOfMonthOfDate:self.calendar.minimumDate];
             NSInteger visibleSection = [self.calendar monthsFromDate:minimumPage toDate:currentPage];
             NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:visibleSection];
-            FSCalendarCell *firstCell = (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:firstIndexPath];
-            currentPage = [self.calendar dateByAddingDays:focusedRowNumber*7 toDate:firstCell.date];
+            NSDate *firstDate = [self.calendar dateForIndexPath:firstIndexPath scope:FSCalendarScopeMonth];
+            currentPage = [self.calendar dateByAddingDays:focusedRowNumber*7 toDate:firstDate];
             [self.calendar _setCurrentPage:currentPage];
             
             CGSize size = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeWeek];
@@ -219,10 +222,13 @@
             NSDate *currentPage = self.calendar.currentPage;
             NSDate *firstDayOfMonth = nil;
             if (self.calendar.focusOnSingleSelectedDate && self.calendar.selectedDate) {
-                UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:self.calendar.selectedDate scope:FSCalendarScopeWeek]];
-                CGPoint selectedCenter = attributes.center;
-                if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
-                    firstDayOfMonth = [self.calendar beginingOfMonthOfDate:self.calendar.selectedDate];
+                NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
+                if (focusedDate) {
+                    UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:self.calendar.selectedDate scope:FSCalendarScopeWeek]];
+                    CGPoint selectedCenter = attributes.center;
+                    if (CGRectContainsPoint(self.collectionView.bounds, selectedCenter)) {
+                        firstDayOfMonth = [self.calendar beginingOfMonthOfDate:self.calendar.selectedDate];
+                    }
                 }
             }
             firstDayOfMonth = firstDayOfMonth ?: [self.calendar beginingOfMonthOfDate:currentPage];

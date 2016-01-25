@@ -75,6 +75,7 @@
 @property (readonly, nonatomic) UIFont *preferredHeaderTitleFont;
 
 - (void)adjustTitleIfNecessary;
+- (void)invalidateFonts;
 
 @end
 

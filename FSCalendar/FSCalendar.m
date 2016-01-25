@@ -120,6 +120,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
 
+- (void)invalidateViewFrames;
+
 - (void)selectCounterpartDate:(NSDate *)date;
 - (void)deselectCounterpartDate:(NSDate *)date;
 
@@ -258,6 +260,22 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 }
 
 #pragma mark - Overriden methods
+
+- (void)setBounds:(CGRect)bounds
+{
+    [super setBounds:bounds];
+    if (!CGRectIsEmpty(bounds) && self.collectionViewLayout.state == FSCalendarTransitionStateIdle) {
+        [self invalidateViewFrames];
+    }
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    if (!CGRectIsEmpty(frame) && self.collectionViewLayout.state == FSCalendarTransitionStateIdle) {
+        [self invalidateViewFrames];
+    }
+}
 
 - (void)layoutSubviews
 {
@@ -1567,6 +1585,25 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)invalidateWeekdayTextColor
 {
     [_weekdays makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
+}
+
+- (void)invalidateViewFrames
+{
+    _needsAdjustingViewFrame = YES;
+    _needsAdjustingTextSize = YES;
+    _needsAdjustingMonthPosition = YES;
+    
+    _headerHeight     = FSCalendarAutomaticDimension;
+    _weekdayHeight    = FSCalendarAutomaticDimension;
+    
+    _preferedHeaderHeight  = FSCalendarAutomaticDimension;
+    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
+    _preferedRowHeight     = FSCalendarAutomaticDimension;
+    
+    [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
+    [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+    self.header.needsAdjustingViewFrame = YES;
+    [self.appearance invalidateFonts];
 }
 
 // The best way to detect orientation
