@@ -626,6 +626,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 break;
             }
         }
+        
+        if (self.useStickyMonthLabelsInWeekScope && self.scope == FSCalendarScopeWeek && self.scrollDirection == FSCalendarScrollDirectionHorizontal) {
+            scrollOffset = [self monthOffsetForScrollOffset:scrollOffset];
+        }
+
         _header.scrollOffset = scrollOffset;
     }
 }
@@ -1159,6 +1164,60 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 #pragma mark - Private methods
 
+- (CGFloat)monthOffsetForScrollOffset:(CGFloat)scrollOffset {
+    NSAssert(self.scope == FSCalendarScopeWeek && self.scrollDirection == FSCalendarScrollDirectionHorizontal && self.useStickyMonthLabelsInWeekScope, @"monthOffset only supported for week scope & horizontal scrolling");
+    
+    CGFloat numberOfWeeks = scrollOffset;
+    static CGFloat numberOfWeekdays = 7;
+    CGFloat numberOfDays = numberOfWeeks * numberOfWeekdays;
+    NSDate *currentMiddleDay = [self dateByAddingDays:numberOfDays toDate:self.minimumDate];
+    
+    NSDate *pageStartDate = [self dateByAddingDays:-4 toDate:currentMiddleDay];
+    NSDate *pageEndDate = [self dateByAddingDays:3 toDate:currentMiddleDay];
+    
+    NSInteger pageStartMonth = [self monthOfDate:pageStartDate];
+    NSInteger pageEndMonth = [self monthOfDate:pageEndDate];
+    
+    NSInteger monthOffset = pageStartMonth + 1;
+    NSInteger minYear = [self yearOfDate:self.minimumDate];
+    NSInteger currentYear = [self yearOfDate:pageStartDate];
+    
+    // get month value (total number, beginning from minimum date of calendar)
+    if (currentYear < minYear) {
+        monthOffset = 1;
+    } else if (currentYear == minYear) {
+        NSInteger minMonth = [self monthOfDate:self.minimumDate];
+        monthOffset = pageStartMonth - minMonth + 1;
+    } else if (currentYear > minYear) {
+        NSInteger totalYearDiff = currentYear - minYear;
+        // add months for complete years
+        if (currentYear - minYear > 1) {
+            monthOffset += 12 * (totalYearDiff - 1);
+        }
+        
+        // add months from first year
+        NSInteger minMonth = [self monthOfDate:self.minimumDate];
+        monthOffset += 12 - minMonth;
+    }
+    
+    if (pageStartMonth == pageEndMonth) {
+        return monthOffset;
+    }
+    
+    // add month fraction if month changes btw. start and end date of page
+    NSInteger numberOfDaysInStartMonth = [self numberOfDatesInMonthOfDate:pageStartDate];
+    NSInteger pageStartDay = [self dayOfDate:pageStartDate];
+    NSInteger remainingDaysInStartMonth = numberOfDaysInStartMonth - pageStartDay + 1;
+    CGFloat monthFraction = 1 - (remainingDaysInStartMonth / numberOfWeekdays);
+    
+    CGFloat scrollFraction = scrollOffset - floor(scrollOffset);
+    CGFloat weekScrollFraction = scrollFraction * numberOfWeekdays;
+    CGFloat singleDayScrollFraction = (weekScrollFraction - floor(weekScrollFraction)) / numberOfWeekdays;
+    CGFloat totalFraction = monthFraction + singleDayScrollFraction;
+    
+    return monthOffset + totalFraction;
+}
+
 - (void)scrollToDate:(NSDate *)date
 {
     [self scrollToDate:date animated:NO];
@@ -1174,7 +1233,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _supressEvent = !animated;
     NSDate * targetDate = [self daysFromDate:_minimumDate toDate:date] < 0 ? _minimumDate : date;
     targetDate = [self daysFromDate:_maximumDate toDate:targetDate] > 0 ? _maximumDate : targetDate;
-    NSInteger scrollOffset = 0;
+    CGFloat scrollOffset = 0;
     switch (_scope) {
         case FSCalendarScopeMonth: {
             scrollOffset = [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:targetDate];
@@ -1218,6 +1277,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     
     if (_header && !animated) {
+        if (self.useStickyMonthLabelsInWeekScope && self.scope == FSCalendarScopeWeek && self.scrollDirection == FSCalendarScrollDirectionHorizontal) {
+            scrollOffset = [self monthOffsetForScrollOffset:scrollOffset];
+        }
+        
         _header.scrollOffset = scrollOffset;
     }
     _supressEvent = NO;
