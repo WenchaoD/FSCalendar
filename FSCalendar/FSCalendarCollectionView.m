@@ -17,7 +17,9 @@
 {
     self = [super initWithFrame:frame collectionViewLayout:layout];
     if (self) {
+        #if !TARGET_OS_TV
         self.scrollsToTop = NO;
+        #endif
         self.contentInset = UIEdgeInsetsZero;
     }
     return self;
@@ -27,7 +29,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        #if !TARGET_OS_TV
         self.scrollsToTop = NO;
+        #endif
         self.contentInset = UIEdgeInsetsZero;
     }
     return self;

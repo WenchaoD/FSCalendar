@@ -92,7 +92,11 @@
         _backgroundColors[@(FSCalendarCellStateToday)]       = FSCalendarStandardTodayColor;
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:5];
+        #if TARGET_OS_TV
+        _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor blackColor];
+        #else
         _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];
+        #endif
         _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
         _titleColors[@(FSCalendarCellStateDisabled)]    = [UIColor grayColor];
         _titleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];

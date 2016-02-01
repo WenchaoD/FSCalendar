@@ -221,7 +221,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     collectionView.delegate = self;
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.bounces = YES;
+    #if !TARGET_OS_TV
     collectionView.pagingEnabled = YES;
+    #endif
     collectionView.showsHorizontalScrollIndicator = NO;
     collectionView.showsVerticalScrollIndicator = NO;
     collectionView.delaysContentTouches = NO;
@@ -246,7 +248,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     [self invalidateLayout];
     
+    #if !TARGET_OS_TV
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    #endif
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(significantTimeDidChange:) name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 
@@ -255,7 +259,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _collectionView.delegate = nil;
     _collectionView.dataSource = nil;
     
+    #if !TARGET_OS_TV
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    #endif
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationSignificantTimeChangeNotification object:nil];
 }
 
@@ -1414,7 +1420,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         }
         
+        #if !TARGET_OS_TV
         _collectionView.pagingEnabled = YES;
+        #endif
         _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.scrollDirection;
         
     } else {
@@ -1427,7 +1435,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [_weekdays removeAllObjects];
         }
         
+        #if !TARGET_OS_TV
         _collectionView.pagingEnabled = NO;
+        #endif
         _collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         
         [self deselectCounterpartDate:nil];

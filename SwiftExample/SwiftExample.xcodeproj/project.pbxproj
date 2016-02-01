@@ -8,6 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		3078A8B11C50C0ED003D33EF /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C03F1BDCA2D600383A07 /* FSCalendarFlowLayout.m */; };
+		64F0FBC71C5ED63E00E91572 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F0FBC61C5ED63E00E91572 /* AppDelegate.swift */; };
+		64F0FBC91C5ED63E00E91572 /* ViewControllerTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F0FBC81C5ED63E00E91572 /* ViewControllerTV.swift */; };
+		64F0FBCC1C5ED63E00E91572 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 64F0FBCA1C5ED63E00E91572 /* Main.storyboard */; };
+		64F0FBCE1C5ED63E00E91572 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64F0FBCD1C5ED63E00E91572 /* Assets.xcassets */; };
+		64F0FBD31C5ED6A900E91572 /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D01B97DDF4007F6964 /* FSCalendar.m */; };
+		64F0FBD41C5ED6A900E91572 /* FSCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D21B97DDF4007F6964 /* FSCalendarAppearance.m */; };
+		64F0FBD51C5ED6A900E91572 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D41B97DDF4007F6964 /* FSCalendarCell.m */; };
+		64F0FBD61C5ED6A900E91572 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D61B97DDF4007F6964 /* FSCalendarConstance.m */; };
+		64F0FBD71C5ED6A900E91572 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C03D1BDCA2D600383A07 /* FSCalendarCollectionView.m */; };
+		64F0FBD81C5ED6A900E91572 /* FSCalendarFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C03F1BDCA2D600383A07 /* FSCalendarFlowLayout.m */; };
+		64F0FBD91C5ED6A900E91572 /* FSCalendarHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954D91B97DDF4007F6964 /* FSCalendarHeader.m */; };
+		64F0FBDA1C5ED6A900E91572 /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = EE2B62821BB6D7FE00ACB430 /* FSCalendarStickyHeader.m */; };
+		64F0FBDB1C5ED6A900E91572 /* NSDate+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954DE1B97DDF4007F6964 /* NSDate+FSExtension.m */; };
+		64F0FBDC1C5ED6A900E91572 /* NSString+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E01B97DDF4007F6964 /* NSString+FSExtension.m */; };
+		64F0FBDD1C5ED6A900E91572 /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954E21B97DDF4007F6964 /* UIView+FSExtension.m */; };
+		64F0FBDE1C5ED6A900E91572 /* FSCalendar+IBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0954CE1B97DDF4007F6964 /* FSCalendar+IBExtension.m */; };
+		64F0FBDF1C5ED6A900E91572 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE0954DC1B97DDF4007F6964 /* Info.plist */; };
 		EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */; };
 		EE0954AF1B97DDE0007F6964 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AE1B97DDE0007F6964 /* ViewController.swift */; };
 		EE0954B21B97DDE0007F6964 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE0954B01B97DDE0007F6964 /* Main.storyboard */; };
@@ -39,6 +56,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		64F0FBC41C5ED63E00E91572 /* SwiftExampleTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExampleTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		64F0FBC61C5ED63E00E91572 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		64F0FBC81C5ED63E00E91572 /* ViewControllerTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerTV.swift; sourceTree = "<group>"; };
+		64F0FBCB1C5ED63E00E91572 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		64F0FBCD1C5ED63E00E91572 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		64F0FBCF1C5ED63E00E91572 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE0954A71B97DDE0007F6964 /* SwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE0954AB1B97DDE0007F6964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +102,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		64F0FBC11C5ED63E00E91572 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EE0954A41B97DDE0007F6964 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -96,11 +126,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		64F0FBC51C5ED63E00E91572 /* SwiftExampleTV */ = {
+			isa = PBXGroup;
+			children = (
+				64F0FBC61C5ED63E00E91572 /* AppDelegate.swift */,
+				64F0FBC81C5ED63E00E91572 /* ViewControllerTV.swift */,
+				64F0FBCA1C5ED63E00E91572 /* Main.storyboard */,
+				64F0FBCD1C5ED63E00E91572 /* Assets.xcassets */,
+				64F0FBCF1C5ED63E00E91572 /* Info.plist */,
+			);
+			path = SwiftExampleTV;
+			sourceTree = "<group>";
+		};
 		EE09549E1B97DDE0007F6964 = {
 			isa = PBXGroup;
 			children = (
 				EE0954A91B97DDE0007F6964 /* SwiftExample */,
 				EE0954BF1B97DDE0007F6964 /* SwiftExampleTests */,
+				64F0FBC51C5ED63E00E91572 /* SwiftExampleTV */,
 				EE0954A81B97DDE0007F6964 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -110,6 +153,7 @@
 			children = (
 				EE0954A71B97DDE0007F6964 /* SwiftExample.app */,
 				EE0954BC1B97DDE0007F6964 /* SwiftExampleTests.xctest */,
+				64F0FBC41C5ED63E00E91572 /* SwiftExampleTV.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -191,6 +235,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		64F0FBC31C5ED63E00E91572 /* SwiftExampleTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64F0FBD21C5ED63E00E91572 /* Build configuration list for PBXNativeTarget "SwiftExampleTV" */;
+			buildPhases = (
+				64F0FBC01C5ED63E00E91572 /* Sources */,
+				64F0FBC11C5ED63E00E91572 /* Frameworks */,
+				64F0FBC21C5ED63E00E91572 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftExampleTV;
+			productName = SwiftExampleTV;
+			productReference = 64F0FBC41C5ED63E00E91572 /* SwiftExampleTV.app */;
+			productType = "com.apple.product-type.application";
+		};
 		EE0954A61B97DDE0007F6964 /* SwiftExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EE0954C61B97DDE0007F6964 /* Build configuration list for PBXNativeTarget "SwiftExample" */;
@@ -232,10 +293,13 @@
 		EE09549F1B97DDE0007F6964 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = wenchao;
 				TargetAttributes = {
+					64F0FBC31C5ED63E00E91572 = {
+						CreatedOnToolsVersion = 7.3;
+					};
 					EE0954A61B97DDE0007F6964 = {
 						CreatedOnToolsVersion = 6.4;
 					};
@@ -260,11 +324,22 @@
 			targets = (
 				EE0954A61B97DDE0007F6964 /* SwiftExample */,
 				EE0954BB1B97DDE0007F6964 /* SwiftExampleTests */,
+				64F0FBC31C5ED63E00E91572 /* SwiftExampleTV */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		64F0FBC21C5ED63E00E91572 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64F0FBCE1C5ED63E00E91572 /* Assets.xcassets in Resources */,
+				64F0FBCC1C5ED63E00E91572 /* Main.storyboard in Resources */,
+				64F0FBDF1C5ED6A900E91572 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EE0954A51B97DDE0007F6964 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -286,6 +361,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		64F0FBC01C5ED63E00E91572 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64F0FBD41C5ED6A900E91572 /* FSCalendarAppearance.m in Sources */,
+				64F0FBD91C5ED6A900E91572 /* FSCalendarHeader.m in Sources */,
+				64F0FBD71C5ED6A900E91572 /* FSCalendarCollectionView.m in Sources */,
+				64F0FBD81C5ED6A900E91572 /* FSCalendarFlowLayout.m in Sources */,
+				64F0FBD61C5ED6A900E91572 /* FSCalendarConstance.m in Sources */,
+				64F0FBDE1C5ED6A900E91572 /* FSCalendar+IBExtension.m in Sources */,
+				64F0FBC91C5ED63E00E91572 /* ViewControllerTV.swift in Sources */,
+				64F0FBDA1C5ED6A900E91572 /* FSCalendarStickyHeader.m in Sources */,
+				64F0FBC71C5ED63E00E91572 /* AppDelegate.swift in Sources */,
+				64F0FBD31C5ED6A900E91572 /* FSCalendar.m in Sources */,
+				64F0FBDB1C5ED6A900E91572 /* NSDate+FSExtension.m in Sources */,
+				64F0FBDC1C5ED6A900E91572 /* NSString+FSExtension.m in Sources */,
+				64F0FBD51C5ED6A900E91572 /* FSCalendarCell.m in Sources */,
+				64F0FBDD1C5ED6A900E91572 /* UIView+FSExtension.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EE0954A31B97DDE0007F6964 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -326,6 +422,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		64F0FBCA1C5ED63E00E91572 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				64F0FBCB1C5ED63E00E91572 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		EE0954B01B97DDE0007F6964 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -345,6 +449,39 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		64F0FBD01C5ED63E00E91572 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = SwiftExampleTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.SwiftExampleTV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/SwiftExample/Objc-Bridge-Header.h";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		64F0FBD11C5ED63E00E91572 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = SwiftExampleTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.SwiftExampleTV;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "$SRCROOT/SwiftExample/Objc-Bridge-Header.h";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		EE0954C41B97DDE0007F6964 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -492,6 +629,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		64F0FBD21C5ED63E00E91572 /* Build configuration list for PBXNativeTarget "SwiftExampleTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64F0FBD01C5ED63E00E91572 /* Debug */,
+				64F0FBD11C5ED63E00E91572 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EE0954A21B97DDE0007F6964 /* Build configuration list for PBXProject "SwiftExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

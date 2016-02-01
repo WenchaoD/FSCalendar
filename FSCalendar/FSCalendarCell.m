@@ -39,7 +39,11 @@
         
         label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.textAlignment = NSTextAlignmentCenter;
+        #if TARGET_OS_TV
+        label.textColor = [UIColor blackColor];
+        #else
         label.textColor = [UIColor darkTextColor];
+        #endif
         [self.contentView addSubview:label];
         self.titleLabel = label;
         
