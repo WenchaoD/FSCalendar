@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @interface FSCalendar (DataSourceAndDelegate)
 
-- (BOOL)hasEventForDate:(NSDate *)date;
+- (NSInteger)numberOfEventsForDate:(NSDate *)date;
 - (NSString *)subtitleForDate:(NSDate *)date;
 - (UIImage *)imageForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar;
@@ -935,6 +935,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             if (!self.floatingMode) {
                 CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
                 _preferedHeaderHeight = (FSCalendarStandardHeaderHeight/divider)*self.fs_height;
+                _preferedHeaderHeight -= (_preferedHeaderHeight-FSCalendarStandardHeaderHeight)*0.5;
             } else {
                 _preferedHeaderHeight = FSCalendarStandardHeaderHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
             }
@@ -1472,7 +1473,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
         cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
     }
-    if (cell.hasEvent) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
+    if (cell.numberOfEvents) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
     cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
     cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
     cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
@@ -1485,7 +1486,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.calendar = self;
     cell.date = [self dateForIndexPath:indexPath];
     cell.image = [self imageForDate:cell.date];
-    cell.hasEvent = [self hasEventForDate:cell.date];
+    cell.numberOfEvents = [self numberOfEventsForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.dateIsSelected = [_selectedDates containsObject:cell.date];
     cell.dateIsToday = [self date:cell.date sharesSameDayWithDate:_today];
@@ -1579,7 +1580,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateWeekdayFont
 {
-    [_weekdays makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.weekdayFont];
+    [_weekdays makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.preferredWeekdayFont];
 }
 
 - (void)invalidateWeekdayTextColor
@@ -1770,12 +1771,29 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (BOOL)hasEventForDate:(NSDate *)date
+- (NSInteger)numberOfEventsForDate:(NSDate *)date
 {
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:numberOfEventsForDate:)]) {
+        return [_dataSource calendar:self numberOfEventsForDate:date];
+    }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:hasEventForDate:)]) {
         return [_dataSource calendar:self hasEventForDate:date];
     }
-    return _ibEditing && ([@[@3,@5,@8,@16,@20,@25] containsObject:@([self dayOfDate:date])]);
+    #pragma GCC diagnostic pop
+    if (_ibEditing) {
+        if ([@[@3,@5] containsObject:@([self dayOfDate:date])]) {
+            return 1;
+        }
+        if ([@[@8,@16] containsObject:@([self dayOfDate:date])]) {
+            return 2;
+        }
+        if ([@[@20,@25] containsObject:@([self dayOfDate:date])]) {
+            return 3;
+        }
+    }
+    return 0;
 }
 
 - (NSDate *)minimumDateForCalendar

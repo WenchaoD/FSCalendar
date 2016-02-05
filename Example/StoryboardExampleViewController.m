@@ -1,5 +1,5 @@
 //
-//  FSViewController.m
+//  StoryboardExampleViewController.m
 //  Chinese-Lunar-Calendar
 //
 //  Created by Wenchao Ding on 01/29/2015.
@@ -77,11 +77,10 @@
     return _lunarChars[day-1];
 }
 
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
+- (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
 {
     return [_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]];
 }
-
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {

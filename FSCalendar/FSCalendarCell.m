@@ -36,10 +36,11 @@
         UILabel *label;
         CAShapeLayer *shapeLayer;
         UIImageView *imageView;
+        FSCalendarEventIndicator *eventView;
         
         label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor darkTextColor];
+        label.textColor = [UIColor blackColor];
         [self.contentView addSubview:label];
         self.titleLabel = label;
         
@@ -55,13 +56,11 @@
         [self.contentView.layer insertSublayer:shapeLayer below:_titleLabel.layer];
         self.backgroundLayer = shapeLayer;
         
-        shapeLayer = [CAShapeLayer layer];
-        shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
-        shapeLayer.fillColor = [UIColor cyanColor].CGColor;
-        shapeLayer.path = [UIBezierPath bezierPathWithOvalInRect:shapeLayer.bounds].CGPath;
-        shapeLayer.hidden = YES;
-        [self.contentView.layer addSublayer:shapeLayer];
-        self.eventLayer = shapeLayer;
+        eventView = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
+        eventView.backgroundColor = [UIColor clearColor];
+        eventView.hidden = YES;
+        [self.contentView addSubview:eventView];
+        self.eventIndicator = eventView;
         
         imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         imageView.contentMode = UIViewContentModeBottom|UIViewContentModeCenter;
@@ -89,8 +88,7 @@
     _backgroundLayer.borderColor = [UIColor clearColor].CGColor;
     
     CGFloat eventSize = _backgroundLayer.frame.size.height/6.0;
-    _eventLayer.frame = CGRectMake((_backgroundLayer.frame.size.width-eventSize)/2+_backgroundLayer.frame.origin.x, CGRectGetMaxY(_backgroundLayer.frame)+eventSize*0.17, eventSize*0.83, eventSize*0.83);
-    _eventLayer.path = [UIBezierPath bezierPathWithOvalInRect:_eventLayer.bounds].CGPath;
+    _eventIndicator.frame = CGRectMake(0, CGRectGetMaxY(_backgroundLayer.frame)+eventSize*0.17, bounds.size.width, eventSize*0.83);
     _imageView.frame = self.contentView.bounds;
 }
 
@@ -211,15 +209,11 @@
         [self invalidateImage];
     }
     
-    if (_eventLayer.hidden == _hasEvent) {
-        _eventLayer.hidden = !_hasEvent;
-        if (_hasEvent) {
-            CGColorRef color = self.preferedEventColor.CGColor ?: _appearance.eventColor.CGColor;
-            if (!CGColorEqualToColor(color, _eventLayer.fillColor)) {
-                _eventLayer.fillColor = color;
-            }
-        }
+    if (_eventIndicator.hidden == (_numberOfEvents > 0)) {
+        _eventIndicator.hidden = !_numberOfEvents;
     }
+    _eventIndicator.numberOfEvents = self.numberOfEvents;
+    _eventIndicator.color = self.preferedEventColor ?: _appearance.eventColor;
 }
 
 - (BOOL)isWeekend
@@ -249,7 +243,7 @@
 
 - (void)invalidateTitleFont
 {
-    _titleLabel.font = _appearance.titleFont;
+    _titleLabel.font = self.appearance.preferredTitleFont;
 }
 
 - (void)invalidateTitleTextColor
@@ -259,7 +253,7 @@
 
 - (void)invalidateSubtitleFont
 {
-    _subtitleLabel.font = _appearance.subtitleFont;
+    _subtitleLabel.font = self.appearance.preferredSubtitleFont;
 }
 
 - (void)invalidateSubtitleTextColor
@@ -279,7 +273,7 @@
 
 - (void)invalidateEventColors
 {
-    _eventLayer.fillColor = self.preferedEventColor.CGColor ?: _appearance.eventColor.CGColor;
+    _eventIndicator.color = self.preferedEventColor ?: _appearance.eventColor;
 }
 
 - (void)invalidateCellShapes

@@ -1,9 +1,9 @@
 //
 //  FScalendar.h
-//  Pods
 //
 //  Created by Wenchao Ding on 29/1/15.
 //
+//  https://github.com/WenchaoIOS
 //
 
 #import <UIKit/UIKit.h>
@@ -27,7 +27,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
 };
 
 @class FSCalendar;
-@protocol FSCalendarDelegateDeprecatedProtocol,FSCalendarDelegateAppearanceDeprecatedProtocol;
+@protocol FSCalendarDelegateDeprecatedProtocol,FSCalendarDelegateAppearanceDeprecatedProtocol,FSCalendarDataSourceDeprecatedProtocol;
+
+@protocol FSCalendarDataSource <FSCalendarDataSourceDeprecatedProtocol>
+
+@optional
+- (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
+- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date;
+- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar;
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;
+- (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date;
+
+@end
 
 @protocol FSCalendarDelegate <FSCalendarDelegateDeprecatedProtocol>
 
@@ -38,17 +49,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date;
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated;
-
-@end
-
-@protocol FSCalendarDataSource <NSObject>
-
-@optional
-- (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
-- (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date;
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date;
-- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar;
-- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;
 
 @end
 
@@ -167,6 +167,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated('scrollDirection');
 - (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated(-selectDate:scrollToDate:);
+@end
+
+@protocol FSCalendarDataSourceDeprecatedProtocol <NSObject>
+@optional
+- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date FSCalendarDeprecated(-calendar:numberOfEventsForDate:);
 @end
 
 @protocol FSCalendarDelegateDeprecatedProtocol <NSObject>

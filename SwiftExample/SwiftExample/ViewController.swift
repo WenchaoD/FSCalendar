@@ -43,9 +43,9 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         return calendar.dateWithYear(2016, month: 10, day: 31)
     }
     
-
-    func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
-        return calendar.dayOfDate(date) == 5
+    func calendar(calendar: FSCalendar!, numberOfEventsForDate date: NSDate!) -> Int {
+        let day = calendar.dayOfDate(date)
+        return day % 5 == 0 ? day/5 : 0;
     }
 
     func calendarCurrentPageDidChange(calendar: FSCalendar!) {

@@ -17,4 +17,7 @@
 @property (strong, nonatomic) NSDictionary *borderDefaultColors;
 @property (strong, nonatomic) NSDictionary *borderSelectionColors;
 
+@property (strong, nonatomic) NSArray *datesWithEvent;
+@property (strong, nonatomic) NSArray *datesWithMultipleEvents;
+
 @end

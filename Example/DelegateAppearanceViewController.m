@@ -58,6 +58,17 @@
                                        @"2015/12/17":[UIColor purpleColor],
                                        @"2015/12/21":FSCalendarStandardSelectionColor,
                                        @"2015/12/25":FSCalendarStandardTodayColor};
+        
+        
+        self.datesWithEvent = @[@"2015-10-03",
+                            @"2015-10-06",
+                            @"2015-10-12",
+                            @"2015-10-25"];
+        
+        self.datesWithMultipleEvents = @[@"2015-10-08",
+                                     @"2015-10-16",
+                                     @"2015-10-20",
+                                     @"2015-10-28"];
     }
     return self;
 }
@@ -76,7 +87,7 @@
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
     [self.view addSubview:calendar];
-    [calendar selectDate:[calendar dateWithYear:2015 month:11 day:3]];
+    [calendar selectDate:[calendar dateWithYear:2015 month:10 day:3]];
     self.calendar = calendar;
     
     
@@ -92,7 +103,33 @@
     [_calendar setCurrentPage:[NSDate date] animated:NO];
 }
 
+#pragma mark - <FSCalendarDataSource>
+
+- (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
+{
+    NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
+    if ([_datesWithEvent containsObject:dateString]) {
+        return 1;
+    }
+    if ([_datesWithMultipleEvents containsObject:dateString]) {
+        return 3;
+    }
+    return 0;
+}
+
 #pragma mark - <FSCalendarDelegateAppearance>
+
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date
+{
+    NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
+    if ([_datesWithEvent containsObject:dateString]) {
+        return appearance.eventColor;
+    }
+    if ([_datesWithMultipleEvents containsObject:dateString]) {
+        return [UIColor magentaColor];
+    }
+    return 0;
+}
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date
 {

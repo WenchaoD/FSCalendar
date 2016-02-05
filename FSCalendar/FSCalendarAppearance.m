@@ -92,7 +92,7 @@
         _backgroundColors[@(FSCalendarCellStateToday)]       = FSCalendarStandardTodayColor;
         
         _titleColors = [NSMutableDictionary dictionaryWithCapacity:5];
-        _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor darkTextColor];
+        _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor blackColor];
         _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
         _titleColors[@(FSCalendarCellStateDisabled)]    = [UIColor grayColor];
         _titleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
@@ -535,10 +535,7 @@
     }
     
     // reload appearance
-    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-    [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
-    [_calendar.weekdays setValue:self.preferredWeekdayFont forKeyPath:@"font"];
+    [self invalidateFonts];
 }
 
 - (void)setCaseOptions:(FSCalendarCaseOptions)caseOptions
