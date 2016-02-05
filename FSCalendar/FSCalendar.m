@@ -1206,7 +1206,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             // Force layout to avoid crash on orientation changing
             [_collectionViewLayout layoutAttributesForElementsInRect:_collectionView.bounds];
             CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
-            CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,_collectionView.contentSize.height-_collectionView.fs_bottom));
+            CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,MAX(0,_collectionView.contentSize.height-_collectionView.fs_bottom)));
             [_collectionView setContentOffset:targetOffset animated:animated];
             
         } else {
