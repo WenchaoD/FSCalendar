@@ -137,7 +137,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @implementation FSCalendar
 
 @dynamic selectedDate;
-@synthesize scrollDirection = _scrollDirection, firstWeekday = _firstWeekday, headerHeight = _headerHeight, appearance = _appearance;
+@synthesize scrollDirection = _scrollDirection, firstWeekday = _firstWeekday, appearance = _appearance;
 
 #pragma mark - Life Cycle && Initialize
 
@@ -1593,9 +1593,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
     _needsAdjustingMonthPosition = YES;
-    
-    _headerHeight     = FSCalendarAutomaticDimension;
-    _weekdayHeight    = FSCalendarAutomaticDimension;
     
     _preferedHeaderHeight  = FSCalendarAutomaticDimension;
     _preferedWeekdayHeight = FSCalendarAutomaticDimension;

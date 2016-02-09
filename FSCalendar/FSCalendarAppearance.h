@@ -84,15 +84,15 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 @interface FSCalendarAppearance (Deprecated)
 
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated("use \'cellShape\' instead");
-@property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated("use \'caseOptions\' instead");
-@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated("use \'adjustFontSizeToFitCellSize\' instead");
-@property (assign, nonatomic) BOOL adjustsFontSizeToFitCellSize FSCalendarDeprecated("use \'adjustFontSizeToFitContentSize\' instead");
+@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated('cellShape');
+@property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated('caseOptions');
+@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
+@property (assign, nonatomic) BOOL adjustsFontSizeToFitCellSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
 
-@property (assign, nonatomic) CGFloat titleTextSize FSCalendarDeprecated("use \'titleFont\' instead");
-@property (assign, nonatomic) CGFloat subtitleTextSize FSCalendarDeprecated("use \'subtitleFont\' instead");
-@property (assign, nonatomic) CGFloat weekdayTextSize FSCalendarDeprecated("use \'weekdayFont\' instead");
-@property (assign, nonatomic) CGFloat headerTitleTextSize FSCalendarDeprecated("use \'headerTitleFont\' instead");
+@property (assign, nonatomic) CGFloat titleTextSize FSCalendarDeprecated('titleFont');
+@property (assign, nonatomic) CGFloat subtitleTextSize FSCalendarDeprecated('subtitleFont');
+@property (assign, nonatomic) CGFloat weekdayTextSize FSCalendarDeprecated('weekdayFont');
+@property (assign, nonatomic) CGFloat headerTitleTextSize FSCalendarDeprecated('headerTitleFont');
 
 @end
 

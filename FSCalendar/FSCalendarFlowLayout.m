@@ -116,7 +116,7 @@
             
             NSInteger focusedRowNumber = 0;
             if (self.calendar.focusOnSingleSelectedDate) {
-                NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
+                NSDate *focusedDate = self.calendar.selectedDate;
                 if (focusedDate) {
                     UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeMonth]];
                     CGPoint focuedCenter = attributes.center;
@@ -129,6 +129,27 @@
                             case UICollectionViewScrollDirectionVertical: {
                                 focusedRowNumber = attributes.indexPath.item/7;
                                 break;
+                            }
+                        }
+                    } else {
+                        focusedDate = nil;
+                    }
+                }
+                if (!focusedDate) {
+                    focusedDate = self.calendar.today;
+                    if (focusedDate) {
+                        UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeMonth]];
+                        CGPoint focuedCenter = attributes.center;
+                        if (CGRectContainsPoint(self.collectionView.bounds, focuedCenter)) {
+                            switch (self.scrollDirection) {
+                                case UICollectionViewScrollDirectionHorizontal: {
+                                    focusedRowNumber = attributes.indexPath.item%6;
+                                    break;
+                                }
+                                case UICollectionViewScrollDirectionVertical: {
+                                    focusedRowNumber = attributes.indexPath.item/7;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -221,15 +242,27 @@
             NSInteger focusedRowNumber = 0;
             NSDate *currentPage = self.calendar.currentPage;
             NSDate *firstDayOfMonth = nil;
-            if (self.calendar.focusOnSingleSelectedDate && self.calendar.selectedDate) {
-                NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
+            if (self.calendar.focusOnSingleSelectedDate) {
+                NSDate *focusedDate = self.calendar.selectedDate;
                 if (focusedDate) {
                     UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeWeek]];
                     CGPoint focuedCenter = attributes.center;
                     if (CGRectContainsPoint(self.collectionView.bounds, focuedCenter)) {
                         firstDayOfMonth = [self.calendar beginingOfMonthOfDate:focusedDate];
+                    } else {
+                        focusedDate = nil;
                     }
                 }
+                if (!focusedDate) {
+                    focusedDate = self.calendar.today;
+                    if (focusedDate) {
+                        UICollectionViewLayoutAttributes *attributes = [self layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeWeek]];
+                        CGPoint focuedCenter = attributes.center;
+                        if (CGRectContainsPoint(self.collectionView.bounds, focuedCenter)) {
+                            firstDayOfMonth = [self.calendar beginingOfMonthOfDate:focusedDate];
+                        }
+                    }
+                };
             }
             firstDayOfMonth = firstDayOfMonth ?: [self.calendar beginingOfMonthOfDate:currentPage];
             NSInteger weekdayOfFirstDay = [self.calendar weekdayOfDate:firstDayOfMonth];

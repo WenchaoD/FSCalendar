@@ -53,7 +53,7 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable NSInteger fakedSelectedDay;
 
 // Deprecated
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated("use \'cellShape\' instead");
-@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated("use \'adjustsFontSizeToFitContentSize\' instead");
+@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated('cellShape');
+@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated('adjustsFontSizeToFitContentSize');
 
 @end

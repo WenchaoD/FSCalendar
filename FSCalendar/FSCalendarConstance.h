@@ -40,13 +40,13 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
 #define FSCalendarDeprecated(instead) __attribute((deprecated(" Use " # instead " instead")))
 
-FSCalendarDeprecated("use \'FSCalendarCellShape\' instead")
+FSCalendarDeprecated('FSCalendarCellShape')
 typedef NS_ENUM(NSInteger, FSCalendarCellStyle) {
     FSCalendarCellStyleCircle      = 0,
     FSCalendarCellStyleRectangle   = 1
 };
 
-FSCalendarDeprecated("use \'FSCalendarScrollDirection\' instead")
+FSCalendarDeprecated('FSCalendarScrollDirection')
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowVertical,
     FSCalendarFlowHorizontal
