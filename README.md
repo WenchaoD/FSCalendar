@@ -16,7 +16,7 @@
 
 # Installation
 
-## Cocoapods:
+## CocoaPods:
 
 * For iOS8+: 👍
 ```ruby
