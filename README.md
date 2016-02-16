@@ -117,7 +117,7 @@ calendar.focusOnSingleSelectedDate = YES;
 
 ## More Usage
 * To view more usage, download the zip file and read the example.
-* Or your could refer to [this document](https://github.com/WenchaoIOS/FSCalendar/blob/master/MOREUSAGE.md)
+* Or you could refer to [this document](https://github.com/WenchaoIOS/FSCalendar/blob/master/MOREUSAGE.md)
 
 # If you like this repo
 * ***Star*** this repo.
