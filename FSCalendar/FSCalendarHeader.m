@@ -14,7 +14,7 @@
 
 @interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
-@property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewFlowLayout;
+@property (weak, nonatomic) UICollectionViewFlowLayout *collectionViewLayout;
 
 @property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
 
@@ -49,15 +49,15 @@
     _needsAdjustingMonthPosition = YES;
     _needsAdjustingViewFrame = YES;
     
-    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-    collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    collectionViewFlowLayout.minimumInteritemSpacing = 0;
-    collectionViewFlowLayout.minimumLineSpacing = 0;
-    collectionViewFlowLayout.sectionInset = UIEdgeInsetsZero;
-    collectionViewFlowLayout.itemSize = CGSizeMake(1, 1);
-    self.collectionViewFlowLayout = collectionViewFlowLayout;
+    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    collectionViewLayout.minimumInteritemSpacing = 0;
+    collectionViewLayout.minimumLineSpacing = 0;
+    collectionViewLayout.sectionInset = UIEdgeInsetsZero;
+    collectionViewLayout.itemSize = CGSizeMake(1, 1);
+    self.collectionViewLayout = collectionViewLayout;
     
-    FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewFlowLayout];
+    FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
     collectionView.scrollEnabled = NO;
     collectionView.userInteractionEnabled = NO;
     collectionView.backgroundColor = [UIColor clearColor];
@@ -76,8 +76,9 @@
     
     if (_needsAdjustingViewFrame) {
         _needsAdjustingViewFrame = NO;
+        _collectionViewLayout.itemSize = CGSizeMake(1, 1);
         _collectionView.frame = CGRectMake(0, self.fs_height*0.1, self.fs_width, self.fs_height*0.9);
-        _collectionViewFlowLayout.itemSize = CGSizeMake(
+        _collectionViewLayout.itemSize = CGSizeMake(
                                                         _collectionView.fs_width*((_scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
                                                         _collectionView.fs_height
                                                        );
@@ -86,9 +87,9 @@
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
         if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-            [_collectionView setContentOffset:CGPointMake((_scrollOffset+0.5)*_collectionViewFlowLayout.itemSize.width, 0) animated:NO];
+            [_collectionView setContentOffset:CGPointMake((_scrollOffset+0.5)*_collectionViewLayout.itemSize.width, 0) animated:NO];
         } else {
-            [_collectionView setContentOffset:CGPointMake(0, _scrollOffset * _collectionViewFlowLayout.itemSize.height) animated:NO];
+            [_collectionView setContentOffset:CGPointMake(0, _scrollOffset * _collectionViewLayout.itemSize.height) animated:NO];
         }
     };
     
@@ -222,7 +223,7 @@
 {
     if (_scrollDirection != scrollDirection) {
         _scrollDirection = scrollDirection;
-        _collectionViewFlowLayout.scrollDirection = scrollDirection;
+        _collectionViewLayout.scrollDirection = scrollDirection;
         _needsAdjustingMonthPosition = YES;
         _needsAdjustingViewFrame = YES;
         [self setNeedsLayout];

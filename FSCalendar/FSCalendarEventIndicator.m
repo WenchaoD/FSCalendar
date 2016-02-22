@@ -88,10 +88,7 @@
 
 - (void)invalidateColor
 {
-    for (int i = 0; i < self.numberOfEvents; i++) {
-        CALayer *layer = self.eventLayers[i];
-        layer.backgroundColor = self.color.CGColor;
-    }
+    [self.eventLayers makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:(id)self.color.CGColor];
 }
 
 @end

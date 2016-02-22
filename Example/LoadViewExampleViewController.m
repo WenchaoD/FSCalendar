@@ -49,9 +49,7 @@
 {
     [super viewDidLoad];
     
-    
     [self.calendar selectDate:[self.calendar tomorrowOfDate:[NSDate date]]];
-     
     
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -61,7 +59,6 @@
         });
     });
      */
-    
     
 }
 
@@ -87,17 +84,19 @@
     calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, height);
 }
 
+/*
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
     return [calendar tomorrowOfDate:[NSDate date]];
 }
+*/
 
 /*
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
     return [_calendar dateWithYear:2026 month:12 day:31];
 }
- */
+*/
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {

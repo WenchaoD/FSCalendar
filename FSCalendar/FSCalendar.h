@@ -26,6 +26,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
     FSCalendarScrollDirectionHorizontal
 };
 
+typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
+    FSCalendarUnitMonth = NSCalendarUnitMonth,
+    FSCalendarUnitWeekOfYear = NSCalendarUnitWeekOfYear,
+    FSCalendarUnitDay = NSCalendarUnitDay
+};
+
 @class FSCalendar;
 @protocol FSCalendarDelegateDeprecatedProtocol,FSCalendarDelegateAppearanceDeprecatedProtocol,FSCalendarDataSourceDeprecatedProtocol;
 
@@ -150,9 +156,8 @@ IB_DESIGNABLE
 - (NSInteger)daysFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 - (NSInteger)weeksFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 
-- (BOOL)date:(NSDate *)date sharesSameMonthWithDate:(NSDate *)anotherDate;
-- (BOOL)date:(NSDate *)date sharesSameWeekWithDate:(NSDate *)anotherDate;
-- (BOOL)date:(NSDate *)date sharesSameDayWithDate:(NSDate *)anotherDate;
+- (BOOL)isDate:(NSDate *)date1 equalToDate:(NSDate *)date2 toCalendarUnit:(FSCalendarUnit)unit;
+- (BOOL)isDateInToday:(NSDate *)date;
 
 - (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format;
 - (NSString *)stringFromDate:(NSDate *)date;
@@ -167,6 +172,9 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated('scrollDirection');
 - (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated(-selectDate:scrollToDate:);
+- (BOOL)date:(NSDate *)date sharesSameMonthWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
+- (BOOL)date:(NSDate *)date sharesSameWeekWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
+- (BOOL)date:(NSDate *)date sharesSameDayWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
 @end
 
 @protocol FSCalendarDataSourceDeprecatedProtocol <NSObject>

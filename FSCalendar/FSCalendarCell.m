@@ -36,7 +36,7 @@
         UILabel *label;
         CAShapeLayer *shapeLayer;
         UIImageView *imageView;
-        FSCalendarEventIndicator *eventView;
+        FSCalendarEventIndicator *eventIndicator;
         
         label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.textAlignment = NSTextAlignmentCenter;
@@ -56,11 +56,11 @@
         [self.contentView.layer insertSublayer:shapeLayer below:_titleLabel.layer];
         self.backgroundLayer = shapeLayer;
         
-        eventView = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
-        eventView.backgroundColor = [UIColor clearColor];
-        eventView.hidden = YES;
-        [self.contentView addSubview:eventView];
-        self.eventIndicator = eventView;
+        eventIndicator = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
+        eventIndicator.backgroundColor = [UIColor clearColor];
+        eventIndicator.hidden = YES;
+        [self.contentView addSubview:eventIndicator];
+        self.eventIndicator = eventIndicator;
         
         imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         imageView.contentMode = UIViewContentModeBottom|UIViewContentModeCenter;

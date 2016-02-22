@@ -9,6 +9,12 @@
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarCell.h"
 
+@interface FSCalendarCollectionView ()
+
+- (void)initialize;
+
+@end
+
 @implementation FSCalendarCollectionView
 
 @synthesize scrollsToTop = _scrollsToTop, contentInset = _contentInset;
@@ -17,8 +23,7 @@
 {
     self = [super initWithFrame:frame collectionViewLayout:layout];
     if (self) {
-        self.scrollsToTop = NO;
-        self.contentInset = UIEdgeInsetsZero;
+        [self initialize];
     }
     return self;
 }
@@ -27,10 +32,20 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.scrollsToTop = NO;
-        self.contentInset = UIEdgeInsetsZero;
+        [self initialize];
     }
     return self;
+}
+
+- (void)initialize
+{
+    self.scrollsToTop = NO;
+    self.contentInset = UIEdgeInsetsZero;
+#ifdef __IPHONE_9_0
+    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+        self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+#endif
 }
 
 - (void)setContentInset:(UIEdgeInsets)contentInset

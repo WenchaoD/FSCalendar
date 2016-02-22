@@ -10,6 +10,7 @@
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendar.h"
 #import "UIView+FSExtension.h"
+#import <objc/runtime.h>
 
 @interface FSCalendarFlowLayout ()
 
@@ -162,7 +163,9 @@
             NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:visibleSection];
             NSDate *firstDate = [self.calendar dateForIndexPath:firstIndexPath scope:FSCalendarScopeMonth];
             currentPage = [self.calendar dateByAddingDays:focusedRowNumber*7 toDate:firstDate];
-            [self.calendar _setCurrentPage:currentPage];
+
+            Ivar currentPageIvar = class_getInstanceVariable(FSCalendar.class, "_currentPage");
+            object_setIvar(self.calendar, currentPageIvar, currentPage);
             
             CGSize size = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeWeek];
             self.calendar.contentView.clipsToBounds = YES;
@@ -270,14 +273,15 @@
             NSDate *firstDateOfPage = [self.calendar dateBySubstractingDays:numberOfPlaceholdersForPrev fromDate:firstDayOfMonth];
             for (int i = 0; i < 6; i++) {
                 NSDate *currentRow = [self.calendar dateByAddingWeeks:i toDate:firstDateOfPage];
-                if ([self.calendar date:currentRow sharesSameDayWithDate:currentPage]) {
+                if ([self.calendar isDate:currentRow equalToDate:currentPage toCalendarUnit:FSCalendarUnitDay]) {
                     focusedRowNumber = i;
                     currentPage = firstDayOfMonth;
                     break;
                 }
             }
             
-            [self.calendar _setCurrentPage:currentPage];
+            Ivar currentPageIvar = class_getInstanceVariable(FSCalendar.class, "_currentPage");
+            object_setIvar(self.calendar, currentPageIvar, currentPage);
             
             self.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
             self.calendar.header.scrollDirection = self.scrollDirection;

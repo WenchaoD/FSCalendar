@@ -491,6 +491,16 @@
     }
 }
 
+- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize
+{
+    if (_adjustsFontSizeToFitContentSize != adjustsFontSizeToFitContentSize) {
+        _adjustsFontSizeToFitContentSize = adjustsFontSizeToFitContentSize;
+        if (adjustsFontSizeToFitContentSize) {
+            [self invalidateFonts];
+        }
+    }
+}
+
 - (UIFont *)preferredTitleFont
 {
     return [UIFont fontWithName:_titleFontName size:_adjustsFontSizeToFitContentSize?_preferredTitleFontSize:_titleFontSize];
