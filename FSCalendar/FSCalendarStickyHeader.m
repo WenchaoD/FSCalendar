@@ -57,6 +57,13 @@
             [weekdayLabels addObject:label];
         }
         self.weekdayLabels = weekdayLabels.copy;
+        
+#ifdef __IPHONE_9_0
+        if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+            self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+        }
+#endif
+
     }
     return self;
 }

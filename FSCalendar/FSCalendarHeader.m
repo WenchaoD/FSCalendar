@@ -65,6 +65,11 @@
     collectionView.delegate = self;
     collectionView.showsHorizontalScrollIndicator = NO;
     collectionView.showsVerticalScrollIndicator = NO;
+#ifdef __IPHONE_9_0
+    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+        collectionView.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+#endif
     [self addSubview:collectionView];
     [collectionView registerClass:[FSCalendarHeaderCell class] forCellWithReuseIdentifier:@"cell"];
     self.collectionView = collectionView;

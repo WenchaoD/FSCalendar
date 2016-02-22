@@ -199,6 +199,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
+#ifdef __IPHONE_9_0
+    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+        contentView.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+#endif
     [self addSubview:contentView];
     self.contentView = contentView;
     
@@ -237,16 +242,27 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #ifdef __IPHONE_9_0
     if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
         self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+        collectionView.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
     }
 #endif
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.25];
+#ifdef __IPHONE_9_0
+    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+#endif    
     [self addSubview:view];
     self.topBorder = view;
     
     view = [[UIView alloc] initWithFrame:CGRectZero];
     view.backgroundColor = _topBorder.backgroundColor;
+#ifdef __IPHONE_9_0
+    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+        view.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+#endif   
     [self addSubview:view];
     self.bottomBorder = view;
     
@@ -1389,6 +1405,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectZero];
             header.calendar = self;
             header.scrollEnabled = _scrollEnabled;
+
+#ifdef __IPHONE_9_0
+            if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+                header.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+            }
+#endif
+
+            
+            
             [_contentView addSubview:header];
             self.header = header;
             
@@ -1399,6 +1424,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 FSCalendarHeaderTouchDeliver *deliver = [[FSCalendarHeaderTouchDeliver alloc] initWithFrame:CGRectZero];
                 deliver.header = _header;
                 deliver.calendar = self;
+#ifdef __IPHONE_9_0
+                if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+                    deliver.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+                }
+#endif
                 [_contentView addSubview:deliver];
                 self.deliver = deliver;
             }
