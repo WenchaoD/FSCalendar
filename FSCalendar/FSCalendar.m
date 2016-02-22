@@ -234,9 +234,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.collectionView = collectionView;
     self.collectionViewLayout = collectionViewLayout;
     
-    if ([[[UIDevice currentDevice] systemVersion] compare:@"9.0" options:NSNumericSearch] != NSOrderedAscending)
-        collectionView.semanticContentAttribute = UISemanticContentAttributeSpatial;
-
+#ifdef __IPHONE_9_0
+    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+        self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+#endif
+    
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.25];
     [self addSubview:view];
