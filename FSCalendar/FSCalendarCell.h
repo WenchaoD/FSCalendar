@@ -35,15 +35,15 @@
 
 @property (readonly, nonatomic) BOOL weekend;
 
-@property (strong, nonatomic) UIColor *preferedSelectionColor;
-@property (strong, nonatomic) UIColor *preferedTitleDefaultColor;
-@property (strong, nonatomic) UIColor *preferedTitleSelectionColor;
-@property (strong, nonatomic) UIColor *preferedSubtitleDefaultColor;
-@property (strong, nonatomic) UIColor *preferedSubtitleSelectionColor;
-@property (strong, nonatomic) UIColor *preferedEventColor;
-@property (strong, nonatomic) UIColor *preferedBorderDefaultColor;
-@property (strong, nonatomic) UIColor *preferedBorderSelectionColor;
-@property (assign, nonatomic) FSCalendarCellShape preferedCellShape;
+@property (strong, nonatomic) UIColor *preferredSelectionColor;
+@property (strong, nonatomic) UIColor *preferredTitleDefaultColor;
+@property (strong, nonatomic) UIColor *preferredTitleSelectionColor;
+@property (strong, nonatomic) UIColor *preferredSubtitleDefaultColor;
+@property (strong, nonatomic) UIColor *preferredSubtitleSelectionColor;
+@property (strong, nonatomic) UIColor *preferredEventColor;
+@property (strong, nonatomic) UIColor *preferredBorderDefaultColor;
+@property (strong, nonatomic) UIColor *preferredBorderSelectionColor;
+@property (assign, nonatomic) FSCalendarCellShape preferredCellShape;
 
 - (void)invalidateTitleFont;
 - (void)invalidateSubtitleFont;

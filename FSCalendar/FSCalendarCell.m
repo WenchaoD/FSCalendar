@@ -162,7 +162,7 @@
                                               self.fs_width,
                                               subtitleHeight);
         } else {
-            _titleLabel.frame = CGRectMake(0, _appearance.titleVerticalOffset, self.fs_width, floor(self.contentView.fs_height*5.0/6.0));
+            _titleLabel.frame = CGRectMake(0, _appearance.titleVerticalOffset, self.contentView.fs_width, floor(self.contentView.fs_height*5.0/6.0));
         }
         
     }
@@ -213,7 +213,7 @@
         _eventIndicator.hidden = !_numberOfEvents;
     }
     _eventIndicator.numberOfEvents = self.numberOfEvents;
-    _eventIndicator.color = self.preferedEventColor ?: _appearance.eventColor;
+    _eventIndicator.color = self.preferredEventColor ?: _appearance.eventColor;
 }
 
 - (BOOL)isWeekend
@@ -273,7 +273,7 @@
 
 - (void)invalidateEventColors
 {
-    _eventIndicator.color = self.preferedEventColor ?: _appearance.eventColor;
+    _eventIndicator.color = self.preferredEventColor ?: _appearance.eventColor;
 }
 
 - (void)invalidateCellShapes
@@ -295,7 +295,7 @@
 - (UIColor *)colorForBackgroundLayer
 {
     if (self.dateIsSelected || self.isSelected) {
-        return self.preferedSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+        return self.preferredSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
     }
     return [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
 }
@@ -303,30 +303,30 @@
 - (UIColor *)colorForTitleLabel
 {
     if (self.dateIsSelected || self.isSelected) {
-        return self.preferedTitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
+        return self.preferredTitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
     }
-    return self.preferedTitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    return self.preferredTitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
 }
 
 - (UIColor *)colorForSubtitleLabel
 {
     if (self.dateIsSelected || self.isSelected) {
-        return self.preferedSubtitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+        return self.preferredSubtitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
     }
-    return self.preferedSubtitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+    return self.preferredSubtitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
 }
 
 - (UIColor *)colorForCellBorder
 {
     if (self.dateIsSelected || self.isSelected) {
-        return _preferedBorderSelectionColor ?: _appearance.borderSelectionColor;
+        return _preferredBorderSelectionColor ?: _appearance.borderSelectionColor;
     }
-    return _preferedBorderDefaultColor ?: _appearance.borderDefaultColor;
+    return _preferredBorderDefaultColor ?: _appearance.borderDefaultColor;
 }
 
 - (FSCalendarCellShape)cellShape
 {
-    return _preferedCellShape ?: _appearance.cellShape;
+    return _preferredCellShape ?: _appearance.cellShape;
 }
 
 - (void)setCalendar:(FSCalendar *)calendar

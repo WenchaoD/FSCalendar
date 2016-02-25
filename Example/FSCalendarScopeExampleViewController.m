@@ -74,4 +74,13 @@
     return 20;
 }
 
+- (IBAction)toggleClicked:(id)sender
+{
+    if (self.calendar.scope == FSCalendarScopeMonth) {
+        [self.calendar setScope:FSCalendarScopeWeek animated:_animationSwitch.on];
+    } else {
+        [self.calendar setScope:FSCalendarScopeMonth animated:_animationSwitch.on];
+    }
+}
+
 @end

@@ -23,7 +23,7 @@
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
+    view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.view = view;
     
     CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
@@ -40,7 +40,6 @@
     pickerView.delegate = self;
     [self.view addSubview:pickerView];
     self.pickerView = pickerView;
-    
     
     UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStyleBordered target:self action:@selector(todayItemClicked:)];
     self.navigationItem.rightBarButtonItem = todayItem;

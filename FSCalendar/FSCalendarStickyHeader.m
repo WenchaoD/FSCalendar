@@ -71,7 +71,7 @@
         _contentView.frame = self.bounds;
 
         CGFloat weekdayWidth = self.fs_width / 7.0;
-        CGFloat weekdayHeight = _calendar.preferedWeekdayHeight;
+        CGFloat weekdayHeight = _calendar.preferredWeekdayHeight;
         CGFloat weekdayMargin = weekdayHeight * 0.1;
         CGFloat titleWidth = _contentView.fs_width;
         

@@ -30,15 +30,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
 
-- (UIColor *)preferedSelectionColorForDate:(NSDate *)date;
-- (UIColor *)preferedTitleDefaultColorForDate:(NSDate *)date;
-- (UIColor *)preferedTitleSelectionColorForDate:(NSDate *)date;
-- (UIColor *)preferedSubtitleDefaultColorForDate:(NSDate *)date;
-- (UIColor *)preferedSubtitleSelectionColorForDate:(NSDate *)date;
-- (UIColor *)preferedEventColorForDate:(NSDate *)date;
-- (UIColor *)preferedBorderDefaultColorForDate:(NSDate *)date;
-- (UIColor *)preferedBorderSelectionColorForDate:(NSDate *)date;
-- (FSCalendarCellShape)preferedCellShapeForDate:(NSDate *)date;
+- (UIColor *)preferredSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferredTitleDefaultColorForDate:(NSDate *)date;
+- (UIColor *)preferredTitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferredSubtitleDefaultColorForDate:(NSDate *)date;
+- (UIColor *)preferredSubtitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferredEventColorForDate:(NSDate *)date;
+- (UIColor *)preferredBorderDefaultColorForDate:(NSDate *)date;
+- (UIColor *)preferredBorderSelectionColorForDate:(NSDate *)date;
+- (FSCalendarCellShape)preferredCellShapeForDate:(NSDate *)date;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
@@ -79,9 +79,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
 @property (assign, nonatomic) BOOL                       supressEvent;
-@property (assign, nonatomic) CGFloat                    preferedHeaderHeight;
-@property (assign, nonatomic) CGFloat                    preferedWeekdayHeight;
-@property (assign, nonatomic) CGFloat                    preferedRowHeight;
+@property (assign, nonatomic) CGFloat                    preferredHeaderHeight;
+@property (assign, nonatomic) CGFloat                    preferredWeekdayHeight;
+@property (assign, nonatomic) CGFloat                    preferredRowHeight;
 @property (assign, nonatomic) FSCalendarOrientation      orientation;
 
 @property (readonly, nonatomic) BOOL floatingMode;
@@ -176,9 +176,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _headerHeight     = FSCalendarAutomaticDimension;
     _weekdayHeight    = FSCalendarAutomaticDimension;
     
-    _preferedHeaderHeight  = FSCalendarAutomaticDimension;
-    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
-    _preferedRowHeight     = FSCalendarAutomaticDimension;
+    _preferredHeaderHeight  = FSCalendarAutomaticDimension;
+    _preferredWeekdayHeight = FSCalendarAutomaticDimension;
+    _preferredRowHeight     = FSCalendarAutomaticDimension;
     
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
     _scope = FSCalendarScopeMonth;
@@ -286,9 +286,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
         if (_needsLayoutForWeekMode) _scope = FSCalendarScopeMonth;
         
-        CGFloat headerHeight = self.preferedHeaderHeight;
-        CGFloat weekdayHeight = self.preferedWeekdayHeight;
-        CGFloat rowHeight = self.preferedRowHeight;
+        CGFloat headerHeight = self.preferredHeaderHeight;
+        CGFloat weekdayHeight = self.preferredWeekdayHeight;
+        CGFloat rowHeight = self.preferredRowHeight;
         CGFloat weekdayWidth = self.contentView.fs_width/_weekdays.count;
         CGFloat padding = weekdayHeight*0.1;
         
@@ -394,9 +394,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope
 {
-    CGFloat headerHeight = self.preferedHeaderHeight;
-    CGFloat weekdayHeight = self.preferedWeekdayHeight;
-    CGFloat rowHeight = self.preferedRowHeight;
+    CGFloat headerHeight = self.preferredHeaderHeight;
+    CGFloat weekdayHeight = self.preferredWeekdayHeight;
+    CGFloat rowHeight = self.preferredRowHeight;
     CGFloat paddings = weekdayHeight * 0.2;
     
     if (!self.floatingMode) {
@@ -588,7 +588,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             return;
         }
         NSDate *currentPage = _currentPage;
-        CGPoint significantPoint = CGPointMake(_collectionView.fs_width*0.5,MIN(self.preferedRowHeight*2.75, _collectionView.fs_height*0.5)+_collectionView.contentOffset.y);
+        CGPoint significantPoint = CGPointMake(_collectionView.fs_width*0.5,MIN(self.preferredRowHeight*2.75, _collectionView.fs_height*0.5)+_collectionView.contentOffset.y);
         NSIndexPath *significantIndexPath = [_collectionView indexPathForItemAtPoint:significantPoint];
         if (significantIndexPath) {
             currentPage = [self dateByAddingMonths:significantIndexPath.section toDate:[self beginingOfMonthOfDate:_minimumDate]];
@@ -901,11 +901,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _needsAdjustingViewFrame = YES;
         _needsAdjustingMonthPosition = YES;
         _needsAdjustingTextSize = YES;
-        _preferedWeekdayHeight = FSCalendarAutomaticDimension;
-        _preferedRowHeight = FSCalendarAutomaticDimension;
-        _preferedHeaderHeight = FSCalendarAutomaticDimension;
+        _preferredWeekdayHeight = FSCalendarAutomaticDimension;
+        _preferredRowHeight = FSCalendarAutomaticDimension;
+        _preferredHeaderHeight = FSCalendarAutomaticDimension;
         [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
         _header.needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
     }
@@ -921,62 +923,62 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return [NSArray arrayWithArray:_selectedDates];
 }
 
-- (CGFloat)preferedHeaderHeight
+- (CGFloat)preferredHeaderHeight
 {
     if (_headerHeight == FSCalendarAutomaticDimension) {
-        if (_preferedWeekdayHeight == FSCalendarAutomaticDimension) {
+        if (_preferredWeekdayHeight == FSCalendarAutomaticDimension) {
             if (!self.floatingMode) {
                 CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
-                _preferedHeaderHeight = (FSCalendarStandardHeaderHeight/divider)*self.fs_height;
-                _preferedHeaderHeight -= (_preferedHeaderHeight-FSCalendarStandardHeaderHeight)*0.5;
+                _preferredHeaderHeight = (FSCalendarStandardHeaderHeight/divider)*self.fs_height;
+                _preferredHeaderHeight -= (_preferredHeaderHeight-FSCalendarStandardHeaderHeight)*0.5;
             } else {
-                _preferedHeaderHeight = FSCalendarStandardHeaderHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
+                _preferredHeaderHeight = FSCalendarStandardHeaderHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
             }
         }
-        return _preferedHeaderHeight;
+        return _preferredHeaderHeight;
     }
     return _headerHeight;
 }
 
-- (CGFloat)preferedWeekdayHeight
+- (CGFloat)preferredWeekdayHeight
 {
     if (_weekdayHeight == FSCalendarAutomaticDimension) {
-        if (_preferedWeekdayHeight == FSCalendarAutomaticDimension) {
+        if (_preferredWeekdayHeight == FSCalendarAutomaticDimension) {
             if (!self.floatingMode) {
                 CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
-                _preferedWeekdayHeight = (FSCalendarStandardWeekdayHeight/divider)*self.fs_height;
+                _preferredWeekdayHeight = (FSCalendarStandardWeekdayHeight/divider)*self.fs_height;
             } else {
-                _preferedWeekdayHeight = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
+                _preferredWeekdayHeight = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
             }
         }
-        return _preferedWeekdayHeight;
+        return _preferredWeekdayHeight;
     }
     return _weekdayHeight;
 }
 
-- (CGFloat)preferedRowHeight
+- (CGFloat)preferredRowHeight
 {
-    if (_preferedRowHeight == FSCalendarAutomaticDimension) {
-        CGFloat headerHeight = self.preferedHeaderHeight;
-        CGFloat weekdayHeight = self.preferedWeekdayHeight;
+    if (_preferredRowHeight == FSCalendarAutomaticDimension) {
+        CGFloat headerHeight = self.preferredHeaderHeight;
+        CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat contentHeight = self.fs_height-headerHeight-weekdayHeight;
         CGFloat padding = weekdayHeight*0.1;
         if (!self.floatingMode) {
             switch (_scope) {
                 case FSCalendarScopeMonth: {
-                    _preferedRowHeight = (contentHeight-padding*2)/6.0;
+                    _preferredRowHeight = (contentHeight-padding*2)/6.0;
                     break;
                 }
                 case FSCalendarScopeWeek: {
-                    _preferedRowHeight = contentHeight-padding*2;
+                    _preferredRowHeight = contentHeight-padding*2;
                     break;
                 }
             }
         } else {
-            _preferedRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
+            _preferredRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
         }
     }
-    return _preferedRowHeight;
+    return _preferredRowHeight;
 }
 
 - (id<FSCalendarDelegateAppearance>)delegateAppearance
@@ -1038,9 +1040,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             return;
         }
         
-        m_set_scope
-        [self.collectionViewLayout performScopeTransitionFromScope:prevScope toScope:scope animated:animated];
-        
+        if (self.collectionViewLayout.state == FSCalendarTransitionStateIdle) {
+            m_set_scope
+            [self.collectionViewLayout performScopeTransitionFromScope:prevScope toScope:scope animated:animated];
+        }
         
     }
 }
@@ -1426,9 +1429,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self deselectCounterpartDate:nil];
     }
     
-    _preferedHeaderHeight = FSCalendarAutomaticDimension;
-    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
-    _preferedRowHeight = FSCalendarAutomaticDimension;
+    _preferredHeaderHeight = FSCalendarAutomaticDimension;
+    _preferredWeekdayHeight = FSCalendarAutomaticDimension;
+    _preferredRowHeight = FSCalendarAutomaticDimension;
     _needsAdjustingViewFrame = YES;
     [self setNeedsLayout];
 }
@@ -1458,17 +1461,17 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell
 {
-    cell.preferedSelectionColor = [self preferedSelectionColorForDate:cell.date];
-    cell.preferedTitleDefaultColor = [self preferedTitleDefaultColorForDate:cell.date];
-    cell.preferedTitleSelectionColor = [self preferedTitleSelectionColorForDate:cell.date];
+    cell.preferredSelectionColor = [self preferredSelectionColorForDate:cell.date];
+    cell.preferredTitleDefaultColor = [self preferredTitleDefaultColorForDate:cell.date];
+    cell.preferredTitleSelectionColor = [self preferredTitleSelectionColorForDate:cell.date];
     if (cell.subtitle) {
-        cell.preferedSubtitleDefaultColor = [self preferedSubtitleDefaultColorForDate:cell.date];
-        cell.preferedSubtitleSelectionColor = [self preferedSubtitleSelectionColorForDate:cell.date];
+        cell.preferredSubtitleDefaultColor = [self preferredSubtitleDefaultColorForDate:cell.date];
+        cell.preferredSubtitleSelectionColor = [self preferredSubtitleSelectionColorForDate:cell.date];
     }
-    if (cell.numberOfEvents) cell.preferedEventColor = [self preferedEventColorForDate:cell.date];
-    cell.preferedBorderDefaultColor = [self preferedBorderDefaultColorForDate:cell.date];
-    cell.preferedBorderSelectionColor = [self preferedBorderSelectionColorForDate:cell.date];
-    cell.preferedCellShape = [self preferedCellShapeForDate:cell.date];
+    if (cell.numberOfEvents) cell.preferredEventColor = [self preferredEventColorForDate:cell.date];
+    cell.preferredBorderDefaultColor = [self preferredBorderDefaultColorForDate:cell.date];
+    cell.preferredBorderSelectionColor = [self preferredBorderSelectionColorForDate:cell.date];
+    cell.preferredCellShape = [self preferredCellShapeForDate:cell.date];
     
     [cell setNeedsLayout];
 }
@@ -1585,9 +1588,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _needsAdjustingTextSize = YES;
     _needsAdjustingMonthPosition = YES;
     
-    _preferedHeaderHeight  = FSCalendarAutomaticDimension;
-    _preferedWeekdayHeight = FSCalendarAutomaticDimension;
-    _preferedRowHeight     = FSCalendarAutomaticDimension;
+    _preferredHeaderHeight  = FSCalendarAutomaticDimension;
+    _preferredWeekdayHeight = FSCalendarAutomaticDimension;
+    _preferredRowHeight     = FSCalendarAutomaticDimension;
     
     [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
@@ -1652,7 +1655,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #pragma GCC diagnostic pop
 }
 
-- (UIColor *)preferedSelectionColorForDate:(NSDate *)date
+- (UIColor *)preferredSelectionColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:selectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance selectionColorForDate:date];
@@ -1661,7 +1664,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferedTitleDefaultColorForDate:(NSDate *)date
+- (UIColor *)preferredTitleDefaultColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:titleDefaultColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance titleDefaultColorForDate:date];
@@ -1670,7 +1673,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferedTitleSelectionColorForDate:(NSDate *)date
+- (UIColor *)preferredTitleSelectionColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:titleSelectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance titleSelectionColorForDate:date];
@@ -1679,7 +1682,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferedSubtitleDefaultColorForDate:(NSDate *)date
+- (UIColor *)preferredSubtitleDefaultColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleDefaultColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance subtitleDefaultColorForDate:date];
@@ -1688,7 +1691,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferedSubtitleSelectionColorForDate:(NSDate *)date
+- (UIColor *)preferredSubtitleSelectionColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleSelectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance subtitleSelectionColorForDate:date];
@@ -1697,7 +1700,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferedEventColorForDate:(NSDate *)date
+- (UIColor *)preferredEventColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance eventColorForDate:date];
@@ -1706,7 +1709,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferedBorderDefaultColorForDate:(NSDate *)date
+- (UIColor *)preferredBorderDefaultColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:borderDefaultColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance borderDefaultColorForDate:date];
@@ -1715,7 +1718,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferedBorderSelectionColorForDate:(NSDate *)date
+- (UIColor *)preferredBorderSelectionColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:borderSelectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance borderSelectionColorForDate:date];
@@ -1724,7 +1727,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (FSCalendarCellShape)preferedCellShapeForDate:(NSDate *)date
+- (FSCalendarCellShape)preferredCellShapeForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellShapeForDate:)]) {
         FSCalendarCellShape cellShape = [self.delegateAppearance calendar:self appearance:self.appearance cellShapeForDate:date];
