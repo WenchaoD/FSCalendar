@@ -173,10 +173,38 @@
             BOOL oldClipsToBounds = self.calendar.clipsToBounds;
             self.calendar.clipsToBounds = YES;
             if (animated) {
+                CGFloat duration = 0.3;
+                // Perform alpha animation
+                CABasicAnimation *opacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                opacity.duration = duration*0.6;
+                opacity.removedOnCompletion = NO;
+                opacity.fillMode = kCAFillModeForwards;
+                opacity.toValue = @0;
+                [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+                    if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
+                        BOOL shouldPerformAlpha = NO;
+                        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+                        switch (self.scrollDirection) {
+                            case UICollectionViewScrollDirectionHorizontal: {
+                                shouldPerformAlpha = indexPath.item%6 != focusedRowNumber;
+                                break;
+                            }
+                            case UICollectionViewScrollDirectionVertical: {
+                                shouldPerformAlpha = indexPath.item/7 != focusedRowNumber;
+                                break;
+                            }
+                        }
+                        if (shouldPerformAlpha) {
+                            [cell.contentView.layer addAnimation:opacity forKey:@"opacity"];
+                        }
+                    }
+                }];
+                
+                // Perform path and frame animation
                 CABasicAnimation *path = [CABasicAnimation animationWithKeyPath:@"path"];
                 path.fromValue = (id)self.calendar.maskLayer.path;
                 path.toValue = (id)[UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
-                path.duration = 0.3;
+                path.duration = duration;
                 path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                 [CATransaction begin];
                 [CATransaction setCompletionBlock:^{
@@ -196,14 +224,14 @@
                     self.calendar.daysContainer.clipsToBounds = NO;
                     self.calendar.clipsToBounds = oldClipsToBounds;
                 }];
-                [CATransaction setAnimationDuration:0.3];
+                [CATransaction setAnimationDuration:duration];
                 [self.calendar.maskLayer addAnimation:path forKey:@"path"];
                 [CATransaction commit];
                 
                 if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
                     [UIView beginAnimations:@"delegateTranslation" context:"translation"];
                     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                    [UIView setAnimationDuration:0.3];
+                    [UIView setAnimationDuration:duration];
                     self.collectionView.fs_top = -focusedRowNumber*self.calendar.preferredRowHeight;
                     self.calendar.bottomBorder.frame = CGRectMake(0, size.height, self.calendar.fs_width, 1);
                     [self.calendar.delegate calendarCurrentScopeWillChange:self.calendar animated:animated];
@@ -300,13 +328,40 @@
             CGSize size = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth];
             if (animated) {
                 
+                CGFloat duration = 0.3;
+                // Perform alpha animation
+                CABasicAnimation *opacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                opacity.duration = duration;
+                opacity.fromValue = @0;
+                opacity.toValue = @1;
+                [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+                    if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
+                        BOOL shouldPerformAlpha = NO;
+                        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+                        switch (self.scrollDirection) {
+                            case UICollectionViewScrollDirectionHorizontal: {
+                                shouldPerformAlpha = indexPath.item%6 != focusedRowNumber;
+                                break;
+                            }
+                            case UICollectionViewScrollDirectionVertical: {
+                                shouldPerformAlpha = indexPath.item/7 != focusedRowNumber;
+                                break;
+                            }
+                        }
+                        if (shouldPerformAlpha) {
+                            [cell.contentView.layer addAnimation:opacity forKey:@"opacity"];
+                        }
+                    }
+                }];
+                
+                // Perform path and frame animation
                 BOOL oldDisableActions = [CATransaction disableActions];
                 [CATransaction setDisableActions:NO];
                 
                 CABasicAnimation *path = [CABasicAnimation animationWithKeyPath:@"path"];
                 path.fromValue = (id)self.calendar.maskLayer.path;
                 path.toValue = (id)[UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
-                path.duration = 0.3;
+                path.duration = duration;
                 path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                 [CATransaction begin];
                 [CATransaction setCompletionBlock:^{
@@ -316,7 +371,7 @@
                     self.calendar.contentView.clipsToBounds = NO;
                     self.calendar.daysContainer.clipsToBounds = NO;
                 }];
-                [CATransaction setAnimationDuration:0.3];
+                [CATransaction setAnimationDuration:duration];
                 
                 self.calendar.needsAdjustingViewFrame = YES;
                 [self.calendar.maskLayer addAnimation:path forKey:@"path"];
@@ -328,7 +383,7 @@
                     [UIView setAnimationsEnabled:YES];
                     [UIView beginAnimations:@"delegateTranslation" context:"translation"];
                     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                    [UIView setAnimationDuration:0.3];
+                    [UIView setAnimationDuration:duration];
                     self.collectionView.fs_top = 0;
                     self.self.calendar.bottomBorder.frame = CGRectMake(0, size.height, self.calendar.fs_width, 1);
                     [self.calendar.delegate calendarCurrentScopeWillChange:self.calendar animated:animated];

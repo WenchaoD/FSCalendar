@@ -103,6 +103,7 @@
     [super prepareForReuse];
     [CATransaction setDisableActions:YES];
     _backgroundLayer.hidden = YES;
+    [self.contentView.layer removeAnimationForKey:@"opacity"];
 }
 
 #pragma mark - Public
