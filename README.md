@@ -93,12 +93,19 @@ self.calendar = calendar
 ```objective-c
 calendar.focusOnSingleSelectedDate = YES;
 ```
-* Implement `calendarCurrentScopeWillChange:animated:`
+* Implement `-calendar:boundingRectWillChange:animated:`
 ```objective-c
-- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+// For autoLayout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
-    CGFloat height = [calendar sizeThatFits:CGSizeZero].height;
-    calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, height);
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    [self.view layoutIfNeeded];
+}
+
+// For manual layout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
 }
 ```
 

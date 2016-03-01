@@ -16,10 +16,9 @@
     [_calendar selectDate:[NSDate date]];
 }
 
-- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
-    CGSize size = [calendar sizeThatFits:_calendar.frame.size];
-    _calendarHeightConstraint.constant = size.height;
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
     [self.view layoutIfNeeded];
 }
 

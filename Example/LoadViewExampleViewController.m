@@ -58,7 +58,7 @@
             [self.calendar setScope:FSCalendarScopeMonth animated:YES];
         });
     });
-     */
+    */
     
 }
 
@@ -78,10 +78,9 @@
     NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM YYYY"]);
 }
 
-- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
-    CGFloat height = [calendar sizeThatFits:CGSizeZero].height;
-    calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, height);
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
 }
 
 /*

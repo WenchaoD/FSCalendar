@@ -132,6 +132,12 @@
     [self.view layoutIfNeeded];
 }
 
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    [self.view layoutIfNeeded];
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

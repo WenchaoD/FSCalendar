@@ -33,9 +33,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
 };
 
 @class FSCalendar;
-@protocol FSCalendarDelegateDeprecatedProtocol,FSCalendarDelegateAppearanceDeprecatedProtocol,FSCalendarDataSourceDeprecatedProtocol;
 
-@protocol FSCalendarDataSource <FSCalendarDataSourceDeprecatedProtocol>
+@protocol FSCalendarDataSource <NSObject>
 
 @optional
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;
@@ -44,21 +43,26 @@ typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date;
 
+- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date FSCalendarDeprecated(-calendar:numberOfEventsForDate:);
+
 @end
 
-@protocol FSCalendarDelegate <FSCalendarDelegateDeprecatedProtocol>
+@protocol FSCalendarDelegate <NSObject>
 
 @optional
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
 - (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date;
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated;
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
-- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated;
+
+- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated FSCalendarDeprecated(-calendar:boundingRectWillChange:animated:);
+- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated(-calendarCurrentPageDidChange:);
 
 @end
 
-@protocol FSCalendarDelegateAppearance <FSCalendarDelegateAppearanceDeprecatedProtocol>
+@protocol FSCalendarDelegateAppearance <NSObject>
 
 @optional
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date;
@@ -70,6 +74,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date;
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSelectionColorForDate:(NSDate *)date;
 - (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date;
+
+
+- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:cellShapeForDate:);
 
 @end
 
@@ -175,20 +182,5 @@ IB_DESIGNABLE
 - (BOOL)date:(NSDate *)date sharesSameMonthWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
 - (BOOL)date:(NSDate *)date sharesSameWeekWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
 - (BOOL)date:(NSDate *)date sharesSameDayWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
-@end
-
-@protocol FSCalendarDataSourceDeprecatedProtocol <NSObject>
-@optional
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date FSCalendarDeprecated(-calendar:numberOfEventsForDate:);
-@end
-
-@protocol FSCalendarDelegateDeprecatedProtocol <NSObject>
-@optional
-- (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated(-calendarCurrentPageDidChange:);
-@end
-
-@protocol FSCalendarDelegateAppearanceDeprecatedProtocol <NSObject>
-@optional
-- (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:cellShapeForDate:);
 @end
 
