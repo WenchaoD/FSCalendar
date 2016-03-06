@@ -37,27 +37,29 @@
         
         self.headerReferenceSize = CGSizeZero;
         
+#if CGFLOAT_IS_DOUBLE
+        CGFloat padding = floor(self.calendar.preferredWeekdayHeight*0.1);
+#else
+        CGFloat padding = floorf(self.calendar.preferredWeekdayHeight*0.1);
+#endif
+        self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
+        
         switch (self.calendar.scope) {
                 
             case FSCalendarScopeMonth: {
                 
                 CGSize itemSize = CGSizeMake(
-                                             self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
+                                             self.collectionView.fs_width/7.0-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
                                              rowHeight
                                              );
                 self.itemSize = itemSize;
                 
-                CGFloat padding = self.calendar.preferredWeekdayHeight*0.1;
-                self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
                 break;
             }
             case FSCalendarScopeWeek: {
                 
-                CGSize itemSize = CGSizeMake(self.collectionView.fs_width/7, rowHeight);
+                CGSize itemSize = CGSizeMake(self.collectionView.fs_width/7.0, rowHeight);
                 self.itemSize = itemSize;
-                
-                CGFloat padding = self.calendar.preferredWeekdayHeight*0.1;
-                self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
                 
                 break;
                 
