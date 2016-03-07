@@ -37,10 +37,11 @@
         
         self.headerReferenceSize = CGSizeZero;
         
+        CGFloat padding = self.calendar.preferredWeekdayHeight*0.1;
 #if CGFLOAT_IS_DOUBLE
-        CGFloat padding = floor(self.calendar.preferredWeekdayHeight*0.1);
+        if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) padding = floor(padding);
 #else
-        CGFloat padding = floorf(self.calendar.preferredWeekdayHeight*0.1);
+        if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) padding = floorf(padding);
 #endif
         self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
         
