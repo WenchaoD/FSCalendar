@@ -183,6 +183,18 @@ func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
 
 ![fscalendar---image](https://cloud.githubusercontent.com/assets/5186464/8449772/e94d3126-2006-11e5-8871-e4f8dbce81ea.png)
 
+#### You can hide top and bottom borders
+
+```objective-c
+calendar.clipsToBounds = YES
+```
+
+```swift
+calendar.clipsToBounds = true
+```
+
+![fscalendar---image](https://cloud.githubusercontent.com/assets/403372/13673426/3c207c16-e6d9-11e5-9c2a-111c4c15582f.png)
+
 #### There are left and right boundaries
 
 ```objective-c
