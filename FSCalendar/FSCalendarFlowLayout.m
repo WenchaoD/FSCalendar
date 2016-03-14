@@ -31,7 +31,8 @@
 {
     [super prepareLayout];
     
-    CGFloat rowHeight = self.calendar.preferredRowHeight;
+    // Round to nearest multiple of 0.5. e.g. (16.8->16.5), (16.2->16.0)
+    CGFloat rowHeight = FSCalendarFloor(self.calendar.preferredRowHeight*2)*0.5;
     
     if (!self.calendar.floatingMode) {
         

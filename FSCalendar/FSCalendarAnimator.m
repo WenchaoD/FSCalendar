@@ -152,7 +152,6 @@
                     [UIView setAnimationDuration:duration];
                     self.collectionView.fs_top = -focusedRowNumber*self.calendar.preferredRowHeight;
                     self.calendar.bottomBorder.fs_top = CGRectGetMaxY(targetBounds);
-                    NSLog(@"%f",CGRectGetMaxY(targetBounds));
                     if ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)]) {
                         [self.calendar.delegate calendar:self.calendar boundingRectWillChange:targetBounds animated:animated];
                     } else {
