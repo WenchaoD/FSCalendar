@@ -102,6 +102,7 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL pagingEnabled;
 @property (assign, nonatomic) IBInspectable BOOL scrollEnabled;
 @property (assign, nonatomic) IBInspectable BOOL focusOnSingleSelectedDate;
+@property (assign, nonatomic) IBInspectable BOOL showsPlaceholders;
 
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
 @property (readonly, nonatomic) NSDate *minimumDate;
@@ -136,6 +137,7 @@ IB_DESIGNABLE
 - (NSInteger)hourOfDate:(NSDate *)date;
 - (NSInteger)miniuteOfDate:(NSDate *)date;
 - (NSInteger)secondOfDate:(NSDate *)date;
+- (NSInteger)numberOfRowsInMonth:(NSDate *)month;
 
 - (NSDate *)dateByIgnoringTimeComponentsOfDate:(NSDate *)date;
 - (NSDate *)beginingOfMonthOfDate:(NSDate *)date;

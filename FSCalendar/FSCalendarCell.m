@@ -128,12 +128,19 @@
     group.animations = @[zoomOut, zoomIn];
     [_backgroundLayer addAnimation:group forKey:@"bounce"];
     [self configureCell];
+    
+#undef kAnimationDuration
+    
 }
 
 #pragma mark - Private
 
 - (void)configureCell
 {
+    self.contentView.hidden = self.dateIsPlaceholder && !self.calendar.showsPlaceholders;
+    if (self.contentView.hidden) {
+        return;
+    }
     _titleLabel.text = [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
@@ -353,6 +360,14 @@
         if (_needsAdjustingViewFrame) {
             [self setNeedsLayout];
         }
+    }
+}
+
+- (void)setNeedsAdjustingViewFrame:(BOOL)needsAdjustingViewFrame
+{
+    if (_needsAdjustingViewFrame != needsAdjustingViewFrame) {
+        _needsAdjustingViewFrame = needsAdjustingViewFrame;
+        _eventIndicator.needsAdjustingViewFrame = needsAdjustingViewFrame;
     }
 }
 

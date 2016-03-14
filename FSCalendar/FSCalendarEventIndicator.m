@@ -16,8 +16,9 @@
 @property (weak, nonatomic) UIView *contentView;
 
 @property (strong, nonatomic) NSMutableArray *eventLayers;
+@property (assign, nonatomic) BOOL needsInvalidatingColor;
 
-- (void)invalidateColor;
+- (UIImage *)dotImageWithColor:(UIColor *)color diameter:(CGFloat)diameter;
 
 @end
 
@@ -41,6 +42,9 @@
             [self.contentView.layer addSublayer:layer];
         }
         
+        _needsInvalidatingColor = YES;
+        _needsAdjustingViewFrame = YES;
+        
     }
     return self;
 }
@@ -48,24 +52,35 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
-    self.contentView.fs_height = self.fs_height;
-    self.contentView.fs_width = (self.numberOfEvents*2-1)*diameter;
-    self.contentView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    if (_needsAdjustingViewFrame) {
+        CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
+        self.contentView.fs_height = self.fs_height;
+        self.contentView.fs_width = (self.numberOfEvents*2-1)*diameter;
+        self.contentView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    }
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer
 {
     [super layoutSublayersOfLayer:layer];
     if (layer == self.layer) {
-        CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
-        for (int i = 0; i < self.eventLayers.count; i++) {
-            CALayer *layer = self.eventLayers[i];
-            layer.hidden = i >= self.numberOfEvents;
-            if (!layer.hidden) {
-                layer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
-                layer.cornerRadius = diameter * 0.5;
+        if (_needsAdjustingViewFrame) {
+            _needsAdjustingViewFrame = NO;
+            CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
+            for (int i = 0; i < self.eventLayers.count; i++) {
+                CALayer *layer = self.eventLayers[i];
+                layer.hidden = i >= self.numberOfEvents;
+                if (!layer.hidden) {
+                    layer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
+                    layer.cornerRadius = diameter * 0.5;
+                }
             }
+        }
+        if (_needsInvalidatingColor) {
+            _needsInvalidatingColor = NO;
+            CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
+            UIImage *dotImage = [self dotImageWithColor:_color diameter:diameter];
+            [self.eventLayers makeObjectsPerformSelector:@selector(setContents:) withObject:(id)dotImage.CGImage];
         }
     }
 }
@@ -74,7 +89,8 @@
 {
     if (![_color isEqual:color]) {
         _color = color;
-        [self invalidateColor];
+        _needsInvalidatingColor = YES;
+        [self setNeedsLayout];
     }
 }
 
@@ -82,13 +98,31 @@
 {
     if (_numberOfEvents != numberOfEvents) {
         _numberOfEvents = MIN(MAX(numberOfEvents,0),3);
+        _needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
     }
 }
 
-- (void)invalidateColor
+- (void)setNeedsAdjustingViewFrame:(BOOL)needsAdjustingViewFrame
 {
-    [self.eventLayers makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:(id)self.color.CGColor];
+    if (_needsAdjustingViewFrame != needsAdjustingViewFrame) {
+        _needsAdjustingViewFrame = needsAdjustingViewFrame;
+        if (needsAdjustingViewFrame) {
+            [self setNeedsLayout];
+        }
+    }
+}
+
+- (UIImage *)dotImageWithColor:(UIColor *)color diameter:(CGFloat)diameter
+{
+    CGRect bounds = CGRectMake(0, 0, diameter, diameter);
+    UIGraphicsBeginImageContextWithOptions(bounds.size, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, color.CGColor);
+    CGContextFillEllipseInRect(context, bounds);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 @end

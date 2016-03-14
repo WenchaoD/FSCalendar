@@ -48,10 +48,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FSCalendarScope scopeForIndexPath = indexPath.row == 0 ? FSCalendarScopeMonth : FSCalendarScopeWeek;
     NSString *identifier = @[@"cell_month",@"cell_week"][indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    cell.accessoryType = _calendar.scope == scopeForIndexPath ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     return cell;
 }
 
@@ -60,9 +58,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [tableView.visibleCells setValue:@(UITableViewCellAccessoryNone) forKey:@"accessoryType"];
-    [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-    
     FSCalendarScope selectedScope = indexPath.row == 0 ? FSCalendarScopeMonth : FSCalendarScopeWeek;
     [_calendar setScope:selectedScope animated:_animationSwitch.on];
     

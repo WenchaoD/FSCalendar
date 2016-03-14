@@ -5,6 +5,7 @@
 [![Swift2 compatible](https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
+[![Join the chat at https://gitter.im/WenchaoD/FSCalendar](https://badges.gitter.im/WenchaoD/FSCalendar.svg)](https://gitter.im/WenchaoD/FSCalendar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Screenshots
 
@@ -13,6 +14,9 @@
 
 ## iPad
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
+
+## Working with AutoLayout and Orientation
+![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/13728798/59855e3e-e95e-11e5-84db-60f843427ef3.gif)
 
 # Installation
 
@@ -55,10 +59,10 @@ Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Ha
 
 ## Or use code
 
-```objective-c
+```objc
 @property (weak , nonatomic) FSCalendar *calendar;
 ```
-```objective-c
+```objc
 // In loadView(Recommended) or viewDidLoad
 FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
 calendar.dataSource = self;
@@ -85,23 +89,29 @@ view.addSubview(calendar)
 self.calendar = calendar
 ```
 <br/>
+
+
 ## Focus on selected date on ***week mode***
 ![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
 
 ### How to use
 * Use ***`focusOnSingleSelectedDate`***, default is `YES`
-```objective-c
+```objc
 calendar.focusOnSingleSelectedDate = YES;
 ```
-* Implement `-calendar:boundingRectWillChange:animated:`
-```objective-c
+
+* <a id="implement_bounding_rect_will_change"></a> Implement `-calendar:boundingRectWillChange:animated:`
+
+```objc
 // For autoLayout
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
     [self.view layoutIfNeeded];
 }
+```
 
+```objc
 // For manual layout
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
@@ -117,6 +127,32 @@ calendar.focusOnSingleSelectedDate = YES;
 * To change back
 ```objective-c
 [calendar setScope:FSCalendarScopeMonth animated:YES];
+```
+
+
+## Hide placeholder dates
+![fscalendar-showsplaceholder](https://cloud.githubusercontent.com/assets/5186464/13727902/21a90042-e940-11e5-9b9f-392f38cf007d.gif)
+
+1. Set `calendar.showsPlaceholders = NO`;
+2. [Implement `-calendar:boundingRectWillChange:animated:`](#implement_bounding_rect_will_change)
+
+* <a id="implement_bounding_rect_will_change"></a> Implement `-calendar:boundingRectWillChange:animated:`
+
+```objc
+// For autoLayout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    [self.view layoutIfNeeded];
+}
+```
+
+```objc
+// For manual layout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+}
 ```
 
 ### <a id="roll_with_interface_builder"></a> Roll with Interface Builder

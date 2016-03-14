@@ -12,5 +12,6 @@
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (strong, nonatomic) UIColor *color;
+@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
 @end

@@ -27,7 +27,7 @@
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.view = view;
 }
 
@@ -38,8 +38,9 @@
     CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, height)];
     calendar.dataSource = self;
-    calendar.delegate = self;    
+    calendar.delegate = self;
     [calendar selectDate:[calendar dateWithYear:2015 month:2 day:1]];
+    calendar.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:calendar];
     self.calendar = calendar;
     

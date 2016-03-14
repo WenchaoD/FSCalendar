@@ -53,9 +53,9 @@
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope;
 
-- (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
+- (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month;
 
-- (NSDate *)findMonthForWeek:(NSDate *)week withRow:(NSInteger *)row;
+- (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 
 @end
 
