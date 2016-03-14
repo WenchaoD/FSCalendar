@@ -32,6 +32,28 @@ calendar.scrollDirection = .Horizontal
 
 ![fscalendar-horizontal](https://cloud.githubusercontent.com/assets/5186464/8448696/059e9acc-1ffd-11e5-8a95-aff6d871c6e1.gif)
 
+## Focus on selected date on ***week mode***
+![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
+
+* There are cases such as `Changing Scope`、`Changing month while showsPlaceholders is false` will trigger a bounds changing of FSCalendar, make sure the frame is adjusted in `-calendar:boundingRectWillChange:animated:`
+
+```objc
+// For autoLayout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    [self.view layoutIfNeeded];
+}
+```
+
+```objc
+// For manual layout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+}
+```
+
 ### For week mode
 
 * Objective - c
@@ -185,9 +207,13 @@ func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
 
 #### You can hide top and bottom borders
 
+* Objective - c
+
 ```objective-c
 calendar.clipsToBounds = YES
 ```
+
+* Swift
 
 ```swift
 calendar.clipsToBounds = true

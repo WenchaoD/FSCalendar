@@ -36,7 +36,7 @@ pod 'FSCalendar'
 ## Carthage: 
 * For iOS8+
 ```ruby
-github "WenchaoIOS/FSCalendar"
+github "WenchaoD/FSCalendar"
 ```
 
 ## Manually:
@@ -91,52 +91,11 @@ self.calendar = calendar
 <br/>
 
 
-## Focus on selected date on ***week mode***
-![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
-
-### How to use
-* Use ***`focusOnSingleSelectedDate`***, default is `YES`
-```objc
-calendar.focusOnSingleSelectedDate = YES;
-```
-
-* <a id="implement_bounding_rect_will_change"></a> Implement `-calendar:boundingRectWillChange:animated:`
-
-```objc
-// For autoLayout
-- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
-{
-    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
-    [self.view layoutIfNeeded];
-}
-```
-
-```objc
-// For manual layout
-- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
-{
-    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
-}
-```
-
-* Try to change `scope` to `week`
-```objective-c
-[calendar setScope:FSCalendarScopeWeek animated:YES];
-```
-
-* To change back
-```objective-c
-[calendar setScope:FSCalendarScopeMonth animated:YES];
-```
-
-
 ## Hide placeholder dates
 ![fscalendar-showsplaceholder](https://cloud.githubusercontent.com/assets/5186464/13727902/21a90042-e940-11e5-9b9f-392f38cf007d.gif)
 
 1. Set `calendar.showsPlaceholders = NO`;
-2. [Implement `-calendar:boundingRectWillChange:animated:`](#implement_bounding_rect_will_change)
-
-* <a id="implement_bounding_rect_will_change"></a> Implement `-calendar:boundingRectWillChange:animated:`
+2. <a id="implement_bounding_rect_will_change"></a> Implement `-calendar:boundingRectWillChange:animated:`
 
 ```objc
 // For autoLayout
@@ -160,11 +119,11 @@ calendar.focusOnSingleSelectedDate = YES;
 
 ## More Usage
 * To view more usage, download the zip file and read the example.
-* Or you could refer to [this document](https://github.com/WenchaoIOS/FSCalendar/blob/master/MOREUSAGE.md)
+* Or you could refer to [this document](https://github.com/WenchaoD/FSCalendar/blob/master/MOREUSAGE.md)
 
 # If you like this repo
 * ***Star*** this repo.
-* Send your calendar screenshot or `itunes link address` [here](https://github.com/WenchaoIOS/FSCalendar/issues/2).
+* Send your calendar screenshot or `itunes link address` [here](https://github.com/WenchaoD/FSCalendar/issues/2).
 
 # Support me via  [![paypal](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)
 * ☕️ [This coffee is on me!](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=This%20coffee%20is%20on%20me%21&item_number=Support%20FSCalendar%20%2d%20WenchaoIOS&amount=5%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
