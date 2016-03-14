@@ -302,7 +302,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat rowHeight = self.preferredRowHeight;
         CGFloat weekdayWidth = self.contentView.fs_width/_weekdays.count;
         CGFloat padding = weekdayHeight*0.1;
-        padding = self.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal ? FSCalendarFloor(padding) : padding;
+        if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+            padding = FSCalendarFloor(padding);
+            rowHeight = FSCalendarFloor(rowHeight*2)*0.5; // Round to nearest multiple of 0.5. e.g. (16.8->16.5),(16.2->16.0)
+        }
         
         if (_needsLayoutForWeekMode) _scope = FSCalendarScopeWeek;
         

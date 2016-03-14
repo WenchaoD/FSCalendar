@@ -364,7 +364,7 @@
         CGFloat animationDuration = duration;
         CGRect bounds = (CGRect){CGPointZero,[self.calendar sizeThatFits:self.calendar.frame.size]};
         self.state = FSCalendarTransitionStateInProgress;
-        [UIView animateWithDuration:animationDuration delay:0  options:0 animations:^{
+        [UIView animateWithDuration:animationDuration delay:0  options:UIViewAnimationOptionAllowUserInteraction animations:^{
             if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)]) {
                 if (!CGRectEqualToRect((CGRect){CGPointZero,self.calendar.frame.size}, bounds)) {
                     [self.calendar.delegate calendar:self.calendar boundingRectWillChange:bounds animated:YES];

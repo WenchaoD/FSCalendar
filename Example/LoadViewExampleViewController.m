@@ -12,7 +12,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%@:%s", self.class.description, __FUNCTION__);
+    NSLog(@"%s", __FUNCTION__);
 }
 
 - (instancetype)init
@@ -51,14 +51,13 @@
     
     [self.calendar selectDate:[self.calendar tomorrowOfDate:[NSDate date]]];
     
-    /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.calendar setScope:FSCalendarScopeWeek animated:YES];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.calendar setScope:FSCalendarScopeMonth animated:YES];
         });
     });
-    */
+    
     
 }
 

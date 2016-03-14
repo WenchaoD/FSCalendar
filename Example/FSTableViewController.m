@@ -8,7 +8,6 @@
 
 #import "FSTableViewController.h"
 #import "LoadViewExampleViewController.h"
-#import "ViewDidLoadExampleViewController.h"
 #import "MultipleSelectionViewController.h"
 #import "FullScreenExampleViewController.h"
 #import "DelegateAppearanceViewController.h"
@@ -31,8 +30,7 @@
                              [MultipleSelectionViewController class],
                              [NSObject class],
                              [NSObject class],
-                             [LoadViewExampleViewController class],
-                             [ViewDidLoadExampleViewController class] // Deprecated
+                             [LoadViewExampleViewController class]
                             ];
     
     self.tableView.rowHeight = [[UIDevice currentDevice].model hasSuffix:@"iPad"] ? 60.0 : 44.0;
