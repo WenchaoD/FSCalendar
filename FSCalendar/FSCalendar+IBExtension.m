@@ -1,12 +1,14 @@
 //
 //  FSCalendar+IBExtension.m
-//  Pods
+//  FSCalendar
 //
-//  Created by dingwenchao on 8/14/15.
-//
+//  Created by Wenchao Ding on 8/14/15.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendar+IBExtension.h"
+
+#if TARGET_INTERFACE_BUILDER
 
 @implementation FSCalendar (IBExtension)
 
@@ -316,31 +318,6 @@
     return self.appearance.fakedSelectedDay;
 }
 
-#pragma mark - cellStyle
-
-- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
-{
-    self.appearance.cellShape = (FSCalendarCellShape)cellStyle;
-}
-
-- (FSCalendarCellStyle)cellStyle
-{
-    return (FSCalendarCellStyle)self.appearance.cellShape;
-}
-
-#pragma mark -  autoAdjustTitleSize
-
-- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
-{
-    self.appearance.adjustsFontSizeToFitContentSize = autoAdjustTitleSize;
-}
-
-- (BOOL)autoAdjustTitleSize
-{
-    return self.appearance.adjustsFontSizeToFitContentSize;
-}
-
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
@@ -389,6 +366,4 @@
 
 @end
 
-
-
-
+#endif

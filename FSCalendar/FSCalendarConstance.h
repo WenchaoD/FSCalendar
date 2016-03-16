@@ -36,15 +36,15 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
 #define FSColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 
-#pragma mark - Deprecated
-
-#define FSCalendarDeprecated(instead) DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")
-
 #if CGFLOAT_IS_DOUBLE
 #define FSCalendarFloor(c) floor(c)
 #else
 #define FSCalendarFloor(c) floorf(c)
 #endif
+
+#pragma mark - Deprecated
+
+#define FSCalendarDeprecated(instead) DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")
 
 FSCalendarDeprecated('FSCalendarCellShape')
 typedef NS_ENUM(NSInteger, FSCalendarCellStyle) {

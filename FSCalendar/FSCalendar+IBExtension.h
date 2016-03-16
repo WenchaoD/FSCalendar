@@ -1,14 +1,17 @@
 //
 //  FSCalendar+IBExtension.h
-//  Pods
+//  FSCalendar
 //
-//  Created by dingwenchao on 8/14/15.
-//
+//  Created by Wenchao Ding on 8/14/15.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
+// 
 //  注意: 这些方法仅仅为了在IB中使用，不建议直接调用。这些方法在calendar.appearance中使用。如: calendar.appearance.eventColor
 //  Warning: For IB usage only. Directly calling these methods is deprecated. Use calendar.appearance(FSCalendarAppearance) instead
 
 #import "FSCalendar.h"
 #import "FSCalendarConstance.h"
+
+#if TARGET_INTERFACE_BUILDER
 
 IB_DESIGNABLE
 @interface FSCalendar (IBExtension)
@@ -52,8 +55,6 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL      fakeSubtitles;
 @property (assign, nonatomic) IBInspectable NSInteger fakedSelectedDay;
 
-// Deprecated
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated('cellShape');
-@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated('adjustsFontSizeToFitContentSize');
-
 @end
+
+#endif

@@ -1,9 +1,11 @@
 //
-//  FScalendar.h
+//  FSCalendar.h
+//  FSCalendar
 //
 //  Created by Wenchao Ding on 29/1/15.
-//
-//  https://github.com/WenchaoIOS
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
+// 
+//  https://github.com/WenchaoD
 //
 
 #import <UIKit/UIKit.h>

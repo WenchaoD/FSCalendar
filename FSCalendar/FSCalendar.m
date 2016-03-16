@@ -1,9 +1,9 @@
 //
-//  FScalendar.m
-//  Pods
+//  FSCalendar.m
+//  FSCalendar
 //
 //  Created by Wenchao Ding on 29/1/15.
-//
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendar.h"
@@ -76,7 +76,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (weak  , nonatomic) FSCalendarHeader           *header;
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
 
-@property (assign, nonatomic) BOOL                       ibEditing;
 @property (assign, nonatomic) BOOL                       needsAdjustingMonthPosition;
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
@@ -388,7 +387,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)prepareForInterfaceBuilder
 {
-    self.ibEditing = YES;
     NSDate *date = [NSDate date];
     [self selectDate:[self dateWithYear:[self yearOfDate:date] month:[self monthOfDate:date] day:_appearance.fakedSelectedDay?:1]];
 }
@@ -1799,10 +1797,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSString *)subtitleForDate:(NSDate *)date
 {
+#if !TARGET_INTERFACE_BUILDER
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:subtitleForDate:)]) {
         return [_dataSource calendar:self subtitleForDate:date];
     }
-    return _ibEditing && _appearance.fakeSubtitles ? @"test" : nil;
+    return nil;
+#else
+    return _appearance.fakeSubtitles ? @"test" : nil;
+#endif
 }
 
 - (UIImage *)imageForDate:(NSDate *)date
@@ -1815,6 +1817,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSInteger)numberOfEventsForDate:(NSDate *)date
 {
+#if !TARGET_INTERFACE_BUILDER
+    
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:numberOfEventsForDate:)]) {
         return [_dataSource calendar:self numberOfEventsForDate:date];
     }
@@ -1824,7 +1828,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         return [_dataSource calendar:self hasEventForDate:date];
     }
     #pragma GCC diagnostic pop
-    if (_ibEditing) {
+    
+#else
         if ([@[@3,@5] containsObject:@([self dayOfDate:date])]) {
             return 1;
         }
@@ -1834,8 +1839,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if ([@[@20,@25] containsObject:@([self dayOfDate:date])]) {
             return 3;
         }
-    }
+#endif
     return 0;
+    
 }
 
 - (NSDate *)minimumDateForCalendar
