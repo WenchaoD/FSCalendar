@@ -385,11 +385,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+#if TARGET_INTERFACE_BUILDER
 - (void)prepareForInterfaceBuilder
 {
     NSDate *date = [NSDate date];
     [self selectDate:[self dateWithYear:[self yearOfDate:date] month:[self monthOfDate:date] day:_appearance.fakedSelectedDay?:1]];
 }
+#endif
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
@@ -980,6 +982,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat contentHeight = self.fs_height-headerHeight-weekdayHeight;
         CGFloat padding = weekdayHeight*0.1;
+        if (self.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+            padding = FSCalendarFloor(padding);
+        }
         if (!self.floatingMode) {
             switch (_scope) {
                 case FSCalendarScopeMonth: {

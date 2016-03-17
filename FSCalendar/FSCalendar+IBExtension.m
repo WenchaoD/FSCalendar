@@ -8,8 +8,6 @@
 
 #import "FSCalendar+IBExtension.h"
 
-#if TARGET_INTERFACE_BUILDER
-
 @implementation FSCalendar (IBExtension)
 
 #pragma mark - adjustsFontSizeToFitContentSize
@@ -294,6 +292,8 @@
 #pragma GCC diagnostic pop
 }
 
+#if TARGET_INTERFACE_BUILDER
+
 #pragma mark - fakeSubtitles
 
 - (void)setFakeSubtitles:(BOOL)fakeSubtitles
@@ -317,6 +317,8 @@
 {
     return self.appearance.fakedSelectedDay;
 }
+
+#endif
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -365,5 +367,3 @@
 #pragma GCC diagnostic pop
 
 @end
-
-#endif

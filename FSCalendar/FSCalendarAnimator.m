@@ -258,13 +258,13 @@
             self.calendar.daysContainer.clipsToBounds = YES;
             
             if (animated) {
-                
-                CGFloat duration = 0.3;
                 // Perform alpha animation
+                CGFloat duration = 0.3;
                 CABasicAnimation *opacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
                 opacity.duration = duration;
                 opacity.fromValue = @0;
                 opacity.toValue = @1;
+                opacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                 [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
                     if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
                         BOOL shouldPerformAlpha = NO;

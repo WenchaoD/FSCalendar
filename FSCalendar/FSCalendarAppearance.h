@@ -74,9 +74,13 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) FSCalendarCaseOptions caseOptions;
 @property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize;
 
+#if TARGET_INTERFACE_BUILDER
+
 // For preview only
 @property (assign, nonatomic) BOOL      fakeSubtitles;
 @property (assign, nonatomic) NSInteger fakedSelectedDay;
+
+#endif
 
 - (void)invalidateAppearance;
 
