@@ -12,6 +12,8 @@
 
 @implementation HidePlaceholderViewController
 
+#pragma mark - Life cycle
+
 - (instancetype)init
 {
     self = [super init];
@@ -90,11 +92,20 @@
     
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
+#pragma mark - <FSCalendarDelegate>
+
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
     self.bottomContainer.frame = kContainerFrame;
 }
+
+#pragma mark - Target action
 
 - (void)nextClicked:(id)sender
 {

@@ -53,6 +53,11 @@
     self.navigationItem.rightBarButtonItems = @[lunarItem, todayItem];
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
 - (void)todayItemClicked:(id)sender
 {
     [_calendar setCurrentPage:[NSDate date] animated:YES];

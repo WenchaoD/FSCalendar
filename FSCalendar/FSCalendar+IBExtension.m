@@ -292,32 +292,38 @@
 #pragma GCC diagnostic pop
 }
 
-#if TARGET_INTERFACE_BUILDER
 
 #pragma mark - fakeSubtitles
 
 - (void)setFakeSubtitles:(BOOL)fakeSubtitles
 {
+#if TARGET_INTERFACE_BUILDER
     self.appearance.fakeSubtitles = fakeSubtitles;
+#endif
 }
 
+#if TARGET_INTERFACE_BUILDER
 - (BOOL)fakeSubtitles
 {
     return self.appearance.fakeSubtitles;
 }
+#endif
 
 #pragma mark - fakedSelectedDay
 
 - (void)setFakedSelectedDay:(NSInteger)fakedSelectedDay
 {
+#if TARGET_INTERFACE_BUILDER
     self.appearance.fakedSelectedDay = fakedSelectedDay;
+#endif
 }
 
+
+#if TARGET_INTERFACE_BUILDER
 - (NSInteger)fakedSelectedDay
 {
     return self.appearance.fakedSelectedDay;
 }
-
 #endif
 
 #pragma GCC diagnostic push

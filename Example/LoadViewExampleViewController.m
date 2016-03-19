@@ -10,10 +10,7 @@
 
 @implementation LoadViewExampleViewController
 
-- (void)dealloc
-{
-    NSLog(@"%s", __FUNCTION__);
-}
+#pragma mark - Life cycle
 
 - (instancetype)init
 {
@@ -62,6 +59,13 @@
     
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s", __FUNCTION__);
+}
+
+#pragma mark - <FSCalendarDelegate>
+
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
     NSLog(@"should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
@@ -82,6 +86,8 @@
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
 }
+
+#pragma mark - <FSCalendarDataSource>
 
 /*
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar

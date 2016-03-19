@@ -63,7 +63,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%@:%s",self.class.description,__FUNCTION__);
+    NSLog(@"%s",__FUNCTION__);
 }
 
 #pragma mark - FSCalendarDataSource

@@ -96,6 +96,11 @@
     
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
 #pragma mark - Target actions
 
 - (void)todayItemClicked:(id)sender

@@ -49,11 +49,7 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable FSCalendarCellShape cellShape;
 @property (assign, nonatomic) IBInspectable BOOL useVeryShortWeekdaySymbols;
 
-#if TARGET_INTERFACE_BUILDER
-
 @property (assign, nonatomic) IBInspectable BOOL      fakeSubtitles;
 @property (assign, nonatomic) IBInspectable NSInteger fakedSelectedDay;
-
-#endif
 
 @end

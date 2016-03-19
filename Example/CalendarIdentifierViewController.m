@@ -10,6 +10,8 @@
 
 @implementation CalendarIdentifierViewController
 
+#pragma mark - Life cycle
+
 - (instancetype)init
 {
     self = [super init];
@@ -46,10 +48,17 @@
     
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
 - (void)todayItemClicked:(id)sender
 {
     [_calendar setCurrentPage:[NSDate date] animated:YES];
 }
+
+#pragma mark - <FSCalendarDelegate>
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
@@ -65,6 +74,8 @@
 {
     return 1;
 }
+
+#pragma mark - <UIPickerViewDelegate>
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
