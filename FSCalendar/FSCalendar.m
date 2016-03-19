@@ -362,7 +362,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (_needsAdjustingMonthPosition) {
             _needsAdjustingMonthPosition = NO;
             _supressEvent = NO;
+            BOOL oldValue = [CATransaction disableActions];
+            [CATransaction setDisableActions:YES];
             [self scrollToPageForDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate) animated:NO];
+            [CATransaction setDisableActions:oldValue];
         }
     }
     

@@ -9,6 +9,9 @@
 #import "FSCalendar+IBExtension.h"
 
 @implementation FSCalendar (IBExtension)
+#if !TARGET_INTERFACE_BUILDER
+@dynamic fakedSelectedDay,fakeSubtitles;
+#endif
 
 #pragma mark - adjustsFontSizeToFitContentSize
 
