@@ -44,6 +44,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar;
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date;
+- (NSArray *)calendar:(FSCalendar *)calendar colorsForEventsForDate:(NSDate *)date;
 
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date FSCalendarDeprecated(-calendar:numberOfEventsForDate:);
 
