@@ -222,6 +222,7 @@
     }
     _eventIndicator.numberOfEvents = self.numberOfEvents;
     _eventIndicator.color = self.preferredEventColor ?: _appearance.eventColor;
+    _eventIndicator.colors = self.colorsForEvents;
 }
 
 - (BOOL)isWeekend
@@ -282,6 +283,7 @@
 - (void)invalidateEventColors
 {
     _eventIndicator.color = self.preferredEventColor ?: _appearance.eventColor;
+    _eventIndicator.colors = nil;
 }
 
 - (void)invalidateCellShapes

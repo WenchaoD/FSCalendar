@@ -28,6 +28,7 @@
 
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 @property (assign, nonatomic) NSInteger numberOfEvents;
+@property (strong, nonatomic) NSArray *colorsForEvents;
 
 @property (assign, nonatomic) BOOL dateIsPlaceholder;
 @property (assign, nonatomic) BOOL dateIsSelected;
