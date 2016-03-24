@@ -36,9 +36,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (UIColor *)preferredTitleSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferredSubtitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferredSubtitleSelectionColorForDate:(NSDate *)date;
-- (UIColor *)preferredEventColorForDate:(NSDate *)date;
 - (UIColor *)preferredBorderDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferredBorderSelectionColorForDate:(NSDate *)date;
+- (id)preferredEventColorForDate:(NSDate *)date;
 - (FSCalendarCellShape)preferredCellShapeForDate:(NSDate *)date;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
@@ -1744,11 +1744,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (UIColor *)preferredEventColorForDate:(NSDate *)date
+- (id)preferredEventColorForDate:(NSDate *)date
 {
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventColorsForDate:)]) {
+        NSArray *colors = [self.delegateAppearance calendar:self appearance:self.appearance eventColorsForDate:date];
+        if (colors) {
+            return colors;
+        }
+    }
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance eventColorForDate:date];
-        return color;
+        if (color) {
+            return color;
+        }
     }
     return nil;
 }

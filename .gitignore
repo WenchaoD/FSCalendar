@@ -23,5 +23,9 @@ DerivedData
 # Bundler
 .bundle
 
-Pods/*
-Carthage/*
+Pods/
+Carthage/Checkouts
+Carthage/Build
+
+fastlane/report.xml
+fastlane/screenshots

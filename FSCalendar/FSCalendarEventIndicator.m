@@ -79,13 +79,28 @@
         if (_needsInvalidatingColor) {
             _needsInvalidatingColor = NO;
             CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
-            UIImage *dotImage = [self dotImageWithColor:_color diameter:diameter];
-            [self.eventLayers makeObjectsPerformSelector:@selector(setContents:) withObject:(id)dotImage.CGImage];
+            if ([_color isKindOfClass:[UIColor class]]) {
+                UIImage *dotImage = [self dotImageWithColor:_color diameter:diameter];
+                [self.eventLayers makeObjectsPerformSelector:@selector(setContents:) withObject:(id)dotImage.CGImage];
+            } else if ([_color isKindOfClass:[NSArray class]]) {
+                NSArray *colors = (NSArray *)_color;
+                if (colors.count) {
+                    UIColor *lastColor = colors.firstObject;
+                    for (int i = 0; i < self.numberOfEvents; i++) {
+                        if (i < colors.count) {
+                            lastColor = colors[i];
+                        }
+                        CALayer *layer = self.eventLayers[i];
+                        UIImage *dotImage = [self dotImageWithColor:lastColor diameter:diameter];
+                        layer.contents = (id)dotImage.CGImage;
+                    }
+                }
+            }
         }
     }
 }
 
-- (void)setColor:(UIColor *)color
+- (void)setColor:(id)color
 {
     if (![_color isEqual:color]) {
         _color = color;

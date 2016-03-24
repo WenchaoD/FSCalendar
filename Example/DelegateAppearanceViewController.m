@@ -128,12 +128,18 @@
 {
     NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
     if ([_datesWithEvent containsObject:dateString]) {
-        return appearance.eventColor;
+        return [UIColor purpleColor];
     }
+    return nil;
+}
+
+- (NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorsForDate:(NSDate *)date
+{
+    NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
     if ([_datesWithMultipleEvents containsObject:dateString]) {
-        return [UIColor magentaColor];
+        return @[[UIColor magentaColor],appearance.eventColor,[UIColor blackColor]];
     }
-    return 0;
+    return nil;
 }
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date

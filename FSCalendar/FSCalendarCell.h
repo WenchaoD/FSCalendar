@@ -40,9 +40,9 @@
 @property (strong, nonatomic) UIColor *preferredTitleSelectionColor;
 @property (strong, nonatomic) UIColor *preferredSubtitleDefaultColor;
 @property (strong, nonatomic) UIColor *preferredSubtitleSelectionColor;
-@property (strong, nonatomic) UIColor *preferredEventColor;
 @property (strong, nonatomic) UIColor *preferredBorderDefaultColor;
 @property (strong, nonatomic) UIColor *preferredBorderSelectionColor;
+@property (strong, nonatomic) id preferredEventColor;
 @property (assign, nonatomic) FSCalendarCellShape preferredCellShape;
 
 - (void)invalidateTitleFont;

@@ -11,7 +11,7 @@
 @interface FSCalendarEventIndicator : UIView
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
-@property (strong, nonatomic) UIColor *color;
+@property (strong, nonatomic) id color;
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
 @end
