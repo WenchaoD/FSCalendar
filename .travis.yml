@@ -1,22 +1,6 @@
 language: objective-c
 
-sudo: false
-
-rvm: 
-    - 2.2.2
-
-before_install:
-
-    - export LANG=en_US.UTF-8
-    - env
-    - locale
-    - gem install cocoapods --quiet
-    - pod --version
-    - pod setup --silent
-    - pod repo update --silent
-
 script:
 
-    - pod lib lint --allow-warnings
     - xcodebuild -project Example/FSCalendar.xcodeproj -sdk iphonesimulator -alltargets
     - xcodebuild -project SwiftExample/SwiftExample.xcodeproj -sdk iphonesimulator -alltargets
