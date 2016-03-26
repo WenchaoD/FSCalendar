@@ -2,6 +2,9 @@ language: objective-c
 
 sudo: false
 
+rvm: 
+    - 2.2.2
+
 before_install:
 
     - export LANG=en_US.UTF-8
