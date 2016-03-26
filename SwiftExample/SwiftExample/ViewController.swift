@@ -23,45 +23,45 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
 //        calendar.allowsMultipleSelection = true
         
         // Uncomment this to test month->week and week->month transition
-        /*
+        
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(2.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
             self.calendar.setScope(.Week, animated: true)
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(1.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
                 self.calendar.setScope(.Month, animated: true)
             }
         }
-        */
+
 
     }
     
 
-    func minimumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
+    func minimumDateForCalendar(calendar: FSCalendar) -> NSDate {
         return calendar.dateWithYear(2015, month: 1, day: 1)
     }
     
-    func maximumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
+    func maximumDateForCalendar(calendar: FSCalendar) -> NSDate {
         return calendar.dateWithYear(2016, month: 10, day: 31)
     }
     
-    func calendar(calendar: FSCalendar!, numberOfEventsForDate date: NSDate!) -> Int {
+    func calendar(calendar: FSCalendar, numberOfEventsForDate date: NSDate) -> Int {
         let day = calendar.dayOfDate(date)
         return day % 5 == 0 ? day/5 : 0;
     }
 
-    func calendarCurrentPageDidChange(calendar: FSCalendar!) {
+    func calendarCurrentPageDidChange(calendar: FSCalendar) {
         NSLog("change page to \(calendar.stringFromDate(calendar.currentPage))")
     }
     
-    func calendar(calendar: FSCalendar!, didSelectDate date: NSDate!) {
+    func calendar(calendar: FSCalendar, didSelectDate date: NSDate) {
         NSLog("calendar did select date \(calendar.stringFromDate(date))")
     }
     
-    func calendarCurrentScopeWillChange(calendar: FSCalendar!, animated: Bool) {
-        calendarHeightConstraint.constant = calendar.sizeThatFits(CGSizeZero).height
+    func calendar(calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        calendarHeightConstraint.constant = bounds.height
         view.layoutIfNeeded()
     }
     
-    func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
+    func calendar(calendar: FSCalendar, imageForDate date: NSDate) -> UIImage? {
         return [13,24].containsObject(calendar.dayOfDate(date)) ? UIImage(named: "icon_cat") : nil
     }
     

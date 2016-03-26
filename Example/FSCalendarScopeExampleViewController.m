@@ -36,6 +36,11 @@
     
 }
 
+- (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
+{
+    NSLog(@"%s %@", __FUNCTION__, [calendar stringFromDate:calendar.currentPage]);
+}
+
 #pragma mark - <UITableViewDataSource>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

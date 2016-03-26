@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  This category is deprecated in this framework as it premised that the calendar should be gregorian. But feel free to use it for gregorian-only.
+ */
 @interface NSDate (FSExtension)
 
 @property (readonly, nonatomic) NSInteger fs_year;
