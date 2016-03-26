@@ -1,7 +1,5 @@
 language: objective-c
 
-osx_image: xcode7.1
-
 sudo: false
 
 before_install:
@@ -18,4 +16,4 @@ script:
 
     - pod lib lint --allow-warnings
     - xcodebuild -project Example/FSCalendar.xcodeproj -sdk iphonesimulator -alltargets
-	- xcodebuild -project SwiftExample/SwiftExample.xcodeproj -sdk iphonesimulator -alltargets
+    - xcodebuild -project SwiftExample/SwiftExample.xcodeproj -sdk iphonesimulator -alltargets
