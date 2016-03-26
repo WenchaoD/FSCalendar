@@ -5,6 +5,7 @@
 [![Swift2 compatible](https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
+[![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Join the chat at https://gitter.im/WenchaoD/FSCalendar](https://badges.gitter.im/WenchaoD/FSCalendar.svg)](https://gitter.im/WenchaoD/FSCalendar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Screenshots
@@ -31,6 +32,11 @@ pod 'FSCalendar'
 * For iOS7+:
 ```ruby
 pod 'FSCalendar'
+```
+
+* Alternatively to give it a test run, run the command:
+```ruby
+pod try FSCalendar
 ```
 
 ## Carthage: 
@@ -120,6 +126,7 @@ self.calendar = calendar
 ## More Usage
 * To view more usage, download the zip file and read the example.
 * Or you could refer to [this document](https://github.com/WenchaoD/FSCalendar/blob/master/MOREUSAGE.md)
+* To view the full documentation, see [CocoaPods Documentation](http://cocoadocs.org/docsets/FSCalendar/2.0.1/)
 
 # If you like this repo
 * ***Star*** this repo.
