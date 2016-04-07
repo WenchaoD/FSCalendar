@@ -151,15 +151,6 @@
     return appearance.selectionColor;
 }
 
-- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillColorForDate:(NSDate *)date
-{
-    NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
-    if ([_selectionColors.allKeys containsObject:key]) {
-        return _selectionColors[key];
-    }
-    return appearance.selectionColor;
-}
-
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date
 {
     NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
