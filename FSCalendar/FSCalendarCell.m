@@ -187,9 +187,9 @@
     }
     
     UIColor *borderColor = self.colorForCellBorder;
-    UIColor *fillColor = self.preferredFillColor;
+    UIColor *fillColor = self.colorForBackgroundLayer;
 
-    BOOL shouldHiddenBackgroundLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && (!borderColor || !fillColor);
+    BOOL shouldHiddenBackgroundLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor && !fillColor;
     
     if (_backgroundLayer.hidden != shouldHiddenBackgroundLayer) {
         _backgroundLayer.hidden = shouldHiddenBackgroundLayer;
