@@ -304,8 +304,9 @@
 {
     if (self.dateIsSelected || self.isSelected) {
         return self.preferredSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+    } else {
+        return self.preferredFillColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
     }
-    return [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
 }
 
 - (UIColor *)colorForTitleLabel

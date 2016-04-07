@@ -1492,6 +1492,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell
 {
     cell.preferredSelectionColor = [self preferredSelectionColorForDate:cell.date];
+    cell.preferredFillColor = [self preferredFillColorForDate:cell.date];
     cell.preferredTitleDefaultColor = [self preferredTitleDefaultColorForDate:cell.date];
     cell.preferredTitleSelectionColor = [self preferredTitleSelectionColorForDate:cell.date];
     if (cell.subtitle) {
@@ -1696,6 +1697,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:selectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance selectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferredFillColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:fillColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance fillColorForDate:date];
         return color;
     }
     return nil;
