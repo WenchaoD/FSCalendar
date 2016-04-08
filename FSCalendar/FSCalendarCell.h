@@ -36,6 +36,7 @@
 @property (readonly, nonatomic) BOOL weekend;
 
 @property (strong, nonatomic) UIColor *preferredSelectionColor;
+@property (strong, nonatomic) UIColor *preferredFillColor;
 @property (strong, nonatomic) UIColor *preferredTitleDefaultColor;
 @property (strong, nonatomic) UIColor *preferredTitleSelectionColor;
 @property (strong, nonatomic) UIColor *preferredSubtitleDefaultColor;

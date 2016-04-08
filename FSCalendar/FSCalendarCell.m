@@ -187,7 +187,9 @@
     }
     
     UIColor *borderColor = self.colorForCellBorder;
-    BOOL shouldHiddenBackgroundLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor;
+    UIColor *fillColor = self.colorForBackgroundLayer;
+
+    BOOL shouldHiddenBackgroundLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor && !fillColor;
     
     if (_backgroundLayer.hidden != shouldHiddenBackgroundLayer) {
         _backgroundLayer.hidden = shouldHiddenBackgroundLayer;
@@ -304,8 +306,9 @@
 {
     if (self.dateIsSelected || self.isSelected) {
         return self.preferredSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+    } else {
+        return self.preferredFillColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
     }
-    return [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
 }
 
 - (UIColor *)colorForTitleLabel
