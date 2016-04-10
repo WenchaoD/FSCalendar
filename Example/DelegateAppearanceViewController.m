@@ -20,41 +20,54 @@
     if (self) {
         self.title = @"FSCalendar";
         
-        self.selectionColors = @{@"2015/10/8":[UIColor greenColor],
-                                 @"2015/10/6":[UIColor purpleColor],
+        self.fillDefaultColors = @{@"2015/10/08":[UIColor purpleColor],
+                                     @"2015/10/06":[UIColor greenColor],
+                                     @"2015/10/18":[UIColor cyanColor],
+                                     @"2015/10/22":[UIColor yellowColor],
+                                     @"2015/11/08":[UIColor purpleColor],
+                                     @"2015/11/06":[UIColor greenColor],
+                                     @"2015/11/18":[UIColor cyanColor],
+                                     @"2015/11/22":[UIColor yellowColor],
+                                     @"2015/12/08":[UIColor purpleColor],
+                                     @"2015/12/06":[UIColor greenColor],
+                                     @"2015/12/18":[UIColor cyanColor],
+                                     @"2015/12/22":[UIColor magentaColor]};
+        
+        self.fillSelectionColors = @{@"2015/10/08":[UIColor greenColor],
+                                 @"2015/10/06":[UIColor purpleColor],
                                  @"2015/10/17":[UIColor grayColor],
                                  @"2015/10/21":[UIColor cyanColor],
-                                 @"2015/11/8":[UIColor greenColor],
-                                 @"2015/11/6":[UIColor purpleColor],
+                                 @"2015/11/08":[UIColor greenColor],
+                                 @"2015/11/06":[UIColor purpleColor],
                                  @"2015/11/17":[UIColor grayColor],
                                  @"2015/11/21":[UIColor cyanColor],
-                                 @"2015/12/8":[UIColor greenColor],
-                                 @"2015/12/6":[UIColor purpleColor],
+                                 @"2015/12/08":[UIColor greenColor],
+                                 @"2015/12/06":[UIColor purpleColor],
                                  @"2015/12/17":[UIColor grayColor],
                                  @"2015/12/21":[UIColor cyanColor]};
         
-        self.borderDefaultColors = @{@"2015/10/8":[UIColor brownColor],
+        self.borderDefaultColors = @{@"2015/10/08":[UIColor brownColor],
                                      @"2015/10/17":[UIColor magentaColor],
                                      @"2015/10/21":FSCalendarStandardSelectionColor,
                                      @"2015/10/25":[UIColor blackColor],
-                                     @"2015/11/8":[UIColor brownColor],
+                                     @"2015/11/08":[UIColor brownColor],
                                      @"2015/11/17":[UIColor magentaColor],
                                      @"2015/11/21":FSCalendarStandardSelectionColor,
                                      @"2015/11/25":[UIColor blackColor],
-                                     @"2015/12/8":[UIColor brownColor],
+                                     @"2015/12/08":[UIColor brownColor],
                                      @"2015/12/17":[UIColor magentaColor],
                                      @"2015/12/21":FSCalendarStandardSelectionColor,
                                      @"2015/12/25":[UIColor blackColor]};
         
-        self.borderSelectionColors = @{@"2015/10/8":[UIColor redColor],
+        self.borderSelectionColors = @{@"2015/10/08":[UIColor redColor],
                                        @"2015/10/17":[UIColor purpleColor],
                                        @"2015/10/21":FSCalendarStandardSelectionColor,
                                        @"2015/10/25":FSCalendarStandardTodayColor,
-                                       @"2015/11/8":[UIColor redColor],
+                                       @"2015/11/08":[UIColor redColor],
                                        @"2015/11/17":[UIColor purpleColor],
                                        @"2015/11/21":FSCalendarStandardSelectionColor,
                                        @"2015/11/25":FSCalendarStandardTodayColor,
-                                       @"2015/12/8":[UIColor redColor],
+                                       @"2015/12/08":[UIColor redColor],
                                        @"2015/12/17":[UIColor purpleColor],
                                        @"2015/12/21":FSCalendarStandardSelectionColor,
                                        @"2015/12/25":FSCalendarStandardTodayColor};
@@ -142,13 +155,22 @@
     return nil;
 }
 
-- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillSelectionColorForDate:(NSDate *)date
 {
     NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
-    if ([_selectionColors.allKeys containsObject:key]) {
-        return _selectionColors[key];
+    if ([_fillSelectionColors.allKeys containsObject:key]) {
+        return _fillSelectionColors[key];
     }
     return appearance.selectionColor;
+}
+
+- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillDefaultColorForDate:(NSDate *)date
+{
+    NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
+    if ([_fillDefaultColors.allKeys containsObject:key]) {
+        return _fillDefaultColors[key];
+    }
+    return nil;
 }
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date

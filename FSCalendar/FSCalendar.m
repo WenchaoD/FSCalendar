@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
 
-- (UIColor *)preferredSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferredFillSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferredTitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferredTitleSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferredSubtitleDefaultColorForDate:(NSDate *)date;
@@ -1491,8 +1491,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell
 {
-    cell.preferredSelectionColor = [self preferredSelectionColorForDate:cell.date];
-    cell.preferredFillColor = [self preferredFillColorForDate:cell.date];
+    cell.preferredFillSelectionColor = [self preferredFillSelectionColorForDate:cell.date];
+    cell.preferredFillDefaultColor = [self preferredFillDefaultColorForDate:cell.date];
     cell.preferredTitleDefaultColor = [self preferredTitleDefaultColorForDate:cell.date];
     cell.preferredTitleSelectionColor = [self preferredTitleSelectionColorForDate:cell.date];
     if (cell.subtitle) {
@@ -1693,21 +1693,35 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #pragma GCC diagnostic pop
 }
 
-- (UIColor *)preferredSelectionColorForDate:(NSDate *)date
+- (UIColor *)preferredFillDefaultColorForDate:(NSDate *)date
 {
-    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:selectionColorForDate:)]) {
-        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance selectionColorForDate:date];
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:fillDefaultColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance fillDefaultColorForDate:date];
         return color;
     }
-    return nil;
-}
-
-- (UIColor *)preferredFillColorForDate:(NSDate *)date
-{
-    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:fillColorForDate:)]) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    else if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:fillColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance fillColorForDate:date];
         return color;
     }
+#pragma GCC diagnostic pop
+    return nil;
+}
+
+- (UIColor *)preferredFillSelectionColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:fillSelectionColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance fillSelectionColorForDate:date];
+        return color;
+    }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    else if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:selectionColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance selectionColorForDate:date];
+        return color;
+    }
+#pragma GCC diagnostic pop
     return nil;
 }
 

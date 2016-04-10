@@ -14,7 +14,7 @@
 
 @interface FSCalendarCell ()
 
-@property (readonly, nonatomic) UIColor *colorForBackgroundLayer;
+@property (readonly, nonatomic) UIColor *colorForCellFill;
 @property (readonly, nonatomic) UIColor *colorForTitleLabel;
 @property (readonly, nonatomic) UIColor *colorForSubtitleLabel;
 @property (readonly, nonatomic) UIColor *colorForCellBorder;
@@ -54,7 +54,7 @@
         shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
         shapeLayer.hidden = YES;
         [self.contentView.layer insertSublayer:shapeLayer below:_titleLabel.layer];
-        self.backgroundLayer = shapeLayer;
+        self.shapeLayer = shapeLayer;
         
         eventIndicator = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
         eventIndicator.backgroundColor = [UIColor clearColor];
@@ -80,15 +80,15 @@
     CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
     CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
     diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
-    _backgroundLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
+    _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
                                         (titleHeight-diameter)/2,
                                         diameter,
                                         diameter);
-    _backgroundLayer.borderWidth = 1.0;
-    _backgroundLayer.borderColor = [UIColor clearColor].CGColor;
+    _shapeLayer.borderWidth = 1.0;
+    _shapeLayer.borderColor = [UIColor clearColor].CGColor;
     
-    CGFloat eventSize = _backgroundLayer.frame.size.height/6.0;
-    _eventIndicator.frame = CGRectMake(0, CGRectGetMaxY(_backgroundLayer.frame)+eventSize*0.17, bounds.size.width, eventSize*0.83);
+    CGFloat eventSize = _shapeLayer.frame.size.height/6.0;
+    _eventIndicator.frame = CGRectMake(0, CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17, bounds.size.width, eventSize*0.83);
     _imageView.frame = self.contentView.bounds;
 }
 
@@ -102,7 +102,7 @@
 {
     [super prepareForReuse];
     [CATransaction setDisableActions:YES];
-    _backgroundLayer.hidden = YES;
+    _shapeLayer.hidden = YES;
     [self.contentView.layer removeAnimationForKey:@"opacity"];
 }
 
@@ -110,7 +110,7 @@
 
 - (void)performSelecting
 {
-    _backgroundLayer.hidden = NO;
+    _shapeLayer.hidden = NO;
     
 #define kAnimationDuration FSCalendarDefaultBounceAnimationDuration
     
@@ -126,7 +126,7 @@
     zoomIn.duration = kAnimationDuration/4;
     group.duration = kAnimationDuration;
     group.animations = @[zoomOut, zoomIn];
-    [_backgroundLayer addAnimation:group forKey:@"bounce"];
+    [_shapeLayer addAnimation:group forKey:@"bounce"];
     [self configureCell];
     
 #undef kAnimationDuration
@@ -187,30 +187,30 @@
     }
     
     UIColor *borderColor = self.colorForCellBorder;
-    UIColor *fillColor = self.colorForBackgroundLayer;
+    UIColor *fillColor = self.colorForCellFill;
 
-    BOOL shouldHiddenBackgroundLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor && !fillColor;
+    BOOL shouldHideShapeLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor && !fillColor;
     
-    if (_backgroundLayer.hidden != shouldHiddenBackgroundLayer) {
-        _backgroundLayer.hidden = shouldHiddenBackgroundLayer;
+    if (_shapeLayer.hidden != shouldHideShapeLayer) {
+        _shapeLayer.hidden = shouldHideShapeLayer;
     }
-    if (!shouldHiddenBackgroundLayer) {
+    if (!shouldHideShapeLayer) {
         
         CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
-        [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
-        [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-        if (!CGPathEqualToPath(_backgroundLayer.path,path)) {
-            _backgroundLayer.path = path;
+        [UIBezierPath bezierPathWithOvalInRect:_shapeLayer.bounds].CGPath :
+        [UIBezierPath bezierPathWithRect:_shapeLayer.bounds].CGPath;
+        if (!CGPathEqualToPath(_shapeLayer.path,path)) {
+            _shapeLayer.path = path;
         }
         
-        CGColorRef backgroundColor = self.colorForBackgroundLayer.CGColor;
-        if (!CGColorEqualToColor(_backgroundLayer.fillColor, backgroundColor)) {
-            _backgroundLayer.fillColor = backgroundColor;
+        CGColorRef fillColor = self.colorForCellFill.CGColor;
+        if (!CGColorEqualToColor(_shapeLayer.fillColor, fillColor)) {
+            _shapeLayer.fillColor = fillColor;
         }
         
         CGColorRef borderColor = self.colorForCellBorder.CGColor;
-        if (!CGColorEqualToColor(_backgroundLayer.strokeColor, borderColor)) {
-            _backgroundLayer.strokeColor = borderColor;
+        if (!CGColorEqualToColor(_shapeLayer.strokeColor, borderColor)) {
+            _shapeLayer.strokeColor = borderColor;
         }
         
     }
@@ -273,12 +273,12 @@
 
 - (void)invalidateBorderColors
 {
-    _backgroundLayer.strokeColor = self.colorForCellBorder.CGColor;
+    _shapeLayer.strokeColor = self.colorForCellBorder.CGColor;
 }
 
-- (void)invalidateBackgroundColors
+- (void)invalidateFillColors
 {
-    _backgroundLayer.fillColor = self.colorForBackgroundLayer.CGColor;
+    _shapeLayer.fillColor = self.colorForCellFill.CGColor;
 }
 
 - (void)invalidateEventColors
@@ -289,9 +289,9 @@
 - (void)invalidateCellShapes
 {
     CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
-    [UIBezierPath bezierPathWithOvalInRect:_backgroundLayer.bounds].CGPath :
-    [UIBezierPath bezierPathWithRect:_backgroundLayer.bounds].CGPath;
-    _backgroundLayer.path = path;
+    [UIBezierPath bezierPathWithOvalInRect:_shapeLayer.bounds].CGPath :
+    [UIBezierPath bezierPathWithRect:_shapeLayer.bounds].CGPath;
+    _shapeLayer.path = path;
 }
 
 - (void)invalidateImage
@@ -302,14 +302,12 @@
 
 #pragma mark - Properties
 
-- (UIColor *)colorForBackgroundLayer
+- (UIColor *)colorForCellFill
 {
     if (self.dateIsSelected || self.isSelected) {
-        return self.preferredSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
-    } else if (!self.dateIsToday) {
-        return self.preferredFillColor;
+        return self.preferredFillSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
     }
-    return [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+    return self.preferredFillDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
 }
 
 - (UIColor *)colorForTitleLabel

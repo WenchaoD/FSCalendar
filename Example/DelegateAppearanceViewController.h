@@ -13,7 +13,8 @@
 
 @property (weak, nonatomic) FSCalendar *calendar;
 
-@property (strong, nonatomic) NSDictionary *selectionColors;
+@property (strong, nonatomic) NSDictionary *fillSelectionColors;
+@property (strong, nonatomic) NSDictionary *fillDefaultColors;
 @property (strong, nonatomic) NSDictionary *borderDefaultColors;
 @property (strong, nonatomic) NSDictionary *borderSelectionColors;
 

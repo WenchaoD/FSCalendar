@@ -19,7 +19,7 @@
 @property (weak, nonatomic) UILabel  *subtitleLabel;
 @property (weak, nonatomic) UIImageView *imageView;
 
-@property (weak, nonatomic) CAShapeLayer *backgroundLayer;
+@property (weak, nonatomic) CAShapeLayer *shapeLayer;
 @property (weak, nonatomic) FSCalendarEventIndicator *eventIndicator;
 
 @property (strong, nonatomic) NSDate   *date;
@@ -35,8 +35,8 @@
 
 @property (readonly, nonatomic) BOOL weekend;
 
-@property (strong, nonatomic) UIColor *preferredSelectionColor;
-@property (strong, nonatomic) UIColor *preferredFillColor;
+@property (strong, nonatomic) UIColor *preferredFillDefaultColor;
+@property (strong, nonatomic) UIColor *preferredFillSelectionColor;
 @property (strong, nonatomic) UIColor *preferredTitleDefaultColor;
 @property (strong, nonatomic) UIColor *preferredTitleSelectionColor;
 @property (strong, nonatomic) UIColor *preferredSubtitleDefaultColor;
@@ -52,7 +52,7 @@
 - (void)invalidateSubtitleTextColor;
 
 - (void)invalidateBorderColors;
-- (void)invalidateBackgroundColors;
+- (void)invalidateFillColors;
 - (void)invalidateEventColors;
 - (void)invalidateCellShapes;
 
