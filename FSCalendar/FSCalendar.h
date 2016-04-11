@@ -150,14 +150,14 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- * Asks the delegate for a fill color in selected state for the specific date.
- */
-- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillSelectionColorForDate:(NSDate *)date;
-
-/**
  * Asks the delegate for a fill color in unselected state for the specific date.
  */
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillDefaultColorForDate:(NSDate *)date;
+
+/**
+ * Asks the delegate for a fill color in selected state for the specific date.
+ */
+- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillSelectionColorForDate:(NSDate *)date;
 
 /**
  * Asks the delegate for day text color in unselected state for the specific date.
