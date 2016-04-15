@@ -319,6 +319,9 @@ IB_DESIGNABLE
  */
 @property (assign, nonatomic) IBInspectable BOOL showsPlaceholders;
 
+/**
+ * The calendar appearance used to control the global fonts、colors .etc
+ */
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
 
 /**
