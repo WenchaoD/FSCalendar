@@ -171,8 +171,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _firstWeekday = 1;
     [self invalidateDateTools];
     
+#if TARGET_INTERFACE_BUILDER
+    _minimumDate = [self beginingOfMonthOfDate:[NSDate date]];
+    _maximumDate = [self dateByAddingMonths:4 toDate:_minimumDate];
+#else
     _minimumDate = [self dateWithYear:1970 month:1 day:1];
     _maximumDate = [self dateWithYear:2099 month:12 day:31];
+#endif
+    
     
     _headerHeight     = FSCalendarAutomaticDimension;
     _weekdayHeight    = FSCalendarAutomaticDimension;
@@ -1384,7 +1390,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (BOOL)hasValidateVisibleLayout
 {
-    return self.superview  && !CGSizeEqualToSize(_collectionView.frame.size, CGSizeZero) && !CGSizeEqualToSize(_collectionView.contentSize, CGSizeZero);
+#if TARGET_INTERFACE_BUILDER
+    return YES;
+#else
+    return self.superview  && !CGRectIsEmpty(_collectionView.frame) && !CGSizeEqualToSize(_collectionView.contentSize, CGSizeZero);
+#endif
 }
 
 - (void)invalidateDateTools
@@ -1879,6 +1889,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSDate *)minimumDateForCalendar
 {
+#if TARGET_INTERFACE_BUILDER
+    return [NSDate date];
+#else
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
         _minimumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource minimumDateForCalendar:self]];
     }
@@ -1886,10 +1899,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _minimumDate = [self dateWithYear:1970 month:1 day:1];
     }
     return _minimumDate;
+#endif
 }
 
 - (NSDate *)maximumDateForCalendar
 {
+#if TARGET_INTERFACE_BUILDER
+    return [self dateByAddingMonths:4 toDate:[NSDate date]];
+#else
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
         _maximumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource maximumDateForCalendar:self]];
     }
@@ -1897,6 +1914,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _maximumDate = [self dateWithYear:2099 month:12 day:31];
     }
     return _maximumDate;
+#endif
 }
 
 @end

@@ -29,7 +29,11 @@ UIKIT_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
 
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
+#if TARGET_INTERFACE_BUILDER
+#define FSCalendarDeviceIsIPad NO
+#else
 #define FSCalendarDeviceIsIPad [[UIDevice currentDevice].model hasPrefix:@"iPad"]
+#endif
 
 #define FSCalendarStandardSelectionColor  FSColorRGBA(31,119,219,1.0)
 #define FSCalendarStandardTodayColor      FSColorRGBA(198,51,42 ,1.0)
