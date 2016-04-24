@@ -92,12 +92,6 @@
     return [calendar dateWithYear:2039 month:5 day:31];
 }
 
-
-- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
-{
-    NSLog(@"Did deselect date %@",[calendar stringFromDate:date]);
-}
-
 #pragma mark - FSCalendarDelegate
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
@@ -118,7 +112,8 @@
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
     NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
-    
+    CGRect frame = [self.calendar frameForDate:date];
+    NSLog(@"%@",NSStringFromCGRect(frame));
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar

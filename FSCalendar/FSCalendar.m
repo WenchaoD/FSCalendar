@@ -810,6 +810,25 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (CGRect)frameForDate:(NSDate *)date
+{
+    if (!self.superview) {
+        return CGRectZero;
+    }
+    CGRect frame = [_collectionViewLayout layoutAttributesForItemAtIndexPath:[self indexPathForDate:date]].frame;
+    frame = [self.superview convertRect:frame fromView:_collectionView];
+    return frame;
+}
+
+- (CGPoint)centerForDate:(NSDate *)date
+{
+    CGRect frame = [self frameForDate:date];
+    if (CGRectIsEmpty(frame)) {
+        return CGPointZero;
+    }
+    return CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+}
+
 - (void)setHeaderHeight:(CGFloat)headerHeight
 {
     if (_headerHeight != headerHeight) {

@@ -379,12 +379,26 @@ IB_DESIGNABLE
 - (void)deselectDate:(NSDate *)date;
 
 /**
- * Change the current page of the calendar.
+ * Changes the current page of the calendar.
  *
  * @param currentPage Representing weekOfYear in week mode, or month in month mode.
  * @param animated YES if you want to animate the change in position; NO if it should be immediate.
  */
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated;
+
+/**
+ * Returns the frame for a non-placeholder cell relative to the super view of the calendar.
+ *
+ * @param date A date is the calendar.
+ */
+- (CGRect)frameForDate:(NSDate *)date;
+
+/**
+ * Returns the midpoint for a non-placeholder cell relative to the super view of the calendar.
+ *
+ * @param date A date is the calendar.
+ */
+- (CGPoint)centerForDate:(NSDate *)date;
 
 @end
 
