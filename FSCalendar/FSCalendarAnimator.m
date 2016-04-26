@@ -7,6 +7,7 @@
 //
 
 #import "FSCalendarAnimator.h"
+#import "FSCalendarConstance.h"
 #import <objc/runtime.h>
 #import "UIView+FSExtension.h"
 
@@ -33,6 +34,7 @@
             
         case FSCalendarTransitionMonthToWeek: {
             
+            self.cachedMonthSize = self.calendar.frame.size;
             CGSize contentSize = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeWeek];
             CGRect targetBounds = (CGRect){CGPointZero,contentSize};
             
@@ -200,7 +202,12 @@
             
         case FSCalendarTransitionWeekToMonth: {
             
-            CGSize contentSize = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth];
+            CGSize contentSize = self.cachedMonthSize;
+            if (CGSizeEqualToSize(CGSizeZero, contentSize)) {
+                contentSize = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth];
+            }
+            self.cachedMonthSize = CGSizeZero;
+            
             CGRect targetBounds = (CGRect){CGPointZero,contentSize};
             
             NSInteger focusedRowNumber = 0;
