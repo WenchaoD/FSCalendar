@@ -320,6 +320,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL showsPlaceholders;
 
 /**
+ * The multiplier of line height while paging enabled is NO. Default is 1.0;
+ */
+@property (assign, nonatomic) IBInspectable CGFloat lineHeightMultiplier;
+
+/**
  * The calendar appearance used to control the global fonts、colors .etc
  */
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;

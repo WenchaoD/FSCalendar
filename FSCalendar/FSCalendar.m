@@ -184,6 +184,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredHeaderHeight  = FSCalendarAutomaticDimension;
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
+    _lineHeightMultiplier    = 1.0;
     
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
     _scope = FSCalendarScopeMonth;
@@ -970,7 +971,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 _preferredHeaderHeight = (FSCalendarStandardHeaderHeight/divider)*self.fs_height;
                 _preferredHeaderHeight -= (_preferredHeaderHeight-FSCalendarStandardHeaderHeight)*0.5;
             } else {
-                _preferredHeaderHeight = FSCalendarStandardHeaderHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
+                _preferredHeaderHeight = FSCalendarStandardHeaderHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
             }
         }
         return _preferredHeaderHeight;
@@ -986,7 +987,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 CGFloat divider = _scope == FSCalendarScopeMonth ? FSCalendarStandardMonthlyPageHeight : FSCalendarStandardWeeklyPageHeight;
                 _preferredWeekdayHeight = (FSCalendarStandardWeekdayHeight/divider)*self.fs_height;
             } else {
-                _preferredWeekdayHeight = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
+                _preferredWeekdayHeight = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
             }
         }
         return _preferredWeekdayHeight;
@@ -1016,7 +1017,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 }
             }
         } else {
-            _preferredRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
+            _preferredRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
         }
     }
     return _preferredRowHeight;
@@ -1098,6 +1099,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [_collectionView reloadData];
         }
     }
+}
+
+- (void)setLineHeightMultiplier:(CGFloat)lineHeightMultiplier
+{
+    _lineHeightMultiplier = MAX(0, lineHeightMultiplier);
 }
 
 - (void)selectDate:(NSDate *)date

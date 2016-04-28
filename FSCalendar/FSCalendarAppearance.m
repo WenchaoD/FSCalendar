@@ -544,6 +544,11 @@
             _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize * 1.15;
             _preferredWeekdayFontSize = _preferredTitleFontSize;
         }
+        CGFloat multiplier = 1+(_calendar.lineHeightMultiplier-1)/4;
+        _preferredHeaderTitleFontSize *= multiplier;
+        _preferredTitleFontSize *= multiplier;
+        _preferredSubtitleFontSize *= multiplier;
+        _preferredSubtitleFontSize *= multiplier;
     }
     
     // reload appearance
