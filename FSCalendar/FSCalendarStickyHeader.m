@@ -121,7 +121,7 @@
 
 - (void)invalidateHeaderFont
 {
-    _titleLabel.font = _appearance.headerTitleFont;
+    _titleLabel.font = _appearance.preferredHeaderTitleFont;
 }
 
 - (void)invalidateHeaderTextColor
