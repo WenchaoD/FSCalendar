@@ -53,8 +53,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSMutableArray *_selectedDates;
-    NSDate *_minimumDate;
-    NSDate *_maximumDate;
 }
 @property (strong, nonatomic) NSMutableArray             *weekdays;
 @property (strong, nonatomic) NSMapTable                 *stickyHeaderMapTable;
