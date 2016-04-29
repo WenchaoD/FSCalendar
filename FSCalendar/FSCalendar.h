@@ -320,6 +320,12 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL showsPlaceholders;
 
 /**
+ * A Boolean value that determines whether the calendar should show a handle for control the scope. Default is NO;
+ */
+@property (assign, nonatomic) IBInspectable BOOL showsScopeHandle;
+
+
+/**
  * The multiplier of line height while paging enabled is NO. Default is 1.0;
  */
 @property (assign, nonatomic) IBInspectable CGFloat lineHeightMultiplier;
