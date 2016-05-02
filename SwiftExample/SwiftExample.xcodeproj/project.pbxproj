@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		300414221CD751B200453AEB /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 300414211CD751B200453AEB /* FSCalendarScopeHandle.m */; };
+		300414251CD751CF00453AEB /* FSCalendar+DateTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 300414231CD751CF00453AEB /* FSCalendar+DateTools.m */; };
+		300414261CD751CF00453AEB /* FSCalendar+Deprecated.m in Sources */ = {isa = PBXBuildFile; fileRef = 300414241CD751CF00453AEB /* FSCalendar+Deprecated.m */; };
 		300BFB0F1C6446F300399553 /* CALayer+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 300BFB0E1C6446F300399553 /* CALayer+FSExtension.m */; };
 		300BFB121C6446FA00399553 /* FSCalendarEventIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 300BFB111C6446FA00399553 /* FSCalendarEventIndicator.m */; };
 		306DB1461C96700800A10478 /* FSCalendarAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 306DB1451C96700800A10478 /* FSCalendarAnimator.m */; };
@@ -42,6 +45,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		300414201CD751B200453AEB /* FSCalendarScopeHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarScopeHandle.h; sourceTree = "<group>"; };
+		300414211CD751B200453AEB /* FSCalendarScopeHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarScopeHandle.m; sourceTree = "<group>"; };
+		300414231CD751CF00453AEB /* FSCalendar+DateTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+DateTools.m"; sourceTree = "<group>"; };
+		300414241CD751CF00453AEB /* FSCalendar+Deprecated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+Deprecated.m"; sourceTree = "<group>"; };
 		300BFB0D1C6446F300399553 /* CALayer+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+FSExtension.h"; sourceTree = "<group>"; };
 		300BFB0E1C6446F300399553 /* CALayer+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+FSExtension.m"; sourceTree = "<group>"; };
 		300BFB101C6446FA00399553 /* FSCalendarEventIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarEventIndicator.h; sourceTree = "<group>"; };
@@ -170,6 +177,8 @@
 				EE0954D01B97DDF4007F6964 /* FSCalendar.m */,
 				EE0954D11B97DDF4007F6964 /* FSCalendarAppearance.h */,
 				EE0954D21B97DDF4007F6964 /* FSCalendarAppearance.m */,
+				300414201CD751B200453AEB /* FSCalendarScopeHandle.h */,
+				300414211CD751B200453AEB /* FSCalendarScopeHandle.m */,
 				EE0954D31B97DDF4007F6964 /* FSCalendarCell.h */,
 				EE0954D41B97DDF4007F6964 /* FSCalendarCell.m */,
 				300BFB101C6446FA00399553 /* FSCalendarEventIndicator.h */,
@@ -196,6 +205,8 @@
 				300BFB0E1C6446F300399553 /* CALayer+FSExtension.m */,
 				EE0954CD1B97DDF4007F6964 /* FSCalendar+IBExtension.h */,
 				EE0954CE1B97DDF4007F6964 /* FSCalendar+IBExtension.m */,
+				300414231CD751CF00453AEB /* FSCalendar+DateTools.m */,
+				300414241CD751CF00453AEB /* FSCalendar+Deprecated.m */,
 				EE0954D71B97DDF4007F6964 /* FSCalendarDynamicHeader.h */,
 				EE0954DC1B97DDF4007F6964 /* Info.plist */,
 			);
@@ -306,12 +317,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE0954E61B97DDF4007F6964 /* FSCalendarCell.m in Sources */,
+				300414261CD751CF00453AEB /* FSCalendar+Deprecated.m in Sources */,
 				EEC9C0401BDCA2D600383A07 /* FSCalendarCollectionView.m in Sources */,
 				EE0954E81B97DDF4007F6964 /* FSCalendarHeader.m in Sources */,
 				EE0954E31B97DDF4007F6964 /* FSCalendar+IBExtension.m in Sources */,
 				EE0954EC1B97DDF4007F6964 /* NSString+FSExtension.m in Sources */,
 				300BFB0F1C6446F300399553 /* CALayer+FSExtension.m in Sources */,
 				EE0954ED1B97DDF4007F6964 /* UIView+FSExtension.m in Sources */,
+				300414251CD751CF00453AEB /* FSCalendar+DateTools.m in Sources */,
 				300BFB121C6446FA00399553 /* FSCalendarEventIndicator.m in Sources */,
 				EE2B62831BB6D7FE00ACB430 /* FSCalendarStickyHeader.m in Sources */,
 				306DB1461C96700800A10478 /* FSCalendarAnimator.m in Sources */,
@@ -322,6 +335,7 @@
 				EE0954EB1B97DDF4007F6964 /* NSDate+FSExtension.m in Sources */,
 				EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */,
 				EE0954AF1B97DDE0007F6964 /* ViewController.swift in Sources */,
+				300414221CD751B200453AEB /* FSCalendarScopeHandle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
