@@ -570,13 +570,6 @@
     [self invalidateTextColors];
     [self invalidateBorderColors];
     [self invalidateFillColors];
-    /*
-    [_calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [_calendar invalidateAppearanceForCell:obj];
-    }];
-    [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
-     */
 }
 
 - (void)invalidateFonts

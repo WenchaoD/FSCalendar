@@ -15,7 +15,6 @@
 #import "FSCalendarScopeHandle.h"
 
 #import "UIView+FSExtension.h"
-#import "NSString+FSExtension.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarCollectionView.h"
 
@@ -712,18 +711,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 #pragma mark - Properties
 
-- (void)setAppearance:(FSCalendarAppearance *)appearance
-{
-    if (_appearance != appearance) {
-        _appearance = appearance;
-    }
-}
-
-- (FSCalendarAppearance *)appearance
-{
-    return _appearance;
-}
-
 - (void)setScrollDirection:(FSCalendarScrollDirection)scrollDirection
 {
     if (_scrollDirection != scrollDirection) {
@@ -1052,7 +1039,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
-#pragma mark - Public
+#pragma mark - Public methods
 
 - (void)reloadData
 {
