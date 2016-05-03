@@ -300,8 +300,11 @@
                                 </connections>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="noP-KN-SwP">
-                                <rect key="frame" x="0.0" y="384" width="600" height="416"/>
+                                <rect key="frame" x="0.0" y="384" width="600" height="191"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="191" id="NCb-l9-EdE"/>
+                                </constraints>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="5Js-5e-oo9">
                                     <rect key="frame" x="0.0" y="147.5" width="600" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -372,7 +375,6 @@
                             <constraint firstAttribute="trailing" secondItem="7hZ-tJ-5NZ" secondAttribute="trailing" id="5En-7U-m9P"/>
                             <constraint firstItem="noP-KN-SwP" firstAttribute="trailing" secondItem="7hZ-tJ-5NZ" secondAttribute="trailing" id="5sZ-zg-S2S"/>
                             <constraint firstItem="noP-KN-SwP" firstAttribute="top" secondItem="7hZ-tJ-5NZ" secondAttribute="bottom" constant="20" id="6Oc-iC-2wg"/>
-                            <constraint firstItem="noP-KN-SwP" firstAttribute="bottom" secondItem="OcX-8w-NJf" secondAttribute="top" id="C8G-9Z-NMb"/>
                             <constraint firstItem="noP-KN-SwP" firstAttribute="leading" secondItem="7hZ-tJ-5NZ" secondAttribute="leading" id="Eta-GV-MLi"/>
                             <constraint firstItem="7hZ-tJ-5NZ" firstAttribute="leading" secondItem="MiY-ip-WTw" secondAttribute="leading" id="eoP-Ms-ktd"/>
                             <constraint firstItem="7hZ-tJ-5NZ" firstAttribute="top" secondItem="mb8-tO-gOh" secondAttribute="bottom" id="qGS-mB-3eB"/>
@@ -423,6 +425,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="scrollEnabled" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="fakeSubtitles" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showsScopeHandle" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showsPlaceholders" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="vXZ-lx-hvc" id="CT5-P9-sbn"/>
