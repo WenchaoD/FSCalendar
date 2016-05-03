@@ -6,7 +6,6 @@
 //  Copyright © 2016 wenchaoios. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "FSCalendar.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarFlowLayout.h"

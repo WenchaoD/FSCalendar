@@ -8,8 +8,20 @@
 
 #import "FSCalendarAnimator.h"
 #import "FSCalendarConstance.h"
-#import <objc/runtime.h>
 #import "UIView+FSExtension.h"
+#import <objc/runtime.h>
+
+@interface FSCalendarAnimator ()
+
+- (void)performMonthToWeekCompletion;
+- (void)performAlphaAnimationFrom:(CGFloat)fromAlpha to:(CGFloat)toAlpha duration:(CGFloat)duration exception:(NSInteger)exception;
+- (void)performPathAnimationFrom:(CGPathRef)fromPath to:(CGPathRef)toPath duration:(CGFloat)duration completion:(void(^)())completion;
+
+- (CGRect)boundingRectForScope:(FSCalendarScope)scope;
+
+- (void)boundingRectWillChange:(CGRect)targetBounds animated:(BOOL)animated;
+
+@end
 
 @implementation FSCalendarAnimator
 
@@ -35,8 +47,7 @@
         case FSCalendarTransitionMonthToWeek: {
             
             self.cachedMonthSize = self.calendar.frame.size;
-            CGSize contentSize = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeWeek];
-            CGRect targetBounds = (CGRect){CGPointZero,contentSize};
+            CGRect targetBounds = [self boundingRectForScope:FSCalendarScopeWeek];;
             
             NSInteger focusedRowNumber = 0;
             if (self.calendar.focusOnSingleSelectedDate) {
@@ -92,108 +103,29 @@
             
             self.calendar.contentView.clipsToBounds = YES;
             self.calendar.daysContainer.clipsToBounds = YES;
+            
             if (animated) {
                 CGFloat duration = 0.3;
-                // Perform alpha animation
-                CABasicAnimation *opacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-                opacity.duration = duration*0.6;
-                opacity.removedOnCompletion = NO;
-                opacity.fillMode = kCAFillModeForwards;
-                opacity.toValue = @0;
-                [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-                    if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
-                        BOOL shouldPerformAlpha = NO;
-                        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-                        switch (self.collectionViewLayout.scrollDirection) {
-                            case UICollectionViewScrollDirectionHorizontal: {
-                                shouldPerformAlpha = indexPath.item%6 != focusedRowNumber;
-                                break;
-                            }
-                            case UICollectionViewScrollDirectionVertical: {
-                                shouldPerformAlpha = indexPath.item/7 != focusedRowNumber;
-                                break;
-                            }
-                        }
-                        if (shouldPerformAlpha) {
-                            [cell.contentView.layer addAnimation:opacity forKey:@"opacity"];
-                        }
-                    }
-                }];
                 
-                // Perform path and frame animation
-                CABasicAnimation *path = [CABasicAnimation animationWithKeyPath:@"path"];
-                path.fromValue = (id)self.calendar.maskLayer.path;
-                path.toValue = (id)[UIBezierPath bezierPathWithRect:targetBounds].CGPath;
-                path.duration = duration;
-                path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                [CATransaction begin];
-                [CATransaction setCompletionBlock:^{
-                    self.state = FSCalendarTransitionStateIdle;
-                    self.transition = FSCalendarTransitionNone;
-                    self.collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-                    self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
-                    self.calendar.maskLayer.path = [UIBezierPath bezierPathWithRect:targetBounds].CGPath;
-                    [self.collectionView reloadData];
-                    [self.collectionView layoutIfNeeded];
-                    [self.calendar.header reloadData];
-                    [self.calendar.header layoutIfNeeded];
-                    self.calendar.needsAdjustingMonthPosition = YES;
-                    self.calendar.needsAdjustingViewFrame = YES;
-                    [self.calendar setNeedsLayout];
-                    self.calendar.contentView.clipsToBounds = NO;
-                    self.calendar.daysContainer.clipsToBounds = NO;
+                [self performAlphaAnimationFrom:1 to:0 duration:0.22 exception:focusedRowNumber];
+                [self performPathAnimationFrom:self.calendar.maskLayer.path to:[UIBezierPath bezierPathWithRect:targetBounds].CGPath duration:duration completion:^{
+                    [self performMonthToWeekCompletion];
                 }];
-                [CATransaction setAnimationDuration:duration];
-                [self.calendar.maskLayer addAnimation:path forKey:@"path"];
-                [CATransaction commit];
                 
                 if (self.calendar.delegate && ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)] || [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)])) {
-                    
                     [UIView beginAnimations:@"delegateTranslation" context:"translation"];
                     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
                     [UIView setAnimationDuration:duration];
                     self.collectionView.fs_top = -focusedRowNumber*self.calendar.preferredRowHeight;
                     self.calendar.bottomBorder.fs_top = CGRectGetMaxY(targetBounds);
-                    if ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)]) {
-                        [self.calendar.delegate calendar:self.calendar boundingRectWillChange:targetBounds animated:animated];
-                    } else {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-                        [self.calendar.delegate calendarCurrentScopeWillChange:self.calendar animated:animated];
-#pragma GCC diagnostic pop
-                    }
+                    [self boundingRectWillChange:targetBounds animated:animated];
                     [UIView commitAnimations];
                 }
                 
             } else {
-                
-                self.state = FSCalendarTransitionStateIdle;
-                self.transition = FSCalendarTransitionNone;
-                self.collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-                self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
-                self.calendar.needsAdjustingViewFrame = YES;
-                self.calendar.bottomBorder.frame = CGRectMake(0, contentSize.height, self.calendar.fs_width, 1);
-                self.calendar.maskLayer.path = [UIBezierPath bezierPathWithRect:targetBounds].CGPath;
-                self.calendar.bottomBorder.fs_top = CGRectGetMaxY(targetBounds);
-                [self.collectionView reloadData];
-                [self.collectionView layoutIfNeeded];
-                [self.calendar.header reloadData];
-                [self.calendar.header layoutIfNeeded];
-                self.calendar.needsAdjustingMonthPosition = YES;
-                self.calendar.needsAdjustingViewFrame = YES;
-                [self.calendar setNeedsLayout];
-                
-                self.calendar.contentView.clipsToBounds = NO;
-                self.calendar.daysContainer.clipsToBounds = NO;
-                
-                if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)]) {
-                    [self.calendar.delegate calendar:self.calendar boundingRectWillChange:targetBounds animated:animated];
-                } else if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-                    [self.calendar.delegate calendarCurrentScopeWillChange:self.calendar animated:animated];
-#pragma GCC diagnostic pop
-                }
+
+                [self performMonthToWeekCompletion];
+                [self boundingRectWillChange:targetBounds animated:animated];
                 
             }
             
@@ -203,9 +135,6 @@
         case FSCalendarTransitionWeekToMonth: {
             
             CGSize contentSize = self.cachedMonthSize;
-            if (CGSizeEqualToSize(CGSizeZero, contentSize)) {
-                contentSize = [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth];
-            }
             self.cachedMonthSize = CGSizeZero;
             
             CGRect targetBounds = (CGRect){CGPointZero,contentSize};
@@ -265,56 +194,20 @@
             self.calendar.daysContainer.clipsToBounds = YES;
             
             if (animated) {
-                // Perform alpha animation
-                CGFloat duration = 0.3;
-                CABasicAnimation *opacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
-                opacity.duration = duration;
-                opacity.fromValue = @0;
-                opacity.toValue = @1;
-                opacity.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-                    if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
-                        BOOL shouldPerformAlpha = NO;
-                        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-                        switch (self.collectionViewLayout.scrollDirection) {
-                            case UICollectionViewScrollDirectionHorizontal: {
-                                shouldPerformAlpha = indexPath.item%6 != focusedRowNumber;
-                                break;
-                            }
-                            case UICollectionViewScrollDirectionVertical: {
-                                shouldPerformAlpha = indexPath.item/7 != focusedRowNumber;
-                                break;
-                            }
-                        }
-                        if (shouldPerformAlpha) {
-                            [cell.contentView.layer addAnimation:opacity forKey:@"opacity"];
-                        }
-                    }
-                }];
                 
-                // Perform path and frame animation
+                [self performAlphaAnimationFrom:0 to:1 duration:0.4 exception:focusedRowNumber];
+                
+                CGFloat duration = 0.3;
                 BOOL oldDisableActions = [CATransaction disableActions];
                 [CATransaction setDisableActions:NO];
                 
-                CABasicAnimation *path = [CABasicAnimation animationWithKeyPath:@"path"];
-                path.fromValue = (id)self.calendar.maskLayer.path;
-                path.toValue = (id)[UIBezierPath bezierPathWithRect:targetBounds].CGPath;
-                path.duration = duration;
-                path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                [CATransaction begin];
-                [CATransaction setCompletionBlock:^{
+                [self performPathAnimationFrom:self.calendar.maskLayer.path to:[UIBezierPath bezierPathWithRect:targetBounds].CGPath duration:duration completion:^{
                     self.state = FSCalendarTransitionStateIdle;
                     self.transition = FSCalendarTransitionNone;
                     self.calendar.maskLayer.path = [UIBezierPath bezierPathWithRect:targetBounds].CGPath;
                     self.calendar.contentView.clipsToBounds = NO;
                     self.calendar.daysContainer.clipsToBounds = NO;
                 }];
-                [CATransaction setAnimationDuration:duration];
-                
-                self.calendar.needsAdjustingViewFrame = YES;
-                [self.calendar.maskLayer addAnimation:path forKey:@"path"];
-                
-                [CATransaction commit];
                 
                 if (self.calendar.delegate && ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)] || [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)])) {
                     self.collectionView.fs_top = -focusedRowNumber*self.calendar.preferredRowHeight;
@@ -324,14 +217,7 @@
                     [UIView setAnimationDuration:duration];
                     self.collectionView.fs_top = 0;
                     self.self.calendar.bottomBorder.frame = CGRectMake(0, contentSize.height, self.calendar.fs_width, 1);
-                    if ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)]) {
-                        [self.calendar.delegate calendar:self.calendar boundingRectWillChange:targetBounds animated:animated];
-                    } else {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-                        [self.calendar.delegate calendarCurrentScopeWillChange:self.calendar animated:animated];
-#pragma GCC diagnostic pop
-                    }
+                    [self boundingRectWillChange:targetBounds animated:animated];
                     [UIView commitAnimations];
                 }
                 [CATransaction setDisableActions:oldDisableActions];
@@ -345,15 +231,8 @@
                 self.calendar.maskLayer.path = [UIBezierPath bezierPathWithRect:targetBounds].CGPath;
                 self.calendar.contentView.clipsToBounds = NO;
                 self.calendar.daysContainer.clipsToBounds = NO;
+                [self boundingRectWillChange:targetBounds animated:animated];
                 
-                if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)]) {
-                    [self.calendar.delegate calendar:self.calendar boundingRectWillChange:targetBounds animated:animated];
-                } else if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-                    [self.calendar.delegate calendarCurrentScopeWillChange:self.calendar animated:animated];
-#pragma GCC diagnostic pop
-                }
             }
             break;
         }
@@ -397,5 +276,99 @@
     }
 }
 
+#pragma mark - Private properties
+
+- (void)performMonthToWeekCompletion
+{
+    CGRect targetBounds = [self boundingRectForScope:FSCalendarScopeWeek];
+    self.state = FSCalendarTransitionStateIdle;
+    self.transition = FSCalendarTransitionNone;
+    self.collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
+    self.calendar.needsAdjustingViewFrame = YES;
+    self.calendar.bottomBorder.frame = CGRectMake(0, targetBounds.size.height, self.calendar.fs_width, 1);
+    self.calendar.maskLayer.path = [UIBezierPath bezierPathWithRect:targetBounds].CGPath;
+    self.calendar.bottomBorder.fs_top = CGRectGetMaxY(targetBounds);
+    [self.collectionView reloadData];
+    [self.collectionView layoutIfNeeded];
+    [self.calendar.header reloadData];
+    [self.calendar.header layoutIfNeeded];
+    self.calendar.needsAdjustingMonthPosition = YES;
+    [self.calendar setNeedsLayout];
+    self.calendar.contentView.clipsToBounds = NO;
+    self.calendar.daysContainer.clipsToBounds = NO;
+}
+
+- (CGSize)cachedMonthSize
+{
+    if (!CGSizeEqualToSize(CGSizeZero, _cachedMonthSize)) {
+        return [self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth];
+    }
+    return _cachedMonthSize;
+}
+
+#pragma mark - Private methods
+
+- (CGRect)boundingRectForScope:(FSCalendarScope)scope
+{
+    CGSize contentSize = [self.calendar sizeThatFits:self.calendar.frame.size scope:scope];
+    return (CGRect){CGPointZero,contentSize};
+}
+
+- (void)boundingRectWillChange:(CGRect)targetBounds animated:(BOOL)animated
+{
+    if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)]) {
+        [self.calendar.delegate calendar:self.calendar boundingRectWillChange:targetBounds animated:animated];
+    } else if (self.calendar.delegate && [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)]) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+        [self.calendar.delegate calendarCurrentScopeWillChange:self.calendar animated:animated];
+#pragma GCC diagnostic pop
+    }
+}
+
+- (void)performAlphaAnimationFrom:(CGFloat)fromAlpha to:(CGFloat)toAlpha duration:(CGFloat)duration exception:(NSInteger)exception
+{
+    CABasicAnimation *opacity = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    opacity.duration = duration;
+    opacity.fromValue = @(fromAlpha);
+    opacity.toValue = @(toAlpha);
+    opacity.removedOnCompletion = NO;
+    opacity.fillMode = kCAFillModeForwards;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+        if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
+            BOOL shouldPerformAlpha = NO;
+            NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+            switch (self.collectionViewLayout.scrollDirection) {
+                case UICollectionViewScrollDirectionHorizontal: {
+                    shouldPerformAlpha = indexPath.item%6 != exception;
+                    break;
+                }
+                case UICollectionViewScrollDirectionVertical: {
+                    shouldPerformAlpha = indexPath.item/7 != exception;
+                    break;
+                }
+            }
+            if (shouldPerformAlpha) {
+                [cell.contentView.layer addAnimation:opacity forKey:@"opacity"];
+            }
+        }
+    }];
+}
+
+- (void)performPathAnimationFrom:(CGPathRef)fromPath to:(CGPathRef)toPath duration:(CGFloat)duration completion:(void (^)())completion
+{
+    CABasicAnimation *path = [CABasicAnimation animationWithKeyPath:@"path"];
+    path.fromValue = (__bridge id)fromPath;
+    path.toValue = (__bridge id)toPath;
+    path.duration = duration;
+    path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:completion];
+    [CATransaction setAnimationDuration:duration];
+    [self.calendar.maskLayer addAnimation:path forKey:@"path"];
+    [CATransaction commit];
+    
+}
 
 @end
