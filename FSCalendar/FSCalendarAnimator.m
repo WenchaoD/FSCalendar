@@ -198,7 +198,7 @@
                 [self performAlphaAnimationFrom:0 to:1 duration:0.4 exception:focusedRowNumber];
                 
                 CGFloat duration = 0.3;
-                BOOL oldDisableActions = [CATransaction disableActions];
+                [CATransaction begin];
                 [CATransaction setDisableActions:NO];
                 
                 [self performPathAnimationFrom:self.calendar.maskLayer.path to:[UIBezierPath bezierPathWithRect:targetBounds].CGPath duration:duration completion:^{
@@ -220,7 +220,7 @@
                     [self boundingRectWillChange:targetBounds animated:animated];
                     [UIView commitAnimations];
                 }
-                [CATransaction setDisableActions:oldDisableActions];
+                [CATransaction commit];
                 
             } else {
                 
