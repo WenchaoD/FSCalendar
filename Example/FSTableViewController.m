@@ -14,6 +14,7 @@
 #import "CalendarIdentifierViewController.h"
 #import "HidePlaceholderViewController.h"
 #import "ButtonsViewController.h"
+#import "ScopeHandleViewController.h"
 
 @implementation FSTableViewController
 
@@ -24,6 +25,7 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
     self.viewControllers = @[
+                             [ScopeHandleViewController class],
                              [ButtonsViewController class],
                              [HidePlaceholderViewController class],
                              [CalendarIdentifierViewController class],

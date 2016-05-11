@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */; };
+		3031F3EF1CDEDFC500C174D7 /* ScopeHandleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */; };
 		3065CA961CD31B81006C218D /* FSCalendarScopeHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 3065CA941CD31B81006C218D /* FSCalendarScopeHandle.h */; };
 		3065CA971CD31B81006C218D /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */; };
 		3065CA981CD31B81006C218D /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */; };
@@ -107,6 +108,8 @@
 /* Begin PBXFileReference section */
 		30024F931BD1015300B1C04C /* DelegateAppearanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelegateAppearanceViewController.h; sourceTree = SOURCE_ROOT; };
 		30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelegateAppearanceViewController.m; sourceTree = SOURCE_ROOT; };
+		3031F3ED1CDEDFC500C174D7 /* ScopeHandleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScopeHandleViewController.h; sourceTree = SOURCE_ROOT; };
+		3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScopeHandleViewController.m; sourceTree = SOURCE_ROOT; };
 		3065CA941CD31B81006C218D /* FSCalendarScopeHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarScopeHandle.h; sourceTree = "<group>"; };
 		3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarScopeHandle.m; sourceTree = "<group>"; };
 		3065CA9F1CD34ED0006C218D /* FSCalendar+DateTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+DateTools.m"; sourceTree = "<group>"; };
@@ -201,6 +204,15 @@
 				30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */,
 			);
 			name = "Delegate Appearance";
+			sourceTree = "<group>";
+		};
+		3031F3EC1CDEDFA700C174D7 /* Scope Handle */ = {
+			isa = PBXGroup;
+			children = (
+				3031F3ED1CDEDFC500C174D7 /* ScopeHandleViewController.h */,
+				3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */,
+			);
+			name = "Scope Handle";
 			sourceTree = "<group>";
 		};
 		3084BD161BF9AB2200C956F7 /* Calendar Identifiers */ = {
@@ -319,6 +331,7 @@
 				EE638CD01B89DBE90006DD1A /* AppDelegate.m */,
 				EE638CD11B89DBE90006DD1A /* FSTableViewController.h */,
 				EE638CD21B89DBE90006DD1A /* FSTableViewController.m */,
+				3031F3EC1CDEDFA700C174D7 /* Scope Handle */,
 				308B58D51CC08FA4004E812D /* Prev-Next-Buttons */,
 				30D55B0D1C9023E400BB43D5 /* Hide Placeholders */,
 				3084BD161BF9AB2200C956F7 /* Calendar Identifiers */,
@@ -557,6 +570,7 @@
 				EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */,
 				EE89AF9F1B9162B90001B657 /* NSString+FSExtension.m in Sources */,
 				30D55B101C90240000BB43D5 /* HidePlaceholderViewController.m in Sources */,
+				3031F3EF1CDEDFC500C174D7 /* ScopeHandleViewController.m in Sources */,
 				EE52AE181B91E68A00016662 /* FSCalendarScopeExampleViewController.m in Sources */,
 				30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */,
 				EE638CC31B89DB6E0006DD1A /* LoadViewExampleViewController.m in Sources */,

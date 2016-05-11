@@ -13,9 +13,9 @@
 @protocol FSCalendarScopeHandleDelegate <NSObject>
 
 @optional
-- (void)scopeHandleWillBeginDragging:(FSCalendarScopeHandle *)scopeHandle;
-- (void)scopeHandleDidScroll:(FSCalendarScopeHandle *)scopeHandle;;
-- (void)scopeHandleDidEndDragging:(FSCalendarScopeHandle *)scopeHandle;
+- (void)scopeHandleDidBegin:(FSCalendarScopeHandle *)scopeHandle;
+- (void)scopeHandleDidUpdate:(FSCalendarScopeHandle *)scopeHandle;;
+- (void)scopeHandleDidEnd:(FSCalendarScopeHandle *)scopeHandle;
 
 @end
 

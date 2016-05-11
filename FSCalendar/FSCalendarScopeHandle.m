@@ -70,32 +70,32 @@
 {
     switch (self.panGesture.state) {
         case UIGestureRecognizerStateBegan: {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleWillBeginDragging:)]) {
-                [self.delegate scopeHandleWillBeginDragging:self];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidBegin:)]) {
+                [self.delegate scopeHandleDidBegin:self];
             }
             break;
         }
         case UIGestureRecognizerStateChanged: {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidScroll:)]) {
-                [self.delegate scopeHandleDidScroll:self];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidUpdate:)]) {
+                [self.delegate scopeHandleDidUpdate:self];
             }
             break;
         }
         case UIGestureRecognizerStateEnded: {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidEndDragging:)]) {
-                [self.delegate scopeHandleDidEndDragging:self];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidEnd:)]) {
+                [self.delegate scopeHandleDidEnd:self];
             }
             break;
         }
         case UIGestureRecognizerStateCancelled: {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidEndDragging:)]) {
-                [self.delegate scopeHandleDidEndDragging:self];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidEnd:)]) {
+                [self.delegate scopeHandleDidEnd:self];
             }
             break;
         }
         case UIGestureRecognizerStateFailed: {
-            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidEndDragging:)]) {
-                [self.delegate scopeHandleDidEndDragging:self];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleDidEnd:)]) {
+                [self.delegate scopeHandleDidEnd:self];
             }
             break;
         }

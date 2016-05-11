@@ -1,3 +1,4 @@
+
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/6655324/213a814a-cb36-11e4-9add-f80515a83291.png)<br/><br/>
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
@@ -7,7 +8,13 @@
 [![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Join the chat at https://gitter.im/WenchaoD/FSCalendar](https://badges.gitter.im/WenchaoD/FSCalendar.svg)](https://gitter.im/WenchaoD/FSCalendar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Screenshots
+# Table of contents
+* [Screenshots](#screenshots)
+* [Installation](#installation)
+* [Advanced usage](#advanced_usage)
+* [Support me](#support)
+
+# <a id="screenshots"></a>Screenshots
 
 ## iPhone
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
@@ -18,7 +25,13 @@
 ## Working with AutoLayout and Orientation
 ![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/13728798/59855e3e-e95e-11e5-84db-60f843427ef3.gif)
 
-# Installation
+## Hide placeholder dates
+![fscalendar-showsplaceholder](https://cloud.githubusercontent.com/assets/5186464/13727902/21a90042-e940-11e5-9b9f-392f38cf007d.gif)
+
+## Scope handle
+![scopehandle](https://cloud.githubusercontent.com/assets/5186464/15096674/5270ef9c-1536-11e6-88b0-c4e3e8f93115.gif)
+
+# <a id="installation"></a>Installation
 
 ## CocoaPods:
 
@@ -95,47 +108,29 @@ self.calendar = calendar
 ```
 <br/>
 
-
-## Hide placeholder dates
-![fscalendar-showsplaceholder](https://cloud.githubusercontent.com/assets/5186464/13727902/21a90042-e940-11e5-9b9f-392f38cf007d.gif)
-
-1. Set `calendar.showsPlaceholders = NO`;
-2. <a id="implement_bounding_rect_will_change"></a> Implement `-calendar:boundingRectWillChange:animated:`
-
-```objc
-// For autoLayout
-- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
-{
-    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
-    [self.view layoutIfNeeded];
-}
-```
-
-```objc
-// For manual layout
-- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
-{
-    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
-}
-```
-
 ### <a id="roll_with_interface_builder"></a> Roll with Interface Builder
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
-## More Usage
+## <a id="advanced_usage"></a>Advanced Usage
 * To view more usage, download the zip file and read the example.
 * Or you could refer to [this document](https://github.com/WenchaoD/FSCalendar/blob/master/MOREUSAGE.md)
 * To view the full documentation, see [CocoaPods Documentation](http://cocoadocs.org/docsets/FSCalendar/2.0.1/)
 
-# If you like this repo
-* ***Star*** this repo.
-* Send your calendar screenshot or `itunes link address` [here](https://github.com/WenchaoD/FSCalendar/issues/2).
+# <a id="support"></a>Support me via [![paypal](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg) <br>
 
-# Support me via  [![paypal](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)
 * ☕️ [This coffee is on me!](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=This%20coffee%20is%20on%20me%21&item_number=Support%20FSCalendar%20%2d%20WenchaoIOS&amount=5%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
 * [Lunch is on me!](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=Lunch%20is%20on%20me%21&item_number=Support%20FSCalendar&amount=10%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
 * [Have a nice dinner!](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=Tonight%27s%20dinner%20is%20on%20me%21&item_number=Support%20FSCalendar%20%2d%20WenchaoIOS&amount=25%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
 * [Greate work! Keep the change!](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=Great%20work%21%20Keep%20the%20change%21&item_number=Support%20FSCalendar%20%2d%20WenchaoIOS&amount=100%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted)
+
+<br/>
+
+# 打赏支持
+
+<div class="center">
+<a href="https://cloud.githubusercontent.com/assets/5186464/15096775/bacc0506-1539-11e6-91b7-b1a7a773622b.png" target="_blank"><img src="http://a1.mzstatic.com/us/r30/Purple49/v4/50/16/b3/5016b341-39c1-b47b-2994-d7e23823baed/icon175x175.png" width="150" height="150" style="-webkit-border-radius:20px;border:1px solid rgba(30, 154, 236, 1)"></a>
+<a href="https://cloud.githubusercontent.com/assets/5186464/15096872/b06f3a3a-153c-11e6-89f9-2e9c7b88ef42.png" target="_blank"><img src="http://a4.mzstatic.com/us/r30/Purple49/v4/23/31/14/233114f8-2e8d-7b63-8dc5-85d29893061e/icon175x175.jpeg" height="150" width="150" style="margin-left:15px;-webkit-border-radius: 20px;border:1px solid rgba(43, 177, 0, 1)"></a>
+</div>
 
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.

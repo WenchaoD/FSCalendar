@@ -17,11 +17,13 @@
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarFlowLayout.h"
+#import "FSCalendarScopeHandle.h"
 
 @interface FSCalendar (Dynamic)
 
 @property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
+@property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
 @property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
 @property (readonly, nonatomic) CAShapeLayer *maskLayer;
 @property (readonly, nonatomic) NSArray *weekdays;

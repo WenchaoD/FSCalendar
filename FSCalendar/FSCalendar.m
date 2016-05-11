@@ -295,11 +295,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     if (_needsAdjustingViewFrame) {
         
+        if (CGSizeEqualToSize(_animator.cachedMonthSize, CGSizeZero)) {
+            _animator.cachedMonthSize = self.frame.size;
+        }
+        
         BOOL needsAdjustingBoundingRect = self.scope == FSCalendarScopeMonth && !_showsPlaceholders && !self.hasValidateVisibleLayout;
         
         if (_scopeHandle) {
-            _contentView.frame = CGRectMake(0, 0, self.fs_width, self.fs_height-FSCalendarStandardScopeHandleHeight);
-            _scopeHandle.frame = CGRectMake(0, _contentView.fs_bottom, self.fs_width, FSCalendarStandardScopeHandleHeight);
+            CGFloat scopeHandleHeight = self.animator.cachedMonthSize.height*0.075;
+            _contentView.frame = CGRectMake(0, 0, self.fs_width, self.fs_height-scopeHandleHeight);
+            _scopeHandle.frame = CGRectMake(0, _contentView.fs_bottom, self.fs_width, scopeHandleHeight);
         } else {
             _contentView.frame = self.bounds;
         }
@@ -432,10 +437,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         switch (scope) {
             case FSCalendarScopeMonth: {
                 CGFloat height = weekdayHeight + headerHeight + [self numberOfRowsInMonth:_currentPage]*rowHeight + paddings;
+                height += _scopeHandle.fs_height;
                 return CGSizeMake(size.width, height);
             }
             case FSCalendarScopeWeek: {
                 CGFloat height = weekdayHeight + headerHeight + rowHeight + paddings;
+                height += _scopeHandle.fs_height;
                 return CGSizeMake(size.width, height);
             }
         }
@@ -1479,7 +1486,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (self.showsScopeHandle) {
             if (!_scopeHandle) {
                 FSCalendarScopeHandle *handle = [[FSCalendarScopeHandle alloc] initWithFrame:CGRectZero];
-                handle.delegate = self;
+                handle.delegate = self.animator;
                 [self addSubview:handle];
                 self.scopeHandle = handle;
                 _needsAdjustingViewFrame = YES;
