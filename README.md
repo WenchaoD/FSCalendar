@@ -139,6 +139,7 @@ FSCalendar is available under the MIT license. See the LICENSE file for more inf
 * Issues and pull requests are absolutely welcome.
 * For code contributions, please follow [Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html)
 
-# Contact
+# Author
 * Email: `f33chobits@gmail.com`
-
+* Twitter: `https://twitter.com/WenchaoD`
+* 微博: `http://www.weibo.com/u/2231723463`
