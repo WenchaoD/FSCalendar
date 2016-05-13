@@ -42,11 +42,19 @@
     self.calendar = calendar;
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    // Adjusts orientation
+    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
+    self.calendar.frame = CGRectMake(0, 64, self.view.frame.size.width, height);
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self.calendar selectDate:[self.calendar tomorrowOfDate:[NSDate date]]];
+    [self.calendar selectDate:[self.calendar dateFromString:@"2015/02/03" format:@"yyyy/MM/dd"]];
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.calendar setScope:FSCalendarScopeWeek animated:YES];

@@ -173,6 +173,8 @@
             _titleLabel.frame = CGRectMake(0, _appearance.titleVerticalOffset, self.contentView.fs_width, floor(self.contentView.fs_height*5.0/6.0));
         }
         
+        _imageView.center = CGPointMake(self.contentView.fs_width/2.0, _imageView.center.y);
+        
     }
     
     UIColor *textColor = self.colorForTitleLabel;
