@@ -1691,6 +1691,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
     self.header.needsAdjustingViewFrame = YES;
     [self.appearance invalidateFonts];
+    [self.collectionViewLayout invalidateLayout];
 }
 
 // The best way to detect orientation
