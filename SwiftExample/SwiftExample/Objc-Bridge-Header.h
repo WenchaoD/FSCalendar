@@ -10,6 +10,5 @@
 #define SwiftExample_Objc_Bridge_Header_h
 
 #import "FSCalendar.h"
-#import "NSString+FSExtension.h"
 
 #endif
