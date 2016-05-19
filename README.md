@@ -8,6 +8,8 @@
 [![License](https://img.shields.io/cocoapods/l/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Join the chat at https://gitter.im/WenchaoD/FSCalendar](https://badges.gitter.im/WenchaoD/FSCalendar.svg)](https://gitter.im/WenchaoD/FSCalendar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+# [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
+
 # Table of contents
 * [Screenshots](#screenshots)
 * [Installation](#installation)
