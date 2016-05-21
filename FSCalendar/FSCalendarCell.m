@@ -235,6 +235,9 @@
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
+    if (self.dateIsDisabled) {
+        return dictionary[@(FSCalendarCellStateDisabled)];
+    }
     if (self.isSelected || self.dateIsSelected) {
         if (self.dateIsToday) {
             return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
@@ -314,6 +317,9 @@
 
 - (UIColor *)colorForTitleLabel
 {
+    if (self.dateIsDisabled) {
+        return self.preferredTitleDisabledColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
+    }
     if (self.dateIsSelected || self.isSelected) {
         return self.preferredTitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
     }
@@ -322,6 +328,9 @@
 
 - (UIColor *)colorForSubtitleLabel
 {
+    if (self.dateIsDisabled) {
+        return self.preferredSubtitleDisabledColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
+    }
     if (self.dateIsSelected || self.isSelected) {
         return self.preferredSubtitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
     }

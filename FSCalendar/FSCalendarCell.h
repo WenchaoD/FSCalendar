@@ -32,6 +32,7 @@
 @property (assign, nonatomic) BOOL dateIsPlaceholder;
 @property (assign, nonatomic) BOOL dateIsSelected;
 @property (assign, nonatomic) BOOL dateIsToday;
+@property (assign, nonatomic) BOOL dateIsDisabled;
 
 @property (readonly, nonatomic) BOOL weekend;
 
@@ -39,8 +40,10 @@
 @property (strong, nonatomic) UIColor *preferredFillSelectionColor;
 @property (strong, nonatomic) UIColor *preferredTitleDefaultColor;
 @property (strong, nonatomic) UIColor *preferredTitleSelectionColor;
+@property (strong, nonatomic) UIColor *preferredTitleDisabledColor;
 @property (strong, nonatomic) UIColor *preferredSubtitleDefaultColor;
 @property (strong, nonatomic) UIColor *preferredSubtitleSelectionColor;
+@property (strong, nonatomic) UIColor *preferredSubtitleDisabledColor;
 @property (strong, nonatomic) UIColor *preferredBorderDefaultColor;
 @property (strong, nonatomic) UIColor *preferredBorderSelectionColor;
 @property (strong, nonatomic) id preferredEventColor;

@@ -34,8 +34,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (UIColor *)preferredFillSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferredTitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferredTitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferredTitleDisabledColorForDate:(NSDate *)date;
 - (UIColor *)preferredSubtitleDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferredSubtitleSelectionColorForDate:(NSDate *)date;
+- (UIColor *)preferredSubtitleDisabledColorForDate:(NSDate *)date;
 - (UIColor *)preferredBorderDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferredBorderSelectionColorForDate:(NSDate *)date;
 - (id)preferredEventColorForDate:(NSDate *)date;
@@ -80,6 +82,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
 @property (assign, nonatomic) BOOL                       supressEvent;
+@property (assign, nonatomic) BOOL                       canSelectBefore;
 @property (assign, nonatomic) CGFloat                    preferredHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferredWeekdayHeight;
 @property (assign, nonatomic) CGFloat                    preferredRowHeight;
@@ -534,6 +537,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if (cell.dateIsDisabled) {
+        return NO;
+    }
     if (cell.dateIsPlaceholder) {
         if (!_showsPlaceholders) return NO;
         if ([self isDateInRange:cell.date]) {
@@ -1559,9 +1565,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.preferredFillDefaultColor = [self preferredFillDefaultColorForDate:cell.date];
     cell.preferredTitleDefaultColor = [self preferredTitleDefaultColorForDate:cell.date];
     cell.preferredTitleSelectionColor = [self preferredTitleSelectionColorForDate:cell.date];
+    cell.preferredTitleDisabledColor = [self preferredTitleDisabledColorForDate:cell.date];
     if (cell.subtitle) {
         cell.preferredSubtitleDefaultColor = [self preferredSubtitleDefaultColorForDate:cell.date];
         cell.preferredSubtitleSelectionColor = [self preferredSubtitleSelectionColorForDate:cell.date];
+        cell.preferredSubtitleDisabledColor = [self preferredSubtitleDisabledColorForDate:cell.date];
     }
     if (cell.numberOfEvents) cell.preferredEventColor = [self preferredEventColorForDate:cell.date];
     cell.preferredBorderDefaultColor = [self preferredBorderDefaultColorForDate:cell.date];
@@ -1580,6 +1588,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.dateIsSelected = [_selectedDates containsObject:cell.date];
     cell.dateIsToday = [self isDateInToday:cell.date];
+    if (!self.canSelectBefore) {
+        cell.dateIsDisabled = [self isDateDisabled:cell.date];
+    } else {
+        cell.dateIsDisabled = NO;
+    }
+
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *firstPage = [self beginingOfMonthOfDate:_minimumDate];
@@ -1808,6 +1822,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
+- (UIColor *)preferredTitleDisabledColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:titleDisabledColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance titleDisabledColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
 - (UIColor *)preferredSubtitleDefaultColorForDate:(NSDate *)date
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleDefaultColorForDate:)]) {
@@ -1821,6 +1844,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleSelectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance subtitleSelectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferredSubtitleDisabledColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleDisabledColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance subtitleDisabledColorForDate:date];
         return color;
     }
     return nil;

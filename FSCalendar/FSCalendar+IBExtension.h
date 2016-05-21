@@ -29,12 +29,14 @@ IB_DESIGNABLE
 
 @property (strong, nonatomic) IBInspectable UIColor  *titleDefaultColor;
 @property (strong, nonatomic) IBInspectable UIColor  *titleSelectionColor;
+@property (strong, nonatomic) IBInspectable UIColor  *titleDisabledColor;
 @property (strong, nonatomic) IBInspectable UIColor  *titleTodayColor;
 @property (strong, nonatomic) IBInspectable UIColor  *titlePlaceholderColor;
 @property (strong, nonatomic) IBInspectable UIColor  *titleWeekendColor;
 
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleDefaultColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleSelectionColor;
+@property (strong, nonatomic) IBInspectable UIColor  *subtitleDisabledColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleTodayColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitlePlaceholderColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleWeekendColor;
@@ -51,5 +53,7 @@ IB_DESIGNABLE
 
 @property (assign, nonatomic) IBInspectable BOOL      fakeSubtitles;
 @property (assign, nonatomic) IBInspectable NSInteger fakedSelectedDay;
+
+@property (assign, nonatomic) IBInspectable BOOL     canSelectBefore;
 
 @end

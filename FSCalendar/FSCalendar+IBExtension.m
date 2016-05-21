@@ -109,6 +109,17 @@
     return self.appearance.titleSelectionColor;
 }
 
+#pragma mark - titleDisabledColor
+
+- (void)setTitleDisabledColor:(UIColor *)titleDisabledColor
+{
+    self.appearance.titleDisabledColor = titleDisabledColor;
+}
+
+- (UIColor *)titleDisabledColor {
+    return self.appearance.titleDisabledColor;
+}
+
 #pragma mark -  titleTodayColor
 
 - (void)setTitleTodayColor:(UIColor *)titleTodayColor
@@ -167,6 +178,18 @@
 - (UIColor *)subtitleSelectionColor
 {
     return self.appearance.subtitleSelectionColor;
+}
+
+#pragma mark - subtitleDisabledColor
+
+- (void)setSubtitleDisabledColor:(UIColor *)subtitleDisabledColor
+{
+    self.appearance.subtitleDisabledColor = subtitleDisabledColor;
+}
+
+- (UIColor *)subtitleDisabledColor
+{
+    return self.appearance.subtitleDisabledColor;
 }
 
 #pragma mark - subtitleTodayColor
@@ -328,6 +351,18 @@
     return self.appearance.fakedSelectedDay;
 }
 #endif
+
+#pragma mark - canSelectBefore
+
+- (void)setCanSelectBefore:(BOOL)canSelectBefore
+{
+    self.appearance.canSelectBefore = canSelectBefore;
+}
+
+- (BOOL)canSelectBefore
+{
+    return self.appearance.canSelectBefore;
+}
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
