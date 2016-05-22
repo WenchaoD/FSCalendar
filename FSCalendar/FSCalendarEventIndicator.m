@@ -37,7 +37,6 @@
         for (int i = 0; i < 3; i++) {
             CALayer *layer = [CALayer layer];
             layer.masksToBounds = YES;
-            layer.backgroundColor = FSCalendarStandardEventDotColor.CGColor;
             [self.eventLayers addObject:layer];
             [self.contentView.layer addSublayer:layer];
         }
