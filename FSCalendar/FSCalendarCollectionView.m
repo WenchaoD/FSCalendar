@@ -7,7 +7,6 @@
 //
 
 #import "FSCalendarCollectionView.h"
-#import "FSCalendarCell.h"
 
 @interface FSCalendarCollectionView ()
 
