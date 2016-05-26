@@ -1897,14 +1897,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSString *)titleForDate:(NSDate *)date
 {
-#if !TARGET_INTERFACE_BUILDER
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:titleForDate:)]) {
         return [_dataSource calendar:self titleForDate:date];
     }
     return nil;
-#else
-    return _appearance.fakeSubtitles ? @"test" : nil;
-#endif
 }
 
 - (NSString *)subtitleForDate:(NSDate *)date
