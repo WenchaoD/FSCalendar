@@ -57,6 +57,11 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
+ * Asks the dataSource for a title for the specific date as a replacement of the day text
+ */
+- (nullable NSString *)calendar:(FSCalendar *)calendar titleForDate:(NSDate *)date;
+
+/**
  * Asks the dataSource for a subtitle for the specific date under the day text.
  */
 - (nullable NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date;

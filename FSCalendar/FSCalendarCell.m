@@ -141,7 +141,7 @@
     if (self.contentView.hidden) {
         return;
     }
-    _titleLabel.text = [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
+    _titleLabel.text = self.title ?: [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
         if (_subtitleLabel.hidden) {

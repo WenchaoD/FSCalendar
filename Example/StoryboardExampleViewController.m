@@ -68,6 +68,11 @@
 
 #pragma mark - FSCalendarDataSource
 
+- (NSString *)calendar:(FSCalendar *)calendar titleForDate:(NSDate *)date
+{
+    return [calendar isDateInToday:date] ? @"今天" : nil;
+}
+
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
     if (!_lunar) {
