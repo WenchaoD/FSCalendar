@@ -9,7 +9,7 @@
 [![Join the chat at https://gitter.im/WenchaoD/FSCalendar](https://badges.gitter.im/WenchaoD/FSCalendar.svg)](https://gitter.im/WenchaoD/FSCalendar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 * 在您静静的离开之前，请确保点击了这个按钮<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"><br>
-* Before leaving quietly, please make sure you've taken care of this button very well <img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"> 
+* Before leaving quietly, please make sure you've taken good care of this button.<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"> 
 
 
 # [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
@@ -36,6 +36,8 @@
 
 ## Scope handle
 ![scopehandle](https://cloud.githubusercontent.com/assets/5186464/15096674/5270ef9c-1536-11e6-88b0-c4e3e8f93115.gif)
+
+> FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
 
 # <a id="installation"></a>Installation
 
@@ -113,6 +115,28 @@ view.addSubview(calendar)
 self.calendar = calendar
 ```
 <br/>
+
+## <a id='adjusts_frame_dynamicly' /></a>Warning 
+`FSCalendar` doesn't change frame by itself, Please implement
+
+* For autoLayout
+
+```objc
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    [self.view layoutIfNeeded];
+}
+```
+
+* For manual layout
+
+```objc
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+}
+```
 
 ### <a id="roll_with_interface_builder"></a> Roll with Interface Builder
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
