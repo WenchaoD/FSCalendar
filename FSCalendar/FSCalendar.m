@@ -302,7 +302,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }];
         hasDisabledOtherGesture = YES;
     }
-    
+
     _supressEvent = YES;
     
     if (_needsAdjustingViewFrame) {
@@ -696,23 +696,25 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             break;
         }
     }
-    BOOL shouldTriggerPageChange = ((pannedOffset < 0 && targetOffset > currentOffset) ||
-                                     (pannedOffset > 0 && targetOffset < currentOffset)) && _minimumDate;
+    
+    NSDate *targetPage = nil;
+    switch (_scope) {
+        case FSCalendarScopeMonth: {
+            NSDate *minimumPage = [self beginingOfMonthOfDate:_minimumDate];
+            targetPage = [self dateByAddingMonths:targetOffset/contentSize toDate:minimumPage];
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            NSDate *minimumPage = [self beginingOfWeekOfDate:_minimumDate];
+            targetPage = [self dateByAddingWeeks:targetOffset/contentSize toDate:minimumPage];
+            break;
+        }
+    }
+    BOOL shouldTriggerPageChange = [self isDateInDifferentPage:targetPage];
     if (shouldTriggerPageChange) {
         NSDate *lastPage = _currentPage;
         [self willChangeValueForKey:@"currentPage"];
-        switch (_scope) {
-            case FSCalendarScopeMonth: {
-                NSDate *minimumPage = [self beginingOfMonthOfDate:_minimumDate];
-                _currentPage = [self dateByAddingMonths:targetOffset/contentSize toDate:minimumPage];
-                break;
-            }
-            case FSCalendarScopeWeek: {
-                NSDate *minimumPage = [self beginingOfWeekOfDate:_minimumDate];
-                _currentPage = [self dateByAddingWeeks:targetOffset/contentSize toDate:minimumPage];
-                break;
-            }
-        }
+        _currentPage = targetPage;
         [self currentPageDidChange];
         if (!_showsPlaceholders && self.animator.state == FSCalendarTransitionStateIdle) {
             [self.animator performBoudingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
