@@ -292,12 +292,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    [self.collectionView.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (obj != self.collectionView.panGestureRecognizer) {
-            obj.enabled = NO;
-        }
-    }];
 
     _supressEvent = YES;
     
@@ -712,7 +706,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self willChangeValueForKey:@"currentPage"];
         _currentPage = targetPage;
         [self currentPageDidChange];
-        if (!_showsPlaceholders && self.animator.state == FSCalendarTransitionStateIdle) {
+        if (!_showsPlaceholders) {
             [self.animator performBoudingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
         }
         [self didChangeValueForKey:@"currentPage"];

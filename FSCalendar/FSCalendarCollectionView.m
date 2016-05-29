@@ -47,6 +47,16 @@
 #endif
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj != self.panGestureRecognizer) {
+            obj.enabled = NO;
+        }
+    }];
+}
+
 - (void)setContentInset:(UIEdgeInsets)contentInset
 {
     [super setContentInset:UIEdgeInsetsZero];
