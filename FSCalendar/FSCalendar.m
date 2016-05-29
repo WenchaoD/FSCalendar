@@ -292,6 +292,17 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    static BOOL hasDisabledOtherGesture = NO;
+    if (!hasDisabledOtherGesture) {
+        [self.collectionView.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj != self.collectionView.panGestureRecognizer) {
+                obj.enabled = NO;
+            }
+        }];
+        hasDisabledOtherGesture = YES;
+    }
+    
     _supressEvent = YES;
     
     if (_needsAdjustingViewFrame) {
