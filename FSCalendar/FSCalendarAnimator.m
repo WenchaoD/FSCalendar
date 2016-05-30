@@ -598,6 +598,7 @@
         case FSCalendarTransitionMonthToWeek: {
             [self performAlphaAnimationFrom:1-progress to:1 duration:0.3 exception:self.pendingAttributes.focusedRowNumber];
             [self performPathAnimationFrom:self.calendar.maskLayer.path to:self.pendingAttributes.sourceMask.CGPath duration:0.3 completion:^{
+                [self.calendar.maskLayer removeAnimationForKey:@"path"];
                 self.calendar.maskLayer.path = self.pendingAttributes.sourceMask.CGPath;
                 [self.calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof UICollectionViewCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     obj.contentView.layer.opacity = 1;
