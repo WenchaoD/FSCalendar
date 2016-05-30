@@ -349,7 +349,7 @@
     self.calendar.contentView.clipsToBounds = NO;
     self.calendar.daysContainer.clipsToBounds = NO;
     self.pendingAttributes = nil;
-    
+    [self.calendar.maskLayer removeAnimationForKey:@"path"];
     [self.calendar setNeedsLayout];
     [self.calendar layoutIfNeeded];
 }
@@ -682,6 +682,8 @@
     path.fromValue = (__bridge id)fromPath;
     path.toValue = (__bridge id)toPath;
     path.duration = duration;
+    path.fillMode = kCAFillModeForwards;
+    path.removedOnCompletion = NO;
     path.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     [CATransaction begin];
     [CATransaction setCompletionBlock:completion];
