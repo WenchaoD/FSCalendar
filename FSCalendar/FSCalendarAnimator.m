@@ -321,6 +321,7 @@
             self.calendar.bottomBorder.frame = CGRectMake(0, targetBounds.size.height, self.calendar.fs_width, 1);
             self.calendar.maskLayer.path = self.pendingAttributes.targetMask.CGPath;
             self.calendar.bottomBorder.fs_top = CGRectGetMaxY(targetBounds);
+            self.calendar.scopeHandle.fs_bottom = CGRectGetMaxY(targetBounds);
             self.calendar.needsAdjustingMonthPosition = YES;
             [self.collectionView reloadData];
             [self.calendar.header reloadData];
@@ -332,6 +333,7 @@
             self.calendar.bottomBorder.frame = CGRectMake(0, targetBounds.size.height, self.calendar.fs_width, 1);
             self.calendar.maskLayer.path = [UIBezierPath bezierPathWithRect:targetBounds].CGPath;
             self.calendar.bottomBorder.fs_bottom = targetBounds.size.height;
+            self.calendar.scopeHandle.fs_bottom = CGRectGetMaxY(targetBounds);
             [self.calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *obj, NSUInteger idx, BOOL * stop) {
                 [CATransaction begin];
                 [CATransaction setDisableActions:YES];

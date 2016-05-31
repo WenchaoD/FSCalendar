@@ -16,6 +16,9 @@
 {
     [super viewDidLoad];
     [_calendar selectDate:[NSDate date]];
+    
+    // Uncomment this to perform an 'initial-week-scope'
+//    _calendar.scope = FSCalendarScopeWeek;
 }
 
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated

@@ -45,6 +45,9 @@
     [super viewDidLoad];
     
     [self.calendar selectDate:[self.calendar dateFromString:@"2016-05-10" format:@"yyyy-MM-dd"]];
+    
+    // Uncomment this to perform an 'initial-week-scope'
+    // self.calendar.scope = FSCalendarScopeWeek;
 }
 
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
