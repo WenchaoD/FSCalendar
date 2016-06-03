@@ -33,7 +33,7 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
-//    calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+    calendar.showsPlaceholders = NO;
     calendar.showsScopeHandle = YES; // important
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
@@ -54,5 +54,7 @@
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
 }
+
+
 
 @end
