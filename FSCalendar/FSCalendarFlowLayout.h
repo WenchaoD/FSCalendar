@@ -1,17 +1,20 @@
 //
-//  FSCalendarFlowLayout.h
+//  FSCalendarAnimationLayout.h
 //  FSCalendar
 //
-//  Created by Wenchao Ding on 10/25/15.
-//  Copyright (c) 2015 wenchaoios. All rights reserved.
+//  Created by dingwenchao on 1/3/16.
+//  Copyright © 2016 wenchaoios. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
 @class FSCalendar;
 
-@interface FSCalendarFlowLayout : UICollectionViewFlowLayout
+typedef NS_ENUM(NSUInteger, FSCalendarScope);
+
+@interface FSCalendarFlowLayout : UICollectionViewFlowLayout <UICollectionViewDelegateFlowLayout>
 
 @property (weak, nonatomic) FSCalendar *calendar;
+
 
 @end

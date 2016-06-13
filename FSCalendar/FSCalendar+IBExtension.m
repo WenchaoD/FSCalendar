@@ -1,74 +1,28 @@
 //
 //  FSCalendar+IBExtension.m
-//  Pods
+//  FSCalendar
 //
-//  Created by dingwenchao on 8/14/15.
-//
+//  Created by Wenchao Ding on 8/14/15.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendar+IBExtension.h"
 
 @implementation FSCalendar (IBExtension)
+#if !TARGET_INTERFACE_BUILDER
+@dynamic fakedSelectedDay,fakeSubtitles;
+#endif
 
-#pragma mark -  autoAdjustTitleSize
+#pragma mark - adjustsFontSizeToFitContentSize
 
-- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
+- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize
 {
-    self.appearance.autoAdjustTitleSize = autoAdjustTitleSize;
+    self.appearance.adjustsFontSizeToFitContentSize = adjustsFontSizeToFitContentSize;
 }
 
-- (BOOL)autoAdjustTitleSize
+- (BOOL)adjustsFontSizeToFitContentSize
 {
-    return self.appearance.autoAdjustTitleSize;
-}
-
-
-#pragma mark - titleTextSize
-
-- (void)setTitleTextSize:(CGFloat)titleTextSize
-{
-    self.appearance.titleTextSize = titleTextSize;
-}
-
-- (CGFloat)titleTextSize
-{
-    return self.appearance.titleTextSize;
-}
-
-#pragma mark - subtitleTextSize
-
-- (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
-{
-    self.appearance.subtitleTextSize = subtitleTextSize;
-}
-
-- (CGFloat)subtitleTextSize
-{
-    return self.appearance.subtitleTextSize;
-}
-
-#pragma mark - weekdayTextSize
-
-- (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
-{
-    self.appearance.weekdayTextSize = weekdayTextSize;
-}
-
-- (CGFloat)weekdayTextSize
-{
-    return self.appearance.weekdayTextSize;
-}
-
-#pragma mark - headerTitleTextSize
-
-- (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
-{
-    self.appearance.headerTitleTextSize = headerTitleTextSize;
-}
-
-- (CGFloat)headerTitleTextSize
-{
-    return self.appearance.headerTitleTextSize;
+    return self.appearance.adjustsFontSizeToFitContentSize;
 }
 
 #pragma mark -  eventColor
@@ -341,44 +295,84 @@
 #pragma GCC diagnostic pop
 }
 
+
 #pragma mark - fakeSubtitles
 
 - (void)setFakeSubtitles:(BOOL)fakeSubtitles
 {
+#if TARGET_INTERFACE_BUILDER
     self.appearance.fakeSubtitles = fakeSubtitles;
+#endif
 }
 
+#if TARGET_INTERFACE_BUILDER
 - (BOOL)fakeSubtitles
 {
     return self.appearance.fakeSubtitles;
 }
+#endif
 
 #pragma mark - fakedSelectedDay
 
 - (void)setFakedSelectedDay:(NSInteger)fakedSelectedDay
 {
+#if TARGET_INTERFACE_BUILDER
     self.appearance.fakedSelectedDay = fakedSelectedDay;
+#endif
 }
 
+
+#if TARGET_INTERFACE_BUILDER
 - (NSInteger)fakedSelectedDay
 {
     return self.appearance.fakedSelectedDay;
 }
+#endif
 
-#pragma mark - cellStyle
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
+- (void)setTitleTextSize:(CGFloat)titleTextSize
 {
-    self.appearance.cellShape = (FSCalendarCellShape)cellStyle;
+    self.appearance.titleTextSize = titleTextSize;
 }
 
-- (FSCalendarCellStyle)cellStyle
+- (CGFloat)titleTextSize
 {
-    return (FSCalendarCellStyle)self.appearance.cellShape;
+    return self.appearance.titleTextSize;
 }
+
+
+- (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
+{
+    self.appearance.subtitleTextSize = subtitleTextSize;
+}
+
+- (CGFloat)subtitleTextSize
+{
+    return self.appearance.subtitleTextSize;
+}
+
+- (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
+{
+    self.appearance.weekdayTextSize = weekdayTextSize;
+}
+
+- (CGFloat)weekdayTextSize
+{
+    return self.appearance.weekdayTextSize;
+}
+
+- (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
+{
+    self.appearance.headerTitleTextSize = headerTitleTextSize;
+}
+
+- (CGFloat)headerTitleTextSize
+{
+    return self.appearance.headerTitleTextSize;
+}
+
+#pragma GCC diagnostic pop
 
 @end
-
-
-
-

@@ -17,4 +17,6 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
+- (IBAction)toggleClicked:(id)sender;
+
 @end

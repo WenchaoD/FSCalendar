@@ -1,5 +1,5 @@
 //
-//  FSViewController.m
+//  StoryboardExampleViewController.m
 //  Chinese-Lunar-Calendar
 //
 //  Created by Wenchao Ding on 01/29/2015.
@@ -7,15 +7,13 @@
 //
 
 #import "StoryboardExampleViewController.h"
-#import "NSDate+FSExtension.h"
-#import "SSLunarDate.h"
+
 #import "CalendarConfigViewController.h"
-#import "FSCalendarTestMacros.h"
 
 @interface StoryboardExampleViewController ()
 
-@property (strong, nonatomic) NSCalendar *currentCalendar;
-@property (strong, nonatomic) SSLunarDate *lunarDate;
+@property (strong, nonatomic) NSCalendar *lunarCalendar;
+@property (strong, nonatomic) NSArray *lunarChars;
 
 @end
 
@@ -29,96 +27,114 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
     
-    _currentCalendar = [NSCalendar currentCalendar];
-//    _firstWeekday = _calendar.firstWeekday;
-//    _calendar.firstWeekday = 2; // Monday
-//    _calendar.flow = FSCalendarFlowVertical;
-//    _calendar.selectedDate = [NSDate fs_dateWithYear:2015 month:2 day:1];
+    _lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
+    _lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+    _lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
+
     _scrollDirection = _calendar.scrollDirection;
-//    _calendar.appearance.useVeryShortWeekdaySymbols = YES;
-//    _calendar.scope = FSCalendarScopeWeek;
-//    _calendar.allowsMultipleSelection = YES;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
-    [_calendar selectDate:[NSDate date]];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_calendar deselectDate:[NSDate date]];
-//        _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
+    [_calendar selectDate:[_calendar dateWithYear:2015 month:10 day:5]];
+    
+    _datesShouldNotBeSelected = @[@"2015/08/07",
+                                  @"2015/09/07",
+                                  @"2015/10/07",
+                                  @"2015/11/07",
+                                  @"2015/12/07",
+                                  @"2016/01/07",
+                                  @"2016/02/07"];
+    
+    _datesWithEvent = @[@"2015-10-03",
+                        @"2015-10-07",
+                        @"2015-10-15",
+                        @"2015-10-25"];
+    
+    // Uncomment this to test the month->week & week->month transition
+    /*
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [_calendar setScope:FSCalendarScopeWeek animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [_calendar setScope:FSCalendarScopeMonth animated:YES];
+        });
     });
+     */
     
-#if 0
-    FSCalendarTestSelectDate
-#endif
 }
 
 - (void)dealloc
 {
-    NSLog(@"%@:%s",self.class.description,__FUNCTION__);
+    NSLog(@"%s",__FUNCTION__);
 }
 
 #pragma mark - FSCalendarDataSource
+
+- (NSString *)calendar:(FSCalendar *)calendar titleForDate:(NSDate *)date
+{
+    return [calendar isDateInToday:date] ? @"今天" : nil;
+}
 
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
     if (!_lunar) {
         return nil;
     }
-    _lunarDate = [[SSLunarDate alloc] initWithDate:date calendar:_currentCalendar];
-    return _lunarDate.dayString;
+    NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
+    return _lunarChars[day-1];
 }
 
-//- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date
-//{
-//    return date.fs_day % 5 == 0;
-//}
+- (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
+{
+    return [_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]];
+}
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate date];
+    return [calendar dateWithYear:2015 month:2 day:1];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [[NSDate date] fs_dateByAddingMonths:3];
-}
-
-
-- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
-{
-    NSLog(@"Did deselect date %@",date.fs_string);
+    return [calendar dateWithYear:2039 month:5 day:31];
 }
 
 #pragma mark - FSCalendarDelegate
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    BOOL shouldSelect = date.fs_day != 7;
+    BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
     if (!shouldSelect) {
         [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[date fs_stringWithFormat:@"yyyy/MM/dd"]]
+                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[calendar stringFromDate:date format:@"yyyy/MM/dd"]]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil, nil] show];
     } else {
-        NSLog(@"Should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+        NSLog(@"Should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     }
     return shouldSelect;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
-    
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
+    CGRect frame = [self.calendar frameForDate:date];
+    NSLog(@"%@",NSStringFromCGRect(frame));
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM yyyy"]);
 }
 
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
 {
     _calendarHeightConstraint.constant = [calendar sizeThatFits:CGSizeZero].height;
+    [self.view layoutIfNeeded];
+}
+
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
     [self.view layoutIfNeeded];
 }
 

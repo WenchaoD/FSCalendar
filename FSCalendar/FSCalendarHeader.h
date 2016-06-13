@@ -13,11 +13,14 @@
 
 @interface FSCalendarHeader : UIView
 
+@property (weak, nonatomic) FSCalendarCollectionView *collectionView;
+@property (weak, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) FSCalendarAppearance *appearance;
+
 @property (assign, nonatomic) CGFloat scrollOffset;
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
-@property (weak  , nonatomic) FSCalendarCollectionView *collectionView;
-@property (weak  , nonatomic) FSCalendarAppearance *appearance;
 @property (assign, nonatomic) BOOL scrollEnabled;
+@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
 - (void)reloadData;
 
@@ -29,8 +32,10 @@
 @property (weak, nonatomic) UILabel *titleLabel;
 @property (weak, nonatomic) FSCalendarHeader *header;
 
-@end
+- (void)invalidateHeaderFont;
+- (void)invalidateHeaderTextColor;
 
+@end
 
 
 @interface FSCalendarHeaderTouchDeliver : UIView

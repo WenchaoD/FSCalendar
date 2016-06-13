@@ -18,9 +18,14 @@ profile
 DerivedData
 *.hmap
 *.ipa
+*.idea
 
 # Bundler
 .bundle
 
-Pods/*
-Carthage/*
+Pods/
+Carthage/Checkouts
+Carthage/Build
+
+fastlane/report.xml
+fastlane/screenshots

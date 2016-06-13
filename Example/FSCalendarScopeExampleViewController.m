@@ -7,35 +7,41 @@
 //
 
 #import "FSCalendarScopeExampleViewController.h"
-#import "NSDate+FSExtension.h"
 
 @implementation FSCalendarScopeExampleViewController
+
+#pragma mark - Life cycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _calendar.firstWeekday = 1;
-//    _calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+    [_calendar selectDate:[NSDate date]];
+    
+    // Uncomment this to perform an 'initial-week-scope'
 //    _calendar.scope = FSCalendarScopeWeek;
 }
 
-- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
-    CGSize size = [calendar sizeThatFits:calendar.frame.size];
-    _calendarHeightConstraint.constant = size.height;
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
     [self.view layoutIfNeeded];
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[obj fs_stringWithFormat:@"yyyy/MM/dd"]];
+        [selectedDates addObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
     
+}
+
+- (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
+{
+    NSLog(@"%s %@", __FUNCTION__, [calendar stringFromDate:calendar.currentPage]);
 }
 
 #pragma mark - <UITableViewDataSource>
@@ -52,10 +58,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FSCalendarScope scopeForIndexPath = indexPath.row == 0 ? FSCalendarScopeMonth : FSCalendarScopeWeek;
     NSString *identifier = @[@"cell_month",@"cell_week"][indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    cell.accessoryType = _calendar.scope == scopeForIndexPath ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     return cell;
 }
 
@@ -64,11 +68,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [tableView.visibleCells setValue:@(UITableViewCellAccessoryNone) forKey:@"accessoryType"];
-    [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-    
     FSCalendarScope selectedScope = indexPath.row == 0 ? FSCalendarScopeMonth : FSCalendarScopeWeek;
-    //    _calendar.scope = selectedScope;
     [_calendar setScope:selectedScope animated:_animationSwitch.on];
     
 }
@@ -76,6 +76,15 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 20;
+}
+
+- (IBAction)toggleClicked:(id)sender
+{
+    if (self.calendar.scope == FSCalendarScopeMonth) {
+        [self.calendar setScope:FSCalendarScopeWeek animated:_animationSwitch.on];
+    } else {
+        [self.calendar setScope:FSCalendarScopeMonth animated:_animationSwitch.on];
+    }
 }
 
 @end

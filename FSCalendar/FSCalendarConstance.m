@@ -3,7 +3,9 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 8/28/15.
-//  Copyright (c) 2015 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
+//
+//  https://github.com/WenchaoD
 //
 
 #import "FSCalendarConstance.h"
@@ -20,3 +22,7 @@ CGFloat const FSCalendarStandardTitleTextSize = 13.5;
 CGFloat const FSCalendarStandardSubtitleTextSize = 10;
 CGFloat const FSCalendarStandardWeekdayTextSize = 14;
 CGFloat const FSCalendarStandardHeaderTextSize = 16.5;
+CGFloat const FSCalendarMaximumEventDotDiameter = 4.8;
+CGFloat const FSCalendarStandardScopeHandleHeight = 26;
+
+NSInteger const FSCalendarDefaultHourComponent = 0;

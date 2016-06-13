@@ -1,14 +1,16 @@
 //
-//  FSCalendarFlowLayout.m
+//  FSCalendarAnimationLayout.m
 //  FSCalendar
 //
-//  Created by Wenchao Ding on 10/25/15.
-//  Copyright (c) 2015 wenchaoios. All rights reserved.
+//  Created by dingwenchao on 1/3/16.
+//  Copyright © 2016 wenchaoios. All rights reserved.
 //
 
 #import "FSCalendarFlowLayout.h"
-#import "UIView+FSExtension.h"
 #import "FSCalendarDynamicHeader.h"
+#import "FSCalendar.h"
+#import "UIView+FSExtension.h"
+#import <objc/runtime.h>
 
 @implementation FSCalendarFlowLayout
 
@@ -28,43 +30,57 @@
 - (void)prepareLayout
 {
     [super prepareLayout];
-
-    CGFloat rowHeight = _calendar.preferedRowHeight;
     
-    if (!_calendar.floatingMode) {
+    
+    CGFloat rowHeight = self.calendar.preferredRowHeight;
+    
+    if (!self.calendar.floatingMode) {
         
         self.headerReferenceSize = CGSizeZero;
-        switch (_calendar.scope) {
+        
+        CGFloat padding = self.calendar.preferredWeekdayHeight*0.1;
+        if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+            padding = FSCalendarFloor(padding);
+            rowHeight = FSCalendarFloor(rowHeight*2)*0.5; // Round to nearest multiple of 0.5. e.g. (16.8->16.5),(16.2->16.0)
+        }
+        self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
+        switch (self.calendar.scope) {
+                
             case FSCalendarScopeMonth: {
-                self.itemSize = CGSizeMake(
-                                           self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
-                                           rowHeight
-                                          );
-                CGFloat padding = (self.collectionView.fs_height-rowHeight*6)/2;
-                self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
+                
+                CGSize itemSize = CGSizeMake(
+                                             self.collectionView.fs_width/7.0-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
+                                             rowHeight
+                                             );
+                self.itemSize = itemSize;
+                
                 break;
             }
             case FSCalendarScopeWeek: {
-                self.itemSize = CGSizeMake(self.collectionView.fs_width/7, rowHeight);
-                CGFloat padding = (self.collectionView.fs_height-rowHeight)/2;
-                self.sectionInset = UIEdgeInsetsMake(padding, 0, padding, 0);
+                
+                CGSize itemSize = CGSizeMake(self.collectionView.fs_width/7.0, rowHeight);
+                self.itemSize = itemSize;
+                
                 break;
+                
             }
-            default: {
-                break;
-            }
+                
         }
-        
     } else {
         
-        CGFloat headerHeight = _calendar.preferedWeekdayHeight*1.5+_calendar.preferedHeaderHeight;
+        CGFloat headerHeight = self.calendar.preferredWeekdayHeight*1.5+self.calendar.preferredHeaderHeight;
         self.headerReferenceSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
-        self.itemSize = CGSizeMake(
-                                   self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
-                                   rowHeight
-                                  );
+        
+        CGSize itemSize = CGSizeMake(
+                                     self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
+                                     rowHeight
+                                     );
+        self.itemSize = itemSize;
+        
+        self.sectionInset = UIEdgeInsetsZero;
         
     }
+    
 }
 
 @end

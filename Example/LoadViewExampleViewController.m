@@ -7,21 +7,20 @@
 //
 
 #import "LoadViewExampleViewController.h"
-#import "NSDate+FSExtension.h"
-#import "FSCalendarTestMacros.h"
 
 @implementation LoadViewExampleViewController
 
-- (void)dealloc
-{
-    NSLog(@"%@:%s", self.class.description, __FUNCTION__);
-}
+#pragma mark - Life cycle
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
+        self.images = @{@"2015/02/01":[UIImage imageNamed:@"icon_cat"],
+                        @"2015/02/05":[UIImage imageNamed:@"icon_footprint"],
+                        @"2015/02/20":[UIImage imageNamed:@"icon_cat"],
+                        @"2015/03/07":[UIImage imageNamed:@"icon_footprint"]};
     }
     return self;
 }
@@ -29,7 +28,7 @@
 - (void)loadView
 {
     UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    view.backgroundColor = [UIColor colorWithRed:.95 green:.95 blue:.95 alpha:1.0];
+    view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.view = view;
     
     // 450 for iPad and 300 for iPhone
@@ -38,64 +37,83 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
-//    calendar.scrollEnabled = NO;
-//    calendar.scope = FSCalendarScopeWeek;
-    [calendar selectDate:[NSDate fs_dateWithYear:2015 month:2 day:1]];
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    // Adjusts orientation
+    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
+    self.calendar.frame = CGRectMake(0, 64, self.view.frame.size.width, height);
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-#if 0
-    FSCalendarTestSelectDate
-#endif
+    [self.calendar selectDate:[self.calendar dateFromString:@"2015/02/03" format:@"yyyy/MM/dd"]];
+    /*
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.calendar setScope:FSCalendarScopeWeek animated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.calendar setScope:FSCalendarScopeMonth animated:YES];
+        });
+    });
+    */
+    
     
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s", __FUNCTION__);
+}
+
+#pragma mark - <FSCalendarDelegate>
+
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    NSLog(@"should select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
     return YES;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[date fs_stringWithFormat:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar.currentPage fs_stringWithFormat:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM YYYY"]);
 }
 
-//- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
-//{
-//    calendar.frame = CGRectMake(0, 64, self.view.bounds.size.width, [calendar sizeThatFits:CGSizeZero].height);
-//}
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+}
 
-//- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
-//{
-//    return [NSDate fs_dateWithYear:2015 month:1 day:1];
-//}
-//
-//- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
-//{
-//    return [NSDate fs_dateWithYear:2015 month:10 day:31];
-//}
+#pragma mark - <FSCalendarDataSource>
+
+/*
+- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
+{
+    return [calendar tomorrowOfDate:[NSDate date]];
+}
+*/
+
+/*
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+{
+    return [_calendar dateWithYear:2026 month:12 day:31];
+}
+*/
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
-    if (date.fs_day == 5) {
-        return [UIImage imageNamed:@"icon_footprint"];
-    }
-    if (date.fs_day == 10 || date.fs_day == 15) {
-        return [UIImage imageNamed:@"icon_cat"];
-    }
-    return nil;
+    return self.images[[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
 }
 
 @end

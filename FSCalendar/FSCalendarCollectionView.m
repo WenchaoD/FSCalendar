@@ -8,6 +8,12 @@
 
 #import "FSCalendarCollectionView.h"
 
+@interface FSCalendarCollectionView ()
+
+- (void)initialize;
+
+@end
+
 @implementation FSCalendarCollectionView
 
 @synthesize scrollsToTop = _scrollsToTop, contentInset = _contentInset;
@@ -16,8 +22,7 @@
 {
     self = [super initWithFrame:frame collectionViewLayout:layout];
     if (self) {
-        self.scrollsToTop = NO;
-        self.contentInset = UIEdgeInsetsZero;
+        [self initialize];
     }
     return self;
 }
@@ -26,10 +31,30 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.scrollsToTop = NO;
-        self.contentInset = UIEdgeInsetsZero;
+        [self initialize];
     }
     return self;
+}
+
+- (void)initialize
+{
+    self.scrollsToTop = NO;
+    self.contentInset = UIEdgeInsetsZero;
+#ifdef __IPHONE_9_0
+    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
+        self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
+#endif
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj != self.panGestureRecognizer) {
+            obj.enabled = NO;
+        }
+    }];
 }
 
 - (void)setContentInset:(UIEdgeInsets)contentInset

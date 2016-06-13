@@ -13,53 +13,56 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
+    let datesWithCat = ["20150505","20150605","20150705","20150805","20150905","20151005","20151105","20151205","20160106",
+    "20160206","20160306","20160406","20160506","20160606","20160706"]
     override func viewDidLoad() {
         super.viewDidLoad()
         calendar.scrollDirection = .Vertical
         calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
+        calendar.selectDate(calendar.dateWithYear(2015, month: 10, day: 10))
+//        calendar.allowsMultipleSelection = true
         
-        calendar.selectDate(NSDate())
-        
+        // Uncomment this to test month->week and week->month transition
         /*
-        calendar.allowsMultipleSelection = true
-        var dateArray = ["20160101", "20151115", "20151211", "20151201", "20151107", "20160105"]
-        for (var i = 0 ; i < dateArray.count; i++) {
-            let dateString =  dateArray[i] as NSString
-            let date = dateString.fs_dateWithFormat("yyyyMMdd");
-            calendar.selectDate(date)
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(2.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+            self.calendar.setScope(.Week, animated: true)
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(1.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+                self.calendar.setScope(.Month, animated: true)
+            }
         }
         */
 
     }
     
-    /*
-    func minimumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
-        return NSDate().fs_firstDayOfMonth
-    }
-    
-    func maximumDateForCalendar(calendar: FSCalendar!) -> NSDate! {
-        return NSDate().fs_dateByAddingMonths(3).fs_lastDayOfMonth
-    }
-    */
 
-    func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
-        return date.fs_day == 5
+    func minimumDateForCalendar(calendar: FSCalendar) -> NSDate {
+        return calendar.dateWithYear(2015, month: 1, day: 1)
+    }
+    
+    func maximumDateForCalendar(calendar: FSCalendar) -> NSDate {
+        return calendar.dateWithYear(2016, month: 10, day: 31)
+    }
+    
+    func calendar(calendar: FSCalendar, numberOfEventsForDate date: NSDate) -> Int {
+        let day = calendar.dayOfDate(date)
+        return day % 5 == 0 ? day/5 : 0;
     }
 
-    func calendarCurrentPageDidChange(calendar: FSCalendar!) {
-        NSLog("change page to \(calendar.currentPage.fs_string())")
+    func calendarCurrentPageDidChange(calendar: FSCalendar) {
+        NSLog("change page to \(calendar.stringFromDate(calendar.currentPage))")
     }
     
-    func calendar(calendar: FSCalendar!, didSelectDate date: NSDate!) {
-        NSLog("calendar did select date \(date.fs_string())")
+    func calendar(calendar: FSCalendar, didSelectDate date: NSDate) {
+        NSLog("calendar did select date \(calendar.stringFromDate(date))")
     }
     
-    func calendarCurrentScopeWillChange(calendar: FSCalendar!, animated: Bool) {
-        calendarHeightConstraint.constant = calendar.sizeThatFits(CGSizeZero).height
+    func calendar(calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        calendarHeightConstraint.constant = bounds.height
+        view.layoutIfNeeded()
     }
     
-    func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
-        return (date.fs_day == 13 || date.fs_day == 24) ? UIImage(named: "icon_cat") : nil
+    func calendar(calendar: FSCalendar, imageForDate date: NSDate) -> UIImage? {
+        return [13,24].containsObject(calendar.dayOfDate(date)) ? UIImage(named: "icon_cat") : nil
     }
     
 }

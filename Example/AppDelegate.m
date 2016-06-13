@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "FScalendar.h"
 
 @implementation AppDelegate
 

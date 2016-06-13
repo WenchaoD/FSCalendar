@@ -32,6 +32,28 @@ calendar.scrollDirection = .Horizontal
 
 ![fscalendar-horizontal](https://cloud.githubusercontent.com/assets/5186464/8448696/059e9acc-1ffd-11e5-8a95-aff6d871c6e1.gif)
 
+## Focus on selected date on ***week mode***
+![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
+
+* There are cases such as `Changing Scope`、`Changing month while showsPlaceholders is false` will trigger a bounds changing of FSCalendar, make sure the frame is adjusted in `-calendar:boundingRectWillChange:animated:`
+
+```objc
+// For autoLayout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    [self.view layoutIfNeeded];
+}
+```
+
+```objc
+// For manual layout
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+}
+```
+
 ### For week mode
 
 * Objective - c
@@ -60,7 +82,7 @@ _calendar.scope = FSCalendarScopeMonth; // By default
 calendar.scope = .Month 
 ```
 
-![fscalendarscope](https://cloud.githubusercontent.com/assets/5186464/9562222/b0318d40-4e98-11e5-97dc-1694cbd26a74.gif)
+![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
 
 ### To select more than one date
 
@@ -183,6 +205,22 @@ func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
 
 ![fscalendar---image](https://cloud.githubusercontent.com/assets/5186464/8449772/e94d3126-2006-11e5-8871-e4f8dbce81ea.png)
 
+#### You can hide top and bottom borders
+
+* Objective - c
+
+```objective-c
+calendar.clipsToBounds = YES
+```
+
+* Swift
+
+```swift
+calendar.clipsToBounds = true
+```
+
+![fscalendar---image](https://cloud.githubusercontent.com/assets/403372/13673426/3c207c16-e6d9-11e5-9c2a-111c4c15582f.png)
+
 #### There are left and right boundaries
 
 ```objective-c
@@ -267,6 +305,34 @@ func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
 ```
 
 * `fakeSubtitles` and `fakedSelectedDay` is only used for preview in Interface Builder
+
+
+
+## Indian
+```objective-c
+calendar.identifier = NSCalendarIdentifierIndian;
+```
+![indian](https://cloud.githubusercontent.com/assets/5186464/11204305/59158ab4-8d38-11e5-97d0-9af3e800c49a.jpg)
+
+## Persian
+```objective-c
+calendar.identifier = NSCalendarIdentifierPesian;
+```
+![persian](https://cloud.githubusercontent.com/assets/5186464/11204304/5914a0ea-8d38-11e5-8e6c-e354fe910290.jpg)
+
+## Hebrew
+```objective-c
+calendar.identifier = NSCalendarIdentifierHebrew;
+```
+![hebrew](https://cloud.githubusercontent.com/assets/5186464/11204307/59254760-8d38-11e5-83c4-e3b963c29206.jpg)
+
+## Islamic
+```objective-c
+calendar.identifier = NSCalendarIdentifierIslamic;
+```
+![islamic](https://cloud.githubusercontent.com/assets/5186464/11204306/592386c8-8d38-11e5-8dd5-68b99b3b83c1.jpg)
+
+
 
 ## Known issues
 
