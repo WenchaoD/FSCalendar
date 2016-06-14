@@ -145,6 +145,18 @@
     return self.appearance.titleWeekendColor;
 }
 
+#pragma mark - titleTodaySelectionColor
+
+- (void)setTitleTodaySelectionColor:(UIColor *)titleTodaySelectionColor
+{
+	self.appearance.titleTodaySelectionColor = titleTodaySelectionColor;
+}
+
+- (UIColor *)titleTodaySelectionColor
+{
+	return self.appearance.titleTodaySelectionColor;
+}
+
 #pragma mark - subtitleDefaultColor
 
 - (void)setSubtitleDefaultColor:(UIColor *)subtitleDefaultColor
@@ -203,6 +215,18 @@
 - (UIColor *)subtitleWeekendColor
 {
     return self.appearance.subtitleWeekendColor;
+}
+
+#pragma mark -  subtitleTodaySelectionColor
+
+- (void)setSubtitleTodaySelectionColor:(UIColor *)subtitleTodaySelectionColor
+{
+	self.appearance.subtitleTodaySelectionColor = subtitleTodaySelectionColor;
+}
+
+- (UIColor *)subtitleTodaySelectionColor
+{
+	return self.appearance.subtitleTodaySelectionColor;
 }
 
 #pragma mark -  selectionColor
