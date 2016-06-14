@@ -297,7 +297,7 @@
 - (void)setTitleTodaySelectionColor:(UIColor *)color
 {
 	if (color) {
-		_titleColors[@(FSCalendarCellStateWeekend)] = color;
+		_titleColors[@(FSCalendarCellStateToday|FSCalendarCellStateSelected)] = color;
 	} else {
 		[_titleColors removeObjectForKey:@(FSCalendarCellStateToday|FSCalendarCellStateSelected)];
 	}
