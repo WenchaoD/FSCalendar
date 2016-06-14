@@ -33,7 +33,7 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.showsPlaceholders = NO;
+//    calendar.showsPlaceholders = NO;
     calendar.showsScopeHandle = YES; // important
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];

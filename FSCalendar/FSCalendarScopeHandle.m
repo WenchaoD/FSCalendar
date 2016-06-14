@@ -105,4 +105,14 @@
     }
 }
 
+#pragma mark - <UIGestureRecognizerDelegate>
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(scopeHandleShouldBegin:)]) {
+        return [self.delegate scopeHandleShouldBegin:self];
+    }
+    return NO;
+}
+
 @end

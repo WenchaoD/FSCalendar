@@ -176,6 +176,11 @@
 
 #pragma mark - <FSCalendarScopeHandleDelegate>
 
+- (BOOL)scopeHandleShouldBegin:(FSCalendarScopeHandle *)scopeHandle
+{
+    return self.state == FSCalendarTransitionStateIdle;
+}
+
 - (void)scopeHandleDidBegin:(FSCalendarScopeHandle *)scopeHandle
 {
     self.state = FSCalendarTransitionStateInProgress;
@@ -249,6 +254,7 @@
             translation = MAX(minTranslation, translation);
             translation = MIN(0, translation);
             CGFloat progress = translation/minTranslation;
+            
             if (velocity >= 0) {
                 
                 [self performBackwardTransition:self.transition fromProgress:progress];
@@ -265,7 +271,7 @@
             translation = MAX(0, translation);
             translation = MIN(maxTranslation, translation);
             CGFloat progress = translation/maxTranslation;
-            
+
             if (velocity >= 0) {
                 
                 [self performForwardTransition:self.transition fromProgress:progress];
@@ -595,6 +601,7 @@
                     [obj.contentView.layer removeAnimationForKey:@"opacity"];
                 }];
                 self.pendingAttributes = nil;
+                self.state = FSCalendarTransitionStateIdle;
             }];
             
             if (self.calendar.delegate && ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)] || [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)])) {

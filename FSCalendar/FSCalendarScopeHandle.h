@@ -13,13 +13,13 @@
 @protocol FSCalendarScopeHandleDelegate <NSObject>
 
 @optional
+- (BOOL)scopeHandleShouldBegin:(FSCalendarScopeHandle *)scopeHandle;
 - (void)scopeHandleDidBegin:(FSCalendarScopeHandle *)scopeHandle;
 - (void)scopeHandleDidUpdate:(FSCalendarScopeHandle *)scopeHandle;;
 - (void)scopeHandleDidEnd:(FSCalendarScopeHandle *)scopeHandle;
-
 @end
 
-@interface FSCalendarScopeHandle : UIView
+@interface FSCalendarScopeHandle : UIView <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) UIPanGestureRecognizer *panGesture;
 @property (weak, nonatomic) id<FSCalendarScopeHandleDelegate> delegate;
