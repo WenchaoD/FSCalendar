@@ -511,8 +511,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [stickyHeader setNeedsLayout];
             NSArray *allKeys = [_stickyHeaderMapTable.dictionaryRepresentation allKeysForObject:stickyHeader];
             if (allKeys.count) {
-                [allKeys enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-                    [_stickyHeaderMapTable removeObjectForKey:indexPath];
+                [allKeys enumerateObjectsUsingBlock:^(NSIndexPath *itemIndexPath, NSUInteger idx, BOOL *stop) {
+                    [_stickyHeaderMapTable removeObjectForKey:itemIndexPath];
                 }];
             }
             [_stickyHeaderMapTable setObject:stickyHeader forKey:indexPath];

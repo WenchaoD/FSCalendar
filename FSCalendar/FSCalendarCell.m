@@ -205,14 +205,14 @@
             _shapeLayer.path = path;
         }
         
-        CGColorRef fillColor = self.colorForCellFill.CGColor;
-        if (!CGColorEqualToColor(_shapeLayer.fillColor, fillColor)) {
-            _shapeLayer.fillColor = fillColor;
+        CGColorRef cellFillColor = self.colorForCellFill.CGColor;
+        if (!CGColorEqualToColor(_shapeLayer.fillColor, cellFillColor)) {
+            _shapeLayer.fillColor = cellFillColor;
         }
         
-        CGColorRef borderColor = self.colorForCellBorder.CGColor;
-        if (!CGColorEqualToColor(_shapeLayer.strokeColor, borderColor)) {
-            _shapeLayer.strokeColor = borderColor;
+        CGColorRef cellBorderColor = self.colorForCellBorder.CGColor;
+        if (!CGColorEqualToColor(_shapeLayer.strokeColor, cellBorderColor)) {
+            _shapeLayer.strokeColor = cellBorderColor;
         }
         
     }
