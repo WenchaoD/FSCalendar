@@ -67,11 +67,11 @@
             _needsAdjustingViewFrame = NO;
             CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
             for (int i = 0; i < self.eventLayers.count; i++) {
-                CALayer *layer = self.eventLayers[i];
-                layer.hidden = i >= self.numberOfEvents;
-                if (!layer.hidden) {
-                    layer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
-                    layer.cornerRadius = diameter * 0.5;
+                CALayer *eventLayer = self.eventLayers[i];
+                eventLayer.hidden = i >= self.numberOfEvents;
+                if (!eventLayer.hidden) {
+                    eventLayer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
+                    eventLayer.cornerRadius = diameter * 0.5;
                 }
             }
         }
@@ -89,9 +89,9 @@
                         if (i < colors.count) {
                             lastColor = colors[i];
                         }
-                        CALayer *layer = self.eventLayers[i];
+                        CALayer *eventLayer = self.eventLayers[i];
                         UIImage *dotImage = [self dotImageWithColor:lastColor diameter:diameter];
-                        layer.contents = (id)dotImage.CGImage;
+                        eventLayer.contents = (id)dotImage.CGImage;
                     }
                 }
             }
