@@ -714,13 +714,24 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         [self didChangeValueForKey:@"currentPage"];
     }
+    
+    // Disable all inner gestures to avoid missing event
+    [scrollView.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj != scrollView.panGestureRecognizer) {
+            obj.enabled = NO;
+        }
+    }];
+    
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    scrollView.panGestureRecognizer.enabled = NO;
-    [scrollView.panGestureRecognizer setTranslation:CGPointZero inView:scrollView];
-    scrollView.panGestureRecognizer.enabled = YES;
+    // Recover all disabled gestures
+    [scrollView.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj != scrollView.panGestureRecognizer) {
+            obj.enabled = YES;
+        }
+    }];
 }
 
 #pragma mark - Notification
