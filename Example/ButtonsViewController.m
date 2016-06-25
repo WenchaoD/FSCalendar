@@ -41,29 +41,19 @@
     self.calendar = calendar;
     
     UIButton *previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    previousButton.frame = CGRectMake(5, 64+5, 90, 34);
+    previousButton.frame = CGRectMake(0, 64+5, 95, 34);
     previousButton.backgroundColor = [UIColor whiteColor];
-    [previousButton setTitleColor:self.calendar.appearance.headerTitleColor forState:UIControlStateNormal];
-    [previousButton setTitle:@"PREV" forState:UIControlStateNormal];
     previousButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    previousButton.layer.cornerRadius = 3;
-    previousButton.layer.borderWidth = 1;
-    previousButton.clipsToBounds = YES;
-    previousButton.layer.borderColor = self.calendar.appearance.headerTitleColor.CGColor;
+    [previousButton setImage:[UIImage imageNamed:@"icon_prev"] forState:UIControlStateNormal];
     [previousButton addTarget:self action:@selector(previousClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:previousButton];
     self.previousButton = previousButton;
     
     UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextButton.frame = CGRectMake(CGRectGetWidth(self.view.frame)-90-5, 64+5, 90, 34);
+    nextButton.frame = CGRectMake(CGRectGetWidth(self.view.frame)-95, 64+5, 95, 34);
     nextButton.backgroundColor = [UIColor whiteColor];
-    [nextButton setTitleColor:self.calendar.appearance.headerTitleColor forState:UIControlStateNormal];
-    [nextButton setTitle:@"NEXT" forState:UIControlStateNormal];
     nextButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    nextButton.layer.cornerRadius = 3;
-    nextButton.layer.borderWidth = 1;
-    nextButton.clipsToBounds = YES;
-    nextButton.layer.borderColor = self.calendar.appearance.headerTitleColor.CGColor;
+    [nextButton setImage:[UIImage imageNamed:@"icon_next"] forState:UIControlStateNormal];
     [nextButton addTarget:self action:@selector(nextClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextButton];
     self.nextButton = nextButton;
