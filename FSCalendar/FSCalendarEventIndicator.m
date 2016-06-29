@@ -36,7 +36,7 @@
         self.eventLayers = [NSMutableArray arrayWithCapacity:3];
         for (int i = 0; i < 3; i++) {
             CALayer *layer = [CALayer layer];
-            layer.masksToBounds = YES;
+            layer.backgroundColor = [UIColor clearColor].CGColor;
             [self.eventLayers addObject:layer];
             [self.contentView.layer addSublayer:layer];
         }
@@ -71,7 +71,6 @@
                 eventLayer.hidden = i >= self.numberOfEvents;
                 if (!eventLayer.hidden) {
                     eventLayer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
-                    eventLayer.cornerRadius = diameter * 0.5;
                 }
             }
         }
