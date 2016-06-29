@@ -85,7 +85,7 @@
                 NSArray *colors = (NSArray *)_color;
                 if (colors.count) {
                     UIColor *lastColor = colors.firstObject;
-                    for (int i = 0; i < self.numberOfEvents; i++) {
+                    for (int i = 0; i < self.eventLayers.count; i++) {
                         if (i < colors.count) {
                             lastColor = colors[i];
                         }
