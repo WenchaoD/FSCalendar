@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */; };
+		3026AEAA1D27E30B00AAAB52 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3026AEA91D27E30B00AAAB52 /* Media.xcassets */; };
 		3031F3EF1CDEDFC500C174D7 /* ScopeHandleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */; };
 		3065CA961CD31B81006C218D /* FSCalendarScopeHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 3065CA941CD31B81006C218D /* FSCalendarScopeHandle.h */; };
 		3065CA971CD31B81006C218D /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */; };
@@ -102,6 +103,7 @@
 /* Begin PBXFileReference section */
 		30024F931BD1015300B1C04C /* DelegateAppearanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelegateAppearanceViewController.h; sourceTree = SOURCE_ROOT; };
 		30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelegateAppearanceViewController.m; sourceTree = SOURCE_ROOT; };
+		3026AEA91D27E30B00AAAB52 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		3031F3ED1CDEDFC500C174D7 /* ScopeHandleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScopeHandleViewController.h; sourceTree = SOURCE_ROOT; };
 		3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScopeHandleViewController.m; sourceTree = SOURCE_ROOT; };
 		3065CA941CD31B81006C218D /* FSCalendarScopeHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarScopeHandle.h; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 		EE0D7FBE1B89C5D3003C287B = {
 			isa = PBXGroup;
 			children = (
+				3026AEA91D27E30B00AAAB52 /* Media.xcassets */,
 				30B0BABC1B8D8E22004B9476 /* FSCalendar */,
 				EE0D7FC91B89C5D3003C287B /* Example */,
 				EE638CF21B8A1F550006DD1A /* FSCalendarTests */,
@@ -506,6 +509,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3026AEAA1D27E30B00AAAB52 /* Media.xcassets in Resources */,
 				EE638CDA1B89DC0A0006DD1A /* Main_iPhone.storyboard in Resources */,
 				EE638CDC1B89DC230006DD1A /* Images.xcassets in Resources */,
 				EE638CD91B89DC0A0006DD1A /* Main_iPad.storyboard in Resources */,

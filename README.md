@@ -1,16 +1,17 @@
 
-![fscalendar](https://cloud.githubusercontent.com/assets/5186464/6655324/213a814a-cb36-11e4-9add-f80515a83291.png)<br/><br/>
+![logo](https://cloud.githubusercontent.com/assets/5186464/16540124/efc51f72-408b-11e6-934a-4e750b8b55bb.png)
+<br/><br/>
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/badge/platform-iOS%207%2B-blue.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Swift2 compatible](https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![QQ group](https://img.shields.io/badge/QQ%E7%BE%A4-323861692-orange.svg)](https://github.com/WenchaoD)
-[![Twitter](https://img.shields.io/badge/Twitter-@WenchaoD-55ACEE.svg)](https://twitter.com/WenchaoD)
-[![微博](https://img.shields.io/badge/%E5%BE%AE%E5%8D%9A-@WenchaoD-%23E6162D.svg)](http://weibo.com/WenchaoD)
+
 
 * 在您静静的离开之前，请确保点击了这个按钮<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"><br>
 * Before leaving quietly, please make sure you've taken good care of this button.<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"> 
+
+> 欢迎加入QQ群: 323861692
 
 
 # [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
@@ -21,6 +22,7 @@
 * [Installation](#installation)
 * [Advanced usage](#advanced_usage)
 * [Support me](#support)
+* [Contact](#contact)
 
 # <a id="screenshots"></a>Screenshots
 
@@ -169,6 +171,12 @@ self.calendar = calendar
 * If you found a bug ***with certain steps to reproduce***, open an issue.
 * If you need help about your code, use [stackoverflow](http://stackoverflow.com/questions/tagged/fscalendar) and tag `fscalendar`
 * If you want to contribute, submit a pull request. Make sure to follow [Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html)
+
+#<a id='contact'/></a> Contact
+* 微博： http://weibo.com/WenchaoD
+* Twitter：https://twitter.com/WenchaoD
+* QQ群：323861692
+
 
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
