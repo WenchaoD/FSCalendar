@@ -173,9 +173,12 @@ self.calendar = calendar
 * If you want to contribute, submit a pull request. Make sure to follow [Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html)
 
 #<a id='contact'/></a> Contact
-* 微博： http://weibo.com/WenchaoD
-* Twitter：https://twitter.com/WenchaoD
+* 微博： [**@WenchaoD**](http://weibo.com/WenchaoD)
+* Twitter：[**@WenchaoD**](https://twitter.com/WenchaoD)
 * QQ群：323861692
+
+> If your made a beautiful calendar with this library in your app, please take a screen shot and [@me](https://twitter.com/WenchaoD) in twitter. Your help really means a lot to me! <br/>
+> 如果你用这个库完成了一个外观漂亮的日历，希望你能将这个漂亮的日历截图在微博中[@我](http://weibo.com/WenchaoD)，十分感谢！
 
 
 # License
