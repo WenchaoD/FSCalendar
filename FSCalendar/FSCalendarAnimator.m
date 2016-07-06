@@ -495,7 +495,7 @@
     CGSize contentSize;
     switch (scope) {
         case FSCalendarScopeMonth: {
-            if (self.calendar.showsPlaceholders) {
+            if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillSixRows) {
                 contentSize = self.cachedMonthSize;
             } else {
                 contentSize = [self.calendar sizeThatFits:self.calendar.frame.size scope:scope];

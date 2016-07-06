@@ -69,7 +69,7 @@
 - (NSInteger)numberOfRowsInMonth:(NSDate *)month
 {
     if (!month) return 0;
-    if (self.showsPlaceholders) return 6;
+    if (self.placeholderType == FSCalendarPlaceholderTypeFillSixRows) return 6;
     NSDate *firstDayOfMonth = [self beginingOfMonthOfDate:month];
     NSInteger weekdayOfFirstDay = [self weekdayOfDate:firstDayOfMonth];
     NSInteger numberOfDaysInMonth = [self numberOfDatesInMonthOfDate:month];

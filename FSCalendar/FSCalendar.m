@@ -203,7 +203,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     _orientation = self.currentCalendarOrientation;
     _focusOnSingleSelectedDate = YES;
-    _showsPlaceholders = YES;
+    _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -302,7 +302,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _animator.cachedMonthSize = self.frame.size;
         }
         
-        BOOL needsAdjustingBoundingRect = self.scope == FSCalendarScopeMonth && !_showsPlaceholders && !self.hasValidateVisibleLayout;
+        BOOL needsAdjustingBoundingRect = (self.scope == FSCalendarScopeMonth) &&
+                                          (self.placeholderType != FSCalendarPlaceholderTypeFillSixRows) &&
+                                          !self.hasValidateVisibleLayout;
         
         if (_scopeHandle) {
             CGFloat scopeHandleHeight = self.animator.cachedMonthSize.height*0.08;
@@ -540,7 +542,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell.dateIsPlaceholder) {
-        if (!_showsPlaceholders) return NO;
+        if (_placeholderType == FSCalendarPlaceholderTypeNone) return NO;
         if ([self isDateInRange:cell.date]) {
             [self selectDate:cell.date scrollToDate:YES forPlaceholder:YES];
         } else if (![self isDate:cell.date equalToDate:_currentPage toCalendarUnit:FSCalendarUnitMonth]){
@@ -550,14 +552,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     NSDate *targetDate = [self dateForIndexPath:indexPath];
     if ([self isDateSelected:targetDate]) {
-        // 这个if几乎不会调用到
+        // Click on a selected date in multiple-selection mode
         if (self.allowsMultipleSelection) {
             if ([self collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath]) {
                 [collectionView deselectItemAtIndexPath:indexPath animated:YES];
                 [self collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
             }
         } else {
-            // 点击了已经选择的日期，直接触发事件
+            // Click on a selected date in single-selection mode
             [self didSelectDate:self.selectedDate];
         }
         return NO;
@@ -669,6 +671,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
+    NSLog(@"%f",targetContentOffset->x);
     if (!_pagingEnabled || !_scrollEnabled) {
         return;
     }
@@ -709,7 +712,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self willChangeValueForKey:@"currentPage"];
         _currentPage = targetPage;
         [self currentPageDidChange];
-        if (!_showsPlaceholders) {
+        if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows) {
             [self.animator performBoudingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
         }
         [self didChangeValueForKey:@"currentPage"];
@@ -1035,7 +1038,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             padding = FSCalendarFloor(padding);
         }
         if (!self.floatingMode) {
-            _preferredRowHeight = _showsPlaceholders ? (contentHeight-padding*2)/6.0 : FSCalendarStandardRowHeight;
+            _preferredRowHeight = (_placeholderType == FSCalendarPlaceholderTypeFillSixRows) ? (contentHeight-padding*2)/6.0 : FSCalendarStandardRowHeight;
         } else {
             _preferredRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
         }
@@ -1118,10 +1121,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
-- (void)setShowsPlaceholders:(BOOL)showsPlaceholders
+- (void)setPlaceholderType:(FSCalendarPlaceholderType)placeholderType
 {
-    if (_showsPlaceholders != showsPlaceholders) {
-        _showsPlaceholders = showsPlaceholders;
+    if (_placeholderType != placeholderType) {
+        _placeholderType = placeholderType;
         if (self.hasValidateVisibleLayout) {
             _preferredRowHeight = FSCalendarAutomaticDimension;
             [_collectionView reloadData];
@@ -1324,7 +1327,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 if (!_supressEvent && self.hasValidateVisibleLayout) {
                     _supressEvent = YES;
                     [self currentPageDidChange];
-                    if (!_showsPlaceholders && self.animator.state == FSCalendarTransitionStateIdle) {
+                    if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows && self.animator.state == FSCalendarTransitionStateIdle) {
                         [self.animator performBoudingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.33];
                     }
                     _supressEvent = NO;
@@ -1637,7 +1640,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)selectCounterpartDate:(NSDate *)date
 {
-    if (!_showsPlaceholders) return;
+    if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (!self.floatingMode) {
         [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
             if (cell.dateIsPlaceholder && [self isDate:cell.date equalToDate:date toCalendarUnit:FSCalendarUnitDay] && !cell.dateIsSelected) {
@@ -1651,7 +1654,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)deselectCounterpartDate:(NSDate *)date
 {
-    if (!_showsPlaceholders) return;
+    if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (self.floatingMode) {
         [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger index, BOOL *stop) {
             if (cell.dateIsPlaceholder && cell.dateIsSelected) {
@@ -1730,7 +1733,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month
 {
     NSInteger currentWeekday = [self weekdayOfDate:month];
-    NSInteger number = ((currentWeekday- _firstWeekday) + 7) % 7 ?: (7 * (!self.floatingMode&&self.showsPlaceholders));
+    NSInteger number = ((currentWeekday- _firstWeekday) + 7) % 7 ?: (7 * (!self.floatingMode&&(self.placeholderType == FSCalendarPlaceholderTypeFillSixRows)));
     return number;
 }
 

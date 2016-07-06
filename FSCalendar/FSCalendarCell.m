@@ -81,9 +81,9 @@
     CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
     diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
     _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
-                                        (titleHeight-diameter)/2,
-                                        diameter,
-                                        diameter);
+                                   (titleHeight-diameter)/2,
+                                   diameter,
+                                   diameter);
     _shapeLayer.borderWidth = 1.0;
     _shapeLayer.borderColor = [UIColor clearColor].CGColor;
     
@@ -137,10 +137,11 @@
 
 - (void)configureCell
 {
-    self.contentView.hidden = self.dateIsPlaceholder && !self.calendar.showsPlaceholders;
-    if (self.contentView.hidden) {
-        return;
-    }
+    self.contentView.hidden = self.dateIsPlaceholder &&
+                              self.calendar.placeholderType == FSCalendarPlaceholderTypeNone;
+    
+    if (self.contentView.hidden) return;
+    
     _titleLabel.text = self.title ?: [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
@@ -158,7 +159,7 @@
         if (_subtitle) {
             CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_titleLabel.font}].height;
             CGFloat subtitleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_subtitleLabel.font}].height;
-
+            
             CGFloat height = titleHeight + subtitleHeight;
             _titleLabel.frame = CGRectMake(0,
                                            (self.contentView.fs_height*5.0/6.0-height)*0.5+_appearance.titleVerticalOffset,
@@ -190,7 +191,7 @@
     
     UIColor *borderColor = self.colorForCellBorder;
     UIColor *fillColor = self.colorForCellFill;
-
+    
     BOOL shouldHideShapeLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor && !fillColor;
     
     if (_shapeLayer.hidden != shouldHideShapeLayer) {

@@ -45,6 +45,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
     FSCalendarUnitDay = NSCalendarUnitDay
 };
 
+typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
+    FSCalendarPlaceholderTypeNone          = 0,
+    FSCalendarPlaceholderTypeFillHeadTail  = 1,
+    FSCalendarPlaceholderTypeFillSixRows   = 2
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class FSCalendar;
@@ -279,6 +285,19 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScope scope;
 
 /**
+ * The placeholder type of FSCalendar. Default is FSCalendarPlaceholderTypeFillSixRows;
+ *
+ * e.g. To hide all placeholder of the calendar
+ *
+ *    calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+ */
+#if TARGET_INTERFACE_BUILDER
+@property (assign, nonatomic) IBInspectable NSInteger placeholderType;
+#else
+@property (assign, nonatomic) IBInspectable FSCalendarPlaceholderType placeholderType;
+#endif
+
+/**
  * The index of the first weekday of the calendar. Give a '2' to make Monday in the first column.
  */
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
@@ -317,11 +336,6 @@ IB_DESIGNABLE
  * A Boolean value that determines whether scoping animation is centered a visible selected date. Default is YES.
  */
 @property (assign, nonatomic) IBInspectable BOOL focusOnSingleSelectedDate;
-
-/**
- * A Boolean value that determines whether the calendar should show days out of month. Default is YES.
- */
-@property (assign, nonatomic) IBInspectable BOOL showsPlaceholders;
 
 /**
  * A Boolean value that determines whether the calendar should show a handle for control the scope. Default is NO;
@@ -624,6 +638,7 @@ IB_DESIGNABLE
  * These attributes and functions are deprecated.
  */
 @interface FSCalendar (Deprecated)
+@property (assign, nonatomic) IBInspectable BOOL showsPlaceholders FSCalendarDeprecated('placeholderType');
 @property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated('currentPage');
 @property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated('scrollDirection');
 - (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);

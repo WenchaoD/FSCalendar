@@ -13,6 +13,16 @@
 
 @implementation FSCalendar (Deprecated)
 
+- (void)setShowsPlaceholders:(BOOL)showsPlaceholders
+{
+    self.placeholderType = showsPlaceholders ? FSCalendarPlaceholderTypeFillSixRows : FSCalendarPlaceholderTypeNone;
+}
+
+- (BOOL)showsPlaceholders
+{
+    return self.placeholderType == FSCalendarPlaceholderTypeFillSixRows;
+}
+
 - (void)setCurrentMonth:(NSDate *)currentMonth
 {
     self.currentPage = currentMonth;

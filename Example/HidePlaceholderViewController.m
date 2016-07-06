@@ -39,7 +39,7 @@
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.showsPlaceholders = NO;
+    calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
     calendar.currentPage = [calendar dateFromString:@"2016-06" format:@"yyyy-MM"];
 //    calendar.firstWeekday = 2;
 //    calendar.scrollDirection = FSCalendarScrollDirectionVertical;

@@ -43,6 +43,7 @@
     calendar.allowsMultipleSelection = YES;
     calendar.firstWeekday = 2;
     calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
+    calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
     [self.view addSubview:calendar];
     self.calendar = calendar;
     
