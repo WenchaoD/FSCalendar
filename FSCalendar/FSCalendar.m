@@ -671,7 +671,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
 {
-    NSLog(@"%f",targetContentOffset->x);
     if (!_pagingEnabled || !_scrollEnabled) {
         return;
     }

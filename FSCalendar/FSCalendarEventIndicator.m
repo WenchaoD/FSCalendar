@@ -18,8 +18,6 @@
 @property (strong, nonatomic) NSMutableArray *eventLayers;
 @property (assign, nonatomic) BOOL needsInvalidatingColor;
 
-- (UIImage *)dotImageWithColor:(UIColor *)color diameter:(CGFloat)diameter;
-
 @end
 
 @implementation FSCalendarEventIndicator
@@ -71,15 +69,16 @@
                 eventLayer.hidden = i >= self.numberOfEvents;
                 if (!eventLayer.hidden) {
                     eventLayer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
+                    if (eventLayer.cornerRadius != diameter/2) {
+                        eventLayer.cornerRadius = diameter/2;
+                    }
                 }
             }
         }
         if (_needsInvalidatingColor) {
             _needsInvalidatingColor = NO;
-            CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
             if ([_color isKindOfClass:[UIColor class]]) {
-                UIImage *dotImage = [self dotImageWithColor:_color diameter:diameter];
-                [self.eventLayers makeObjectsPerformSelector:@selector(setContents:) withObject:(id)dotImage.CGImage];
+                [self.eventLayers makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:(id)[_color CGColor]];
             } else if ([_color isKindOfClass:[NSArray class]]) {
                 NSArray *colors = (NSArray *)_color;
                 if (colors.count) {
@@ -89,8 +88,7 @@
                             lastColor = colors[i];
                         }
                         CALayer *eventLayer = self.eventLayers[i];
-                        UIImage *dotImage = [self dotImageWithColor:lastColor diameter:diameter];
-                        eventLayer.contents = (id)dotImage.CGImage;
+                        eventLayer.backgroundColor = lastColor.CGColor;
                     }
                 }
             }
@@ -124,18 +122,6 @@
             [self setNeedsLayout];
         }
     }
-}
-
-- (UIImage *)dotImageWithColor:(UIColor *)color diameter:(CGFloat)diameter
-{
-    CGRect bounds = CGRectMake(0, 0, diameter, diameter);
-    UIGraphicsBeginImageContextWithOptions(bounds.size, NO, 0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, color.CGColor);
-    CGContextFillEllipseInRect(context, bounds);
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
 }
 
 @end
