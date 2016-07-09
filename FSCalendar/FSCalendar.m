@@ -634,13 +634,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (significantIndexPath) {
             currentPage = [self dateByAddingMonths:significantIndexPath.section toDate:[self beginingOfMonthOfDate:_minimumDate]];
         } else {
-            __block FSCalendarStickyHeader *significantHeader = nil;
-            [_stickyHeaderMapTable.dictionaryRepresentation.allValues enumerateObjectsUsingBlock:^(FSCalendarStickyHeader *header, NSUInteger idx, BOOL *stop) {
-                if (CGRectContainsPoint(header.frame, significantPoint)) {
-                    significantHeader = header;
-                    *stop = YES;
-                }
-            }];
+            FSCalendarStickyHeader *significantHeader = [_stickyHeaderMapTable.dictionaryRepresentation.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarStickyHeader * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+                return CGRectContainsPoint(evaluatedObject.frame, significantPoint);
+            }]].firstObject;
             if (significantHeader) {
                 currentPage = significantHeader.month;
             }
@@ -1641,13 +1637,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (!self.floatingMode) {
-        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-            if (cell.dateIsPlaceholder && [self isDate:cell.date equalToDate:date toCalendarUnit:FSCalendarUnitDay] && !cell.dateIsSelected) {
-                cell.dateIsSelected = YES;
-                [cell setNeedsLayout];
-                *stop = YES;
-            }
-        }];
+        FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return evaluatedObject.dateIsPlaceholder && [self isDate:evaluatedObject.date equalToDate:date toCalendarUnit:FSCalendarUnitDay] && !evaluatedObject.dateIsSelected;
+        }]].firstObject;
+        cell.dateIsSelected = YES;
+        [cell setNeedsLayout];
     }
 }
 
@@ -1655,22 +1649,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (self.floatingMode) {
-        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger index, BOOL *stop) {
-            if (cell.dateIsPlaceholder && cell.dateIsSelected) {
-                cell.dateIsSelected = NO;
-                [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
-                [cell setNeedsLayout];
-            }
-        }];
+        FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return evaluatedObject.dateIsPlaceholder && evaluatedObject.dateIsSelected;
+        }]].firstObject;
+        cell.dateIsSelected = NO;
+        [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
+        [cell setNeedsLayout];
     } else {
-        [_collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
-            if (cell.dateIsPlaceholder && [self isDate:cell.date equalToDate:date toCalendarUnit:FSCalendarUnitDay] && cell.dateIsSelected) {
-                cell.dateIsSelected = NO;
-                [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
-                [cell setNeedsLayout];
-                *stop = YES;
-            }
-        }];
+        FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return evaluatedObject.dateIsPlaceholder && [self isDate:evaluatedObject.date equalToDate:date toCalendarUnit:FSCalendarUnitDay] && evaluatedObject.dateIsSelected;
+        }]].firstObject;
+        cell.dateIsSelected = NO;
+        [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
+        [cell setNeedsLayout];
     }
 }
 
