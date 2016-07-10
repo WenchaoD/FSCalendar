@@ -40,9 +40,10 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
+//    calendar.placeholderType = FSCalendarPlaceholderTypeFillNone;
     calendar.currentPage = [calendar dateFromString:@"2016-06" format:@"yyyy-MM"];
-//    calendar.firstWeekday = 2;
-//    calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+    calendar.firstWeekday = 2;
+    calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     [self.view addSubview:calendar];
     self.calendar = calendar;
     

@@ -101,6 +101,8 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
+    _month = nil;
+    _date = nil;
     [CATransaction setDisableActions:YES];
     _shapeLayer.hidden = YES;
     [self.contentView.layer removeAnimationForKey:@"opacity"];
@@ -137,8 +139,29 @@
 
 - (void)configureCell
 {
-    self.contentView.hidden = self.dateIsPlaceholder &&
-                              self.calendar.placeholderType == FSCalendarPlaceholderTypeNone;
+    if (self.dateIsPlaceholder) {
+        if (self.calendar.placeholderType == FSCalendarPlaceholderTypeNone) {
+            self.contentView.hidden = YES;
+        } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
+            
+            NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
+            
+            NSInteger lineCount = [self.calendar numberOfRowsInMonth:self.month];
+            if (lineCount == 6) {
+                self.contentView.hidden = NO;
+            } else {
+                NSInteger currentLine = 0;
+                if (self.calendar.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
+                    currentLine = indexPath.item/7 + 1;
+                } else {
+                    currentLine = indexPath.item%6 + 1;
+                }
+                self.contentView.hidden = (currentLine>lineCount);
+            }
+        }
+    } else {
+        self.contentView.hidden = NO;
+    }
     
     if (self.contentView.hidden) return;
     

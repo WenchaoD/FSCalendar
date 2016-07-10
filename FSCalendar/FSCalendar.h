@@ -342,7 +342,6 @@ IB_DESIGNABLE
  */
 @property (assign, nonatomic) IBInspectable BOOL showsScopeHandle;
 
-
 /**
  * The multiplier of line height while paging enabled is NO. Default is 1.0;
  */
