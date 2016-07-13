@@ -285,6 +285,15 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScope scope;
 
 /**
+ * A UIPanGestureRecognizer instance which enables the control of scope on the whole day-area. Not available if the scrollDirection is vertical
+ *
+ * e.g.
+ *
+ *    calendar.scopeGesture.enabled = YES;
+ */
+@property (readonly, nonatomic) UIPanGestureRecognizer *scopeGesture;
+
+/**
  * The placeholder type of FSCalendar. Default is FSCalendarPlaceholderTypeFillSixRows;
  *
  * e.g. To hide all placeholder of the calendar

@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @end
 
-@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate, FSCalendarScopeHandleDelegate>
+@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSMutableArray *_selectedDates;
 }
@@ -259,6 +259,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.animator.calendar = self;
     self.animator.collectionView = self.collectionView;
     self.animator.collectionViewLayout = self.collectionViewLayout;
+    
+    self.showsScopeHandle = YES;
+    
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.scopeHandle action:@selector(handlePan:)];
+    panGesture.delegate = self.animator;
+    panGesture.minimumNumberOfTouches = 1;
+    panGesture.maximumNumberOfTouches = 2;
+    panGesture.enabled = NO;
+    [self.daysContainer addGestureRecognizer:panGesture];
+    _scopeGesture = panGesture;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
@@ -1502,7 +1512,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (self.showsScopeHandle) {
             if (!_scopeHandle) {
                 FSCalendarScopeHandle *handle = [[FSCalendarScopeHandle alloc] initWithFrame:CGRectZero];
-                handle.delegate = self.animator;
+                handle.calendar = self;
                 [self addSubview:handle];
                 self.scopeHandle = handle;
                 _needsAdjustingViewFrame = YES;

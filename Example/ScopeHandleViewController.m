@@ -34,6 +34,7 @@
     calendar.dataSource = self;
     calendar.delegate = self;
 //    calendar.showsPlaceholders = NO;
+    calendar.scopeGesture.enabled = YES;
     calendar.showsScopeHandle = YES; // important
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];

@@ -18,6 +18,7 @@
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarFlowLayout.h"
 #import "FSCalendarScopeHandle.h"
+#import "FSCalendarAnimator.h"
 
 @interface FSCalendar (Dynamic)
 
@@ -25,6 +26,7 @@
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
 @property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
+@property (readonly, nonatomic) FSCalendarAnimator *animator;
 @property (readonly, nonatomic) CAShapeLayer *maskLayer;
 @property (readonly, nonatomic) NSArray *weekdays;
 @property (readonly, nonatomic) BOOL ibEditing;
