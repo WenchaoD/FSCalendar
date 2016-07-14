@@ -81,7 +81,7 @@
     if (self.state != FSCalendarTransitionStateIdle) {
         return NO;
     }
-    if (gestureRecognizer == self.calendar.scopeGesture && self.calendar.scrollDirection == UICollectionViewScrollDirectionVertical) {
+    if (gestureRecognizer == self.calendar.scopeGesture && self.calendar.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
         return NO;
     }
     if (gestureRecognizer == self.calendar.scopeHandle.panGesture) {
