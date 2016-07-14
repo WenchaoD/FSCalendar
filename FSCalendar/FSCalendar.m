@@ -260,8 +260,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.animator.collectionView = self.collectionView;
     self.animator.collectionViewLayout = self.collectionViewLayout;
     
-    self.showsScopeHandle = YES;
-    
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.scopeHandle action:@selector(handlePan:)];
     panGesture.delegate = self.animator;
     panGesture.minimumNumberOfTouches = 1;

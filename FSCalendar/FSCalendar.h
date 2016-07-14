@@ -301,9 +301,9 @@ IB_DESIGNABLE
  *    calendar.placeholderType = FSCalendarPlaceholderTypeNone;
  */
 #if TARGET_INTERFACE_BUILDER
-@property (assign, nonatomic) IBInspectable NSInteger placeholderType;
+@property (assign, nonatomic) IBInspectable NSUInteger placeholderType;
 #else
-@property (assign, nonatomic) IBInspectable FSCalendarPlaceholderType placeholderType;
+@property (assign, nonatomic) FSCalendarPlaceholderType placeholderType;
 #endif
 
 /**
