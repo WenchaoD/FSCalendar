@@ -135,7 +135,6 @@
             CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
             translation = MAX(minTranslation, translation);
             translation = MIN(0, translation);
-            NSLog(@"%f",translation);
             CGFloat progress = translation/minTranslation;
             [CATransaction begin];
             [CATransaction setDisableActions:YES];

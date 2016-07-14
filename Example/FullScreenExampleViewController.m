@@ -63,7 +63,6 @@
     [super viewDidLoad];
     self.minimumDate = [self.calendar dateWithYear:2016 month:2 day:1];
     self.maximumDate = [self.calendar dateWithYear:2018 month:4 day:1];
-    
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.minimumDate = [self.calendar dateWithYear:2015 month:2 day:1];

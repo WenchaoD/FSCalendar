@@ -80,6 +80,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
+@property (assign, nonatomic) BOOL                       hasRequestedBoundingDates;
 @property (assign, nonatomic) BOOL                       supressEvent;
 @property (assign, nonatomic) CGFloat                    preferredHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferredWeekdayHeight;
@@ -130,6 +131,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)reloadVisibleCells;
+
+- (void)requestBoundingDatesIfNecessary;
 
 @end
 
@@ -471,6 +474,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    [self requestBoundingDatesIfNecessary];
     if (self.animator.transition == FSCalendarTransitionWeekToMonth) {
         return [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
     }
@@ -797,6 +801,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setToday:(NSDate *)today
 {
+    [self requestBoundingDatesIfNecessary];
     if ([self daysFromDate:_minimumDate toDate:today] < 0) {
         today = _minimumDate.copy;
     } else if ([self daysFromDate:_maximumDate toDate:today] > 0) {
@@ -831,6 +836,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated
 {
+    [self requestBoundingDatesIfNecessary];
     if ([self daysFromDate:_minimumDate toDate:currentPage] < 0) {
         currentPage = _minimumDate.copy;
     } else if ([self daysFromDate:_maximumDate toDate:currentPage] > 0) {
@@ -1163,6 +1169,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!self.allowsSelection) {
         return;
     }
+    [self requestBoundingDatesIfNecessary];
     if ([self daysFromDate:_minimumDate toDate:date] < 0) {
         date = _minimumDate.copy;
     } else if ([self daysFromDate:_maximumDate toDate:date] > 0) {
@@ -1215,7 +1222,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (self.selectedDate && !self.allowsMultipleSelection) {
             [self deselectDate:self.selectedDate];
         }
-        [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
@@ -1990,11 +1997,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
         maximumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource maximumDateForCalendar:self]];
     }
-    if (!_maximumDate) {
+    if (!maximumDate) {
         maximumDate = [self dateWithYear:2099 month:12 day:31];
     }
     return maximumDate;
 #endif
+}
+
+- (void)requestBoundingDatesIfNecessary
+{
+    if (!_hasRequestedBoundingDates) {
+        _hasRequestedBoundingDates = YES;
+        _minimumDate = self.minimumDateForCalendar;
+        _maximumDate = self.maximumDateForCalendar;
+    }
 }
 
 @end
