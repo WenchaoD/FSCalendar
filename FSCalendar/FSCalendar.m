@@ -471,6 +471,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    static BOOL first = YES;
+    if (first) {
+        first = NO;
+        _minimumDate = self.minimumDateForCalendar;
+        _maximumDate = self.maximumDateForCalendar;
+    }
     if (self.animator.transition == FSCalendarTransitionWeekToMonth) {
         return [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
     }
@@ -876,15 +882,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _weekdayHeight = weekdayHeight;
         _needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
-    }
-}
-
-- (void)setDataSource:(id<FSCalendarDataSource>)dataSource
-{
-    if (![_dataSource isEqual:dataSource]) {
-        _dataSource = dataSource;
-        _minimumDate = self.minimumDateForCalendar;
-        _maximumDate = self.maximumDateForCalendar;
     }
 }
 
@@ -1979,13 +1976,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #if TARGET_INTERFACE_BUILDER
     return [NSDate date];
 #else
+    NSDate *minimumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
-        _minimumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource minimumDateForCalendar:self]];
+        minimumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource minimumDateForCalendar:self]];
     }
-    if (!_minimumDate) {
-        _minimumDate = [self dateWithYear:1970 month:1 day:1];
+    if (!minimumDate) {
+        minimumDate = [self dateWithYear:1970 month:1 day:1];
     }
-    return _minimumDate;
+    return minimumDate;
 #endif
 }
 
@@ -1994,13 +1992,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #if TARGET_INTERFACE_BUILDER
     return [self dateByAddingMonths:4 toDate:[NSDate date]];
 #else
+    NSDate *maximumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
-        _maximumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource maximumDateForCalendar:self]];
+        maximumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource maximumDateForCalendar:self]];
     }
     if (!_maximumDate) {
-        _maximumDate = [self dateWithYear:2099 month:12 day:31];
+        maximumDate = [self dateWithYear:2099 month:12 day:31];
     }
-    return _maximumDate;
+    return maximumDate;
 #endif
 }
 

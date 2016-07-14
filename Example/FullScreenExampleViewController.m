@@ -13,6 +13,10 @@
 @property (strong, nonatomic) NSCalendar *lunarCalendar;
 @property (strong, nonatomic) NSArray *lunarChars;
 
+
+@property (strong, nonatomic) NSDate *minimumDate;
+@property (strong, nonatomic) NSDate *maximumDate;
+
 @end
 
 @implementation FullScreenExampleViewController
@@ -55,6 +59,18 @@
     self.navigationItem.rightBarButtonItems = @[lunarItem, todayItem];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.minimumDate = [self.calendar dateWithYear:2016 month:2 day:1];
+    self.maximumDate = [self.calendar dateWithYear:2018 month:4 day:1];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.minimumDate = [self.calendar dateWithYear:2015 month:2 day:1];
+        self.maximumDate = [self.calendar dateWithYear:2015 month:6 day:1];
+        [self.calendar reloadData];
+    });
+}
+
 - (void)dealloc
 {
     NSLog(@"%s",__FUNCTION__);
@@ -77,17 +93,15 @@
     _calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, self.view.bounds.size.height-CGRectGetMaxY(self.navigationController.navigationBar.frame));
 }
 
-/*
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [NSDate date];
+    return self.minimumDate;
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [calendar dateByAddingMonths:3 toDate:[NSDate date]];
+    return self.maximumDate;
 }
-*/
 
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
