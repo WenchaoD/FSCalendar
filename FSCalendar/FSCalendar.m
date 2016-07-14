@@ -260,7 +260,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.animator.collectionView = self.collectionView;
     self.animator.collectionViewLayout = self.collectionViewLayout;
     
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.scopeHandle action:@selector(handlePan:)];
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.animator action:@selector(handlePan:)];
     panGesture.delegate = self.animator;
     panGesture.minimumNumberOfTouches = 1;
     panGesture.maximumNumberOfTouches = 2;
@@ -471,12 +471,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    static BOOL first = YES;
-    if (first) {
-        first = NO;
-        _minimumDate = self.minimumDateForCalendar;
-        _maximumDate = self.maximumDateForCalendar;
-    }
     if (self.animator.transition == FSCalendarTransitionWeekToMonth) {
         return [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
     }
@@ -1079,8 +1073,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [_collectionView reloadData];
         [_header.collectionView reloadData];
         [self setNeedsLayout];
-        
-    } else {
+    }
+    else {
         [self reloadVisibleCells];
     }
     
