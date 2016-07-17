@@ -35,6 +35,7 @@
 @property (readonly, nonatomic) CGFloat preferredHeaderHeight;
 @property (readonly, nonatomic) CGFloat preferredWeekdayHeight;
 @property (readonly, nonatomic) CGFloat preferredRowHeight;
+@property (readonly, nonatomic) CGFloat preferredPadding;
 @property (readonly, nonatomic) UIView *bottomBorder;
 
 @property (readonly, nonatomic) NSCalendar *calendar;
