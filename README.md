@@ -39,7 +39,7 @@
 ![fscalendar-showsplaceholder](https://cloud.githubusercontent.com/assets/5186464/13727902/21a90042-e940-11e5-9b9f-392f38cf007d.gif)
 
 ## Scope gesture
-![scopegesture](https://cloud.githubusercontent.com/assets/5186464/16909131/1a442ab2-4d03-11e6-870d-0602bfe17d78.png)
+![scopegesture](https://cloud.githubusercontent.com/assets/5186464/16909556/276fa8a8-4d06-11e6-8092-587952edb395.gif)
 
 > FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
 
