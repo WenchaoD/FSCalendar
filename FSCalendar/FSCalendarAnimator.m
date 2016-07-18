@@ -8,6 +8,7 @@
 
 #import "FSCalendarAnimator.h"
 #import "UIView+FSExtension.h"
+#import "FSCalendarDynamicHeader.h"
 #import <objc/runtime.h>
 
 @interface FSCalendarAnimator ()
@@ -29,6 +30,10 @@
 - (void)performAlphaAnimationWithProgress:(CGFloat)progress;
 - (void)performPathAnimationWithProgress:(CGFloat)progress;
 
+- (void)scopeTransitionDidBegin:(UIPanGestureRecognizer *)panGesture;
+- (void)scopeTransitionDidUpdate:(UIPanGestureRecognizer *)panGesture;
+- (void)scopeTransitionDidEnd:(UIPanGestureRecognizer *)panGesture;
+
 - (CGRect)boundingRectForScope:(FSCalendarScope)scope;
 
 - (void)boundingRectWillChange:(CGRect)targetBounds animated:(BOOL)animated;
@@ -36,6 +41,171 @@
 @end
 
 @implementation FSCalendarAnimator
+
+
+#pragma mark - Target actions
+
+- (void)handlePan:(UIPanGestureRecognizer *)sender
+{
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan: {
+            [self scopeTransitionDidBegin:sender];
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            [self scopeTransitionDidUpdate:sender];
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            [self scopeTransitionDidEnd:sender];
+            break;
+        }
+        case UIGestureRecognizerStateCancelled: {
+            [self scopeTransitionDidEnd:sender];
+            break;
+        }
+        case UIGestureRecognizerStateFailed: {
+            [self scopeTransitionDidEnd:sender];
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+}
+
+#pragma mark - <UIGestureRecognizerDelegate>
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (self.state != FSCalendarTransitionStateIdle) {
+        return NO;
+    }
+    if (gestureRecognizer == self.calendar.scopeGesture && self.calendar.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
+        return NO;
+    }
+    if (gestureRecognizer == self.calendar.scopeHandle.panGesture) {
+        return YES;
+    }
+    if (gestureRecognizer == self.calendar.scopeGesture) {
+        CGPoint velocity = [self.calendar.collectionView.panGestureRecognizer velocityInView:self.calendar.collectionView];
+        BOOL shouldStart = (ABS(velocity.x)<ABS(velocity.y)) && !self.calendar.collectionView.decelerating;
+        if (shouldStart) {
+            self.calendar.collectionView.panGestureRecognizer.enabled = NO;
+            self.calendar.collectionView.panGestureRecognizer.enabled = YES;
+        }
+        return shouldStart;
+    }
+    return NO;
+}
+
+- (void)scopeTransitionDidBegin:(UIPanGestureRecognizer *)panGesture
+{
+    self.state = FSCalendarTransitionStateInProgress;
+    self.transition = self.calendar.scope == FSCalendarScopeMonth ? FSCalendarTransitionMonthToWeek : FSCalendarTransitionWeekToMonth;
+    self.pendingAttributes = self.transitionAttributes;
+    self.lastTranslation = [panGesture translationInView:panGesture.view].y;
+    
+    if (self.transition == FSCalendarTransitionWeekToMonth) {
+        
+        self.calendarScope = FSCalendarScopeMonth;
+        self.calendarCurrentPage = self.pendingAttributes.targetPage;
+        self.calendar.contentView.clipsToBounds = YES;
+        
+        self.calendar.contentView.fs_height = CGRectGetHeight(self.pendingAttributes.targetBounds)-self.calendar.scopeHandle.fs_height;
+        self.collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
+        self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
+        self.calendar.needsAdjustingMonthPosition = YES;
+        self.calendar.needsAdjustingViewFrame = YES;
+        [self.calendar setNeedsLayout];
+        [self.collectionView reloadData];
+        [self.calendar.header reloadData];
+        [self.calendar layoutIfNeeded];
+        
+        self.collectionView.fs_top = -self.pendingAttributes.focusedRowNumber*self.calendar.preferredRowHeight;
+        
+    }
+}
+
+- (void)scopeTransitionDidUpdate:(UIPanGestureRecognizer *)panGesture
+{
+    CGFloat translation = [panGesture translationInView:panGesture.view].y;
+    switch (self.transition) {
+        case FSCalendarTransitionMonthToWeek: {
+            CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+            translation = MAX(minTranslation, translation);
+            translation = MIN(0, translation);
+            CGFloat progress = translation/minTranslation;
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self performAlphaAnimationWithProgress:progress];
+            [self performPathAnimationWithProgress:progress];
+            [CATransaction commit];
+            break;
+        }
+        case FSCalendarTransitionWeekToMonth: {
+            CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+            translation = MIN(maxTranslation, translation);
+            translation = MAX(0, translation);
+            CGFloat progress = translation/maxTranslation;
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self performAlphaAnimationWithProgress:progress];
+            [self performPathAnimationWithProgress:progress];
+            [CATransaction commit];
+            break;
+        }
+        default:
+            break;
+    }
+    self.lastTranslation = translation;
+}
+
+- (void)scopeTransitionDidEnd:(UIPanGestureRecognizer *)panGesture
+{
+    CGFloat translation = [panGesture translationInView:panGesture.view].y;
+    CGFloat velocity = [panGesture velocityInView:panGesture.view].y;
+    switch (self.transition) {
+        case FSCalendarTransitionMonthToWeek: {
+            
+            CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+            translation = MAX(minTranslation, translation);
+            translation = MIN(0, translation);
+            CGFloat progress = translation/minTranslation;
+            
+            if (velocity >= 0) {
+                
+                [self performBackwardTransition:self.transition fromProgress:progress];
+                
+            } else {
+                
+                [self performForwardTransition:self.transition fromProgress:progress];
+                
+            }
+            break;
+        }
+        case FSCalendarTransitionWeekToMonth: {
+            CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+            translation = MAX(0, translation);
+            translation = MIN(maxTranslation, translation);
+            CGFloat progress = translation/maxTranslation;
+
+            if (velocity >= 0) {
+                
+                [self performForwardTransition:self.transition fromProgress:progress];
+                
+            } else {
+                
+                [self performBackwardTransition:self.transition fromProgress:progress];
+                
+            }
+            
+        }
+        default:
+            break;
+    }
+    
+}
 
 #pragma mark - Public methods
 
@@ -70,7 +240,7 @@
                 [self performPathAnimationFrom:self.calendar.maskLayer.path to:attr.targetMask.CGPath duration:duration completion:^{
                     [self performTransitionCompletionAnimated:animated];
                 }];
-
+                
                 if (self.calendar.delegate && ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)] || [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)])) {
                     [UIView beginAnimations:nil context:nil];
                     [UIView setAnimationsEnabled:YES];
@@ -173,122 +343,6 @@
         
     }
 }
-
-#pragma mark - <FSCalendarScopeHandleDelegate>
-
-- (BOOL)scopeHandleShouldBegin:(FSCalendarScopeHandle *)scopeHandle
-{
-    return self.state == FSCalendarTransitionStateIdle;
-}
-
-- (void)scopeHandleDidBegin:(FSCalendarScopeHandle *)scopeHandle
-{
-    self.state = FSCalendarTransitionStateInProgress;
-    self.transition = self.calendar.scope == FSCalendarScopeMonth ? FSCalendarTransitionMonthToWeek : FSCalendarTransitionWeekToMonth;
-    self.pendingAttributes = self.transitionAttributes;
-    self.lastTranslation = [scopeHandle.panGesture translationInView:scopeHandle].y;
-    
-    if (self.transition == FSCalendarTransitionWeekToMonth) {
-        
-        self.calendarScope = FSCalendarScopeMonth;
-        self.calendarCurrentPage = self.pendingAttributes.targetPage;
-        self.calendar.contentView.clipsToBounds = YES;
-        
-        self.calendar.contentView.fs_height = CGRectGetHeight(self.pendingAttributes.targetBounds)-self.calendar.scopeHandle.fs_height;
-        self.collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
-        self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
-        self.calendar.needsAdjustingMonthPosition = YES;
-        self.calendar.needsAdjustingViewFrame = YES;
-        [self.calendar setNeedsLayout];
-        [self.collectionView reloadData];
-        [self.calendar.header reloadData];
-        [self.calendar layoutIfNeeded];
-        
-        self.collectionView.fs_top = -self.pendingAttributes.focusedRowNumber*self.calendar.preferredRowHeight;
-        
-    }
-}
-
-- (void)scopeHandleDidUpdate:(FSCalendarScopeHandle *)scopeHandle
-{
-    CGFloat translation = [scopeHandle.panGesture translationInView:scopeHandle].y;
-    switch (self.transition) {
-        case FSCalendarTransitionMonthToWeek: {
-            CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MAX(minTranslation, translation);
-            translation = MIN(0, translation);
-            CGFloat progress = translation/minTranslation;
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            [self performAlphaAnimationWithProgress:progress];
-            [self performPathAnimationWithProgress:progress];
-            [CATransaction commit];
-            break;
-        }
-        case FSCalendarTransitionWeekToMonth: {
-            CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MIN(maxTranslation, translation);
-            translation = MAX(0, translation);
-            CGFloat progress = translation/maxTranslation;
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
-            [self performAlphaAnimationWithProgress:progress];
-            [self performPathAnimationWithProgress:progress];
-            [CATransaction commit];
-            break;
-        }
-        default:
-            break;
-    }
-    self.lastTranslation = translation;
-}
-
-- (void)scopeHandleDidEnd:(FSCalendarScopeHandle *)scopeHandle
-{
-    CGFloat translation = [scopeHandle.panGesture translationInView:scopeHandle].y;
-    CGFloat velocity = [scopeHandle.panGesture velocityInView:scopeHandle].y;
-    switch (self.transition) {
-        case FSCalendarTransitionMonthToWeek: {
-            
-            CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MAX(minTranslation, translation);
-            translation = MIN(0, translation);
-            CGFloat progress = translation/minTranslation;
-            
-            if (velocity >= 0) {
-                
-                [self performBackwardTransition:self.transition fromProgress:progress];
-                
-            } else {
-                
-                [self performForwardTransition:self.transition fromProgress:progress];
-                
-            }
-            break;
-        }
-        case FSCalendarTransitionWeekToMonth: {
-            CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MAX(0, translation);
-            translation = MIN(maxTranslation, translation);
-            CGFloat progress = translation/maxTranslation;
-
-            if (velocity >= 0) {
-                
-                [self performForwardTransition:self.transition fromProgress:progress];
-                
-            } else {
-                
-                [self performBackwardTransition:self.transition fromProgress:progress];
-                
-            }
-            
-        }
-        default:
-            break;
-    }
-    
-}
-
 
 #pragma mark - Private properties
 
@@ -730,7 +784,6 @@
 
 
 @implementation FSCalendarTransitionAttributes
-
 
 @end
 

@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @end
 
-@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate, FSCalendarScopeHandleDelegate>
+@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     NSMutableArray *_selectedDates;
 }
@@ -80,10 +80,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
+@property (assign, nonatomic) BOOL                       hasRequestedBoundingDates;
 @property (assign, nonatomic) BOOL                       supressEvent;
 @property (assign, nonatomic) CGFloat                    preferredHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferredWeekdayHeight;
 @property (assign, nonatomic) CGFloat                    preferredRowHeight;
+@property (assign, nonatomic) CGFloat                    preferredPadding;
 @property (assign, nonatomic) FSCalendarOrientation      orientation;
 
 @property (readonly, nonatomic) BOOL floatingMode;
@@ -130,6 +132,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)reloadVisibleCells;
+
+- (void)requestBoundingDatesIfNecessary;
 
 @end
 
@@ -187,6 +191,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredHeaderHeight  = FSCalendarAutomaticDimension;
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
+    _preferredPadding       = FSCalendarAutomaticDimension;
     _lineHeightMultiplier    = 1.0;
     
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
@@ -260,6 +265,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.animator.collectionView = self.collectionView;
     self.animator.collectionViewLayout = self.collectionViewLayout;
     
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.animator action:@selector(handlePan:)];
+    panGesture.delegate = self.animator;
+    panGesture.minimumNumberOfTouches = 1;
+    panGesture.maximumNumberOfTouches = 2;
+    panGesture.enabled = NO;
+    [self.daysContainer addGestureRecognizer:panGesture];
+    _scopeGesture = panGesture;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
 }
@@ -320,7 +333,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat rowHeight = self.preferredRowHeight;
         CGFloat weekdayWidth = self.fs_width/_weekdays.count;
-        CGFloat padding = weekdayHeight*0.1;
+        CGFloat padding = self.preferredPadding;
         if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
             padding = FSCalendarFloor(padding);
             rowHeight = FSCalendarFloor(rowHeight*2)*0.5; // Round to nearest multiple of 0.5. e.g. (16.8->16.5),(16.2->16.0)
@@ -463,6 +476,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    [self requestBoundingDatesIfNecessary];
     if (self.animator.transition == FSCalendarTransitionWeekToMonth) {
         return [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
     }
@@ -789,6 +803,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setToday:(NSDate *)today
 {
+    [self requestBoundingDatesIfNecessary];
     if ([self daysFromDate:_minimumDate toDate:today] < 0) {
         today = _minimumDate.copy;
     } else if ([self daysFromDate:_maximumDate toDate:today] > 0) {
@@ -823,6 +838,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated
 {
+    [self requestBoundingDatesIfNecessary];
     if ([self daysFromDate:_minimumDate toDate:currentPage] < 0) {
         currentPage = _minimumDate.copy;
     } else if ([self daysFromDate:_maximumDate toDate:currentPage] > 0) {
@@ -868,15 +884,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _weekdayHeight = weekdayHeight;
         _needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
-    }
-}
-
-- (void)setDataSource:(id<FSCalendarDataSource>)dataSource
-{
-    if (![_dataSource isEqual:dataSource]) {
-        _dataSource = dataSource;
-        _minimumDate = self.minimumDateForCalendar;
-        _maximumDate = self.maximumDateForCalendar;
     }
 }
 
@@ -967,6 +974,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredWeekdayHeight = FSCalendarAutomaticDimension;
         _preferredRowHeight = FSCalendarAutomaticDimension;
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
+        _preferredPadding = FSCalendarAutomaticDimension;
         [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
@@ -1028,7 +1036,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat headerHeight = self.preferredHeaderHeight;
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat contentHeight = self.animator.cachedMonthSize.height-headerHeight-weekdayHeight-_scopeHandle.fs_height;
-        CGFloat padding = weekdayHeight*0.1;
+        CGFloat padding = self.preferredPadding;
         if (self.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
             padding = FSCalendarFloor(padding);
         }
@@ -1039,6 +1047,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
     }
     return _preferredRowHeight;
+}
+
+- (CGFloat)preferredPadding
+{
+    if (_preferredPadding == FSCalendarAutomaticDimension) {
+        if (!self.floatingMode) {
+            CGFloat divider = FSCalendarStandardMonthlyPageHeight;
+            CGFloat contentHeight = self.animator.cachedMonthSize.height*(1-_showsScopeHandle*0.08);
+            _preferredPadding = (FSCalendarStandardWeekdayHeight/divider)*contentHeight*0.1;
+        } else {
+            _preferredPadding = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier*0.1;
+        }
+    }
+    return _preferredPadding;
 }
 
 - (id<FSCalendarDelegateAppearance>)delegateAppearance
@@ -1074,8 +1096,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [_collectionView reloadData];
         [_header.collectionView reloadData];
         [self setNeedsLayout];
-        
-    } else {
+    }
+    else {
         [self reloadVisibleCells];
     }
     
@@ -1164,6 +1186,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!self.allowsSelection) {
         return;
     }
+    [self requestBoundingDatesIfNecessary];
     if ([self daysFromDate:_minimumDate toDate:date] < 0) {
         date = _minimumDate.copy;
     } else if ([self daysFromDate:_maximumDate toDate:date] > 0) {
@@ -1216,7 +1239,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (self.selectedDate && !self.allowsMultipleSelection) {
             [self deselectDate:self.selectedDate];
         }
-        [_collectionView selectItemAtIndexPath:targetIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
+        [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
@@ -1502,7 +1525,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (self.showsScopeHandle) {
             if (!_scopeHandle) {
                 FSCalendarScopeHandle *handle = [[FSCalendarScopeHandle alloc] initWithFrame:CGRectZero];
-                handle.delegate = self.animator;
+                handle.calendar = self;
                 [self addSubview:handle];
                 self.scopeHandle = handle;
                 _needsAdjustingViewFrame = YES;
@@ -1542,6 +1565,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredHeaderHeight = FSCalendarAutomaticDimension;
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight = FSCalendarAutomaticDimension;
+    _preferredPadding = FSCalendarAutomaticDimension;
     _needsAdjustingViewFrame = YES;
     [self setNeedsLayout];
 }
@@ -1701,6 +1725,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredHeaderHeight  = FSCalendarAutomaticDimension;
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
+    _preferredPadding       = FSCalendarAutomaticDimension;
     
     [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
@@ -1971,13 +1996,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #if TARGET_INTERFACE_BUILDER
     return [NSDate date];
 #else
+    NSDate *minimumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
-        _minimumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource minimumDateForCalendar:self]];
+        minimumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource minimumDateForCalendar:self]];
     }
-    if (!_minimumDate) {
-        _minimumDate = [self dateWithYear:1970 month:1 day:1];
+    if (!minimumDate) {
+        minimumDate = [self dateWithYear:1970 month:1 day:1];
     }
-    return _minimumDate;
+    return minimumDate;
 #endif
 }
 
@@ -1986,14 +2012,24 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #if TARGET_INTERFACE_BUILDER
     return [self dateByAddingMonths:4 toDate:[NSDate date]];
 #else
+    NSDate *maximumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
-        _maximumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource maximumDateForCalendar:self]];
+        maximumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource maximumDateForCalendar:self]];
     }
-    if (!_maximumDate) {
-        _maximumDate = [self dateWithYear:2099 month:12 day:31];
+    if (!maximumDate) {
+        maximumDate = [self dateWithYear:2099 month:12 day:31];
     }
-    return _maximumDate;
+    return maximumDate;
 #endif
+}
+
+- (void)requestBoundingDatesIfNecessary
+{
+    if (!_hasRequestedBoundingDates) {
+        _hasRequestedBoundingDates = YES;
+        _minimumDate = self.minimumDateForCalendar;
+        _maximumDate = self.maximumDateForCalendar;
+    }
 }
 
 @end

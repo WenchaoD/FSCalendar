@@ -9,7 +9,6 @@
 #import "FSCalendar.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarFlowLayout.h"
-#import "FSCalendarDynamicHeader.h"
 #import "FSCalendarScopeHandle.h"
 
 typedef NS_ENUM(NSUInteger, FSCalendarTransition) {
@@ -22,7 +21,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
     FSCalendarTransitionStateInProgress
 };
 
-@interface FSCalendarAnimator : NSObject <FSCalendarScopeHandleDelegate>
+@interface FSCalendarAnimator : NSObject <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) FSCalendar *calendar;
 @property (weak, nonatomic) FSCalendarCollectionView *collectionView;
@@ -35,6 +34,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
 - (void)performBoudingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
+
+- (void)handlePan:(id)sender;
 
 @end
 

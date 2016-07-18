@@ -17,6 +17,8 @@
     [super viewDidLoad];
     [_calendar selectDate:[NSDate date]];
     
+    _calendar.scopeGesture.enabled = YES;
+    
     // Uncomment this to perform an 'initial-week-scope'
 //    _calendar.scope = FSCalendarScopeWeek;
 }
