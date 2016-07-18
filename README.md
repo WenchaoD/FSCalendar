@@ -38,8 +38,8 @@
 ## Hide placeholder dates
 ![fscalendar-showsplaceholder](https://cloud.githubusercontent.com/assets/5186464/13727902/21a90042-e940-11e5-9b9f-392f38cf007d.gif)
 
-## Scope handle
-![scopehandle](https://cloud.githubusercontent.com/assets/5186464/15096674/5270ef9c-1536-11e6-88b0-c4e3e8f93115.gif)
+## Scope gesture
+![scopegesture](https://cloud.githubusercontent.com/assets/5186464/16909131/1a442ab2-4d03-11e6-870d-0602bfe17d78.png)
 
 > FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
 
