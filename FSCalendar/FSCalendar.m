@@ -684,19 +684,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!_pagingEnabled || !_scrollEnabled) {
         return;
     }
-    CGFloat pannedOffset = 0, targetOffset = 0, currentOffset = 0, contentSize = 0;
+    CGFloat targetOffset = 0, contentSize = 0;
     switch (_collectionViewLayout.scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal: {
-            pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].x;
             targetOffset = targetContentOffset->x;
-            currentOffset = scrollView.contentOffset.x;
             contentSize = scrollView.fs_width;
             break;
         }
         case UICollectionViewScrollDirectionVertical: {
-            pannedOffset = [scrollView.panGestureRecognizer translationInView:scrollView].y;
             targetOffset = targetContentOffset->y;
-            currentOffset = scrollView.contentOffset.y;
             contentSize = scrollView.fs_height;
             break;
         }
