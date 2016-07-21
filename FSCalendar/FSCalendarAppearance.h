@@ -117,6 +117,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *titleSelectionColor;
 
 /**
+ * The day text color for disabled state.
+ */
+@property (strong, nonatomic) UIColor  *titleDisabledColor;
+
+/**
  * The day text color for today in the calendar.
  */
 @property (strong, nonatomic) UIColor  *titleTodayColor;
@@ -140,6 +145,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * The subtitle text color for selected state.
  */
 @property (strong, nonatomic) UIColor  *subtitleSelectionColor;
+
+/**
+ * The subtitle text color for disabled state.
+ */
+@property (strong, nonatomic) UIColor  *subtitleDisabledColor;
 
 /**
  * The subtitle text color for today in the calendar.
@@ -204,6 +214,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * @see headerTitleFont
  */
 @property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize;
+@property (assign, nonatomic) BOOL canSelectBefore;
 
 #if TARGET_INTERFACE_BUILDER
 

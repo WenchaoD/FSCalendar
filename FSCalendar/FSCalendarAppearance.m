@@ -69,6 +69,7 @@
     if (self) {
         
         _adjustsFontSizeToFitContentSize = YES;
+        _canSelectBefore = YES;
         
         _titleFontSize = _preferredTitleFontSize  = FSCalendarStandardTitleTextSize;
         _subtitleFontSize = _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize;
@@ -249,6 +250,16 @@
     return _titleColors[@(FSCalendarCellStateSelected)];
 }
 
+- (void)setTitleDisabledColor:(UIColor *)color
+{
+    if (color) {
+        _titleColors[@(FSCalendarCellStateDisabled)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarCellStateDisabled)];
+    }
+    [self invalidateTitleTextColor];
+}
+
 - (void)setTitleTodayColor:(UIColor *)color
 {
     if (color) {
@@ -322,6 +333,16 @@
 - (UIColor *)subtitleSelectionColor
 {
     return _subtitleColors[@(FSCalendarCellStateSelected)];
+}
+
+- (void)setSubtitleDisabledColor:(UIColor *)color
+{
+    if (color) {
+        _subtitleColors[@(FSCalendarCellStateDisabled)] = color;
+    } else {
+        [_subtitleColors removeObjectForKey:@(FSCalendarCellStateDisabled)];
+    }
+    [self invalidateTitleTextColor];
 }
 
 - (void)setSubtitleTodayColor:(UIColor *)color
@@ -499,6 +520,16 @@
         _adjustsFontSizeToFitContentSize = adjustsFontSizeToFitContentSize;
         if (adjustsFontSizeToFitContentSize) {
             [self invalidateFonts];
+        }
+    }
+}
+
+- (void)setCanSelectBefore:(BOOL)canSelectBefore
+{
+    if (_canSelectBefore != canSelectBefore) {
+        _canSelectBefore = canSelectBefore;
+        if (!canSelectBefore) {
+            //TODO yhy
         }
     }
 }

@@ -276,9 +276,34 @@
     return NO;
 }
 
+- (BOOL)compareDate:(NSDate *)date1 earlyToDate:(NSDate *)date2 toCalendarUnit:(FSCalendarUnit)unit
+{
+    if ([self yearOfDate:date1] != [self yearOfDate:date2]) {
+        return [self monthOfDate:date1] < [self monthOfDate:date2];
+    } else {
+        switch (unit) {
+            case FSCalendarUnitMonth:
+                return [self yearOfDate:date1] < [self yearOfDate:date2];
+            case FSCalendarUnitWeekOfYear:
+                return [self weekOfDate:date1] < [self weekOfDate:date2];
+            case FSCalendarUnitDay:
+                if ([self monthOfDate:date1] != [self monthOfDate:date2]) {
+                    return [self monthOfDate:date1] < [self monthOfDate:date2];
+                }
+                return [self dayOfDate:date1] < [self dayOfDate:date2];
+        }
+    }
+    return NO;
+}
+
 - (BOOL)isDateInToday:(NSDate *)date
 {
     return [self isDate:date equalToDate:self.today toCalendarUnit:FSCalendarUnitDay];
+}
+
+- (BOOL)isDateDisabled:(NSDate *)date
+{
+    return [self compareDate:date earlyToDate:self.today toCalendarUnit:FSCalendarUnitDay];
 }
 
 - (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format

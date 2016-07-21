@@ -180,6 +180,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleSelectionColorForDate:(NSDate *)date;
 
 /**
+ * Asks the delegate for day text color in disabled state for the specific date.
+ */
+- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleDisabledColorForDate:(NSDate *)date;
+
+/**
  * Asks the delegate for subtitle text color in unselected state for the specific date.
  */
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleDefaultColorForDate:(NSDate *)date;
@@ -189,6 +194,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleSelectionColorForDate:(NSDate *)date;
 
+/**
+ * Asks the delegate for subtitle text color in disabled state for the specific date.
+ */
+- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleDisabledColorForDate:(NSDate *)date;
 /**
  * Asks the delegate for single event color for the specific date.
  */
@@ -627,6 +636,11 @@ IB_DESIGNABLE
  * Returns whether the given date is in 'today' of the calendar.
  */
 - (BOOL)isDateInToday:(NSDate *)date;
+
+/**
+ * Returns whether the given date is 'disabled' of the calendar.
+ */
+- (BOOL)isDateDisabled:(NSDate *)date;
 
 /**
  * Returns a string representation of a given date formatted using a specific date format.
