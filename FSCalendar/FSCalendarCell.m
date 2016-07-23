@@ -18,6 +18,7 @@
 @property (readonly, nonatomic) UIColor *colorForTitleLabel;
 @property (readonly, nonatomic) UIColor *colorForSubtitleLabel;
 @property (readonly, nonatomic) UIColor *colorForCellBorder;
+@property (readonly, nonatomic) NSArray<UIColor *> *colorsForEvents;
 @property (readonly, nonatomic) FSCalendarCellShape cellShape;
 
 @end
@@ -88,7 +89,12 @@
     _shapeLayer.borderColor = [UIColor clearColor].CGColor;
     
     CGFloat eventSize = _shapeLayer.frame.size.height/6.0;
-    _eventIndicator.frame = CGRectMake(0, CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17, bounds.size.width, eventSize*0.83);
+    _eventIndicator.frame = CGRectMake(
+                                       0,
+                                       CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17,
+                                       bounds.size.width,
+                                       eventSize*0.83
+                                      );
     _imageView.frame = self.contentView.bounds;
 }
 
@@ -184,20 +190,31 @@
             CGFloat subtitleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_subtitleLabel.font}].height;
             
             CGFloat height = titleHeight + subtitleHeight;
-            _titleLabel.frame = CGRectMake(0,
-                                           (self.contentView.fs_height*5.0/6.0-height)*0.5+_appearance.titleVerticalOffset,
+            _titleLabel.frame = CGRectMake(
+                                           self.preferredTitleOffset.x,
+                                           (self.contentView.fs_height*5.0/6.0-height)*0.5+self.preferredTitleOffset.y,
                                            self.fs_width,
-                                           titleHeight);
-            
-            _subtitleLabel.frame = CGRectMake(0,
-                                              _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize)+_appearance.subtitleVerticalOffset,
+                                           titleHeight
+                                          );
+            _subtitleLabel.frame = CGRectMake(
+                                              self.preferredSubtitleOffset.x,
+                                              _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize)+self.preferredSubtitleOffset.y,
                                               self.fs_width,
-                                              subtitleHeight);
+                                              subtitleHeight
+                                             );
         } else {
-            _titleLabel.frame = CGRectMake(0, _appearance.titleVerticalOffset, self.contentView.fs_width, floor(self.contentView.fs_height*5.0/6.0));
+            _titleLabel.frame = CGRectMake(
+                                           self.preferredTitleOffset.x,
+                                           self.preferredTitleOffset.y,
+                                           self.contentView.fs_width,
+                                           floor(self.contentView.fs_height*5.0/6.0)
+                                          );
         }
         
-        _imageView.center = CGPointMake(self.contentView.fs_width/2.0, _imageView.center.y);
+        _imageView.center = CGPointMake(
+                                        self.contentView.fs_width/2.0 + self.preferredImageOffset.x,
+                                        _imageView.center.y + self.preferredImageOffset.y
+                                       );
         
     }
     
@@ -248,8 +265,16 @@
     if (_eventIndicator.hidden == (_numberOfEvents > 0)) {
         _eventIndicator.hidden = !_numberOfEvents;
     }
+    
+    CGFloat eventSize = _shapeLayer.frame.size.height/6.0;
+    _eventIndicator.frame = CGRectMake(
+                                       self.preferredEventOffset.x,
+                                       CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17+self.preferredEventOffset.y,
+                                       self.fs_width,
+                                       eventSize*0.83
+                                      );
     _eventIndicator.numberOfEvents = self.numberOfEvents;
-    _eventIndicator.color = self.preferredEventColor ?: _appearance.eventColor;
+    _eventIndicator.color = self.colorsForEvents;
 }
 
 - (BOOL)isWeekend
@@ -309,7 +334,7 @@
 
 - (void)invalidateEventColors
 {
-    _eventIndicator.color = self.preferredEventColor ?: _appearance.eventColor;
+    _eventIndicator.color = self.colorsForEvents;
 }
 
 - (void)invalidateCellShapes
@@ -360,9 +385,37 @@
     return _preferredBorderDefaultColor ?: _appearance.borderDefaultColor;
 }
 
+- (NSArray<UIColor *> *)colorsForEvents
+{
+    if (self.dateIsSelected || self.isSelected) {
+        return _preferredEventSelectionColors ?: @[_appearance.eventSelectionColor];
+    }
+    return _preferredEventDefaultColors ?: @[_appearance.eventSelectionColor];
+}
+
 - (FSCalendarCellShape)cellShape
 {
     return _preferredCellShape ?: _appearance.cellShape;
+}
+
+- (CGPoint)preferredTitleOffset
+{
+    return CGPointEqualToPoint(_preferredTitleOffset, CGPointZero) ? _appearance.titleOffset : _preferredTitleOffset;
+}
+
+- (CGPoint)preferredSubtitleOffset
+{
+    return CGPointEqualToPoint(_preferredSubtitleOffset, CGPointZero) ? _appearance.subtitleOffset : _preferredSubtitleOffset;
+}
+
+- (CGPoint)preferredImageOffset
+{
+    return CGPointEqualToPoint(_preferredImageOffset, CGPointZero) ? _appearance.imageOffset : _preferredImageOffset;
+}
+
+- (CGPoint)preferredEventOffset
+{
+    return CGPointEqualToPoint(_preferredEventOffset, CGPointZero) ? _appearance.eventOffset : _preferredEventOffset;
 }
 
 - (void)setCalendar:(FSCalendar *)calendar

@@ -72,19 +72,34 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIFont   *headerTitleFont;
 
 /**
- * The vertical offset of the day text from default position.
+ * The offset of the day text from default position.
  */
-@property (assign, nonatomic) CGFloat  titleVerticalOffset;
+@property (assign, nonatomic) CGPoint  titleOffset;
 
 /**
- * The vertical offset of the suntitle text from default position.
+ * The offset of the day text from default position.
  */
-@property (assign, nonatomic) CGFloat  subtitleVerticalOffset;
+@property (assign, nonatomic) CGPoint  subtitleOffset;
+
+/**
+ * The offset of the event dots from default position.
+ */
+@property (assign, nonatomic) CGPoint eventOffset;
+
+/**
+ * The offset of the image from default position.
+ */
+@property (assign, nonatomic) CGPoint imageOffset;
 
 /**
  * The color of event dots.
  */
-@property (strong, nonatomic) UIColor  *eventColor;
+@property (strong, nonatomic) UIColor  *eventDefaultColor;
+
+/**
+ * The color of event dots.
+ */
+@property (strong, nonatomic) UIColor  *eventSelectionColor;
 
 /**
  * The color of weekday text.
@@ -234,6 +249,9 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) CGFloat subtitleTextSize FSCalendarDeprecated('subtitleFont');
 @property (assign, nonatomic) CGFloat weekdayTextSize FSCalendarDeprecated('weekdayFont');
 @property (assign, nonatomic) CGFloat headerTitleTextSize FSCalendarDeprecated('headerTitleFont');
+@property (assign, nonatomic) CGFloat titleVerticalOffset FSCalendarDeprecated('titleOffset');
+@property (assign, nonatomic) CGFloat subtitleVerticalOffset FSCalendarDeprecated('subtitleOffset');
+@property (strong, nonatomic) UIColor *eventColor FSCalendarDeprecated('eventDefaultColor');
 
 @end
 

@@ -45,7 +45,13 @@
 @property (strong, nonatomic) UIColor *preferredSubtitleSelectionColor;
 @property (strong, nonatomic) UIColor *preferredBorderDefaultColor;
 @property (strong, nonatomic) UIColor *preferredBorderSelectionColor;
-@property (strong, nonatomic) id preferredEventColor;
+@property (assign, nonatomic) CGPoint preferredTitleOffset;
+@property (assign, nonatomic) CGPoint preferredSubtitleOffset;
+@property (assign, nonatomic) CGPoint preferredImageOffset;
+@property (assign, nonatomic) CGPoint preferredEventOffset;
+
+@property (strong, nonatomic) NSArray<UIColor *> *preferredEventDefaultColors;
+@property (strong, nonatomic) NSArray<UIColor *> *preferredEventSelectionColors;
 @property (assign, nonatomic) FSCalendarCellShape preferredCellShape;
 
 - (void)invalidateTitleFont;

@@ -150,7 +150,7 @@
 {
     NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
     if ([_datesWithMultipleEvents containsObject:dateString]) {
-        return @[[UIColor magentaColor],appearance.eventColor,[UIColor blackColor]];
+        return @[[UIColor magentaColor],appearance.eventDefaultColor,[UIColor blackColor]];
     }
     return nil;
 }
