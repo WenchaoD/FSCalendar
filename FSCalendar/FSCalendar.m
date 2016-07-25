@@ -1604,7 +1604,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (cell.subtitle) {
         cell.preferredSubtitleDefaultColor = [self preferredSubtitleDefaultColorForDate:cell.date];
         cell.preferredSubtitleSelectionColor = [self preferredSubtitleSelectionColorForDate:cell.date];
-        cell.preferredSubtitleOffset = [self preferredTitleOffsetForDate:cell.date];
+        cell.preferredSubtitleOffset = [self preferredSubtitleOffsetForDate:cell.date];
     }
     if (cell.numberOfEvents) {
         cell.preferredEventDefaultColors = [self preferredEventDefaultColorForDate:cell.date];

@@ -198,7 +198,7 @@
                                           );
             _subtitleLabel.frame = CGRectMake(
                                               self.preferredSubtitleOffset.x,
-                                              _titleLabel.fs_bottom - (_titleLabel.fs_height-_titleLabel.font.pointSize)+self.preferredSubtitleOffset.y,
+                                              (_titleLabel.fs_bottom-self.preferredTitleOffset.y) - (_titleLabel.fs_height-_titleLabel.font.pointSize)+self.preferredSubtitleOffset.y,
                                               self.fs_width,
                                               subtitleHeight
                                              );

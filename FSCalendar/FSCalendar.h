@@ -542,6 +542,11 @@ IB_DESIGNABLE
 - (NSDate *)beginingOfWeekOfDate:(NSDate *)date;
 
 /**
+ * Returns the last day of week of the given date
+ */
+- (NSDate *)endOfWeekOfDate:(NSDate *)date;
+
+/**
  * Returns the middle day of week of the given date
  */
 - (NSDate *)middleOfWeekFromDate:(NSDate *)date;
