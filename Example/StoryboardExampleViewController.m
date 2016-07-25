@@ -138,6 +138,30 @@
     [self.view layoutIfNeeded];
 }
 
+- (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleOffsetForDate:(NSDate *)date
+{
+    if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
+        return CGPointMake(0, -2);
+    }
+    return CGPointZero;
+}
+
+- (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventOffsetForDate:(NSDate *)date
+{
+    if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
+        return CGPointMake(0, -10);
+    }
+    return CGPointZero;
+}
+
+- (NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventSelectionColorsForDate:(nonnull NSDate *)date
+{
+    if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
+        return @[[UIColor whiteColor]];
+    }
+    return nil;
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -157,7 +181,7 @@
             case 0: {
                 _calendar.appearance.weekdayTextColor = FSCalendarStandardTitleTextColor;
                 _calendar.appearance.headerTitleColor = FSCalendarStandardTitleTextColor;
-                _calendar.appearance.eventColor = FSCalendarStandardEventDotColor;
+                _calendar.appearance.eventDefaultColor = FSCalendarStandardEventDotColor;
                 _calendar.appearance.selectionColor = FSCalendarStandardSelectionColor;
                 _calendar.appearance.headerDateFormat = @"MMMM yyyy";
                 _calendar.appearance.todayColor = FSCalendarStandardTodayColor;
@@ -168,7 +192,7 @@
             case 1: {
                 _calendar.appearance.weekdayTextColor = [UIColor redColor];
                 _calendar.appearance.headerTitleColor = [UIColor darkGrayColor];
-                _calendar.appearance.eventColor = [UIColor greenColor];
+                _calendar.appearance.eventDefaultColor = [UIColor greenColor];
                 _calendar.appearance.selectionColor = [UIColor blueColor];
                 _calendar.appearance.headerDateFormat = @"yyyy-MM";
                 _calendar.appearance.todayColor = [UIColor redColor];
@@ -180,7 +204,7 @@
             case 2: {
                 _calendar.appearance.weekdayTextColor = [UIColor redColor];
                 _calendar.appearance.headerTitleColor = [UIColor redColor];
-                _calendar.appearance.eventColor = [UIColor greenColor];
+                _calendar.appearance.eventDefaultColor = [UIColor greenColor];
                 _calendar.appearance.selectionColor = [UIColor blueColor];
                 _calendar.appearance.headerDateFormat = @"yyyy/MM";
                 _calendar.appearance.todayColor = [UIColor orangeColor];

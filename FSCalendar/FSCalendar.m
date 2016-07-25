@@ -39,7 +39,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (UIColor *)preferredSubtitleSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferredBorderDefaultColorForDate:(NSDate *)date;
 - (UIColor *)preferredBorderSelectionColorForDate:(NSDate *)date;
-- (id)preferredEventColorForDate:(NSDate *)date;
+- (CGPoint)preferredTitleOffsetForDate:(NSDate *)date;
+- (CGPoint)preferredSubtitleOffsetForDate:(NSDate *)date;
+- (CGPoint)preferredImageOffsetForDate:(NSDate *)date;
+- (CGPoint)preferredEventOffsetForDate:(NSDate *)date;
+- (NSArray<UIColor *> *)preferredEventDefaultColorsForDate:(NSDate *)date;
+- (NSArray<UIColor *> *)preferredEventSelectionColorsForDate:(NSDate *)date;
 - (FSCalendarCellShape)preferredCellShapeForDate:(NSDate *)date;
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
@@ -1595,14 +1600,24 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.preferredFillDefaultColor = [self preferredFillDefaultColorForDate:cell.date];
     cell.preferredTitleDefaultColor = [self preferredTitleDefaultColorForDate:cell.date];
     cell.preferredTitleSelectionColor = [self preferredTitleSelectionColorForDate:cell.date];
+    cell.preferredTitleOffset = [self preferredTitleOffsetForDate:cell.date];
     if (cell.subtitle) {
         cell.preferredSubtitleDefaultColor = [self preferredSubtitleDefaultColorForDate:cell.date];
         cell.preferredSubtitleSelectionColor = [self preferredSubtitleSelectionColorForDate:cell.date];
+        cell.preferredSubtitleOffset = [self preferredSubtitleOffsetForDate:cell.date];
     }
-    if (cell.numberOfEvents) cell.preferredEventColor = [self preferredEventColorForDate:cell.date];
+    if (cell.numberOfEvents) {
+        cell.preferredEventDefaultColors = [self preferredEventDefaultColorForDate:cell.date];
+        cell.preferredEventSelectionColors = [self preferredEventSelectionColorsForDate:cell.date];
+        cell.preferredEventOffset = [self preferredEventOffsetForDate:cell.date];
+    }
     cell.preferredBorderDefaultColor = [self preferredBorderDefaultColorForDate:cell.date];
     cell.preferredBorderSelectionColor = [self preferredBorderSelectionColorForDate:cell.date];
     cell.preferredCellShape = [self preferredCellShapeForDate:cell.date];
+    
+    if (cell.image) {
+        cell.preferredImageOffset = [self preferredImageOffsetForDate:cell.date];
+    }
     
     [cell setNeedsLayout];
 }
@@ -1863,8 +1878,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (id)preferredEventColorForDate:(NSDate *)date
+- (NSArray<UIColor *> *)preferredEventDefaultColorForDate:(NSDate *)date
 {
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventDefaultColorsForDate:)]) {
+        NSArray *colors = [self.delegateAppearance calendar:self appearance:self.appearance eventDefaultColorsForDate:date];
+        if (colors) {
+            return colors;
+        }
+    }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventColorsForDate:)]) {
         NSArray *colors = [self.delegateAppearance calendar:self appearance:self.appearance eventColorsForDate:date];
         if (colors) {
@@ -1874,7 +1897,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance eventColorForDate:date];
         if (color) {
-            return color;
+            return @[color];
+        }
+    }
+#pragma GCC diagnostic pop
+    return nil;
+}
+
+- (NSArray<UIColor *> *)preferredEventSelectionColorsForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventSelectionColorsForDate:)]) {
+        NSArray *colors = [self.delegateAppearance calendar:self appearance:self.appearance eventSelectionColorsForDate:date];
+        if (colors) {
+            return colors;
         }
     }
     return nil;
@@ -1915,6 +1950,41 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return FSCalendarCellShapeCircle;
 }
 
+- (CGPoint)preferredTitleOffsetForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:titleOffsetForDate:)]) {
+        CGPoint point = [self.delegateAppearance calendar:self appearance:self.self.appearance titleOffsetForDate:date];
+        return point;
+    }
+    return CGPointZero;
+}
+
+- (CGPoint)preferredSubtitleOffsetForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:subtitleOffsetForDate:)]) {
+        CGPoint point = [self.delegateAppearance calendar:self appearance:self.self.appearance subtitleOffsetForDate:date];
+        return point;
+    }
+    return CGPointZero;
+}
+
+- (CGPoint)preferredImageOffsetForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:imageOffsetForDate:)]) {
+        CGPoint point = [self.delegateAppearance calendar:self appearance:self.self.appearance imageOffsetForDate:date];
+        return point;
+    }
+    return CGPointZero;
+}
+
+- (CGPoint)preferredEventOffsetForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:eventOffsetForDate:)]) {
+        CGPoint point = [self.delegateAppearance calendar:self appearance:self.self.appearance eventOffsetForDate:date];
+        return point;
+    }
+    return CGPointZero;
+}
 
 - (BOOL)boundingRectWillChange:(BOOL)animated
 {

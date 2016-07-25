@@ -20,7 +20,8 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat  weekdayTextSize;
 @property (assign, nonatomic) IBInspectable CGFloat  headerTitleTextSize;
 
-@property (strong, nonatomic) IBInspectable UIColor  *eventColor;
+@property (strong, nonatomic) IBInspectable UIColor  *eventDefaultColor;
+@property (strong, nonatomic) IBInspectable UIColor  *eventSelectionColor;
 @property (strong, nonatomic) IBInspectable UIColor  *weekdayTextColor;
 
 @property (strong, nonatomic) IBInspectable UIColor  *headerTitleColor;

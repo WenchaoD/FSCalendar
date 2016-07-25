@@ -104,14 +104,25 @@
 - (NSDate *)beginingOfWeekOfDate:(NSDate *)date
 {
     NSDateComponents *weekdayComponents = [self.calendar components:NSCalendarUnitWeekday fromDate:date];
-    NSDateComponents *componentsToSubtract = self.components;
-    componentsToSubtract.day = - (weekdayComponents.weekday - self.calendar.firstWeekday);
-    componentsToSubtract.day = (componentsToSubtract.day-7) % 7;
-    NSDate *beginningOfWeek = [self.calendar dateByAddingComponents:componentsToSubtract toDate:date options:0];
-    NSDateComponents *components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:beginningOfWeek];
-    beginningOfWeek = [self.calendar dateFromComponents:components];
-    componentsToSubtract.day = NSIntegerMax;
+    NSDateComponents *components = self.components;
+    components.day = - (weekdayComponents.weekday - self.calendar.firstWeekday);
+    components.day = (components.day-7) % 7;
+    NSDate *beginningOfWeek = [self.calendar dateByAddingComponents:components toDate:date options:0];
+    beginningOfWeek = [self dateByIgnoringTimeComponentsOfDate:beginningOfWeek];
+    components.day = NSIntegerMax;
     return beginningOfWeek;
+}
+
+- (NSDate *)endOfWeekOfDate:(NSDate *)date
+{
+    NSDateComponents *weekdayComponents = [self.calendar components:NSCalendarUnitWeekday fromDate:date];
+    NSDateComponents *components = self.components;
+    components.day = - (weekdayComponents.weekday - self.calendar.firstWeekday);
+    components.day = (components.day-7) % 7 + 6;
+    NSDate *endOfWeek = [self.calendar dateByAddingComponents:components toDate:date options:0];
+    endOfWeek = [self dateByIgnoringTimeComponentsOfDate:endOfWeek];
+    components.day = NSIntegerMax;
+    return endOfWeek;
 }
 
 - (NSDate *)middleOfWeekFromDate:(NSDate *)date

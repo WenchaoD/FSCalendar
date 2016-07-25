@@ -190,14 +190,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleSelectionColorForDate:(NSDate *)date;
 
 /**
- * Asks the delegate for single event color for the specific date.
+ * Asks the delegate for event colors for the specific date.
  */
-- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date;
+- (nullable NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date;
 
 /**
- * Asks the delegate for multiple event colors for the specific date.
+ * Asks the delegate for multiple event colors in selected state for the specific date.
  */
-- (nullable NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorsForDate:(NSDate *)date;
+- (nullable NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventSelectionColorsForDate:(NSDate *)date;
 
 /**
  * Asks the delegate for a border color in unselected state for the specific date.
@@ -210,6 +210,26 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSelectionColorForDate:(NSDate *)date;
 
 /**
+ * Asks the delegate for an offset for day text for the specific date.
+ */
+- (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleOffsetForDate:(NSDate *)date;
+
+/**
+ * Asks the delegate for an offset for subtitle for the specific date.
+ */
+- (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleOffsetForDate:(NSDate *)date;
+
+/**
+ * Asks the delegate for an offset for image for the specific date.
+ */
+- (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance imageOffsetForDate:(NSDate *)date;
+
+/**
+ * Asks the delegate for an offset for event dots for the specific date.
+ */
+- (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventOffsetForDate:(NSDate *)date;
+
+/**
  * Asks the delegate for a shape for the specific date.
  */
 - (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date;
@@ -220,7 +240,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (FSCalendarCellStyle)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellStyleForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:cellShapeForDate:);
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillColorForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:fillDefaultColorForDate:);
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:fillSelectionColorForDate:);
-
+- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:eventDefaultColorsForDate:);
+- (nullable NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorsForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:eventDefaultColorsForDate:);
 @end
 
 #pragma mark - Primary
@@ -519,6 +540,11 @@ IB_DESIGNABLE
  * Returns the first day of week of the given date
  */
 - (NSDate *)beginingOfWeekOfDate:(NSDate *)date;
+
+/**
+ * Returns the last day of week of the given date
+ */
+- (NSDate *)endOfWeekOfDate:(NSDate *)date;
 
 /**
  * Returns the middle day of week of the given date
