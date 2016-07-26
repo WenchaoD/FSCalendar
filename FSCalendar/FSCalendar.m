@@ -774,6 +774,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     [_header reloadData];
                 }
                 _needsAdjustingMonthPosition = YES;
+                _needsAdjustingViewFrame = YES;
                 [self setNeedsLayout];
                 _supressEvent = NO;
                 break;
