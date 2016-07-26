@@ -456,7 +456,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     CGFloat headerHeight = self.preferredHeaderHeight;
     CGFloat weekdayHeight = self.preferredWeekdayHeight;
     CGFloat rowHeight = self.preferredRowHeight;
-    CGFloat paddings = weekdayHeight * 0.2;
+    CGFloat paddings = self.preferredPadding*2;
     
     if (!self.floatingMode) {
         switch (scope) {
