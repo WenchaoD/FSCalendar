@@ -165,7 +165,8 @@
                 self.contentView.hidden = (currentLine>lineCount);
             }
         }
-    } else {
+    } else if (self.contentView.hidden) {
+        self.needsAdjustingViewFrame = YES;
         self.contentView.hidden = NO;
     }
     
@@ -436,7 +437,7 @@
 - (void)setSubtitle:(NSString *)subtitle
 {
     if (![_subtitle isEqualToString:subtitle]) {
-        _needsAdjustingViewFrame = !(_subtitle.length && subtitle.length);
+        _needsAdjustingViewFrame = (subtitle.length && !_subtitle.length) || (_subtitle.length && !subtitle.length);
         _subtitle = subtitle;
         if (_needsAdjustingViewFrame) {
             [self setNeedsLayout];
