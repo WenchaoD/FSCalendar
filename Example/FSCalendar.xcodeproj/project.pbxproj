@@ -59,6 +59,8 @@
 		30FCB3961BAAD112002B87AD /* FSCalendarStickyHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 30FCB3941BAAD112002B87AD /* FSCalendarStickyHeader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		30FCB3971BAAD112002B87AD /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FCB3951BAAD112002B87AD /* FSCalendarStickyHeader.m */; };
 		30FCB3981BAAD112002B87AD /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 30FCB3951BAAD112002B87AD /* FSCalendarStickyHeader.m */; };
+		AE0369F31D4A0889009397A6 /* HDReservationManagerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AE0369F11D4A0889009397A6 /* HDReservationManagerVC.m */; };
+		AE0369F41D4A0889009397A6 /* HDReservationManagerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE0369F21D4A0889009397A6 /* HDReservationManagerVC.xib */; };
 		EE52AE181B91E68A00016662 /* FSCalendarScopeExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE52AE171B91E68A00016662 /* FSCalendarScopeExampleViewController.m */; };
 		EE638CC31B89DB6E0006DD1A /* LoadViewExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CC21B89DB6E0006DD1A /* LoadViewExampleViewController.m */; };
 		EE638CC91B89DB940006DD1A /* CalendarConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CC81B89DB940006DD1A /* CalendarConfigViewController.m */; };
@@ -142,6 +144,9 @@
 		30F5D8591B9FC4BB00C1C201 /* MultipleSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipleSelectionViewController.m; sourceTree = SOURCE_ROOT; };
 		30FCB3941BAAD112002B87AD /* FSCalendarStickyHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarStickyHeader.h; sourceTree = "<group>"; };
 		30FCB3951BAAD112002B87AD /* FSCalendarStickyHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarStickyHeader.m; sourceTree = "<group>"; };
+		AE0369F01D4A0889009397A6 /* HDReservationManagerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDReservationManagerVC.h; sourceTree = SOURCE_ROOT; };
+		AE0369F11D4A0889009397A6 /* HDReservationManagerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDReservationManagerVC.m; sourceTree = SOURCE_ROOT; };
+		AE0369F21D4A0889009397A6 /* HDReservationManagerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HDReservationManagerVC.xib; sourceTree = SOURCE_ROOT; };
 		EE0D7FC71B89C5D3003C287B /* FSCalendarExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FSCalendarExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE0D7FCB1B89C5D3003C287B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE52AE161B91E68A00016662 /* FSCalendarScopeExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarScopeExampleViewController.h; sourceTree = SOURCE_ROOT; };
@@ -289,6 +294,16 @@
 			name = "MultipleSelection Example";
 			sourceTree = "<group>";
 		};
+		AE0369EF1D4A086F009397A6 /* HDExample */ = {
+			isa = PBXGroup;
+			children = (
+				AE0369F01D4A0889009397A6 /* HDReservationManagerVC.h */,
+				AE0369F11D4A0889009397A6 /* HDReservationManagerVC.m */,
+				AE0369F21D4A0889009397A6 /* HDReservationManagerVC.xib */,
+			);
+			name = HDExample;
+			sourceTree = "<group>";
+		};
 		EE0D7FBE1B89C5D3003C287B = {
 			isa = PBXGroup;
 			children = (
@@ -311,6 +326,7 @@
 		EE0D7FC91B89C5D3003C287B /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				AE0369EF1D4A086F009397A6 /* HDExample */,
 				EE638CD51B89DC090006DD1A /* Main_iPad.storyboard */,
 				EE638CD71B89DC090006DD1A /* Main_iPhone.storyboard */,
 				EE638CCF1B89DBE90006DD1A /* AppDelegate.h */,
@@ -508,6 +524,7 @@
 			files = (
 				EE638CDA1B89DC0A0006DD1A /* Main_iPhone.storyboard in Resources */,
 				EE638CDC1B89DC230006DD1A /* Images.xcassets in Resources */,
+				AE0369F41D4A0889009397A6 /* HDReservationManagerVC.xib in Resources */,
 				EE638CD91B89DC0A0006DD1A /* Main_iPad.storyboard in Resources */,
 				30B0BAD51B8D8E23004B9476 /* Info.plist in Resources */,
 			);
@@ -533,6 +550,7 @@
 				EE638CC91B89DB940006DD1A /* CalendarConfigViewController.m in Sources */,
 				30B0BAD01B8D8E23004B9476 /* FSCalendar.m in Sources */,
 				3065CAA11CD34ED0006C218D /* FSCalendar+DateTools.m in Sources */,
+				AE0369F31D4A0889009397A6 /* HDReservationManagerVC.m in Sources */,
 				3065CAA81CD3506A006C218D /* FSCalendar+Deprecated.m in Sources */,
 				EE638CD31B89DBE90006DD1A /* AppDelegate.m in Sources */,
 				3092253B1B905C4300123031 /* FSCalendarConstance.m in Sources */,
