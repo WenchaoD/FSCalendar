@@ -321,7 +321,7 @@
     NSInteger currentRowCount = [self.calendar numberOfRowsInMonth:toMonth];
     if (lastRowCount != currentRowCount) {
         CGFloat animationDuration = duration;
-        CGRect bounds = (CGRect){CGPointZero,[self.calendar sizeThatFits:self.calendar.frame.size]};
+        CGRect bounds = (CGRect){CGPointZero,[self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth]};
         self.state = FSCalendarTransitionStateInProgress;
         [UIView animateWithDuration:animationDuration delay:0  options:UIViewAnimationOptionAllowUserInteraction animations:^{
             [self boundingRectWillChange:bounds animated:YES];
