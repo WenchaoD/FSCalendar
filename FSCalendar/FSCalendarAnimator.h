@@ -33,7 +33,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 @property (assign, nonatomic) CGSize cachedMonthSize;
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
-- (void)performBoudingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
+- (void)performBoundingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
 
 - (void)handlePan:(id)sender;
 
@@ -44,8 +44,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 
 @property (assign, nonatomic) CGRect sourceBounds;
 @property (assign, nonatomic) CGRect targetBounds;
-@property (strong, nonatomic) UIBezierPath *sourceMask;
-@property (strong, nonatomic) UIBezierPath *targetMask;
 @property (strong, nonatomic) NSDate *sourcePage;
 @property (strong, nonatomic) NSDate *targetPage;
 @property (assign, nonatomic) NSInteger focusedRowNumber;
