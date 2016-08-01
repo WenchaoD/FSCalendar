@@ -27,7 +27,6 @@
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
 @property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
 @property (readonly, nonatomic) FSCalendarAnimator *animator;
-@property (readonly, nonatomic) CAShapeLayer *maskLayer;
 @property (readonly, nonatomic) NSArray *weekdays;
 @property (readonly, nonatomic) BOOL ibEditing;
 @property (readonly, nonatomic) BOOL floatingMode;

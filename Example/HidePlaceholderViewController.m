@@ -34,15 +34,16 @@
     
     
     // 450 for iPad and 300 for iPhone
-    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
+    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 330;
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), CGRectGetWidth(self.view.frame), height)];
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
-//    calendar.placeholderType = FSCalendarPlaceholderTypeFillNone;
+//    calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
+    calendar.placeholderType = FSCalendarPlaceholderTypeNone;
     calendar.currentPage = [calendar dateFromString:@"2016-06" format:@"yyyy-MM"];
     calendar.firstWeekday = 2;
+    calendar.showsScopeHandle = YES;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     [self.view addSubview:calendar];
     self.calendar = calendar;

@@ -140,6 +140,9 @@
 
 - (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleOffsetForDate:(NSDate *)date
 {
+    if ([self calendar:calendar subtitleForDate:date]) {
+        return CGPointZero;
+    }
     if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
         return CGPointMake(0, -2);
     }
@@ -148,6 +151,9 @@
 
 - (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventOffsetForDate:(NSDate *)date
 {
+    if ([self calendar:calendar subtitleForDate:date]) {
+        return CGPointZero;
+    }
     if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
         return CGPointMake(0, -10);
     }
@@ -156,6 +162,9 @@
 
 - (NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventSelectionColorsForDate:(nonnull NSDate *)date
 {
+    if ([self calendar:calendar subtitleForDate:date]) {
+        return @[appearance.eventDefaultColor];
+    }
     if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
         return @[[UIColor whiteColor]];
     }

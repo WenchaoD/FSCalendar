@@ -70,7 +70,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
-@property (weak  , nonatomic) CAShapeLayer               *maskLayer;
 @property (weak  , nonatomic) UIView                     *topBorder;
 @property (weak  , nonatomic) UIView                     *bottomBorder;
 @property (weak  , nonatomic) FSCalendarScopeHandle      *scopeHandle;
@@ -220,11 +219,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self addSubview:contentView];
     self.contentView = contentView;
     
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.actions = @{@"path":[NSNull null]};
-    contentView.layer.mask = maskLayer;
-    self.maskLayer = maskLayer;
-    
     UIView *daysContainer = [[UIView alloc] initWithFrame:CGRectZero];
     daysContainer.backgroundColor = [UIColor clearColor];
     daysContainer.clipsToBounds = YES;
@@ -315,6 +309,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _supressEvent = YES;
     
     if (_needsAdjustingViewFrame) {
+        _needsAdjustingViewFrame = NO;
         
         if (CGSizeEqualToSize(_animator.cachedMonthSize, CGSizeZero)) {
             _animator.cachedMonthSize = self.frame.size;
@@ -411,21 +406,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     _supressEvent = NO;
     
-}
-
-- (void)layoutSublayersOfLayer:(CALayer *)layer
-{
-    [super layoutSublayersOfLayer:layer];
-    if (layer == self.layer) {
-        if (_needsAdjustingViewFrame) {
-            CGSize size = [self sizeThatFits:self.frame.size];
-            _maskLayer.frame = self.bounds;
-            _maskLayer.path = [UIBezierPath bezierPathWithRect:(CGRect){CGPointZero,size}].CGPath;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _needsAdjustingViewFrame = NO;
-            });
-        }
-    }
 }
 
 #if TARGET_INTERFACE_BUILDER
@@ -703,16 +683,17 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
     }
     
+    NSInteger sections = lrint(targetOffset/contentSize);
     NSDate *targetPage = nil;
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *minimumPage = [self beginingOfMonthOfDate:_minimumDate];
-            targetPage = [self dateByAddingMonths:targetOffset/contentSize toDate:minimumPage];
+            targetPage = [self dateByAddingMonths:sections toDate:minimumPage];
             break;
         }
         case FSCalendarScopeWeek: {
             NSDate *minimumPage = [self beginingOfWeekOfDate:_minimumDate];
-            targetPage = [self dateByAddingWeeks:targetOffset/contentSize toDate:minimumPage];
+            targetPage = [self dateByAddingWeeks:sections toDate:minimumPage];
             break;
         }
     }
@@ -723,7 +704,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _currentPage = targetPage;
         [self currentPageDidChange];
         if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows) {
-            [self.animator performBoudingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
+            [self.animator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
         }
         [self didChangeValueForKey:@"currentPage"];
     }
@@ -1348,7 +1329,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     _supressEvent = YES;
                     [self currentPageDidChange];
                     if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows && self.animator.state == FSCalendarTransitionStateIdle) {
-                        [self.animator performBoudingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.33];
+                        [self.animator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.33];
                     }
                     _supressEvent = NO;
                 }
