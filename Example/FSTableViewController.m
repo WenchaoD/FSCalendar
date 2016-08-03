@@ -15,6 +15,7 @@
 #import "HidePlaceholderViewController.h"
 #import "ButtonsViewController.h"
 #import "ScopeHandleViewController.h"
+#import "HDReservationManagerVC.h"
 
 @implementation FSTableViewController
 
@@ -50,10 +51,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id viewControllerClass = self.viewControllers[indexPath.row];
-    if ([viewControllerClass isSubclassOfClass:[UIViewController class]]) {
-        [self.navigationController pushViewController:[[viewControllerClass alloc] init] animated:YES];
+    if (indexPath.row==10) {
+        [self.navigationController pushViewController:[[HDReservationManagerVC alloc] init] animated:YES];
+    }else{
+        id viewControllerClass = self.viewControllers[indexPath.row];
+        if ([viewControllerClass isSubclassOfClass:[UIViewController class]]) {
+            [self.navigationController pushViewController:[[viewControllerClass alloc] init] animated:YES];
+        }
     }
+   
 }
 
 @end
