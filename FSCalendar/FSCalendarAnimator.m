@@ -109,17 +109,8 @@
         
         self.calendarScope = FSCalendarScopeMonth;
         self.calendarCurrentPage = self.pendingAttributes.targetPage;
-        self.calendar.contentView.clipsToBounds = YES;
         
-        self.calendar.contentView.fs_height = CGRectGetHeight(self.pendingAttributes.targetBounds)-self.calendar.scopeHandle.fs_height;
-        self.collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
-        self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
-        self.calendar.needsAdjustingMonthPosition = YES;
-        self.calendar.needsAdjustingViewFrame = YES;
-        [self.calendar setNeedsLayout];
-        [self.collectionView reloadData];
-        [self.calendar.header reloadData];
-        [self.calendar layoutIfNeeded];
+        [self prelayoutForWeekToMonthTransition];
         
         self.collectionView.fs_top = -self.pendingAttributes.focusedRowNumber*self.calendar.preferredRowHeight;
         
@@ -262,18 +253,8 @@
         case FSCalendarTransitionWeekToMonth: {
             
             self.calendarCurrentPage = attr.targetPage;
-            self.collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
-            self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
             
-            self.calendar.needsAdjustingMonthPosition = YES;
-            self.calendar.needsAdjustingViewFrame = YES;
-            [self.calendar layoutSubviews];
-            [self.collectionView reloadData];
-            [self.collectionView layoutIfNeeded];
-            [self.calendar.header reloadData];
-            [self.calendar.header layoutIfNeeded];
-            
-            self.calendar.contentView.clipsToBounds = YES;
+            [self prelayoutForWeekToMonthTransition];
             
             if (animated) {
                 
@@ -736,6 +717,23 @@
     if (self.transition == FSCalendarTransitionWeekToMonth) {
         self.calendar.contentView.fs_height = targetHeight;
     }
+}
+
+
+- (void)prelayoutForWeekToMonthTransition
+{
+    self.calendar.contentView.clipsToBounds = YES;
+    self.calendar.contentView.fs_height = CGRectGetHeight(self.pendingAttributes.targetBounds)-self.calendar.scopeHandle.fs_height;
+    self.collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
+    self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
+    self.calendar.needsAdjustingMonthPosition = YES;
+    self.calendar.needsAdjustingViewFrame = YES;
+    [self.calendar setNeedsLayout];
+    [self.collectionView reloadData];
+    [self.calendar.header reloadData];
+    [self.calendar layoutIfNeeded];
+    [self.calendar.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+    [self.calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 
 @end
