@@ -87,8 +87,8 @@
         return YES;
     }
     if (gestureRecognizer == self.calendar.scopeGesture) {
-        CGPoint velocity = [self.calendar.collectionView.panGestureRecognizer velocityInView:self.calendar.collectionView];
-        BOOL shouldStart = (ABS(velocity.x)<ABS(velocity.y)) && !self.calendar.collectionView.decelerating;
+        CGPoint velocity = [self.collectionView.panGestureRecognizer velocityInView:self.collectionView];
+        BOOL shouldStart = (ABS(velocity.x)<ABS(velocity.y));
         if (shouldStart) {
             self.calendar.collectionView.panGestureRecognizer.enabled = NO;
             self.calendar.collectionView.panGestureRecognizer.enabled = YES;
@@ -189,7 +189,7 @@
                 [self performBackwardTransition:self.transition fromProgress:progress];
                 
             }
-            
+            break;
         }
         default:
             break;

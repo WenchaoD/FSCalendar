@@ -119,7 +119,6 @@
                     return count;
                 }
                 case UICollectionViewScrollDirectionHorizontal: {
-                    // 这里需要默认多出两项，否则当contentOffset为负时，切换到其他页面时会自动归零
                     // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
                     NSDate *minimumPage = [_calendar beginingOfMonthOfDate:_calendar.minimumDate];
                     NSInteger count = [_calendar monthsFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
