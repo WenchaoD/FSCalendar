@@ -1310,35 +1310,33 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
-    if (!_collectionView.tracking) {
-        if (!self.floatingMode) {
-            if ([self isDateInDifferentPage:date] && [self isDateInRange:date]) {
-                [self willChangeValueForKey:@"currentPage"];
-                NSDate *lastPage = _currentPage;
-                switch (_scope) {
-                    case FSCalendarScopeMonth: {
-                        _currentPage = [self beginingOfMonthOfDate:date];
-                        break;
-                    }
-                    case FSCalendarScopeWeek: {
-                        _currentPage = [self beginingOfWeekOfDate:date];
-                        break;
-                    }
+    if (!self.floatingMode) {
+        if ([self isDateInDifferentPage:date] && [self isDateInRange:date]) {
+            [self willChangeValueForKey:@"currentPage"];
+            NSDate *lastPage = _currentPage;
+            switch (_scope) {
+                case FSCalendarScopeMonth: {
+                    _currentPage = [self beginingOfMonthOfDate:date];
+                    break;
                 }
-                if (!_supressEvent && self.hasValidateVisibleLayout) {
-                    _supressEvent = YES;
-                    [self currentPageDidChange];
-                    if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows && self.animator.state == FSCalendarTransitionStateIdle) {
-                        [self.animator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.33];
-                    }
-                    _supressEvent = NO;
+                case FSCalendarScopeWeek: {
+                    _currentPage = [self beginingOfWeekOfDate:date];
+                    break;
                 }
-                [self didChangeValueForKey:@"currentPage"];
             }
-            [self scrollToDate:_currentPage animated:animated];
-        } else {
-            [self scrollToDate:[self beginingOfMonthOfDate:date] animated:animated];
+            if (!_supressEvent && self.hasValidateVisibleLayout) {
+                _supressEvent = YES;
+                [self currentPageDidChange];
+                if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows && self.animator.state == FSCalendarTransitionStateIdle) {
+                    [self.animator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.33];
+                }
+                _supressEvent = NO;
+            }
+            [self didChangeValueForKey:@"currentPage"];
         }
+        [self scrollToDate:_currentPage animated:animated];
+    } else {
+        [self scrollToDate:[self beginingOfMonthOfDate:date] animated:animated];
     }
 }
 

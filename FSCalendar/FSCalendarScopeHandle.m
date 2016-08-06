@@ -48,7 +48,6 @@
         UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         panGesture.minimumNumberOfTouches = 1;
         panGesture.maximumNumberOfTouches = 2;
-        panGesture.delegate = self.calendar.animator;
         [self addGestureRecognizer:panGesture];
         self.panGesture = panGesture;
                 
@@ -66,6 +65,12 @@
 - (void)handlePan:(id)sender
 {
     [self.calendar.animator handlePan:sender];
+}
+
+- (void)setCalendar:(FSCalendar *)calendar
+{
+    _calendar = calendar;
+    self.panGesture.delegate = self.calendar.animator;
 }
 
 @end
