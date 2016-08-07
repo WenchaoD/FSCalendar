@@ -87,8 +87,8 @@
         return YES;
     }
     if (gestureRecognizer == self.calendar.scopeGesture) {
-        CGPoint velocity = [self.collectionView.panGestureRecognizer velocityInView:self.collectionView];
-        BOOL shouldStart = (ABS(velocity.x)<ABS(velocity.y));
+        CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:self.calendar.daysContainer];
+        BOOL shouldStart = (ABS(velocity.x)<=ABS(velocity.y));
         if (shouldStart) {
             self.calendar.collectionView.panGestureRecognizer.enabled = NO;
             self.calendar.collectionView.panGestureRecognizer.enabled = YES;
@@ -96,6 +96,11 @@
         return shouldStart;
     }
     return NO;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return otherGestureRecognizer == self.collectionView.panGestureRecognizer && self.collectionView.decelerating;
 }
 
 - (void)scopeTransitionDidBegin:(UIPanGestureRecognizer *)panGesture
