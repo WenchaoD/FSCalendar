@@ -151,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- * FSCalendarDelegateAppearance determines the fonts and colors of components in the calendar, but more specificly. Basely, if you need to make a global customization of appearance of the calendar, use FSCalendarAppearance. But if you need different appearance for different day, use FSCalendarDelegateAppearance.
+ * FSCalendarDelegateAppearance determines the fonts and colors of components in the calendar, but more specificly. Basically, if you need to make a global customization of appearance of the calendar, use FSCalendarAppearance. But if you need different appearance for different days, use FSCalendarDelegateAppearance.
  *
  * @see FSCalendarAppearance
  */
