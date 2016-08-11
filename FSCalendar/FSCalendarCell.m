@@ -399,25 +399,31 @@
     return _preferredCellShape ?: _appearance.cellShape;
 }
 
-- (CGPoint)preferredTitleOffset
-{
-    return CGPointEqualToPoint(_preferredTitleOffset, CGPointZero) ? _appearance.titleOffset : _preferredTitleOffset;
+#define OFFSET_PROPERTY(NAME,CAPITAL,ALTERNATIVE) \
+\
+@synthesize NAME = _##NAME; \
+\
+- (void)set##CAPITAL:(CGPoint)NAME \
+{ \
+    BOOL diff = !CGPointEqualToPoint(NAME, self.NAME); \
+    _##NAME = NAME; \
+    if (diff) { \
+        _needsAdjustingViewFrame = YES; \
+        [self setNeedsLayout]; \
+    } \
+} \
+\
+- (CGPoint)NAME \
+{ \
+    return CGPointEqualToPoint(_##NAME, CGPointZero) ? ALTERNATIVE : _##NAME; \
 }
 
-- (CGPoint)preferredSubtitleOffset
-{
-    return CGPointEqualToPoint(_preferredSubtitleOffset, CGPointZero) ? _appearance.subtitleOffset : _preferredSubtitleOffset;
-}
+OFFSET_PROPERTY(preferredTitleOffset, PreferredTitleOffset, _appearance.titleOffset);
+OFFSET_PROPERTY(preferredSubtitleOffset, PreferredSubtitleOffset, _appearance.subtitleOffset);
+OFFSET_PROPERTY(preferredImageOffset, PreferredImageOffset, _appearance.subtitleOffset);
+OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOffset);
 
-- (CGPoint)preferredImageOffset
-{
-    return CGPointEqualToPoint(_preferredImageOffset, CGPointZero) ? _appearance.imageOffset : _preferredImageOffset;
-}
-
-- (CGPoint)preferredEventOffset
-{
-    return CGPointEqualToPoint(_preferredEventOffset, CGPointZero) ? _appearance.eventOffset : _preferredEventOffset;
-}
+#undef OFFSET_PROPERTY
 
 - (void)setCalendar:(FSCalendar *)calendar
 {
@@ -437,9 +443,10 @@
 - (void)setSubtitle:(NSString *)subtitle
 {
     if (![_subtitle isEqualToString:subtitle]) {
-        _needsAdjustingViewFrame = (subtitle.length && !_subtitle.length) || (_subtitle.length && !subtitle.length);
+        BOOL diff = (subtitle.length && !_subtitle.length) || (_subtitle.length && !subtitle.length);
         _subtitle = subtitle;
-        if (_needsAdjustingViewFrame) {
+        if (diff) {
+            _needsAdjustingViewFrame = YES;
             [self setNeedsLayout];
         }
     }
