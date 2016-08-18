@@ -873,7 +873,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)setLocale:(NSLocale *)locale
 {
     if (![_locale isEqual:locale]) {
-        _locale = locale;
+        _locale = locale.copy;
         [self invalidateDateTools];
         [self invalidateWeekdaySymbols];
         if (self.hasValidateVisibleLayout) {

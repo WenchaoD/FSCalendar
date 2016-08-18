@@ -278,7 +278,7 @@ IB_DESIGNABLE
  * 
  *    calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
  */
-@property (strong, nonatomic) NSLocale *locale;
+@property (copy, nonatomic) NSLocale *locale;
 
 /**
  * Represents the NSCalendarIdentifier of calendar. Default is NSCalendarIdentifierGregorian.
