@@ -24,7 +24,8 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
 
 typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
     FSCalendarCellShapeCircle    = 0,
-    FSCalendarCellShapeRectangle = 1
+    FSCalendarCellShapeRectangle = 1,
+    FSCalendarCellShapeRoundRect = 2
 };
 
 typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {

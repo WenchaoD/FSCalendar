@@ -193,8 +193,10 @@
 
 - (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date
 {
-    if ([@[@8,@17,@21,@25] containsObject:@([_calendar dayOfDate:date])]) {
+    if ([@[@8,@17,@21] containsObject:@([_calendar dayOfDate:date])]) {
         return FSCalendarCellShapeRectangle;
+    } else if ([@[@9,@25] containsObject:@([_calendar dayOfDate:date])]) {
+        return FSCalendarCellShapeRoundRect;
     }
     return FSCalendarCellShapeCircle;
 }
