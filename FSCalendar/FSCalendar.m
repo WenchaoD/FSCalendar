@@ -175,7 +175,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _components = [[NSDateComponents alloc] init];
     _formatter = [[NSDateFormatter alloc] init];
     _locale = [NSLocale currentLocale];
-    _timeZone = [NSTimeZone localTimeZone];
+    _timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
     _firstWeekday = 1;
     [self invalidateDateTools];
     
@@ -873,7 +873,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)setLocale:(NSLocale *)locale
 {
     if (![_locale isEqual:locale]) {
-        _locale = locale;
+        _locale = locale.copy;
         [self invalidateDateTools];
         [self invalidateWeekdaySymbols];
         if (self.hasValidateVisibleLayout) {
@@ -2044,10 +2044,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #else
     NSDate *minimumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
-        minimumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource minimumDateForCalendar:self]];
+        minimumDate = [_dataSource minimumDateForCalendar:self];
     }
     if (!minimumDate) {
         minimumDate = [self dateWithYear:1970 month:1 day:1];
+    } else {
+        minimumDate = [self dateByIgnoringTimeComponentsOfDate:minimumDate];
     }
     return minimumDate;
 #endif
@@ -2060,10 +2062,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #else
     NSDate *maximumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {
-        maximumDate = [self dateByIgnoringTimeComponentsOfDate:[_dataSource maximumDateForCalendar:self]];
+        maximumDate = [_dataSource maximumDateForCalendar:self];
     }
     if (!maximumDate) {
         maximumDate = [self dateWithYear:2099 month:12 day:31];
+    } else {
+        maximumDate = [self dateByIgnoringTimeComponentsOfDate:maximumDate];
     }
     return maximumDate;
 #endif

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */; };
+		30145EF11D6D754D00AA5F72 /* FSCalendarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CF51B8A1F550006DD1A /* FSCalendarTests.m */; };
+		30145EF21D6D755A00AA5F72 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE638CF41B8A1F550006DD1A /* Info.plist */; };
 		3031F3EF1CDEDFC500C174D7 /* ScopeHandleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */; };
 		3065CA961CD31B81006C218D /* FSCalendarScopeHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 3065CA941CD31B81006C218D /* FSCalendarScopeHandle.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		3065CA971CD31B81006C218D /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */; };
@@ -76,6 +78,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		30671DCC1D6D574C00BCFC4E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE0D7FBF1B89C5D3003C287B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EE0D7FC61B89C5D3003C287B;
+			remoteInfo = FSCalendarExample;
+		};
 		30B0BA961B8D8B02004B9476 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EE0D7FBF1B89C5D3003C287B /* Project object */;
@@ -108,6 +117,7 @@
 		3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarScopeHandle.m; sourceTree = "<group>"; };
 		3065CA9F1CD34ED0006C218D /* FSCalendar+DateTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+DateTools.m"; sourceTree = "<group>"; };
 		3065CAA61CD3506A006C218D /* FSCalendar+Deprecated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+Deprecated.m"; sourceTree = "<group>"; };
+		30671DC71D6D574C00BCFC4E /* FSCalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FSCalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		307E05B71C61EC5C0052A9B4 /* FSCalendarEventIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarEventIndicator.h; sourceTree = "<group>"; };
 		307E05B81C61EC5C0052A9B4 /* FSCalendarEventIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarEventIndicator.m; sourceTree = "<group>"; };
 		307E05BC1C61ED320052A9B4 /* CALayer+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+FSExtension.h"; sourceTree = "<group>"; };
@@ -170,6 +180,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		30671DC41D6D574C00BCFC4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EE0D7FC41B89C5D3003C287B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -304,6 +321,7 @@
 			children = (
 				EE0D7FC71B89C5D3003C287B /* FSCalendarExample.app */,
 				EE638CE21B8A1F550006DD1A /* FSCalendar.framework */,
+				30671DC71D6D574C00BCFC4E /* FSCalendarTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -425,6 +443,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		30671DC61D6D574C00BCFC4E /* FSCalendarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30671DCE1D6D574C00BCFC4E /* Build configuration list for PBXNativeTarget "FSCalendarTests" */;
+			buildPhases = (
+				30671DC31D6D574C00BCFC4E /* Sources */,
+				30671DC41D6D574C00BCFC4E /* Frameworks */,
+				30671DC51D6D574C00BCFC4E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				30671DCD1D6D574C00BCFC4E /* PBXTargetDependency */,
+			);
+			name = FSCalendarTests;
+			productName = FSCalendarTests;
+			productReference = 30671DC71D6D574C00BCFC4E /* FSCalendarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		EE0D7FC61B89C5D3003C287B /* FSCalendarExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EE0D7FEA1B89C5D3003C287B /* Build configuration list for PBXNativeTarget "FSCalendarExample" */;
@@ -471,6 +507,10 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = wenchaoios;
 				TargetAttributes = {
+					30671DC61D6D574C00BCFC4E = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = EE0D7FC61B89C5D3003C287B;
+					};
 					EE0D7FC61B89C5D3003C287B = {
 						CreatedOnToolsVersion = 6.4;
 					};
@@ -497,11 +537,20 @@
 			targets = (
 				EE0D7FC61B89C5D3003C287B /* FSCalendarExample */,
 				EE638CE11B8A1F550006DD1A /* FSCalendar */,
+				30671DC61D6D574C00BCFC4E /* FSCalendarTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		30671DC51D6D574C00BCFC4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30145EF21D6D755A00AA5F72 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EE0D7FC51B89C5D3003C287B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -523,6 +572,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		30671DC31D6D574C00BCFC4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30145EF11D6D754D00AA5F72 /* FSCalendarTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EE0D7FC31B89C5D3003C287B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -586,6 +643,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		30671DCD1D6D574C00BCFC4E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EE0D7FC61B89C5D3003C287B /* FSCalendarExample */;
+			targetProxy = 30671DCC1D6D574C00BCFC4E /* PBXContainerItemProxy */;
+		};
 		30B0BA971B8D8B02004B9476 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = EE638CE11B8A1F550006DD1A /* FSCalendar */;
@@ -613,6 +675,35 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		30671DCF1D6D574C00BCFC4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = FSCalendarTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.FSCalendarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FSCalendarExample.app/FSCalendarExample";
+			};
+			name = Debug;
+		};
+		30671DD01D6D574C00BCFC4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = FSCalendarTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchao.FSCalendarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FSCalendarExample.app/FSCalendarExample";
+			};
+			name = Release;
+		};
 		EE0D7FE81B89C5D3003C287B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -771,6 +862,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		30671DCE1D6D574C00BCFC4E /* Build configuration list for PBXNativeTarget "FSCalendarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				30671DCF1D6D574C00BCFC4E /* Debug */,
+				30671DD01D6D574C00BCFC4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EE0D7FC21B89C5D3003C287B /* Build configuration list for PBXProject "FSCalendar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
