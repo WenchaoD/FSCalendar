@@ -11,7 +11,6 @@
 #import "MultipleSelectionViewController.h"
 #import "FullScreenExampleViewController.h"
 #import "DelegateAppearanceViewController.h"
-#import "CalendarIdentifierViewController.h"
 #import "HidePlaceholderViewController.h"
 #import "ButtonsViewController.h"
 #import "ScopeHandleViewController.h"
@@ -28,7 +27,6 @@
                              [ScopeHandleViewController class],
                              [ButtonsViewController class],
                              [HidePlaceholderViewController class],
-                             [CalendarIdentifierViewController class],
                              [DelegateAppearanceViewController class],
                              [FullScreenExampleViewController class],
                              [MultipleSelectionViewController class],

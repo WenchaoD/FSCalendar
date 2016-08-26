@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30024F941BD1015300B1C04C /* DelegateAppearanceViewController.m */; };
 		30145EF11D6D754D00AA5F72 /* FSCalendarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CF51B8A1F550006DD1A /* FSCalendarTests.m */; };
-		30145EF21D6D755A00AA5F72 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE638CF41B8A1F550006DD1A /* Info.plist */; };
 		3031F3EF1CDEDFC500C174D7 /* ScopeHandleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */; };
 		3065CA961CD31B81006C218D /* FSCalendarScopeHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = 3065CA941CD31B81006C218D /* FSCalendarScopeHandle.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		3065CA971CD31B81006C218D /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */; };
@@ -24,7 +23,6 @@
 		307E05BE1C61ED320052A9B4 /* CALayer+FSExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = 307E05BC1C61ED320052A9B4 /* CALayer+FSExtension.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		307E05BF1C61ED320052A9B4 /* CALayer+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 307E05BD1C61ED320052A9B4 /* CALayer+FSExtension.m */; };
 		307E05C01C61ED320052A9B4 /* CALayer+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 307E05BD1C61ED320052A9B4 /* CALayer+FSExtension.m */; };
-		3084BD191BF9AB8100C956F7 /* CalendarIdentifierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3084BD181BF9AB8100C956F7 /* CalendarIdentifierViewController.m */; };
 		308B58D81CC08FFA004E812D /* ButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 308B58D71CC08FFA004E812D /* ButtonsViewController.m */; };
 		3092253A1B905C4300123031 /* FSCalendarConstance.h in Headers */ = {isa = PBXBuildFile; fileRef = 309225381B905C4300123031 /* FSCalendarConstance.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3092253B1B905C4300123031 /* FSCalendarConstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 309225391B905C4300123031 /* FSCalendarConstance.m */; };
@@ -122,8 +120,6 @@
 		307E05B81C61EC5C0052A9B4 /* FSCalendarEventIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarEventIndicator.m; sourceTree = "<group>"; };
 		307E05BC1C61ED320052A9B4 /* CALayer+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+FSExtension.h"; sourceTree = "<group>"; };
 		307E05BD1C61ED320052A9B4 /* CALayer+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+FSExtension.m"; sourceTree = "<group>"; };
-		3084BD171BF9AB8100C956F7 /* CalendarIdentifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarIdentifierViewController.h; sourceTree = SOURCE_ROOT; };
-		3084BD181BF9AB8100C956F7 /* CalendarIdentifierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarIdentifierViewController.m; sourceTree = SOURCE_ROOT; };
 		308B58D61CC08FFA004E812D /* ButtonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonsViewController.h; sourceTree = SOURCE_ROOT; };
 		308B58D71CC08FFA004E812D /* ButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonsViewController.m; sourceTree = SOURCE_ROOT; };
 		309225381B905C4300123031 /* FSCalendarConstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarConstance.h; sourceTree = "<group>"; };
@@ -220,15 +216,6 @@
 				3031F3EE1CDEDFC500C174D7 /* ScopeHandleViewController.m */,
 			);
 			name = "Scope Handle";
-			sourceTree = "<group>";
-		};
-		3084BD161BF9AB2200C956F7 /* Calendar Identifiers */ = {
-			isa = PBXGroup;
-			children = (
-				3084BD171BF9AB8100C956F7 /* CalendarIdentifierViewController.h */,
-				3084BD181BF9AB8100C956F7 /* CalendarIdentifierViewController.m */,
-			);
-			name = "Calendar Identifiers";
 			sourceTree = "<group>";
 		};
 		308B58D51CC08FA4004E812D /* Prev-Next-Buttons */ = {
@@ -338,7 +325,6 @@
 				3031F3EC1CDEDFA700C174D7 /* Scope Handle */,
 				308B58D51CC08FA4004E812D /* Prev-Next-Buttons */,
 				30D55B0D1C9023E400BB43D5 /* Hide Placeholders */,
-				3084BD161BF9AB2200C956F7 /* Calendar Identifiers */,
 				30024F921BD1013D00B1C04C /* Delegate Appearance */,
 				EECA10F51BA9BF9B00945B83 /* Fullscreen Example */,
 				30F5D8571B9FC48C00C1C201 /* MultipleSelection Example */,
@@ -504,7 +490,7 @@
 		EE0D7FBF1B89C5D3003C287B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = wenchaoios;
 				TargetAttributes = {
 					30671DC61D6D574C00BCFC4E = {
@@ -547,7 +533,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30145EF21D6D755A00AA5F72 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,7 +586,6 @@
 				EE638CD41B89DBE90006DD1A /* FSTableViewController.m in Sources */,
 				3065CA971CD31B81006C218D /* FSCalendarScopeHandle.m in Sources */,
 				307E05BF1C61ED320052A9B4 /* CALayer+FSExtension.m in Sources */,
-				3084BD191BF9AB8100C956F7 /* CalendarIdentifierViewController.m in Sources */,
 				308B58D81CC08FFA004E812D /* ButtonsViewController.m in Sources */,
 				EE638CCB1B89DBAC0006DD1A /* main.m in Sources */,
 				30B0BAD11B8D8E23004B9476 /* FSCalendarAppearance.m in Sources */,

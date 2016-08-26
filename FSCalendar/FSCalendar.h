@@ -281,13 +281,13 @@ IB_DESIGNABLE
 @property (copy, nonatomic) NSLocale *locale;
 
 /**
- * Represents the NSCalendarIdentifier of calendar. Default is NSCalendarIdentifierGregorian.
+ * NOT RECOMMENDED. Represents the NSCalendarIdentifier of calendar. Default is NSCalendarIdentifierGregorian.
  *
  * e.g. To display a Persian calendar
  *
  *    calendar.identifier = NSCalendarIdentifierPersian;
  */
-@property (strong, nonatomic) NSString *identifier;
+@property (strong, nonatomic) NSString *identifier DEPRECATED_MSG_ATTRIBUTE("Changing calendar identifier is NOT RECOMMENDED. You should always use this library as a Gregorian calendar. Try to express other calendar as subtitles just as System calendar app does."); // Deprecated in 2.3.1
 
 /**
  * The scroll direction of FSCalendar. 
