@@ -17,9 +17,10 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     "20160206","20160306","20160406","20160506","20160606","20160706"]
     override func viewDidLoad() {
         super.viewDidLoad()
-        calendar.scrollDirection = .Vertical
         calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
         calendar.selectDate(calendar.dateWithYear(2015, month: 10, day: 10))
+//        calendar.scope = .Week
+        calendar.scopeGesture.enabled = true
 //        calendar.allowsMultipleSelection = true
         
         // Uncomment this to test month->week and week->month transition

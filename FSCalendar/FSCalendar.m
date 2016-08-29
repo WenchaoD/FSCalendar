@@ -1056,7 +1056,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (BOOL)floatingMode
 {
-    return _scrollEnabled && !_pagingEnabled;
+    return _scope == FSCalendarScopeMonth && _scrollEnabled && !_pagingEnabled;
 }
 
 - (void)setShowsScopeHandle:(BOOL)showsScopeHandle
