@@ -289,7 +289,7 @@
 
 - (BOOL)isDateInToday:(NSDate *)date
 {
-    return [self isDate:date equalToDate:self.today toCalendarUnit:FSCalendarUnitDay];
+    return [self isDate:date equalToDate:[NSDate date] toCalendarUnit:FSCalendarUnitDay];
 }
 
 - (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format
