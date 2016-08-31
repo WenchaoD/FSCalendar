@@ -36,6 +36,7 @@
         
         UILabel *label;
         CAShapeLayer *shapeLayer;
+        UIView *shapeView;
         UIImageView *imageView;
         FSCalendarEventIndicator *eventIndicator;
         
@@ -50,6 +51,11 @@
         label.textColor = [UIColor lightGrayColor];
         [self.contentView addSubview:label];
         self.subtitleLabel = label;
+        
+        shapeView = [[UIView alloc] initWithFrame:CGRectZero];
+        shapeView.backgroundColor = [UIColor clearColor];
+        [self.contentView insertSubview:shapeView belowSubview:_titleLabel];
+        self.shapeView = shapeView;
         
         shapeLayer = [CAShapeLayer layer];
         shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
@@ -79,7 +85,8 @@
 {
     [super setBounds:bounds];
     
-    _shapeLayer.frame = [self shapeLayerBounds];
+    _shapeView.frame = [self shapeLayerBounds];
+    _shapeLayer.frame = _shapeView.bounds;
     _shapeLayer.borderWidth = 1.0;
     _shapeLayer.borderColor = [UIColor clearColor].CGColor;
     
@@ -103,9 +110,9 @@
                                        diameter,
                                        diameter);
     } else {
-        CGFloat w = self.contentView.bounds.size.width - 1;
-        CGFloat h = self.contentView.bounds.size.height - 1;
-        return CGRectMake(0, 0, w, h);
+        CGFloat w = self.contentView.bounds.size.width - 2;
+        CGFloat h = self.contentView.bounds.size.height - 2;
+        return CGRectMake(1, 1, w, h);
     }
 }
 
@@ -163,9 +170,10 @@
         } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTailBlankSpace && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
             self.contentView.hidden = NO;
             subViewAllHidden = YES;
-            for (UIView *subView in self.contentView.subviews) {
-                subView.hidden = YES;
-            }
+            self.titleLabel.hidden = YES;
+            self.subtitleLabel.hidden = YES;
+            self.imageView.hidden = YES;
+            self.shapeView.hidden = NO;
             
             NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
             
@@ -281,18 +289,24 @@
     if (!shouldHideShapeLayer) {
         
         CGPathRef path;
+        CGRect rect = [self shapeLayerBounds];
+        _shapeView.layer.masksToBounds = YES;
+        _shapeView.frame = rect;
         switch (self.cellShape) {
             case FSCalendarCellShapeCircle:
-                path = [UIBezierPath bezierPathWithOvalInRect:[self shapeLayerBounds]].CGPath;
+                _shapeView.layer.cornerRadius = rect.size.width * 0.5;
+                path = [UIBezierPath bezierPathWithOvalInRect:rect].CGPath;
                 break;
             case FSCalendarCellShapeRectangle:
-                path = [UIBezierPath bezierPathWithRect:[self shapeLayerBounds]].CGPath;
+                path = [UIBezierPath bezierPathWithRect:rect].CGPath;
                 break;
             case FSCalendarCellShapeRoundRect:
-                path = [UIBezierPath bezierPathWithRoundedRect:[self shapeLayerBounds] cornerRadius:2.0].CGPath;
+                _shapeView.layer.cornerRadius = 2.0;
+                path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:2.0].CGPath;
                 break;
             default:
-                path = [UIBezierPath bezierPathWithRoundedRect:[self shapeLayerBounds] cornerRadius:2.0].CGPath;
+                _shapeView.layer.cornerRadius = 2.0;
+                path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:2.0].CGPath;
                 break;
         }
         
@@ -301,8 +315,12 @@
         }
         
         CGColorRef cellFillColor = self.colorForCellFill.CGColor;
+        if (!CGColorEqualToColor(_shapeView.backgroundColor.CGColor, cellFillColor)) {
+            _shapeView.backgroundColor = self.colorForCellFill;
+        }
         if (!CGColorEqualToColor(_shapeLayer.fillColor, cellFillColor)) {
-            _shapeLayer.fillColor = cellFillColor;
+//            _shapeLayer.fillColor = cellFillColor;
+            _shapeLayer.fillColor = [UIColor clearColor].CGColor;
         }
         
         CGColorRef cellBorderColor = self.colorForCellBorder.CGColor;
@@ -383,7 +401,8 @@
 
 - (void)invalidateFillColors
 {
-    _shapeLayer.fillColor = self.colorForCellFill.CGColor;
+//    _shapeLayer.fillColor = self.colorForCellFill.CGColor;
+    _shapeView.backgroundColor = self.colorForCellFill;
 }
 
 - (void)invalidateEventColors

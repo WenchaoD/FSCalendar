@@ -18,6 +18,7 @@
 @property (weak, nonatomic) UILabel  *titleLabel;
 @property (weak, nonatomic) UILabel  *subtitleLabel;
 @property (weak, nonatomic) UIImageView *imageView;
+@property (strong, nonatomic) UIView   *shapeView;
 
 @property (weak, nonatomic) CAShapeLayer *shapeLayer;
 @property (weak, nonatomic) FSCalendarEventIndicator *eventIndicator;
