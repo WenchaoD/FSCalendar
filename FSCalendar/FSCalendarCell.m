@@ -156,11 +156,13 @@
 
 - (void)configureCell
 {
+    BOOL subViewAllHidden = NO;
     if (self.dateIsPlaceholder) {
         if (self.calendar.placeholderType == FSCalendarPlaceholderTypeNone) {
             self.contentView.hidden = YES;
         } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTailBlankSpace && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
             self.contentView.hidden = NO;
+            subViewAllHidden = YES;
             for (UIView *subView in self.contentView.subviews) {
                 subView.hidden = YES;
             }
@@ -213,7 +215,7 @@
     _titleLabel.text = self.title ?: [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
-        if (_subtitleLabel.hidden) {
+        if (_subtitleLabel.hidden && !subViewAllHidden) {
             _subtitleLabel.hidden = NO;
         }
     } else {
