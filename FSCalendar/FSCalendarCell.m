@@ -78,13 +78,8 @@
 - (void)setBounds:(CGRect)bounds
 {
     [super setBounds:bounds];
-    CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
-    CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
-    diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
-    _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
-                                   (titleHeight-diameter)/2,
-                                   diameter,
-                                   diameter);
+    
+    _shapeLayer.frame = [self shapeLayerBounds];
     _shapeLayer.borderWidth = 1.0;
     _shapeLayer.borderColor = [UIColor clearColor].CGColor;
     
@@ -96,6 +91,22 @@
                                        eventSize*0.83
                                       );
     _imageView.frame = self.contentView.bounds;
+}
+
+- (CGRect)shapeLayerBounds {
+    if (self.cellShape == FSCalendarCellShapeCircle) {
+        CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
+        CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
+        diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
+        return CGRectMake((self.bounds.size.width-diameter)/2,
+                                       (titleHeight-diameter)/2,
+                                       diameter,
+                                       diameter);
+    } else {
+        CGFloat w = self.contentView.bounds.size.width - 1;
+        CGFloat h = self.contentView.bounds.size.height - 1;
+        return CGRectMake(0, 0, w, h);
+    }
 }
 
 - (void)layoutSubviews
@@ -145,9 +156,31 @@
 
 - (void)configureCell
 {
+    BOOL subViewAllHidden = NO;
     if (self.dateIsPlaceholder) {
         if (self.calendar.placeholderType == FSCalendarPlaceholderTypeNone) {
             self.contentView.hidden = YES;
+        } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTailBlankSpace && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
+            self.contentView.hidden = NO;
+            subViewAllHidden = YES;
+            for (UIView *subView in self.contentView.subviews) {
+                subView.hidden = YES;
+            }
+            
+            NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
+            
+            NSInteger lineCount = [self.calendar numberOfRowsInMonth:self.month];
+            if (lineCount == 6) {
+                self.contentView.hidden = NO;
+            } else {
+                NSInteger currentLine = 0;
+                if (self.calendar.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
+                    currentLine = indexPath.item/7 + 1;
+                } else {
+                    currentLine = indexPath.item%6 + 1;
+                }
+                self.contentView.hidden = (currentLine>lineCount);
+            }
         } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
             
             NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
@@ -168,6 +201,13 @@
     } else if (self.contentView.hidden) {
         self.needsAdjustingViewFrame = YES;
         self.contentView.hidden = NO;
+        for (UIView *subView in self.contentView.subviews) {
+            subView.hidden = NO;
+        }
+    } else {
+        for (UIView *subView in self.contentView.subviews) {
+            subView.hidden = NO;
+        }
     }
     
     if (self.contentView.hidden) return;
@@ -175,7 +215,7 @@
     _titleLabel.text = self.title ?: [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
-        if (_subtitleLabel.hidden) {
+        if (_subtitleLabel.hidden && !subViewAllHidden) {
             _subtitleLabel.hidden = NO;
         }
     } else {
@@ -240,9 +280,22 @@
     }
     if (!shouldHideShapeLayer) {
         
-        CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
-        [UIBezierPath bezierPathWithOvalInRect:_shapeLayer.bounds].CGPath :
-        [UIBezierPath bezierPathWithRect:_shapeLayer.bounds].CGPath;
+        CGPathRef path;
+        switch (self.cellShape) {
+            case FSCalendarCellShapeCircle:
+                path = [UIBezierPath bezierPathWithOvalInRect:[self shapeLayerBounds]].CGPath;
+                break;
+            case FSCalendarCellShapeRectangle:
+                path = [UIBezierPath bezierPathWithRect:[self shapeLayerBounds]].CGPath;
+                break;
+            case FSCalendarCellShapeRoundRect:
+                path = [UIBezierPath bezierPathWithRoundedRect:[self shapeLayerBounds] cornerRadius:2.0].CGPath;
+                break;
+            default:
+                path = [UIBezierPath bezierPathWithRoundedRect:[self shapeLayerBounds] cornerRadius:2.0].CGPath;
+                break;
+        }
+        
         if (!CGPathEqualToPath(_shapeLayer.path,path)) {
             _shapeLayer.path = path;
         }
@@ -340,9 +393,21 @@
 
 - (void)invalidateCellShapes
 {
-    CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
-    [UIBezierPath bezierPathWithOvalInRect:_shapeLayer.bounds].CGPath :
-    [UIBezierPath bezierPathWithRect:_shapeLayer.bounds].CGPath;
+    CGPathRef path;
+    switch (self.cellShape) {
+        case FSCalendarCellShapeCircle:
+            path = [UIBezierPath bezierPathWithOvalInRect:[self shapeLayerBounds]].CGPath;
+            break;
+        case FSCalendarCellShapeRectangle:
+            path = [UIBezierPath bezierPathWithRect:[self shapeLayerBounds]].CGPath;
+            break;
+        case FSCalendarCellShapeRoundRect:
+            path = [UIBezierPath bezierPathWithRoundedRect:[self shapeLayerBounds] cornerRadius:2.0].CGPath;
+            break;
+        default:
+            path = [UIBezierPath bezierPathWithRoundedRect:[self shapeLayerBounds] cornerRadius:2.0].CGPath;
+            break;
+    }
     _shapeLayer.path = path;
 }
 
@@ -358,6 +423,8 @@
 {
     if (self.dateIsSelected || self.isSelected) {
         return self.preferredFillSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+    } else if (self.dateIsPlaceholder) {
+        return self.preferredPlaceholderDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
     }
     return self.preferredFillDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
 }

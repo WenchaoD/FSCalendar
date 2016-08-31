@@ -46,9 +46,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
 };
 
 typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
-    FSCalendarPlaceholderTypeNone          = 0,
-    FSCalendarPlaceholderTypeFillHeadTail  = 1,
-    FSCalendarPlaceholderTypeFillSixRows   = 2
+    FSCalendarPlaceholderTypeNone                   = 0,
+    FSCalendarPlaceholderTypeFillHeadTail           = 1,
+    FSCalendarPlaceholderTypeFillSixRows            = 2,
+    FSCalendarPlaceholderTypeFillHeadTailBlankSpace = 3
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -208,6 +209,11 @@ NS_ASSUME_NONNULL_BEGIN
  * Asks the delegate for a border color in selected state for the specific date.
  */
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSelectionColorForDate:(NSDate *)date;
+
+/**
+ * Asks the delegate for a placeholder color in unselected state for the specific date.
+ */
+- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance placeholderDefaultColorForDate:(NSDate *)date;
 
 /**
  * Asks the delegate for an offset for day text for the specific date.

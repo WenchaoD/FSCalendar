@@ -1598,6 +1598,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     cell.preferredBorderDefaultColor = [self preferredBorderDefaultColorForDate:cell.date];
     cell.preferredBorderSelectionColor = [self preferredBorderSelectionColorForDate:cell.date];
+    cell.preferredPlaceholderDefaultColor = [self preferredPlaceholderDefaultColorForDate:cell.date];
     cell.preferredCellShape = [self preferredCellShapeForDate:cell.date];
     
     if (cell.image) {
@@ -1913,6 +1914,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:borderSelectionColorForDate:)]) {
         UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance borderSelectionColorForDate:date];
+        return color;
+    }
+    return nil;
+}
+
+- (UIColor *)preferredPlaceholderDefaultColorForDate:(NSDate *)date
+{
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:placeholderDefaultColorForDate:)]) {
+        UIColor *color = [self.delegateAppearance calendar:self appearance:self.appearance placeholderDefaultColorForDate:date];
         return color;
     }
     return nil;
