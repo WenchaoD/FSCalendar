@@ -260,9 +260,9 @@ IB_DESIGNABLE
 @property (weak, nonatomic) IBOutlet id<FSCalendarDataSource> dataSource;
 
 /**
- * A special mark will be put on today of the calendar
+ * A special mark will be put on 'today' of the calendar.
  */
-@property (strong, nonatomic) NSDate *today;
+@property (nullable, strong, nonatomic) NSDate *today;
 
 /**
  * The current page of calendar

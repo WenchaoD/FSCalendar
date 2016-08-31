@@ -787,31 +787,34 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)setToday:(NSDate *)today
 {
     [self requestBoundingDatesIfNecessary];
-    if ([self daysFromDate:_minimumDate toDate:today] < 0) {
-        today = _minimumDate.copy;
-    } else if ([self daysFromDate:_maximumDate toDate:today] > 0) {
-        today = _maximumDate.copy;
-    }
-    if (![self isDateInToday:today]) {
-        _today = [self dateByIgnoringTimeComponentsOfDate:today];
-        switch (_scope) {
-            case FSCalendarScopeMonth: {
-                _currentPage = [self beginingOfMonthOfDate:today];
-                break;
-            }
-            case FSCalendarScopeWeek: {
-                _currentPage = [self beginingOfWeekOfDate:today];
-                break;
-            }
+    if (!today) {
+        _today = nil;
+    } else {
+        if ([self daysFromDate:_minimumDate toDate:today] < 0) {
+            today = _minimumDate.copy;
+        } else if ([self daysFromDate:_maximumDate toDate:today] > 0) {
+            today = _maximumDate.copy;
         }
-        _needsAdjustingMonthPosition = YES;
-        [self setNeedsLayout];
-        
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
-        [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        
+        if (![self isDateInToday:today]) {
+            _today = [self dateByIgnoringTimeComponentsOfDate:today];
+            switch (_scope) {
+                case FSCalendarScopeMonth: {
+                    _currentPage = [self beginingOfMonthOfDate:today];
+                    break;
+                }
+                case FSCalendarScopeWeek: {
+                    _currentPage = [self beginingOfWeekOfDate:today];
+                    break;
+                }
+            }
+            _needsAdjustingMonthPosition = YES;
+            [self setNeedsLayout];
+        }
     }
+    
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
+    [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 
 - (void)setCurrentPage:(NSDate *)currentPage
@@ -1342,6 +1345,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath scope:(FSCalendarScope)scope
 {
+    if (!indexPath) return nil;
     switch (scope) {
         case FSCalendarScopeMonth: {
             NSDate *currentPage = [self dateByAddingMonths:indexPath.section toDate:[self beginingOfMonthOfDate:_minimumDate]];
@@ -1379,6 +1383,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope
 {
+    if (!date) return nil;
     NSInteger item = 0;
     NSInteger section = 0;
     switch (scope) {
@@ -1611,7 +1616,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.title = [self titleForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.dateIsSelected = [_selectedDates containsObject:cell.date];
-    cell.dateIsToday = [self isDateInToday:cell.date];
+    cell.dateIsToday = self.today? [self isDateInToday:cell.date] : NO;
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *firstPage = [self beginingOfMonthOfDate:_minimumDate];
