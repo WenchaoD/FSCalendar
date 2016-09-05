@@ -398,10 +398,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _needsAdjustingMonthPosition = NO;
             [self requestBoundingDatesIfNecessary];
             _supressEvent = NO;
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
             [self scrollToPageForDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate) animated:NO];
-            [CATransaction commit];
         }
     }
     
@@ -950,11 +947,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
         _preferredPadding = FSCalendarAutomaticDimension;
         [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
-        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        _header.needsAdjustingViewFrame = YES;
-        [_collectionViewLayout invalidateLayout];
         [self setNeedsLayout];
     }
 }
@@ -1705,19 +1700,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
-    _needsAdjustingMonthPosition = YES;
     
     _preferredHeaderHeight  = FSCalendarAutomaticDimension;
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
     _preferredPadding       = FSCalendarAutomaticDimension;
     
+    [self.collectionViewLayout invalidateLayout];
+    [self.collectionViewLayout layoutAttributesForElementsInRect:CGRectZero];
     [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
-    self.header.needsAdjustingViewFrame = YES;
     [self.appearance invalidateFonts];
-    [self.collectionViewLayout invalidateLayout];
+    [self.header setNeedsAdjustingViewFrame:YES];
     [self setNeedsLayout];
+    
 }
 
 // The best way to detect orientation

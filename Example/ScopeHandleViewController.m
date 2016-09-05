@@ -30,7 +30,7 @@
     self.view = view;
     
     CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 480 : 330;
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, height)];
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0,  CGRectGetMaxY(self.navigationController.navigationBar.frame), view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
 //    calendar.showsPlaceholders = NO;
@@ -51,11 +51,14 @@
     // self.calendar.scope = FSCalendarScopeWeek;
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
 }
-
-
 
 @end

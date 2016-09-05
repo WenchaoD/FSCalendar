@@ -83,12 +83,3 @@
 - (void)invalidateFonts;
 
 @end
-
-
-@interface FSCalendarHeader (Dynamic)
-
-@property (readonly, nonatomic) UICollectionView *collectionView;
-
-@end
-
-
