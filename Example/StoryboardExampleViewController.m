@@ -34,7 +34,10 @@
     _scrollDirection = _calendar.scrollDirection;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     
-    [_calendar selectDate:[_calendar dateWithYear:2015 month:10 day:5]];
+//    _calendar.today = nil;
+//    _calendar.today = [self.calendar dateByAddingDays:2 toDate:[NSDate date]];
+    
+//    [_calendar selectDate:[_calendar dateWithYear:2015 month:10 day:5]];
     
     _datesShouldNotBeSelected = @[@"2015/08/07",
                                   @"2015/09/07",
@@ -48,6 +51,8 @@
                         @"2015-10-07",
                         @"2015-10-15",
                         @"2015-10-25"];
+    
+//    _calendar.locale = [NSLocale currentLocale];
     
     // Uncomment this to test the month->week & week->month transition
     /*

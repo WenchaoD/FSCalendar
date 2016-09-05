@@ -40,7 +40,7 @@
 
 - (void)testIndexPathForDatePerformance {
     [self measureBlock:^{
-        [self.calendar indexPathForDate:self.date];
+        [self.calendar indexPathForDate:self.date scope:FSCalendarScopeMonth];
     }];
 }
 

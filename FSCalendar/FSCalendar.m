@@ -396,11 +396,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else {
         if (_needsAdjustingMonthPosition) {
             _needsAdjustingMonthPosition = NO;
+            [self requestBoundingDatesIfNecessary];
             _supressEvent = NO;
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
             [self scrollToPageForDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate) animated:NO];
-            [CATransaction commit];
         }
     }
     
@@ -461,7 +459,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    [self requestBoundingDatesIfNecessary];
     if (self.animator.transition == FSCalendarTransitionWeekToMonth) {
         return [self monthsFromDate:[self beginingOfMonthOfDate:_minimumDate] toDate:_maximumDate] + 1;
     }
@@ -786,7 +783,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setToday:(NSDate *)today
 {
-    [self requestBoundingDatesIfNecessary];
     if (!today) {
         _today = nil;
     } else {
@@ -797,17 +793,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         if (![self isDateInToday:today]) {
             _today = [self dateByIgnoringTimeComponentsOfDate:today];
-            switch (_scope) {
-                case FSCalendarScopeMonth: {
-                    _currentPage = [self beginingOfMonthOfDate:today];
-                    break;
-                }
-                case FSCalendarScopeWeek: {
-                    _currentPage = [self beginingOfWeekOfDate:today];
-                    break;
-                }
-            }
-            _needsAdjustingMonthPosition = YES;
             [self setNeedsLayout];
         }
     }
@@ -962,11 +947,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
         _preferredPadding = FSCalendarAutomaticDimension;
         [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
-        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        _header.needsAdjustingViewFrame = YES;
-        [_collectionViewLayout invalidateLayout];
         [self setNeedsLayout];
     }
 }
@@ -1091,6 +1074,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self invalidateWeekdayTextColor];
     [self invalidateWeekdaySymbols];
     [self invalidateHeaders];
+    
 }
 
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
@@ -1616,7 +1600,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.title = [self titleForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.dateIsSelected = [_selectedDates containsObject:cell.date];
-    cell.dateIsToday = self.today? [self isDateInToday:cell.date] : NO;
+    cell.dateIsToday = [self isDate:self.today equalToDate:cell.date toCalendarUnit:FSCalendarUnitDay];
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *firstPage = [self beginingOfMonthOfDate:_minimumDate];
@@ -1716,19 +1700,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
-    _needsAdjustingMonthPosition = YES;
     
     _preferredHeaderHeight  = FSCalendarAutomaticDimension;
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
     _preferredPadding       = FSCalendarAutomaticDimension;
     
+    [self.collectionViewLayout invalidateLayout];
+    [self.collectionViewLayout layoutAttributesForElementsInRect:CGRectZero];
     [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
-    self.header.needsAdjustingViewFrame = YES;
     [self.appearance invalidateFonts];
-    [self.collectionViewLayout invalidateLayout];
+    [self.header setNeedsAdjustingViewFrame:YES];
     [self setNeedsLayout];
+    
 }
 
 // The best way to detect orientation

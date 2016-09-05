@@ -185,7 +185,6 @@
     }
     if (_needsAdjustingViewFrame || CGSizeEqualToSize(_titleLabel.frame.size, CGSizeZero)) {
         _needsAdjustingViewFrame = NO;
-        
         if (_subtitle) {
             CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_titleLabel.font}].height;
             CGFloat subtitleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_subtitleLabel.font}].height;
@@ -194,13 +193,13 @@
             _titleLabel.frame = CGRectMake(
                                            self.preferredTitleOffset.x,
                                            (self.contentView.fs_height*5.0/6.0-height)*0.5+self.preferredTitleOffset.y,
-                                           self.fs_width,
+                                           self.contentView.fs_width,
                                            titleHeight
                                           );
             _subtitleLabel.frame = CGRectMake(
                                               self.preferredSubtitleOffset.x,
                                               (_titleLabel.fs_bottom-self.preferredTitleOffset.y) - (_titleLabel.fs_height-_titleLabel.font.pointSize)+self.preferredSubtitleOffset.y,
-                                              self.fs_width,
+                                              self.contentView.fs_width,
                                               subtitleHeight
                                              );
         } else {
@@ -216,9 +215,10 @@
                                         self.contentView.fs_width/2.0 + self.preferredImageOffset.x,
                                         _imageView.center.y + self.preferredImageOffset.y
                                        );
-        
+    } else {
+        _titleLabel.fs_width = self.contentView.fs_width;
+        _subtitleLabel.fs_width = self.contentView.fs_width;
     }
-    
     UIColor *textColor = self.colorForTitleLabel;
     if (![textColor isEqual:_titleLabel.textColor]) {
         _titleLabel.textColor = textColor;

@@ -23,6 +23,12 @@
 //    _calendar.scope = FSCalendarScopeWeek;
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s",__FUNCTION__);
+}
+
+
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
