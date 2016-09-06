@@ -50,9 +50,9 @@
     [self.view addSubview:calendar];
     self.calendar = calendar;
     
-    UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStyleBordered target:self action:@selector(todayItemClicked:)];
+    UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(todayItemClicked:)];
     
-    UIBarButtonItem *lunarItem = [[UIBarButtonItem alloc] initWithTitle:@"Lunar" style:UIBarButtonItemStyleBordered target:self action:@selector(lunarItemClicked:)];
+    UIBarButtonItem *lunarItem = [[UIBarButtonItem alloc] initWithTitle:@"Lunar" style:UIBarButtonItemStylePlain target:self action:@selector(lunarItemClicked:)];
     [lunarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor magentaColor]} forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItems = @[lunarItem, todayItem];
 }
