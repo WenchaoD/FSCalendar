@@ -180,9 +180,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self invalidateDateTools];
     
     
+    _today = [self dateByIgnoringTimeComponentsOfDate:[NSDate date]];
+    _currentPage = [self beginingOfMonthOfDate:_today];
+    
 #if TARGET_INTERFACE_BUILDER
-    _minimumDate = [self beginingOfMonthOfDate:[NSDate date]];
-    _maximumDate = [self dateByAddingMonths:4 toDate:_minimumDate];
+    _minimumDate = [self dateByAddingMonths:-1 toDate:_today];
+    _maximumDate = [self dateByAddingMonths:4 toDate:_today];
 #else
     _minimumDate = [self dateWithYear:1970 month:1 day:1];
     _maximumDate = [self dateWithYear:2099 month:12 day:31];
@@ -202,8 +205,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _scope = FSCalendarScopeMonth;
     _selectedDates = [NSMutableArray arrayWithCapacity:1];
     
-    _today = [self dateByIgnoringTimeComponentsOfDate:[NSDate date]];
-    _currentPage = [self beginingOfMonthOfDate:_today];
     _pagingEnabled = YES;
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
@@ -229,7 +230,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     collectionViewLayout.calendar = self;
     
     FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
-                                                          collectionViewLayout:collectionViewLayout];
+                                                                          collectionViewLayout:collectionViewLayout];
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.backgroundColor = [UIColor clearColor];
@@ -1010,7 +1011,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             padding = FSCalendarFloor(padding);
         }
         if (!self.floatingMode) {
-            _preferredRowHeight = (_placeholderType == FSCalendarPlaceholderTypeFillSixRows) ? (contentHeight-padding*2)/6.0 : FSCalendarStandardRowHeight;
+            _preferredRowHeight = (contentHeight-padding*2)/6.0;
         } else {
             _preferredRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
         }
@@ -1257,7 +1258,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             break;
         }
     }
-    
     if (!self.floatingMode) {
         
         switch (_collectionViewLayout.scrollDirection) {
@@ -1297,6 +1297,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
+    NSAssert(date!=nil, @"Cannot scroll to page for a nil date");
+
     if (!self.floatingMode) {
         if ([self isDateInDifferentPage:date] && [self isDateInRange:date]) {
             [self willChangeValueForKey:@"currentPage"];
@@ -2010,18 +2012,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:hasEventForDate:)]) {
         return [_dataSource calendar:self hasEventForDate:date];
     }
-    #pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
     
 #else
-        if ([@[@3,@5] containsObject:@([self dayOfDate:date])]) {
-            return 1;
-        }
-        if ([@[@8,@16] containsObject:@([self dayOfDate:date])]) {
-            return 2;
-        }
-        if ([@[@20,@25] containsObject:@([self dayOfDate:date])]) {
-            return 3;
-        }
+    if ([@[@3,@5] containsObject:@([self dayOfDate:date])]) {
+        return 1;
+    }
+    if ([@[@8,@16] containsObject:@([self dayOfDate:date])]) {
+        return 2;
+    }
+    if ([@[@20,@25] containsObject:@([self dayOfDate:date])]) {
+        return 3;
+    }
 #endif
     return 0;
     
@@ -2030,7 +2032,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSDate *)minimumDateForCalendar
 {
 #if TARGET_INTERFACE_BUILDER
-    return [NSDate date];
+    return _minimumDate;
 #else
     NSDate *minimumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(minimumDateForCalendar:)]) {
@@ -2048,7 +2050,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSDate *)maximumDateForCalendar
 {
 #if TARGET_INTERFACE_BUILDER
-    return [self dateByAddingMonths:4 toDate:[NSDate date]];
+    return _maximumDate;
 #else
     NSDate *maximumDate;
     if (_dataSource && [_dataSource respondsToSelector:@selector(maximumDateForCalendar:)]) {

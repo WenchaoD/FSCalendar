@@ -38,6 +38,27 @@
     // Use XCTAssert and related functions to verify your tests produce the correct results.
 }
 
+- (void)testMonthsCalculation
+{
+    NSDate *fromDate = [self.calendar beginingOfMonthOfDate:[NSDate date]];
+    fromDate = [self.calendar dateByAddingMonths:-1 toDate:fromDate];
+    NSDate *toDate = [self.calendar beginingOfMonthOfDate:[NSDate date]];
+    XCTAssertEqual(1, [self.calendar monthsFromDate:fromDate toDate:toDate], "Fail");
+    
+    NSDate *today = [NSDate date];
+    NSDate *date = [self.calendar dateWithYear:[self.calendar yearOfDate:today] month:[self.calendar monthOfDate:today] day:2];
+    
+    XCTAssertTrue([self.calendar isDate:date equalToDate:today toCalendarUnit:FSCalendarUnitMonth], "Fail");
+    
+}
+
+- (void)testIgnoringTimeComponents
+{
+    NSDate *date = [NSDate date];
+    NSDate *newDate = [self.calendar dateByIgnoringTimeComponentsOfDate:date];
+    XCTAssertTrue([self.calendar isDate:date equalToDate:newDate toCalendarUnit:FSCalendarUnitDay], "Fail");
+}
+
 - (void)testIndexPathForDatePerformance {
     [self measureBlock:^{
         [self.calendar indexPathForDate:self.date scope:FSCalendarScopeMonth];

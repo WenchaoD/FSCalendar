@@ -90,8 +90,7 @@
 - (NSDate *)dateByIgnoringTimeComponentsOfDate:(NSDate *)date
 {
     if (!date) return nil;
-    NSDateComponents *components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:date];
-    components.hour = FSCalendarDefaultHourComponent;
+    NSDateComponents *components = [self.calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
     return [self.calendar dateFromComponents:components];
 }
 
