@@ -50,6 +50,8 @@
         panGesture.maximumNumberOfTouches = 2;
         [self addGestureRecognizer:panGesture];
         self.panGesture = panGesture;
+        
+        self.exclusiveTouch = YES;
                 
     }
     return self;

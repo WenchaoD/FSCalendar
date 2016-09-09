@@ -84,11 +84,14 @@
         return NO;
     }
     if (gestureRecognizer == self.calendar.scopeHandle.panGesture) {
-        return YES;
+        CGFloat velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].y;
+        return self.calendarScope == FSCalendarScopeWeek ? velocity>=0 : velocity<=0;
     }
     if (gestureRecognizer == self.calendar.scopeGesture) {
         CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:self.calendar.daysContainer];
-        BOOL shouldStart = (ABS(velocity.x)<=ABS(velocity.y));
+        BOOL shouldStart = self.calendarScope == FSCalendarScopeWeek ? velocity.y>=0 : velocity.y<=0;
+        if (!shouldStart) return NO;
+        shouldStart = (ABS(velocity.x)<=ABS(velocity.y));
         if (shouldStart) {
             self.calendar.collectionView.panGestureRecognizer.enabled = NO;
             self.calendar.collectionView.panGestureRecognizer.enabled = YES;
