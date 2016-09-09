@@ -51,13 +51,13 @@
     [self.view addSubview:view];
     self.bottomContainer = view;
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 200, 50)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 170, 50)];
     label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     [self.bottomContainer addSubview:label];
     self.eventLabel = label;
     
     button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = CGRectMake(CGRectGetMaxX(self.eventLabel.frame)+10, 10, 60, 30);
+    button.frame = CGRectMake(CGRectGetMaxX(self.eventLabel.frame)+5, 10, 60, 30);
     [button setTitle:@"PREV" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(prevClicked:) forControlEvents:UIControlEventTouchUpInside];
     button.layer.borderWidth = 1;
@@ -67,7 +67,7 @@
     self.prevButton = button;
     
     button = [UIButton buttonWithType:UIButtonTypeSystem];
-    button.frame = CGRectMake(CGRectGetMaxX(self.prevButton.frame)+10, 10, 60, 30);
+    button.frame = CGRectMake(CGRectGetMaxX(self.prevButton.frame)+5, 10, 60, 30);
     [button setTitle:@"NEXT" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(nextClicked:) forControlEvents:UIControlEventTouchUpInside];
     button.layer.borderWidth = 1;
