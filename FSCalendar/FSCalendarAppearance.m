@@ -116,6 +116,10 @@
         
         _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
+#if TARGET_INTERFACE_BUILDER
+        _fakeEventDots = YES;
+#endif
+        
     }
     return self;
 }

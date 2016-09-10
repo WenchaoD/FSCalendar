@@ -2025,16 +2025,21 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #pragma GCC diagnostic pop
     
 #else
-    if ([@[@3,@5] containsObject:@([self dayOfDate:date])]) {
-        return 1;
-    }
-    if ([@[@8,@16] containsObject:@([self dayOfDate:date])]) {
-        return 2;
-    }
-    if ([@[@20,@25] containsObject:@([self dayOfDate:date])]) {
-        return 3;
+    if (self.appearance.fakeEventDots) {
+        if ([@[@3,@5] containsObject:@([self dayOfDate:date])]) {
+            return 1;
+        }
+        if ([@[@8,@16] containsObject:@([self dayOfDate:date])]) {
+            return 2;
+        }
+        if ([@[@20,@25] containsObject:@([self dayOfDate:date])]) {
+            return 3;
+        }
+    } else {
+        return 0;
     }
 #endif
+    
     return 0;
     
 }

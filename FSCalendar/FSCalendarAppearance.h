@@ -217,6 +217,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 // For preview only
 @property (assign, nonatomic) BOOL      fakeSubtitles;
+@property (assign, nonatomic) BOOL      fakeEventDots;
 @property (assign, nonatomic) NSInteger fakedSelectedDay;
 
 #endif

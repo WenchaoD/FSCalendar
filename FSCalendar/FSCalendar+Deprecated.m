@@ -53,19 +53,4 @@
     [self selectDate:selectedDate scrollToDate:animate];
 }
 
-- (BOOL)date:(NSDate *)date sharesSameMonthWithDate:(NSDate *)anotherDate
-{
-    return [self yearOfDate:date] == [self yearOfDate:anotherDate] && [self monthOfDate:date] == [self monthOfDate:anotherDate];
-}
-
-- (BOOL)date:(NSDate *)date sharesSameWeekWithDate:(NSDate *)anotherDate
-{
-    return [self yearOfDate:date] == [self yearOfDate:anotherDate] && [self weekOfDate:date] == [self weekOfDate:anotherDate];
-}
-
-- (BOOL)date:(NSDate *)date sharesSameDayWithDate:(NSDate *)anotherDate
-{
-    return [self yearOfDate:date] == [self yearOfDate:anotherDate] && [self monthOfDate:date] == [self monthOfDate:anotherDate] && [self dayOfDate:date] == [self dayOfDate:anotherDate];
-}
-
 @end
