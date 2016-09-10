@@ -4,18 +4,16 @@
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/badge/platform-iOS%207%2B-blue.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
-[![Swift2 compatible](https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift2 compatible](https://img.shields.io/badge/swift-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
 * 在您静静的离开之前，请确保点击了这个按钮<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"><br>
 * Before leaving quietly, please make sure you've taken good care of this button.<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"> 
 
-> 欢迎加入QQ群: 323861692
-
 
 # [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
-
+[**QQ交流群: 323861692**](#qq_group)
 
 # Table of contents
 * [Screenshots](#screenshots)
@@ -42,6 +40,10 @@
 ![scopegesture](https://cloud.githubusercontent.com/assets/5186464/16909556/276fa8a8-4d06-11e6-8092-587952edb395.gif)
 
 > FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
+
+## Today Extension
+![1](https://cloud.githubusercontent.com/assets/5186464/18406879/0d072d92-7736-11e6-90bc-2633f5ca2b54.gif)
+![2](https://cloud.githubusercontent.com/assets/5186464/18406887/47c4822c-7736-11e6-96f0-ccb4c9cba199.gif)
 
 # <a id="installation"></a>Installation
 
@@ -175,7 +177,9 @@ self.calendar = calendar
 #<a id='contact'/></a> Contact
 * 微博： [**@WenchaoD**](http://weibo.com/WenchaoD)
 * Twitter：[**@WenchaoD**](https://twitter.com/WenchaoD)
-* QQ群：323861692
+* <a id='qq_group'/></a>QQ群: <br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![fscalendar](https://cloud.githubusercontent.com/assets/5186464/18407011/8e4b6e48-7738-11e6-9fad-0e23cc881516.JPG)
 
 > If your made a beautiful calendar with this library in your app, please take a screen shot and [@me](https://twitter.com/WenchaoD) in twitter. Your help really means a lot to me! <br/>
 > 如果你用这个库完成了一个外观漂亮的日历，希望你能将这个漂亮的日历截图在微博中[@我](http://weibo.com/WenchaoD)，十分感谢！

@@ -275,8 +275,20 @@
     return self.appearance.borderSelectionColor;
 }
 
-#pragma mark - cellStyle
+#pragma mark - borderRadius
 
+- (void)setBorderRadius:(CGFloat)borderRadius
+{
+    self.appearance.borderRadius = borderRadius;
+}
+
+- (CGFloat)borderRadius
+{
+    return self.appearance.borderRadius;
+}
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 - (void)setCellShape:(FSCalendarCellShape)cellShape
 {
     self.appearance.cellShape = cellShape;
@@ -286,24 +298,24 @@
 {
     return self.appearance.cellShape;
 }
+#pragma GCC diagnostic pop
+
+
 
 #pragma mark - useVeryShortWeekdaySymbols
 
-- (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
-{
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+- (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
+{
     self.appearance.useVeryShortWeekdaySymbols = useVeryShortWeekdaySymbols;
-#pragma GCC diagnostic pop
 }
 
 - (BOOL)useVeryShortWeekdaySymbols
 {
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     return self.appearance.useVeryShortWeekdaySymbols;
-#pragma GCC diagnostic pop
 }
+#pragma GCC diagnostic pop
 
 
 #pragma mark - fakeSubtitles

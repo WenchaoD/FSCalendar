@@ -57,7 +57,7 @@
 - (void)invalidateBorderColors;
 - (void)invalidateFillColors;
 - (void)invalidateEventColors;
-- (void)invalidateCellShapes;
+- (void)invalidateBorderRadius;
 
 @end
 
@@ -110,7 +110,7 @@
         _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
         _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
         
-        _cellShape = FSCalendarCellShapeCircle;
+        _borderRadius = 1.0;
         _eventDefaultColor = FSCalendarStandardEventDotColor;
         _eventSelectionColor = FSCalendarStandardEventDotColor;
         
@@ -473,11 +473,13 @@
     return _borderColors[@(FSCalendarCellStateSelected)];
 }
 
-- (void)setCellShape:(FSCalendarCellShape)cellShape
+- (void)setBorderRadius:(CGFloat)borderRadius
 {
-    if (_cellShape != cellShape) {
-        _cellShape = cellShape;
-        [self invalidateCellShapes];
+    borderRadius = MAX(0.0, borderRadius);
+    borderRadius = MIN(1.0, borderRadius);
+    if (_borderRadius != borderRadius) {
+        _borderRadius = borderRadius;
+        [self invalidateBorderRadius];
     }
 }
 
@@ -624,7 +626,7 @@
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
 }
 
-- (void)invalidateCellShapes
+- (void)invalidateBorderRadius
 {
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
 }
@@ -787,6 +789,16 @@
 - (UIColor *)eventColor
 {
     return self.eventDefaultColor;
+}
+
+- (void)setCellShape:(FSCalendarCellShape)cellShape
+{
+    self.borderRadius = 1-cellShape;
+}
+
+- (FSCalendarCellShape)cellShape
+{
+    return self.borderRadius==1.0?FSCalendarCellShapeCircle:FSCalendarCellShapeRectangle;
 }
 
 @end

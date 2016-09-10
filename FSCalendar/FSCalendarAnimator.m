@@ -309,16 +309,23 @@
         CGFloat animationDuration = duration;
         CGRect bounds = (CGRect){CGPointZero,[self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth]};
         self.state = FSCalendarTransitionStateInProgress;
-        [UIView animateWithDuration:animationDuration delay:0  options:UIViewAnimationOptionAllowUserInteraction animations:^{
-            [self boundingRectWillChange:bounds animated:YES];
-        } completion:^(BOOL finished) {
+        void (^completion)(BOOL) = ^(BOOL finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(MAX(0, duration-animationDuration) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.calendar.needsAdjustingViewFrame = YES;
                 [self.calendar setNeedsLayout];
                 self.state = FSCalendarTransitionStateIdle;
             });
-        }];
-        
+        };
+        if (FSCalendarInAppExtension) {
+            // Detect today extension: http://stackoverflow.com/questions/25048026/ios-8-extension-how-to-detect-running
+            [self boundingRectWillChange:bounds animated:YES];
+            completion(YES);
+        } else {
+            [UIView animateWithDuration:animationDuration delay:0  options:UIViewAnimationOptionAllowUserInteraction animations:^{
+                [self boundingRectWillChange:bounds animated:YES];
+            } completion:completion];
+        }
+    
     }
 }
 

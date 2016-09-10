@@ -45,6 +45,7 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 #define FSCalendarStandardScopeHandleColor [[UIColor lightGrayColor] colorWithAlphaComponent:0.50]
 
 #define FSColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+#define FSCalendarInAppExtension [[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"]
 
 #if CGFLOAT_IS_DOUBLE
 #define FSCalendarFloor(c) floor(c)
@@ -66,4 +67,11 @@ FSCalendarDeprecated('FSCalendarScrollDirection')
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowVertical,
     FSCalendarFlowHorizontal
+};
+
+
+FSCalendarDeprecated('borderRadius')
+typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
+    FSCalendarCellShapeCircle    = 0,
+    FSCalendarCellShapeRectangle = 1
 };

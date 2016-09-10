@@ -191,12 +191,12 @@
     return appearance.borderSelectionColor;
 }
 
-- (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date
+- (CGFloat)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderRadiusForDate:(nonnull NSDate *)date
 {
     if ([@[@8,@17,@21,@25] containsObject:@([_calendar dayOfDate:date])]) {
-        return FSCalendarCellShapeRectangle;
+        return 0.0;
     }
-    return FSCalendarCellShapeCircle;
+    return 1.0;
 }
 
 @end

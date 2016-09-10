@@ -52,7 +52,7 @@
 
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventDefaultColors;
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventSelectionColors;
-@property (assign, nonatomic) FSCalendarCellShape preferredCellShape;
+@property (assign, nonatomic) CGFloat preferredBorderRadius;
 
 - (void)invalidateTitleFont;
 - (void)invalidateSubtitleFont;
@@ -62,7 +62,7 @@
 - (void)invalidateBorderColors;
 - (void)invalidateFillColors;
 - (void)invalidateEventColors;
-- (void)invalidateCellShapes;
+- (void)invalidateBorderRadius;
 
 - (void)invalidateImage;
 

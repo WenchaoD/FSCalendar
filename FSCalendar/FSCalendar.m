@@ -45,7 +45,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (CGPoint)preferredEventOffsetForDate:(NSDate *)date;
 - (NSArray<UIColor *> *)preferredEventDefaultColorsForDate:(NSDate *)date;
 - (NSArray<UIColor *> *)preferredEventSelectionColorsForDate:(NSDate *)date;
-- (FSCalendarCellShape)preferredCellShapeForDate:(NSDate *)date;
+- (CGFloat)preferredBorderRadiusForDate:(NSDate *)date;
+
 
 - (BOOL)shouldSelectDate:(NSDate *)date;
 - (void)didSelectDate:(NSDate *)date;
@@ -248,15 +249,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.collectionView = collectionView;
     self.collectionViewLayout = collectionViewLayout;
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-    view.backgroundColor = FSCalendarStandardSeparatorColor;
-    [self addSubview:view];
-    self.topBorder = view;
-    
-    view = [[UIView alloc] initWithFrame:CGRectZero];
-    view.backgroundColor = FSCalendarStandardSeparatorColor;
-    [self addSubview:view];
-    self.bottomBorder = view;
+    if (!FSCalendarInAppExtension) {
+        
+        UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+        view.backgroundColor = FSCalendarStandardSeparatorColor;
+        [self addSubview:view];
+        self.topBorder = view;
+        
+        view = [[UIView alloc] initWithFrame:CGRectZero];
+        view.backgroundColor = FSCalendarStandardSeparatorColor;
+        [self addSubview:view];
+        self.bottomBorder = view;
+        
+    }
     
     [self invalidateLayout];
     
@@ -1584,7 +1589,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     cell.preferredBorderDefaultColor = [self preferredBorderDefaultColorForDate:cell.date];
     cell.preferredBorderSelectionColor = [self preferredBorderSelectionColorForDate:cell.date];
-    cell.preferredCellShape = [self preferredCellShapeForDate:cell.date];
+    cell.preferredBorderRadius = [self preferredBorderRadiusForDate:cell.date];
     
     if (cell.image) {
         cell.preferredImageOffset = [self preferredImageOffsetForDate:cell.date];
@@ -1905,21 +1910,26 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return nil;
 }
 
-- (FSCalendarCellShape)preferredCellShapeForDate:(NSDate *)date
+- (CGFloat)preferredBorderRadiusForDate:(NSDate *)date
 {
-    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellShapeForDate:)]) {
-        FSCalendarCellShape cellShape = [self.delegateAppearance calendar:self appearance:self.appearance cellShapeForDate:date];
-        return cellShape;
+    if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:borderRadiusForDate:)]) {
+        CGFloat borderRadius = [self.delegateAppearance calendar:self appearance:self.appearance borderRadiusForDate:date];
+        borderRadius = MAX(0, borderRadius);
+        borderRadius = MIN(1, borderRadius);
+        return borderRadius;
     }
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    else if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellShapeForDate:)]) {
+        FSCalendarCellShape cellShape = [self.delegateAppearance calendar:self appearance:self.appearance cellShapeForDate:date];
+        return cellShape;
+    }
     else if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellStyleForDate:)]) {
         FSCalendarCellShape cellShape = (FSCalendarCellShape)[self.delegateAppearance calendar:self appearance:self.appearance cellStyleForDate:date];
         return cellShape;
     }
 #pragma GCC diagnostic pop
-    
-    return FSCalendarCellShapeCircle;
+    return -1;
 }
 
 - (CGPoint)preferredTitleOffsetForDate:(NSDate *)date

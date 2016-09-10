@@ -199,7 +199,7 @@
                 _calendar.appearance.selectionColor = FSCalendarStandardSelectionColor;
                 _calendar.appearance.headerDateFormat = @"MMMM yyyy";
                 _calendar.appearance.todayColor = FSCalendarStandardTodayColor;
-                _calendar.appearance.cellShape = FSCalendarCellShapeCircle;
+                _calendar.appearance.borderRadius = 1.0;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 0.2;
                 break;
             }
@@ -210,7 +210,7 @@
                 _calendar.appearance.selectionColor = [UIColor blueColor];
                 _calendar.appearance.headerDateFormat = @"yyyy-MM";
                 _calendar.appearance.todayColor = [UIColor redColor];
-                _calendar.appearance.cellShape = FSCalendarCellShapeCircle;
+                _calendar.appearance.borderRadius = 1.0;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
 
                 break;
@@ -222,7 +222,7 @@
                 _calendar.appearance.selectionColor = [UIColor blueColor];
                 _calendar.appearance.headerDateFormat = @"yyyy/MM";
                 _calendar.appearance.todayColor = [UIColor orangeColor];
-                _calendar.appearance.cellShape = FSCalendarCellShapeRectangle;
+                _calendar.appearance.borderRadius = 0;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 1.0;
                 break;
             }
