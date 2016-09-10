@@ -175,7 +175,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _components = [[NSDateComponents alloc] init];
     _formatter = [[NSDateFormatter alloc] init];
     _locale = [NSLocale currentLocale];
-    _timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    _timeZone = [NSTimeZone localTimeZone];
     _firstWeekday = 1;
     [self invalidateDateTools];
     
