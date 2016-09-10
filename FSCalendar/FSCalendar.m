@@ -176,7 +176,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _components = [[NSDateComponents alloc] init];
     _formatter = [[NSDateFormatter alloc] init];
     _locale = [NSLocale currentLocale];
-    _timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    _timeZone = [NSTimeZone localTimeZone];
     _firstWeekday = 1;
     [self invalidateDateTools];
     
@@ -2035,8 +2035,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if ([@[@20,@25] containsObject:@([self dayOfDate:date])]) {
             return 3;
         }
-    } else {
-        return 0;
     }
 #endif
     
