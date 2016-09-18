@@ -33,12 +33,14 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor  *titleTodayColor;
 @property (strong, nonatomic) IBInspectable UIColor  *titlePlaceholderColor;
 @property (strong, nonatomic) IBInspectable UIColor  *titleWeekendColor;
+@property (strong, nonatomic) IBInspectable UIColor  *titleTodaySelectionColor;
 
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleDefaultColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleSelectionColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleTodayColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitlePlaceholderColor;
 @property (strong, nonatomic) IBInspectable UIColor  *subtitleWeekendColor;
+@property (strong, nonatomic) IBInspectable UIColor  *subtitleTodaySelectionColor;
 
 @property (strong, nonatomic) IBInspectable UIColor  *selectionColor;
 @property (strong, nonatomic) IBInspectable UIColor  *todayColor;

@@ -147,6 +147,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *titleWeekendColor;
 
 /**
+ * The day text color for today and selected state.
+ */
+@property (strong, nonatomic) UIColor  *titleTodaySelectionColor;
+
+/**
  * The subtitle text color for unselected state.
  */
 @property (strong, nonatomic) UIColor  *subtitleDefaultColor;
@@ -170,6 +175,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * The subtitle text color for weekend.
  */
 @property (strong, nonatomic) UIColor  *subtitleWeekendColor;
+
+/**
+ * The subtitle text color for today and selected state.
+ */
+@property (strong, nonatomic) UIColor  *subtitleTodaySelectionColor;
 
 /**
  * The fill color of the shape for selected state.
