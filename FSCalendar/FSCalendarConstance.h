@@ -52,6 +52,19 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 #define FSCalendarFloor(c) floorf(c)
 #endif
 
+#define kYC_SCREEN_SIZE ((CGSize)[UIScreen mainScreen].bounds.size)
+#define SCREEN_ADAPTION(DeviceSize5) \
+    ({\
+        CGFloat DeviceWidth;                    \
+        if (kYC_SCREEN_SIZE.width == 375)       \
+            DeviceWidth=(DeviceSize5)*1.1719;   \
+        else if (kYC_SCREEN_SIZE.width == 414)  \
+            DeviceWidth=(DeviceSize5)*1.294;    \
+        else                                    \
+            DeviceWidth=DeviceSize5;            \
+        DeviceWidth;\
+    })
+
 #pragma mark - Deprecated
 
 #define FSCalendarDeprecated(instead) DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")

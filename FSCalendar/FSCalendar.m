@@ -1024,7 +1024,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             padding = FSCalendarFloor(padding);
         }
         if (!self.floatingMode) {
-            _preferredRowHeight = (_placeholderType == FSCalendarPlaceholderTypeFillSixRows) ? (contentHeight-padding*2)/6.0 : FSCalendarStandardRowHeight;
+            _preferredRowHeight = (_placeholderType == FSCalendarPlaceholderTypeFillSixRows) ? (contentHeight-padding*2)/6.0 : SCREEN_ADAPTION(FSCalendarStandardRowHeight);
         } else {
             _preferredRowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
         }
