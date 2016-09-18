@@ -53,6 +53,7 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 #define FSCalendarFloor(c) floorf(c)
 #endif
 
+
 #pragma mark - Deprecated
 
 #define FSCalendarDeprecated(instead) DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")
@@ -69,9 +70,14 @@ typedef NS_ENUM(NSInteger, FSCalendarFlow) {
     FSCalendarFlowHorizontal
 };
 
-
 FSCalendarDeprecated('borderRadius')
 typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
     FSCalendarCellShapeCircle    = 0,
     FSCalendarCellShapeRectangle = 1
+};
+
+typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
+    FSCalendarUnitMonth = NSCalendarUnitMonth,
+    FSCalendarUnitWeekOfYear = NSCalendarUnitWeekOfYear,
+    FSCalendarUnitDay = NSCalendarUnitDay
 };

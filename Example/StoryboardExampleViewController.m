@@ -12,8 +12,13 @@
 
 @interface StoryboardExampleViewController ()
 
+@property (strong, nonatomic) NSCalendar *gregorianCalendar;
+
 @property (strong, nonatomic) NSCalendar *lunarCalendar;
 @property (strong, nonatomic) NSArray *lunarChars;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter1;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter2;
 
 @end
 
@@ -27,9 +32,21 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
-    _lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
-    _lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
-    _lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
+    self.gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    NSLocale *chinese = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+    
+    self.dateFormatter1 = [[NSDateFormatter alloc] init];
+    self.dateFormatter1.locale = chinese;
+    self.dateFormatter1.dateFormat = @"yyyy/MM/dd";
+    
+    self.dateFormatter2 = [[NSDateFormatter alloc] init];
+    self.dateFormatter2.locale = chinese;
+    self.dateFormatter2.dateFormat = @"yyyy-MM-dd";
+    
+    self.lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
+    self.lunarCalendar.locale = chinese;
+    self.lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
 
     _scrollDirection = _calendar.scrollDirection;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
@@ -37,7 +54,8 @@
 //    _calendar.today = nil;
 //    _calendar.today = [self.calendar dateByAddingDays:2 toDate:[NSDate date]];
     
-//    [_calendar selectDate:[_calendar dateWithYear:2015 month:10 day:5]];
+    
+    [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/05"]];
     
     _datesShouldNotBeSelected = @[@"2015/08/07",
                                   @"2015/09/07",
@@ -75,7 +93,7 @@
 
 - (NSString *)calendar:(FSCalendar *)calendar titleForDate:(NSDate *)date
 {
-    return [calendar isDateInToday:date] ? @"今天" : nil;
+    return [self.gregorianCalendar isDateInToday:date] ? @"今天" : nil;
 }
 
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
@@ -89,46 +107,46 @@
 
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
 {
-    return [_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]];
+    return [_datesWithEvent containsObject:[self.dateFormatter2 stringFromDate:date]];
 }
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [calendar dateWithYear:2015 month:2 day:1];
+    return [self.dateFormatter1 dateFromString:@"2015/02/01"];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [calendar dateWithYear:2039 month:5 day:31];
+    return [self.dateFormatter1 dateFromString:@"2039/05/31"];
 }
 
 #pragma mark - FSCalendarDelegate
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
+    BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[self.dateFormatter1 stringFromDate:date]];
     if (!shouldSelect) {
         [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[calendar stringFromDate:date format:@"yyyy/MM/dd"]]
+                                    message:[NSString stringWithFormat:@"FSCalendar delegate forbid %@  to be selected",[self.dateFormatter1 stringFromDate:date]]
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil, nil] show];
     } else {
-        NSLog(@"Should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
+        NSLog(@"Should select date %@",[self.dateFormatter1 stringFromDate:date]);
     }
     return shouldSelect;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[self.dateFormatter1 stringFromDate:date]);
     CGRect frame = [self.calendar frameForDate:date];
     NSLog(@"%@",NSStringFromCGRect(frame));
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM yyyy"]);
+    NSLog(@"did change to page %@",[self.dateFormatter1 stringFromDate:calendar.currentPage]);
 }
 
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
@@ -148,7 +166,7 @@
     if ([self calendar:calendar subtitleForDate:date]) {
         return CGPointZero;
     }
-    if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
+    if ([_datesWithEvent containsObject:[self.dateFormatter2 stringFromDate:date]]) {
         return CGPointMake(0, -2);
     }
     return CGPointZero;
@@ -159,7 +177,7 @@
     if ([self calendar:calendar subtitleForDate:date]) {
         return CGPointZero;
     }
-    if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
+    if ([_datesWithEvent containsObject:[self.dateFormatter2 stringFromDate:date]]) {
         return CGPointMake(0, -10);
     }
     return CGPointZero;
@@ -170,7 +188,7 @@
     if ([self calendar:calendar subtitleForDate:date]) {
         return @[appearance.eventDefaultColor];
     }
-    if ([_datesWithEvent containsObject:[calendar stringFromDate:date format:@"yyyy-MM-dd"]]) {
+    if ([_datesWithEvent containsObject:[self.dateFormatter2 stringFromDate:date]]) {
         return @[[UIColor whiteColor]];
     }
     return nil;

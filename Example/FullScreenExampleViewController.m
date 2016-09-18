@@ -11,10 +11,13 @@
 @interface FullScreenExampleViewController()
 
 @property (strong, nonatomic) NSCalendar *lunarCalendar;
+@property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSArray *lunarChars;
 
 @property (strong, nonatomic) NSDate *minimumDate;
 @property (strong, nonatomic) NSDate *maximumDate;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -60,12 +63,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.minimumDate = [self.calendar dateWithYear:2016 month:2 day:1];
-    self.maximumDate = [self.calendar dateWithYear:2018 month:4 day:1];
+    
+    self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy-MM-dd";
+    
+    self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-01"];
+    self.maximumDate = [self.dateFormatter dateFromString:@"2018-04-10"];
+
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.minimumDate = [self.calendar dateWithYear:2015 month:2 day:1];
-        self.maximumDate = [self.calendar dateWithYear:2015 month:6 day:1];
+        self.minimumDate = [self.dateFormatter dateFromString:@"2015-02-01"];
+        self.maximumDate = [self.dateFormatter dateFromString:@"2015-06-10"];
         [self.calendar reloadData];
     });
     */
@@ -114,12 +124,12 @@
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
+    NSLog(@"did select %@",[self.dateFormatter stringFromDate:date]);
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change page %@",[calendar stringFromDate:calendar.currentPage format:@"yyyy-MM"]);
+    NSLog(@"did change page %@",[self.dateFormatter stringFromDate:calendar.currentPage]);
 }
 
 @end

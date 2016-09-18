@@ -19,6 +19,9 @@
     
     _calendar.scopeGesture.enabled = YES;
     
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy/MM/dd";
+    
     // Uncomment this to perform an 'initial-week-scope'
 //    _calendar.scope = FSCalendarScopeWeek;
 }
@@ -37,11 +40,11 @@
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
     
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[calendar stringFromDate:obj format:@"yyyy/MM/dd"]];
+        [selectedDates addObject:[self.dateFormatter stringFromDate:obj]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
     
@@ -49,7 +52,7 @@
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"%s %@", __FUNCTION__, [calendar stringFromDate:calendar.currentPage]);
+    NSLog(@"%s %@", __FUNCTION__, [self.dateFormatter stringFromDate:calendar.currentPage]);
 }
 
 #pragma mark - <UITableViewDataSource>

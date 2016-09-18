@@ -60,17 +60,23 @@
     
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+}
+
 - (void)previousClicked:(id)sender
 {
     NSDate *currentMonth = self.calendar.currentPage;
-    NSDate *previousMonth = [self.calendar dateBySubstractingMonths:1 fromDate:currentMonth];
+    NSDate *previousMonth = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:-1 toDate:currentMonth options:0];
     [self.calendar setCurrentPage:previousMonth animated:YES];
 }
 
 - (void)nextClicked:(id)sender
 {
     NSDate *currentMonth = self.calendar.currentPage;
-    NSDate *nextMonth = [self.calendar dateByAddingMonths:1 toDate:currentMonth];
+    NSDate *nextMonth = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:currentMonth options:0];
     [self.calendar setCurrentPage:nextMonth animated:YES];
 }
 

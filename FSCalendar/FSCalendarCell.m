@@ -172,7 +172,7 @@
     
     if (self.contentView.hidden) return;
     
-    _titleLabel.text = self.title ?: [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
+    _titleLabel.text = self.title ?: @([self.calendar.gregorian component:NSCalendarUnitDay fromDate:_date]).stringValue;
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
         if (_subtitleLabel.hidden) {
@@ -278,7 +278,9 @@
 
 - (BOOL)isWeekend
 {
-    return _date && ([_calendar weekdayOfDate:_date] == 1 || [_calendar weekdayOfDate:_date] == 7);
+    if (!_date) return NO;
+    NSInteger weekday = [self.calendar.gregorian component:NSCalendarUnitWeekday fromDate:_date];
+    return weekday == 1 || weekday == 7;
 }
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary

@@ -8,7 +8,11 @@
 
 #import "ScopeHandleViewController.h"
 
-@interface ScopeHandleViewController ()
+@interface ScopeHandleViewController () <FSCalendarDataSource,FSCalendarDelegate>
+
+@property (weak, nonatomic) FSCalendar *calendar;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -45,7 +49,10 @@
 {
     [super viewDidLoad];
     
-    [self.calendar selectDate:[self.calendar dateFromString:@"2016-05-10" format:@"yyyy-MM-dd"]];
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy-MM-dd";
+    
+    [self.calendar selectDate:[self.dateFormatter dateFromString:@"2016-05-10"]];
     
     // Uncomment this to perform an 'initial-week-scope'
     // self.calendar.scope = FSCalendarScopeWeek;
@@ -59,6 +66,11 @@
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+}
+
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+{
+    NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
 }
 
 @end

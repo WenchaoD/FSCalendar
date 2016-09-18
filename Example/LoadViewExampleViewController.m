@@ -53,8 +53,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     
-    [self.calendar selectDate:[self.calendar dateFromString:@"2015/02/03" format:@"yyyy/MM/dd"]];
+    [self.calendar selectDate:[self.dateFormatter dateFromString:@"2015/02/03"]];
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.calendar setScope:FSCalendarScopeWeek animated:YES];
@@ -76,18 +78,18 @@
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
 {
-    NSLog(@"should select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
+    NSLog(@"should select date %@",[self.dateFormatter stringFromDate:date]);
     return YES;
 }
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
-    NSLog(@"did select date %@",[calendar stringFromDate:date format:@"yyyy/MM/dd"]);
+    NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
-    NSLog(@"did change to page %@",[calendar stringFromDate:calendar.currentPage format:@"MMMM YYYY"]);
+    NSLog(@"did change to page %@",[self.dateFormatter stringFromDate:calendar.currentPage]);
 }
 
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
@@ -113,7 +115,8 @@
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {
-    return self.images[[calendar stringFromDate:date format:@"yyyy/MM/dd"]];
+    NSString *dateString = [self.dateFormatter stringFromDate:date];
+    return self.images[dateString];
 }
 
 @end

@@ -33,6 +33,9 @@
     self.view = view;
     
     
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    self.dateFormatter.dateFormat = @"yyyy-MM";
+    
     // 450 for iPad and 300 for iPhone
     CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), CGRectGetWidth(self.view.frame), height)];
@@ -41,7 +44,7 @@
     calendar.delegate = self;
 //    calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
     calendar.placeholderType = FSCalendarPlaceholderTypeNone;
-    calendar.currentPage = [calendar dateFromString:@"2016-06" format:@"yyyy-MM"];
+    calendar.currentPage = [self.dateFormatter dateFromString:@"2016-06"];
     calendar.firstWeekday = 2;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     [self.view addSubview:calendar];
@@ -91,6 +94,8 @@
     [attributedText appendAttributedString:[NSAttributedString attributedStringWithAttachment:attatchment]];
     self.eventLabel.attributedText = attributedText.copy;
     
+    self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    
 }
 
 - (void)dealloc
@@ -110,13 +115,13 @@
 
 - (void)nextClicked:(id)sender
 {
-    NSDate *nextMonth = [self.calendar dateByAddingMonths:1 toDate:self.calendar.currentPage];
+    NSDate *nextMonth = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:self.calendar.currentPage options:0];
     [self.calendar setCurrentPage:nextMonth animated:YES];
 }
 
 - (void)prevClicked:(id)sender
 {
-    NSDate *prevMonth = [self.calendar dateBySubstractingMonths:1 fromDate:self.calendar.currentPage];
+    NSDate *prevMonth = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:-1 toDate:self.calendar.currentPage options:0];
     [self.calendar setCurrentPage:prevMonth animated:YES];
 }
 

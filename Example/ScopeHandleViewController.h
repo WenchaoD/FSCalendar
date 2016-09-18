@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
 
-@interface ScopeHandleViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate>
-
-@property (weak, nonatomic) FSCalendar *calendar;
+@interface ScopeHandleViewController : UIViewController
 
 @end
