@@ -13,6 +13,10 @@
 
 @property (weak, nonatomic) FSCalendar *calendar;
 
+@property (strong, nonatomic) NSCalendar *gregorian;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter1;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter2;
+
 @property (strong, nonatomic) NSDictionary *fillSelectionColors;
 @property (strong, nonatomic) NSDictionary *fillDefaultColors;
 @property (strong, nonatomic) NSDictionary *borderDefaultColors;

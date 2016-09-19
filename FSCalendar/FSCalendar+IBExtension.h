@@ -5,14 +5,17 @@
 //  Created by Wenchao Ding on 8/14/15.
 //  Copyright © 2016 Wenchao Ding. All rights reserved.
 // 
-//  注意: 这些方法仅仅为了在IB中使用，不建议直接调用。这些方法在calendar.appearance中使用。如: calendar.appearance.eventColor
-//  Warning: For IB usage only. Directly calling these methods is deprecated. Use calendar.appearance(FSCalendarAppearance) instead
+//  注意: 这些方法仅仅为了在IB中使用，不建议直接调用。这些方法在calendar.appearance中使用。如: calendar.appearance.eventDefaultColor
+//  Warning: For IB usage only. Directly calling these methods is NOT RECOMMENDED. Use calendar.appearance to call these methods instead
+
 
 #import "FSCalendar.h"
 #import "FSCalendarConstance.h"
 
 IB_DESIGNABLE
 @interface FSCalendar (IBExtension)
+
+#if TARGET_INTERFACE_BUILDER
 
 @property (assign, nonatomic) IBInspectable BOOL     adjustsFontSizeToFitContentSize;
 @property (assign, nonatomic) IBInspectable CGFloat  titleTextSize;
@@ -47,10 +50,16 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor *borderDefaultColor;
 @property (strong, nonatomic) IBInspectable UIColor *borderSelectionColor;
 
-@property (assign, nonatomic) IBInspectable FSCalendarCellShape cellShape;
-@property (assign, nonatomic) IBInspectable BOOL useVeryShortWeekdaySymbols;
+@property (assign, nonatomic) IBInspectable CGFloat borderRadius;
+@property (assign, nonatomic) IBInspectable BOOL    useVeryShortWeekdaySymbols;
 
 @property (assign, nonatomic) IBInspectable BOOL      fakeSubtitles;
+@property (assign, nonatomic) IBInspectable BOOL      fakeEventDots;
 @property (assign, nonatomic) IBInspectable NSInteger fakedSelectedDay;
 
+#endif
+
 @end
+
+
+

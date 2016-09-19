@@ -82,6 +82,15 @@
                                      @"2015-10-16",
                                      @"2015-10-20",
                                      @"2015-10-28"];
+        
+        
+        self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        
+        self.dateFormatter1 = [[NSDateFormatter alloc] init];
+        self.dateFormatter1.dateFormat = @"yyyy/MM/dd";
+        
+        self.dateFormatter2 = [[NSDateFormatter alloc] init];
+        self.dateFormatter2.dateFormat = @"yyyy-MM-dd";
     }
     return self;
 }
@@ -100,8 +109,10 @@
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
     [self.view addSubview:calendar];
-    [calendar selectDate:[calendar dateWithYear:2015 month:10 day:3]];
     self.calendar = calendar;
+    
+    [calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/03"]];
+
     
     
     UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStylePlain target:self action:@selector(todayItemClicked:)];
@@ -125,7 +136,7 @@
 
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
 {
-    NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
+    NSString *dateString = [self.dateFormatter2 stringFromDate:date];
     if ([_datesWithEvent containsObject:dateString]) {
         return 1;
     }
@@ -139,7 +150,7 @@
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date
 {
-    NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
+    NSString *dateString = [self.dateFormatter2 stringFromDate:date];
     if ([_datesWithEvent containsObject:dateString]) {
         return [UIColor purpleColor];
     }
@@ -148,7 +159,7 @@
 
 - (NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorsForDate:(NSDate *)date
 {
-    NSString *dateString = [calendar stringFromDate:date format:@"yyyy-MM-dd"];
+    NSString *dateString = [self.dateFormatter2 stringFromDate:date];
     if ([_datesWithMultipleEvents containsObject:dateString]) {
         return @[[UIColor magentaColor],appearance.eventDefaultColor,[UIColor blackColor]];
     }
@@ -157,7 +168,7 @@
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillSelectionColorForDate:(NSDate *)date
 {
-    NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
+    NSString *key = [self.dateFormatter1 stringFromDate:date];
     if ([_fillSelectionColors.allKeys containsObject:key]) {
         return _fillSelectionColors[key];
     }
@@ -166,7 +177,7 @@
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillDefaultColorForDate:(NSDate *)date
 {
-    NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
+    NSString *key = [self.dateFormatter1 stringFromDate:date];
     if ([_fillDefaultColors.allKeys containsObject:key]) {
         return _fillDefaultColors[key];
     }
@@ -175,7 +186,7 @@
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date
 {
-    NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
+    NSString *key = [self.dateFormatter1 stringFromDate:date];
     if ([_borderDefaultColors.allKeys containsObject:key]) {
         return _borderDefaultColors[key];
     }
@@ -184,19 +195,19 @@
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSelectionColorForDate:(NSDate *)date
 {
-    NSString *key = [_calendar stringFromDate:date format:@"yyyy/MM/dd"];
+    NSString *key = [self.dateFormatter1 stringFromDate:date];
     if ([_borderSelectionColors.allKeys containsObject:key]) {
         return _borderSelectionColors[key];
     }
     return appearance.borderSelectionColor;
 }
 
-- (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date
+- (CGFloat)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderRadiusForDate:(nonnull NSDate *)date
 {
-    if ([@[@8,@17,@21,@25] containsObject:@([_calendar dayOfDate:date])]) {
-        return FSCalendarCellShapeRectangle;
+    if ([@[@8,@17,@21,@25] containsObject:@([self.gregorian component:NSCalendarUnitDay fromDate:date])]) {
+        return 0.0;
     }
-    return FSCalendarCellShapeCircle;
+    return 1.0;
 }
 
 @end

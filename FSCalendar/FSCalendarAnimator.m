@@ -309,16 +309,23 @@
         CGFloat animationDuration = duration;
         CGRect bounds = (CGRect){CGPointZero,[self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth]};
         self.state = FSCalendarTransitionStateInProgress;
-        [UIView animateWithDuration:animationDuration delay:0  options:UIViewAnimationOptionAllowUserInteraction animations:^{
-            [self boundingRectWillChange:bounds animated:YES];
-        } completion:^(BOOL finished) {
+        void (^completion)(BOOL) = ^(BOOL finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(MAX(0, duration-animationDuration) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.calendar.needsAdjustingViewFrame = YES;
                 [self.calendar setNeedsLayout];
                 self.state = FSCalendarTransitionStateIdle;
             });
-        }];
-        
+        };
+        if (FSCalendarInAppExtension) {
+            // Detect today extension: http://stackoverflow.com/questions/25048026/ios-8-extension-how-to-detect-running
+            [self boundingRectWillChange:bounds animated:YES];
+            completion(YES);
+        } else {
+            [UIView animateWithDuration:animationDuration delay:0  options:UIViewAnimationOptionAllowUserInteraction animations:^{
+                [self boundingRectWillChange:bounds animated:YES];
+            } completion:completion];
+        }
+    
     }
 }
 
@@ -409,16 +416,16 @@
                 }
                 // Focus begining day of month
                 if (!focusedDate) {
-                    focusedDate = [self.calendar beginingOfMonthOfDate:self.calendar.currentPage];
+                    focusedDate = [self.calendar beginingOfMonth:self.calendar.currentPage];
                     kCalculateRowNumber
                 }
                 
                 NSDate *currentPage = self.calendar.currentPage;
-                NSDate *minimumPage = [self.calendar beginingOfMonthOfDate:self.calendar.minimumDate];
-                NSInteger visibleSection = [self.calendar monthsFromDate:minimumPage toDate:currentPage];
+                NSDate *minimumPage = [self.calendar beginingOfMonth:self.calendar.minimumDate];
+                NSInteger visibleSection = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:currentPage options:0].month;
                 NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:visibleSection];
                 NSDate *firstDate = [self.calendar dateForIndexPath:firstIndexPath scope:FSCalendarScopeMonth];
-                currentPage = [self.calendar dateByAddingDays:focusedRowNumber*7 toDate:firstDate];
+                currentPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:focusedRowNumber*7 toDate:firstDate options:0];
                 
                 attributes.focusedRowNumber = focusedRowNumber;
                 attributes.focusedDate = focusedDate;
@@ -445,17 +452,18 @@
                     }
                 }
                 if (!focusedDate) {
-                    focusedDate = [self.calendar endOfWeekOfDate:currentPage];
+                    focusedDate = [self.calendar endOfWeek:currentPage];
                 }
                 
-                NSDate *firstDayOfMonth = [self.calendar beginingOfMonthOfDate:focusedDate];
+                NSDate *firstDayOfMonth = [self.calendar beginingOfMonth:focusedDate];
                 attributes.focusedDate = focusedDate;
-                firstDayOfMonth = firstDayOfMonth ?: [self.calendar beginingOfMonthOfDate:currentPage];
+                firstDayOfMonth = firstDayOfMonth ?: [self.calendar beginingOfMonth:currentPage];
                 NSInteger numberOfPlaceholdersForPrev = [self.calendar numberOfHeadPlaceholdersForMonth:firstDayOfMonth];
-                NSDate *firstDateOfPage = [self.calendar dateBySubstractingDays:numberOfPlaceholdersForPrev fromDate:firstDayOfMonth];
+                NSDate *firstDateOfPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfPlaceholdersForPrev toDate:firstDayOfMonth options:0];
+                
                 for (int i = 0; i < 6; i++) {
-                    NSDate *currentRow = [self.calendar dateByAddingWeeks:i toDate:firstDateOfPage];
-                    if ([self.calendar isDate:currentRow equalToDate:currentPage toCalendarUnit:FSCalendarUnitDay]) {
+                    NSDate *currentRow = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:i toDate:firstDateOfPage options:0];
+                    if ([self.calendar.gregorian isDate:currentRow inSameDayAsDate:currentPage]) {
                         focusedRowNumber = i;
                         currentPage = firstDayOfMonth;
                         break;

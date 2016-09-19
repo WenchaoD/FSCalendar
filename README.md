@@ -4,23 +4,22 @@
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/badge/platform-iOS%207%2B-blue.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
-[![Swift2 compatible](https://img.shields.io/badge/swift2-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift2 compatible](https://img.shields.io/badge/swift-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 
-* 在您静静的离开之前，请确保点击了这个按钮<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"><br>
-* Before leaving quietly, please make sure you've taken good care of this button.<img style="margin-bottom:-12px"" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"> 
+# Updates
 
-> 欢迎加入QQ群: 323861692
-
+To get the iOS7 compatibility, You need to include [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) into your project.
 
 # [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
+[**QQ交流群: 323861692**](#qq_group)
 
 
 # Table of contents
 * [Screenshots](#screenshots)
 * [Installation](#installation)
-* [Advanced usage](#advanced_usage)
+* [Pre-knowledge](#pre-knowledge)
 * [Support me](#support)
 * [Contact](#contact)
 
@@ -43,28 +42,39 @@
 
 > FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
 
+## Today Extension
+![1](https://cloud.githubusercontent.com/assets/5186464/18406879/0d072d92-7736-11e6-90bc-2633f5ca2b54.gif)
+<br>
+![2](https://cloud.githubusercontent.com/assets/5186464/18406887/47c4822c-7736-11e6-96f0-ccb4c9cba199.gif)
+
 # <a id="installation"></a>Installation
 
 ## CocoaPods:
 
 * For iOS8+: 👍
+
 ```ruby
 use_frameworks!
 pod 'FSCalendar'
 ```
 
 * For iOS7+:
+
 ```ruby
 pod 'FSCalendar'
 ```
 
+> To get the iOS7-compatibility, you will also need to include [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) into your project.
+
 * Alternatively to give it a test run, run the command:
+
 ```ruby
 pod try FSCalendar
 ```
 
 ## Carthage: 
 * For iOS8+
+
 ```ruby
 github "WenchaoD/FSCalendar"
 ```
@@ -145,10 +155,96 @@ self.calendar = calendar
 ### <a id="roll_with_interface_builder"></a> Roll with Interface Builder
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
-## <a id="advanced_usage"></a>Advanced Usage
-* To view more usage, download the zip file and read the example.
-* Or you could refer to [this document](https://github.com/WenchaoD/FSCalendar/blob/master/MOREUSAGE.md)
-* To view the full documentation, see [CocoaPods Documentation](http://cocoadocs.org/docsets/FSCalendar/2.0.1/)
+# <a id="pre-knowledge"></a>Pre-knowledge
+## How to create NSDate object
+* By **NSCalendar**.
+
+```objc
+self.gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+```
+
+Then:
+
+```objc
+NSDate *date = [gregorian dateWithEra:1 year:2016 month:9 day:10 hour:0 minute:0 second:0 nanosecond:0];
+// 2016-09-10 00:00:00
+```
+
+
+* Or by **NSDateFormatter**
+
+```objc
+self.formatter = [[NSDateFormatter alloc] init];
+self.formatter.dateFormat = @"yyyy-MM-dd";
+```
+
+Then:
+
+```objc
+NSDate *date = [self.formatter dateFromString:@"2016-09-10"];
+```
+
+## How to print out NSDate object
+
+* Use **NSDateFormatter**
+
+```objc
+self.formatter = [[NSDateFormatter alloc] init];
+self.formatter.dateFormat = @"yyyy/MM/dd";
+```
+
+```objc
+NSString *string = [self.formatter stringFromDate:date];
+NSLog(@"Date is %@", string);
+```
+
+## How to manipulate NSDate with NSCalendar
+
+```objc
+self.gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+```
+
+* Get next **month**
+
+```objc
+NSDate *nextMonth = [self.gregorain dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:date options:0];
+```
+
+* Get next **day**
+
+```objc
+NSDate *nextDay = [self.gregorain dateByAddingUnit:NSCalendarUnitDay value:1 toDate:date options:0];
+```
+
+* Is date in today/tomorrow/yesterday/weekend
+
+```objc
+BOOL isToday = [self.gregorian isDateInToday:date];
+BOOL isYesterday = [self.gregorian isDateInYesterday:date];
+BOOL isTomorrow = [self.gregorian isDateInTomorrow:date];
+BOOL isWeekend = [self.gregorian isDateInWeekend:date];
+```
+
+* Compare two dates
+
+```objc
+
+BOOL sameDay = [self.gregorian isDate:date1 inSameDayAsDate:date2];
+// Yes if the date1 and date2 are in same day
+
+
+[self.gregorian compareDate:date1 toDate:date2 toUnitGranularity:unit];
+// compare the era/year/month/day/hour/minute .etc ...
+// return NSOrderAscending/NSOrderSame/NSOrderDecending
+
+BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranularity:unit];
+// if the given unit (era/year/month/day/hour/minute .etc) are the same
+
+
+```
+
+> These features of NSCalendar is introduced in iOS8, to use them in lower version, pay attention to [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) <br>
+
 
 # <a id="support"></a>Support me via [![paypal](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg)](https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg) <br>
 
@@ -175,10 +271,9 @@ self.calendar = calendar
 #<a id='contact'/></a> Contact
 * 微博： [**@WenchaoD**](http://weibo.com/WenchaoD)
 * Twitter：[**@WenchaoD**](https://twitter.com/WenchaoD)
-* QQ群：323861692
-
-> If your made a beautiful calendar with this library in your app, please take a screen shot and [@me](https://twitter.com/WenchaoD) in twitter. Your help really means a lot to me! <br/>
-> 如果你用这个库完成了一个外观漂亮的日历，希望你能将这个漂亮的日历截图在微博中[@我](http://weibo.com/WenchaoD)，十分感谢！
+* <a id='qq_group'/></a>QQ群: <br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![fscalendar](https://cloud.githubusercontent.com/assets/5186464/18407011/8e4b6e48-7738-11e6-9fad-0e23cc881516.JPG)
 
 
 # License

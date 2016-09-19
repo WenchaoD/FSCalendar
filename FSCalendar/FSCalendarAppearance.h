@@ -22,11 +22,6 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
     FSCalendarCellStateTodaySelected = FSCalendarCellStateToday|FSCalendarCellStateSelected
 };
 
-typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
-    FSCalendarCellShapeCircle    = 0,
-    FSCalendarCellShapeRectangle = 1
-};
-
 typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsHeaderUsesDefaultCase      = 0,
     FSCalendarCaseOptionsHeaderUsesUpperCase        = 1,
@@ -197,11 +192,9 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *borderSelectionColor;
 
 /**
- * The shape appears when a day is selected or today.
- *
- * @see FSCalendarCellShape
+ * The border radius, while 1 means a circle, 0 means a rectangle, and the middle value will give it a corner radius.
  */
-@property (assign, nonatomic) FSCalendarCellShape cellShape;
+@property (assign, nonatomic) CGFloat borderRadius;
 
 /**
  * The case options manage the case of month label and weekday symbols.
@@ -224,6 +217,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 // For preview only
 @property (assign, nonatomic) BOOL      fakeSubtitles;
+@property (assign, nonatomic) BOOL      fakeEventDots;
 @property (assign, nonatomic) NSInteger fakedSelectedDay;
 
 #endif
@@ -244,7 +238,6 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated('caseOptions');
 @property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
 @property (assign, nonatomic) BOOL adjustsFontSizeToFitCellSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
-
 @property (assign, nonatomic) CGFloat titleTextSize FSCalendarDeprecated('titleFont');
 @property (assign, nonatomic) CGFloat subtitleTextSize FSCalendarDeprecated('subtitleFont');
 @property (assign, nonatomic) CGFloat weekdayTextSize FSCalendarDeprecated('weekdayFont');
@@ -252,6 +245,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) CGFloat titleVerticalOffset FSCalendarDeprecated('titleOffset');
 @property (assign, nonatomic) CGFloat subtitleVerticalOffset FSCalendarDeprecated('subtitleOffset');
 @property (strong, nonatomic) UIColor *eventColor FSCalendarDeprecated('eventDefaultColor');
+@property (assign, nonatomic) FSCalendarCellShape cellShape FSCalendarDeprecated('borderRadius');
 
 @end
 

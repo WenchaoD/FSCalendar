@@ -15,48 +15,35 @@
 @property (strong, nonatomic) FSCalendar *calendar;
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSIndexPath *indexPath;
+@property (strong, nonatomic) NSDateFormatter *formatter;
 
 @end
 
 @implementation FSCalendarTests
 
-- (void)setUp {
+- (void)setUp
+{
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
     self.calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, 320, 300)];
     self.indexPath = [NSIndexPath indexPathForItem:25 inSection:0];
     self.date = [self.calendar dateForIndexPath:self.indexPath];
+    self.formatter = [[NSDateFormatter alloc] init];
+    self.formatter.dateFormat = @"yyyy-MM-dd";
+    
 }
 
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+- (void)tearDown
+{
     [super tearDown];
+    self.calendar = nil;
+    self.indexPath = nil;
+    self.date = nil;
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-}
-
-- (void)testMonthsCalculation
+- (void)testOutOfBoundsException
 {
-    NSDate *fromDate = [self.calendar beginingOfMonthOfDate:[NSDate date]];
-    fromDate = [self.calendar dateByAddingMonths:-1 toDate:fromDate];
-    NSDate *toDate = [self.calendar beginingOfMonthOfDate:[NSDate date]];
-    XCTAssertEqual(1, [self.calendar monthsFromDate:fromDate toDate:toDate], "Fail");
-    
-    NSDate *today = [NSDate date];
-    NSDate *date = [self.calendar dateWithYear:[self.calendar yearOfDate:today] month:[self.calendar monthOfDate:today] day:2];
-    
-    XCTAssertTrue([self.calendar isDate:date equalToDate:today toCalendarUnit:FSCalendarUnitMonth], "Fail");
-    
-}
-
-- (void)testIgnoringTimeComponents
-{
-    NSDate *date = [NSDate date];
-    NSDate *newDate = [self.calendar dateByIgnoringTimeComponentsOfDate:date];
-    XCTAssertTrue([self.calendar isDate:date equalToDate:newDate toCalendarUnit:FSCalendarUnitDay], "Fail");
+    XCTAssertThrows([self.calendar selectDate:[self.formatter dateFromString:@"1900-01-01"]]);
+    XCTAssertThrows([self.calendar selectDate:[self.formatter dateFromString:@"2300-01-01"]]);
 }
 
 - (void)testIndexPathForDatePerformance {

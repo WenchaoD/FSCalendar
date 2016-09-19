@@ -307,45 +307,25 @@ func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
 * `fakeSubtitles` and `fakedSelectedDay` is only used for preview in Interface Builder
 
 
+## Q & A
 
-## Indian
-```objective-c
-calendar.identifier = NSCalendarIdentifierIndian;
-```
-![indian](https://cloud.githubusercontent.com/assets/5186464/11204305/59158ab4-8d38-11e5-97d0-9af3e800c49a.jpg)
+### Q:&nbsp;&nbsp;What if I don't need the `today` circle?
+Just nill-out the `today` property like:
 
-## Persian
-```objective-c
-calendar.identifier = NSCalendarIdentifierPesian;
-```
-![persian](https://cloud.githubusercontent.com/assets/5186464/11204304/5914a0ea-8d38-11e5-8e6c-e354fe910290.jpg)
-
-## Hebrew
-```objective-c
-calendar.identifier = NSCalendarIdentifierHebrew;
-```
-![hebrew](https://cloud.githubusercontent.com/assets/5186464/11204307/59254760-8d38-11e5-83c4-e3b963c29206.jpg)
-
-## Islamic
-```objective-c
-calendar.identifier = NSCalendarIdentifierIslamic;
-```
-![islamic](https://cloud.githubusercontent.com/assets/5186464/11204306/592386c8-8d38-11e5-8dd5-68b99b3b83c1.jpg)
-
-
-
-## Known issues
-
-* What if I don't need the `today` circle?
-
-```objective-c
-_calendar.today = nil;
-_calendar.currentPage = [NSDate date];
+```objc
+self.calendar.today = nil;
 ```
 
-* Can we hide this?
+### Q:&nbsp;&nbsp;Can we hide this?
 ![fscalendar---headeralpha](https://cloud.githubusercontent.com/assets/5186464/8450978/217855ca-2012-11e5-8b97-a9b45ece4e71.png)
 
-```objective-c
-_calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
+```objc
+self.calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
+```
+
+### Q:&nbsp;&nbsp;Can we refresh the calendar after a network request?
+Yes. Like UITableView or UICollectionView, there is also `reloadData` in `FSCalendar`;
+
+```objc
+[self.calendar reloadData];
 ```

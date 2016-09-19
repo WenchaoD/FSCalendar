@@ -101,15 +101,15 @@
         case FSCalendarScopeMonth: {
             switch (_scrollDirection) {
                 case UICollectionViewScrollDirectionVertical: {
-                    NSDate *minimumPage = [_calendar beginingOfMonthOfDate:_calendar.minimumDate];
-                    NSInteger count = [_calendar monthsFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
-                    return count;
+                    NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
+                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month;
+                    return months;
                 }
                 case UICollectionViewScrollDirectionHorizontal: {
                     // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
-                    NSDate *minimumPage = [_calendar beginingOfMonthOfDate:_calendar.minimumDate];
-                    NSInteger count = [_calendar monthsFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
-                    return count + 2;
+                    NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
+                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month;
+                    return months + 2;
                 }
                 default: {
                     break;
@@ -118,9 +118,9 @@
             break;
         }
         case FSCalendarScopeWeek: {
-            NSDate *minimumPage = [_calendar beginingOfMonthOfDate:_calendar.minimumDate];
-            NSInteger count = [_calendar weeksFromDate:minimumPage toDate:_calendar.maximumDate] + 1;
-            return count + 2;
+            NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
+            NSInteger weeks = [self.calendar.gregorian components:NSCalendarUnitWeekOfYear fromDate:minimumPage toDate:self.calendar.maximumDate options:0].weekOfYear;
+            return weeks + 2;
         }
         default: {
             break;
@@ -145,11 +145,11 @@
                 if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
                     text = nil;
                 } else {
-                    NSDate *date = [_calendar dateByAddingMonths:indexPath.item-1 toDate:_calendar.minimumDate];
+                    NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item-1 toDate:self.calendar.minimumDate options:0];
                     text = [_calendar.formatter stringFromDate:date];
                 }
             } else {
-                NSDate *date = [_calendar dateByAddingMonths:indexPath.item toDate:_calendar.minimumDate];
+                NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item toDate:self.calendar.minimumDate options:0];
                 text = [_calendar.formatter stringFromDate:date];
             }
             break;
@@ -158,8 +158,8 @@
             if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
                 text = nil;
             } else {
-                NSDate *firstPage = [_calendar middleOfWeekFromDate:_calendar.minimumDate];
-                NSDate *date = [_calendar dateByAddingWeeks:indexPath.item-1 toDate:firstPage];
+                NSDate *firstPage = [_calendar middleOfWeek:_calendar.minimumDate];
+                NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstPage options:0];
                 text = [_calendar.formatter stringFromDate:date];
             }
             break;

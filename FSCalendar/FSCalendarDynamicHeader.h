@@ -37,7 +37,7 @@
 @property (readonly, nonatomic) CGFloat preferredPadding;
 @property (readonly, nonatomic) UIView *bottomBorder;
 
-@property (readonly, nonatomic) NSCalendar *calendar;
+@property (readonly, nonatomic) NSCalendar *gregorian;
 @property (readonly, nonatomic) NSDateComponents *components;
 @property (readonly, nonatomic) NSDateFormatter *formatter;
 
@@ -60,6 +60,14 @@
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope;
 
 - (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month;
+- (NSInteger)numberOfRowsInMonth:(NSDate *)month;
+
+- (NSDate *)beginingOfMonth:(NSDate *)month;
+- (NSDate *)endOfMonth:(NSDate *)month;
+- (NSDate *)beginingOfWeek:(NSDate *)week;
+- (NSDate *)endOfWeek:(NSDate *)week;
+- (NSDate *)middleOfWeek:(NSDate *)week;
+- (NSInteger)numberOfDatesInMonth:(NSDate *)month;
 
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 

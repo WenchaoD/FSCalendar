@@ -19,7 +19,7 @@
 @property (readonly, nonatomic) UIColor *colorForSubtitleLabel;
 @property (readonly, nonatomic) UIColor *colorForCellBorder;
 @property (readonly, nonatomic) NSArray<UIColor *> *colorsForEvents;
-@property (readonly, nonatomic) FSCalendarCellShape cellShape;
+@property (readonly, nonatomic) CGFloat borderRadius;
 
 @end
 
@@ -172,7 +172,7 @@
     
     if (self.contentView.hidden) return;
     
-    _titleLabel.text = self.title ?: [NSString stringWithFormat:@"%@",@([_calendar dayOfDate:_date])];
+    _titleLabel.text = self.title ?: @([self.calendar.gregorian component:NSCalendarUnitDay fromDate:_date]).stringValue;
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
         if (_subtitleLabel.hidden) {
@@ -239,10 +239,8 @@
         _shapeLayer.hidden = shouldHideShapeLayer;
     }
     if (!shouldHideShapeLayer) {
-        
-        CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
-        [UIBezierPath bezierPathWithOvalInRect:_shapeLayer.bounds].CGPath :
-        [UIBezierPath bezierPathWithRect:_shapeLayer.bounds].CGPath;
+        CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
+                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
         if (!CGPathEqualToPath(_shapeLayer.path,path)) {
             _shapeLayer.path = path;
         }
@@ -280,7 +278,9 @@
 
 - (BOOL)isWeekend
 {
-    return _date && ([_calendar weekdayOfDate:_date] == 1 || [_calendar weekdayOfDate:_date] == 7);
+    if (!_date) return NO;
+    NSInteger weekday = [self.calendar.gregorian component:NSCalendarUnitWeekday fromDate:_date];
+    return weekday == 1 || weekday == 7;
 }
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
@@ -338,11 +338,10 @@
     _eventIndicator.color = self.colorsForEvents;
 }
 
-- (void)invalidateCellShapes
+- (void)invalidateBorderRadius
 {
-    CGPathRef path = self.cellShape == FSCalendarCellShapeCircle ?
-    [UIBezierPath bezierPathWithOvalInRect:_shapeLayer.bounds].CGPath :
-    [UIBezierPath bezierPathWithRect:_shapeLayer.bounds].CGPath;
+    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
+                                                cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
     _shapeLayer.path = path;
 }
 
@@ -394,9 +393,9 @@
     return _preferredEventDefaultColors ?: @[_appearance.eventDefaultColor];
 }
 
-- (FSCalendarCellShape)cellShape
+- (CGFloat)borderRadius
 {
-    return _preferredCellShape ?: _appearance.cellShape;
+    return _preferredBorderRadius >= 0 ? _preferredBorderRadius : _appearance.borderRadius;
 }
 
 #define OFFSET_PROPERTY(NAME,CAPITAL,ALTERNATIVE) \

@@ -39,12 +39,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
     FSCalendarScrollDirectionHorizontal
 };
 
-typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
-    FSCalendarUnitMonth = NSCalendarUnitMonth,
-    FSCalendarUnitWeekOfYear = NSCalendarUnitWeekOfYear,
-    FSCalendarUnitDay = NSCalendarUnitDay
-};
-
 typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
     FSCalendarPlaceholderTypeNone          = 0,
     FSCalendarPlaceholderTypeFillHeadTail  = 1,
@@ -229,10 +223,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventOffsetForDate:(NSDate *)date;
 
+
 /**
- * Asks the delegate for a shape for the specific date.
+ * Asks the delegate for a border radius for the specific date.
  */
-- (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date;
+- (CGFloat)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderRadiusForDate:(NSDate *)date;
 
 /**
  * These functions are deprecated
@@ -242,6 +237,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance selectionColorForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:fillSelectionColorForDate:);
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:eventDefaultColorsForDate:);
 - (nullable NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorsForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:eventDefaultColorsForDate:);
+- (FSCalendarCellShape)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance cellShapeForDate:(NSDate *)date FSCalendarDeprecated(-calendar:appearance:borderRadiusForDate:);
 @end
 
 #pragma mark - Primary
@@ -279,15 +275,6 @@ IB_DESIGNABLE
  *    calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
  */
 @property (copy, nonatomic) NSLocale *locale;
-
-/**
- * NOT RECOMMENDED. Represents the NSCalendarIdentifier of calendar. Default is NSCalendarIdentifierGregorian.
- *
- * e.g. To display a Persian calendar
- *
- *    calendar.identifier = NSCalendarIdentifierPersian;
- */
-@property (strong, nonatomic) NSString *identifier DEPRECATED_MSG_ATTRIBUTE("Changing calendar identifier is NOT RECOMMENDED. You should always use this library as a Gregorian calendar. Try to express other calendar as subtitles just as System calendar app does."); // Deprecated in 2.3.1
 
 /**
  * The scroll direction of FSCalendar. 
@@ -460,226 +447,54 @@ IB_DESIGNABLE
 
 @end
 
-#pragma mark - DateTools
 
-/**
- * Job for this category:
- *
- *  1. Manage date object simplier、faster
- *  2. Bring date object into a no-timezone system.
- *
- * @warning All NSDate instances used in the calendar should be created by:
- *
- *    - (NSDate *)dateFromString:(NSString *)string format:(NSString *)format;
- *    - (NSDate *)dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day;
- *
- */
-@interface FSCalendar (DateTools)
 
-/**
- * Returns the number of year of the given date
- */
-- (NSInteger)yearOfDate:(NSDate *)date;
-
-/**
- * Returns the number of month of the given date
- */
-- (NSInteger)monthOfDate:(NSDate *)date;
-
-/**
- * Returns the number of day of the given date
- */
-- (NSInteger)dayOfDate:(NSDate *)date;
-
-/**
- * Returns the number of weekday of the given date
- */
-- (NSInteger)weekdayOfDate:(NSDate *)date;
-
-/**
- * Returns the number of weekOfYear of the given date
- */
-- (NSInteger)weekOfDate:(NSDate *)date;
-
-/**
- * Returns the number of hour of the given date
- */
-- (NSInteger)hourOfDate:(NSDate *)date;
-
-/**
- * Returns the number of minite of the given date
- */
-- (NSInteger)miniuteOfDate:(NSDate *)date;
-
-/**
- * Returns the number of seconds of the given date
- */
-- (NSInteger)secondOfDate:(NSDate *)date;
-
-/**
- * Returns the number of rows of the given month
- */
-- (NSInteger)numberOfRowsInMonth:(NSDate *)month;
-
-/**
- * Zeronizing hour、minute and second components of the given date
- */
-- (NSDate *)dateByIgnoringTimeComponentsOfDate:(NSDate *)date;
-
-/**
- * Returns the first day of month of the given date
- */
-- (NSDate *)beginingOfMonthOfDate:(NSDate *)date;
-
-/**
- * Returns the last day of month of the given date
- */
-- (NSDate *)endOfMonthOfDate:(NSDate *)date;
-
-/**
- * Returns the first day of week of the given date
- */
-- (NSDate *)beginingOfWeekOfDate:(NSDate *)date;
-
-/**
- * Returns the last day of week of the given date
- */
-- (NSDate *)endOfWeekOfDate:(NSDate *)date;
-
-/**
- * Returns the middle day of week of the given date
- */
-- (NSDate *)middleOfWeekFromDate:(NSDate *)date;
-
-/**
- * Returns the next day of the given date
- */
-- (NSDate *)tomorrowOfDate:(NSDate *)date;
-
-/**
- * Returns the previous day of the given date
- */
-- (NSDate *)yesterdayOfDate:(NSDate *)date;
-
-/**
- * Returns the number of days in the month of the given date
- */
-- (NSInteger)numberOfDatesInMonthOfDate:(NSDate *)date;
-
-/**
- * Instantiating a date by given string and date format.
- *
- * e.g.
- *
- *    NSDate *date = [calendar dateFromString:@"2000-10-10" format:@"yyyy-MM-dd"];
- */
-- (NSDate *)dateFromString:(NSString *)string format:(NSString *)format;
-
-/**
- * Instantiating a date by given numbers of year、month and day.
- *
- * e.g.
- *
- *    NSDate *date = [calendar dateWithYear:2000 month:10 day:10];
- */
-- (NSDate *)dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day;
-
-/**
- * Returns a new NSDate object representing the time calculated by adding given number of year to a given date.
- */
-- (NSDate *)dateByAddingYears:(NSInteger)years toDate:(NSDate *)date;
-
-/**
- * Returns a new NSDate object representing the time calculated by substracting given number of year from a given date.
- */
-- (NSDate *)dateBySubstractingYears:(NSInteger)years fromDate:(NSDate *)date;
-
-/**
- * Returns a new NSDate object representing the time calculated by adding given number of month to a given date.
- */
-- (NSDate *)dateByAddingMonths:(NSInteger)months toDate:(NSDate *)date;
-
-/**
- * Returns a new NSDate object representing the time calculated by substracting given number of month from a given date.
- */
-- (NSDate *)dateBySubstractingMonths:(NSInteger)months fromDate:(NSDate *)date;
-
-/**
- * Returns a new NSDate object representing the time calculated by adding given number of week to a given date.
- */
-- (NSDate *)dateByAddingWeeks:(NSInteger)weeks toDate:(NSDate *)date;
-
-/**
- * Returns a new NSDate object representing the time calculated by substracting given number of week from a given date.
- */
-- (NSDate *)dateBySubstractingWeeks:(NSInteger)weeks fromDate:(NSDate *)date;
-
-/**
- * Returns a new NSDate object representing the time calculated by adding given number of day to a given date.
- */
-- (NSDate *)dateByAddingDays:(NSInteger)days toDate:(NSDate *)date;
-
-/**
- * Returns a new NSDate object representing the time calculated by substracting given number of day from a given date.
- */
-- (NSDate *)dateBySubstractingDays:(NSInteger)days fromDate:(NSDate *)date;
-
-/**
- * Returns the year-difference between the given dates
- */
-- (NSInteger)yearsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
-
-/**
- * Returns the month-difference between the given dates
- */
-- (NSInteger)monthsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
-
-/**
- * Returns the day-difference between the given dates
- */
-- (NSInteger)daysFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
-
-/**
- * Returns the week-difference between the given dates
- */
-- (NSInteger)weeksFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
-
-/**
- * Returns whether two dates are equal to a given unit of calendar.
- */
-- (BOOL)isDate:(NSDate *)date1 equalToDate:(NSDate *)date2 toCalendarUnit:(FSCalendarUnit)unit;
-
-/**
- * Returns whether the given date is in 'today' of the calendar.
- */
-- (BOOL)isDateInToday:(NSDate *)date;
-
-/**
- * Returns a string representation of a given date formatted using a specific date format.
- */
-- (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format;
-
-/**
- * Returns a string representation of a given date formatted using a yyyy-MM-dd.
- */
-- (NSString *)stringFromDate:(NSDate *)date;
-
-@end
 
 #pragma mark - Deprecate
 
-/**
- * These attributes and functions are deprecated.
- */
 @interface FSCalendar (Deprecated)
 @property (assign, nonatomic) IBInspectable BOOL showsPlaceholders FSCalendarDeprecated('placeholderType');
 @property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated('currentPage');
 @property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated('scrollDirection');
 - (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated(-selectDate:scrollToDate:);
-- (BOOL)date:(NSDate *)date sharesSameMonthWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
-- (BOOL)date:(NSDate *)date sharesSameWeekWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
-- (BOOL)date:(NSDate *)date sharesSameDayWithDate:(NSDate *)anotherDate FSCalendarDeprecated(-isDate:equalToDate:toCalendarUnit);
+
+@property (strong, nonatomic) NSString *identifier DEPRECATED_MSG_ATTRIBUTE("Changing calendar identifier is NOT RECOMMENDED. You should always use this library as a Gregorian calendar. Try to express other calendar as subtitles just as System calendar app does."); // Deprecated in 2.3.1
+
+// Use NSDateFormatter
+- (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format FSCalendarDeprecated([NSDateFormatter stringFromDate:]);
+- (NSString *)stringFromDate:(NSDate *)date FSCalendarDeprecated([NSDateFormatter stringFromDate:]);
+- (NSDate *)dateFromString:(NSString *)string format:(NSString *)format FSCalendarDeprecated([NSDateFormatter dateFromString:]);
+- (NSDate *)dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day FSCalendarDeprecated([NSDateFormatter dateFromString:]);
+
+// Use NSCalendar.
+- (NSInteger)yearOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSInteger)monthOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSInteger)dayOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSInteger)weekdayOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSInteger)weekOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSInteger)hourOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSInteger)miniuteOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSInteger)secondOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
+- (NSDate *)dateByIgnoringTimeComponentsOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateBySettingHour:minute:seconds:ofDate:options:]);
+- (NSDate *)tomorrowOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);;
+- (NSDate *)yesterdayOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateByAddingYears:(NSInteger)years toDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateBySubstractingYears:(NSInteger)years fromDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateByAddingMonths:(NSInteger)months toDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateBySubstractingMonths:(NSInteger)months fromDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateByAddingWeeks:(NSInteger)weeks toDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateBySubstractingWeeks:(NSInteger)weeks fromDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateByAddingDays:(NSInteger)days toDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSDate *)dateBySubstractingDays:(NSInteger)days fromDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);
+- (NSInteger)yearsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
+- (NSInteger)monthsFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
+- (NSInteger)daysFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
+- (NSInteger)weeksFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate FSCalendarDeprecated([NSCalendar components:fromDate:toDate:options:]);
+- (BOOL)isDate:(NSDate *)date1 equalToDate:(NSDate *)date2 toCalendarUnit:(FSCalendarUnit)unit FSCalendarDeprecated([NSCalendar -isDate:equalToDate:toUnitGranularity:]);
+- (BOOL)isDateInToday:(NSDate *)date FSCalendarDeprecated([NSCalendar -isDateInToday:]);
+
+
 @end
 
 NS_ASSUME_NONNULL_END

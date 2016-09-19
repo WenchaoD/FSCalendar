@@ -18,6 +18,9 @@
 @property (weak, nonatomic) UIButton *nextButton;
 @property (weak, nonatomic) UIButton *prevButton;
 
+@property (strong, nonatomic) NSCalendar *gregorian;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+
 - (void)nextClicked:(id)sender;
 - (void)prevClicked:(id)sender;
 

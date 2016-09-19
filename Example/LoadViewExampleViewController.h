@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) FSCalendar *calendar;
 
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSDictionary *images;
 
 @end
