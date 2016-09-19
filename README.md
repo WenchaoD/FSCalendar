@@ -230,12 +230,15 @@ BOOL isWeekend = [self.gregorian isDateInWeekend:date];
 ```objc
 
 BOOL sameDay = [self.gregorian isDate:date1 inSameDayAsDate:date2];
+// Yes if the date1 and date2 are in same day
+
 
 [self.gregorian compareDate:date1 toDate:date2 toUnitGranularity:unit];
+// compare the era/year/month/day/hour/minute .etc ...
 // return NSOrderAscending/NSOrderSame/NSOrderDecending
 
 BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranularity:unit];
-// Same in given unit. e.g. NSCalendarUnitMonth means in same month
+// if the given unit (era/year/month/day/hour/minute .etc) are the same
 
 
 ```
