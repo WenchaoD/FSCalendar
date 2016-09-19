@@ -203,6 +203,18 @@ NSLog(@"Date is %@", string);
 ```objc
 self.gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
 ```
+* Get component of NSDate
+
+```objc
+NSInteger era = [self.gregorian component:NSCalendarUnitEra fromDate:date];
+NSInteger year = [self.gregorian component:NSCalendarUnitYear fromDate:date];
+NSInteger month = [self.gregorian component:NSCalendarUnitMonth fromDate:date];
+NSInteger day = [self.gregorian component:NSCalendarUnitDay fromDate:date];
+NSInteger hour = [self.gregorian component:NSCalendarUnitHour fromDate:date];
+NSInteger minute = [self.gregorian component:NSCalendarUnitMinute fromDate:date];
+...
+
+```
 
 * Get next **month**
 
