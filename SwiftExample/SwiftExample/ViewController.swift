@@ -13,14 +13,23 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
-    let datesWithCat = ["20150505","20150605","20150705","20150805","20150905","20151005","20151105","20151205","20160106",
-    "20160206","20160306","20160406","20160506","20160606","20160706"]
+    private var formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        return formatter
+    }()
+    private var gregorian: NSCalendar! = NSCalendar(calendarIdentifier:NSCalendar.Identifier.gregorian)
+    
+    let datesWithCat = ["2015/05/05","2015/06/05","2015/07/05","2015/08/05","2015/09/05","2015/10/05","2015/11/05","2015/12/05","2016/01/06",
+    "2016/02/06","2016/03/06","2016/04/06","2016/05/06","2016/06/06","2016/07/06"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        calendar.appearance.caseOptions = [.HeaderUsesUpperCase,.WeekdayUsesUpperCase]
-        calendar.selectDate(calendar.dateWithYear(2015, month: 10, day: 10))
-//        calendar.scope = .Week
-        calendar.scopeGesture.enabled = true
+        
+        calendar.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesUpperCase]
+        calendar.select(self.formatter.date(from: "2015/10/10")!)
+//        calendar.scope = .week
+        calendar.scopeGesture.isEnabled = true
 //        calendar.allowsMultipleSelection = true
         
         // Uncomment this to test month->week and week->month transition
@@ -36,34 +45,35 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     }
     
 
-    func minimumDateForCalendar(calendar: FSCalendar) -> NSDate {
-        return calendar.dateWithYear(2015, month: 1, day: 1)
+    func minimumDate(for calendar: FSCalendar) -> Date {
+        return self.formatter.date(from: "2015/01/01")!
     }
     
-    func maximumDateForCalendar(calendar: FSCalendar) -> NSDate {
-        return calendar.dateWithYear(2016, month: 10, day: 31)
+    func maximumDate(for calendar: FSCalendar) -> Date {
+        return self.formatter.date(from: "2016/10/31")!
     }
     
-    func calendar(calendar: FSCalendar, numberOfEventsForDate date: NSDate) -> Int {
-        let day = calendar.dayOfDate(date)
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        let day: Int! = self.gregorian.component(.day, from: date)
         return day % 5 == 0 ? day/5 : 0;
     }
 
-    func calendarCurrentPageDidChange(calendar: FSCalendar) {
-        NSLog("change page to \(calendar.stringFromDate(calendar.currentPage))")
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        NSLog("change page to \(self.formatter.string(from: calendar.currentPage))")
     }
     
-    func calendar(calendar: FSCalendar, didSelectDate date: NSDate) {
-        NSLog("calendar did select date \(calendar.stringFromDate(date))")
+    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
+        NSLog("calendar did select date \(self.formatter.string(from: date))")
     }
     
-    func calendar(calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         calendarHeightConstraint.constant = bounds.height
         view.layoutIfNeeded()
     }
     
-    func calendar(calendar: FSCalendar, imageForDate date: NSDate) -> UIImage? {
-        return [13,24].containsObject(calendar.dayOfDate(date)) ? UIImage(named: "icon_cat") : nil
+    func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
+        let day: Int! = self.gregorian.component(.day, from: date)
+        return [13,24].contains(day) ? UIImage(named: "icon_cat") : nil
     }
     
 }
