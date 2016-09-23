@@ -291,6 +291,8 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/18407011/8e4b6e48-7738-11e6-9fad-0e23cc881516.JPG)
 
+> If your made a beautiful calendar with this library in your app, please take a screen shot and [@me](https://twitter.com/WenchaoD) in twitter. Your help really means a lot to me! <br/>
+> 如果你用这个库完成了一个外观漂亮的日历，希望你能将这个漂亮的日历截图在微博中[@我](http://weibo.com/WenchaoD)，十分感谢！
 
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
