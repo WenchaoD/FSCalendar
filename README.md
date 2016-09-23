@@ -10,7 +10,7 @@
 
 # Updates
 
-To get the iOS7 compatibility, You need to include [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) into your project.
+[NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
 # [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
 [**QQ交流群: 323861692**](#qq_group)
@@ -128,6 +128,9 @@ calendar.delegate = self
 view.addSubview(calendar)
 self.calendar = calendar
 ```
+
+> **FSCalendar** is fully compatible for Swift3, see `SwiftExample` for more details.
+
 <br/>
 
 ## <a id='adjusts_frame_dynamicly' /></a>Warning 
@@ -157,6 +160,7 @@ self.calendar = calendar
 
 # <a id="pre-knowledge"></a>Pre-knowledge
 ## How to create NSDate object
+
 * By **NSCalendar**.
 
 ```objc
@@ -202,6 +206,18 @@ NSLog(@"Date is %@", string);
 
 ```objc
 self.gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+```
+* Get component of NSDate
+
+```objc
+NSInteger era = [self.gregorian component:NSCalendarUnitEra fromDate:date];
+NSInteger year = [self.gregorian component:NSCalendarUnitYear fromDate:date];
+NSInteger month = [self.gregorian component:NSCalendarUnitMonth fromDate:date];
+NSInteger day = [self.gregorian component:NSCalendarUnitDay fromDate:date];
+NSInteger hour = [self.gregorian component:NSCalendarUnitHour fromDate:date];
+NSInteger minute = [self.gregorian component:NSCalendarUnitMinute fromDate:date];
+...
+
 ```
 
 * Get next **month**
@@ -275,6 +291,8 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/18407011/8e4b6e48-7738-11e6-9fad-0e23cc881516.JPG)
 
+> If your made a beautiful calendar with this library in your app, please take a screen shot and [@me](https://twitter.com/WenchaoD) in twitter. Your help really means a lot to me! <br/>
+> 如果你用这个库完成了一个外观漂亮的日历，希望你能将这个漂亮的日历截图在微博中[@我](http://weibo.com/WenchaoD)，十分感谢！
 
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.

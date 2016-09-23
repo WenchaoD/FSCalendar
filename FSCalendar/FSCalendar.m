@@ -1071,16 +1071,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [_collectionView reloadData];
         [_header.collectionView reloadData];
         [self setNeedsLayout];
-    }
-    else {
+    } else {
         [self reloadVisibleCells];
     }
-    
     [self invalidateWeekdayFont];
     [self invalidateWeekdayTextColor];
     [self invalidateWeekdaySymbols];
     [self invalidateHeaders];
-    
 }
 
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
@@ -1275,16 +1272,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         
     } else {
-        // 全屏模式中，切换页面时需要将该月份提升到视图最上方
         if (self.hasValidateVisibleLayout) {
             // Force layout to avoid crash on orientation changing
             [_collectionViewLayout layoutAttributesForElementsInRect:_collectionView.bounds];
             CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
             CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,MAX(0,_collectionView.contentSize.height-_collectionView.fs_bottom)));
             [_collectionView setContentOffset:targetOffset animated:animated];
-            
         } else {
-            // 如果在loadView或者viewDidLoad中调用需要切换月份的方法, 这时UICollectionView并没有准备好自己的单元格和空间大小，这时不能直接调用setContentOffset,而是等到在layoutSubviews之后再去调用
             _currentPage = date;
             _needsAdjustingMonthPosition = YES;
             [self setNeedsLayout];
@@ -1641,8 +1635,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)reloadVisibleCells
 {
-    [_collectionView.indexPathsForVisibleItems enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-        FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+    FSCalendarUseWeakSelf
+    [self.collectionView.indexPathsForVisibleItems enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
+        FSCalendarUseStrongSelf
+        FSCalendarCell *cell = (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [self reloadDataForCell:cell atIndexPath:indexPath];
     }];
 }
@@ -2192,6 +2188,4 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @end
 
-
-#undef FSCalendarAssertDateInBounds
 

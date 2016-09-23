@@ -53,6 +53,9 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 #define FSCalendarFloor(c) floorf(c)
 #endif
 
+#define FSCalendarUseWeakSelf __weak __typeof__(self) FSCalendarWeakSelf = self;
+#define FSCalendarUseStrongSelf __typeof__(self) self = FSCalendarWeakSelf;
+
 
 #pragma mark - Deprecated
 

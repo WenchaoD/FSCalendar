@@ -10,13 +10,10 @@
 //
 //  FSCalendar is a superior awesome calendar control with high performance, high customizablility and very simple usage.
 //
-//  @warning All NSDate instances used in the calendar should be managed by the DateTools category. See FSCalendar+DateTools.
-//
 //  @see FSCalendarDataSource
 //  @see FSCalendarDelegate
 //  @see FSCalendarDelegateAppearance
 //  @see FSCalendarAppearance
-//  @see FSCalendar+DateTools
 //
 
 #import <UIKit/UIKit.h>

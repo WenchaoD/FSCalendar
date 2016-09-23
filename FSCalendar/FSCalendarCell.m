@@ -279,8 +279,7 @@
 - (BOOL)isWeekend
 {
     if (!_date) return NO;
-    NSInteger weekday = [self.calendar.gregorian component:NSCalendarUnitWeekday fromDate:_date];
-    return weekday == 1 || weekday == 7;
+    return [self.calendar.gregorian isDateInWeekend:self.date];
 }
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
