@@ -10,7 +10,7 @@
 
 # Updates
 
-To get the iOS7 compatibility, You need to include [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) into your project.
+[NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
 # [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
 [**QQ交流群: 323861692**](#qq_group)
@@ -128,6 +128,9 @@ calendar.delegate = self
 view.addSubview(calendar)
 self.calendar = calendar
 ```
+
+> **FSCalendar** is fully compatible for Swift3, see `SwiftExample` for more details.
+
 <br/>
 
 ## <a id='adjusts_frame_dynamicly' /></a>Warning 
@@ -157,6 +160,7 @@ self.calendar = calendar
 
 # <a id="pre-knowledge"></a>Pre-knowledge
 ## How to create NSDate object
+
 * By **NSCalendar**.
 
 ```objc
