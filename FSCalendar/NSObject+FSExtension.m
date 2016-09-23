@@ -26,11 +26,54 @@
         va_list args;
         va_start(args, firstObject);
         if (firstObject) {
-            [invocation setArgument:&firstObject atIndex:index++];
-            id otherObject;
-            while ((otherObject = va_arg(args, id))) {
-                [invocation setArgument:&otherObject atIndex:index++];
-            }
+            id obj = firstObject;
+            do {
+                const char *argType = [signature getArgumentTypeAtIndex:index];
+                if(!strcmp(argType, @encode(id))){
+                    // object
+                    [invocation setArgument:&obj atIndex:index++];
+                } else {
+                    NSString *argTypeString = [NSString stringWithUTF8String:argType];
+                    if ([argTypeString hasPrefix:@"{"] && [argTypeString hasSuffix:@"}"]) {
+                        // struct
+#define PARAM_STRUCT_TYPES(_type,_getter,_default) \
+if (!strcmp(argType, @encode(_type))) { \
+    _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:_default; \
+    [invocation setArgument:&value atIndex:index++]; \
+}
+    PARAM_STRUCT_TYPES(CGPoint, CGPointValue, CGPointZero)
+    PARAM_STRUCT_TYPES(CGSize, CGSizeValue, CGSizeZero)
+    PARAM_STRUCT_TYPES(CGRect, CGRectValue, CGRectZero)
+    PARAM_STRUCT_TYPES(CGAffineTransform, CGAffineTransformValue, CGAffineTransformIdentity)
+    PARAM_STRUCT_TYPES(CATransform3D, CATransform3DValue, CATransform3DIdentity)
+    PARAM_STRUCT_TYPES(CGVector, CGVectorValue, CGVectorMake(0, 0))
+    PARAM_STRUCT_TYPES(UIEdgeInsets, UIEdgeInsetsValue, UIEdgeInsetsZero)
+    PARAM_STRUCT_TYPES(UIOffset, UIOffsetValue, UIOffsetZero)
+    PARAM_STRUCT_TYPES(NSRange, rangeValue, NSMakeRange(NSNotFound, 0))
+#undef PARAM_STRUCT_TYPES
+                    } else {
+                        // basic type
+#define PARAM_BASIC_TYPES(_type,_getter) \
+if (!strcmp(argType, @encode(_type))) { \
+    _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
+    [invocation setArgument:&value atIndex:index++]; \
+}
+    PARAM_BASIC_TYPES(BOOL, boolValue)
+    PARAM_BASIC_TYPES(int, intValue)
+    PARAM_BASIC_TYPES(unsigned int, unsignedIntValue)
+    PARAM_BASIC_TYPES(char, charValue)
+    PARAM_BASIC_TYPES(unsigned char, unsignedCharValue)
+    PARAM_BASIC_TYPES(long, longValue)
+    PARAM_BASIC_TYPES(unsigned long, unsignedLongValue)
+    PARAM_BASIC_TYPES(long long, longLongValue)
+    PARAM_BASIC_TYPES(unsigned long long, unsignedLongLongValue)
+    PARAM_BASIC_TYPES(float, floatValue)
+    PARAM_BASIC_TYPES(double, doubleValue)
+#undef PARAM_BASIC_TYPES
+                    }
+                }
+            } while((obj = va_arg(args, id)));
+            
         }
         va_end(args);
         [invocation retainArguments];

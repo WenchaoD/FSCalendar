@@ -26,10 +26,10 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendar.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesUpperCase]
-        calendar.select(self.formatter.date(from: "2015/10/10")!)
-//        calendar.scope = .week
-        calendar.scopeGesture.isEnabled = true
+        self.calendar.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesUpperCase]
+        self.calendar.select(self.formatter.date(from: "2015/10/10")!)
+//        self.calendar.scope = .week
+        self.calendar.scopeGesture.isEnabled = true
 //        calendar.allowsMultipleSelection = true
         
         // Uncomment this to test month->week and week->month transition
