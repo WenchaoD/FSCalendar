@@ -95,7 +95,8 @@
                                        bounds.size.width,
                                        eventSize*0.83
                                       );
-    _imageView.frame = self.contentView.bounds;
+    _imageView.frame = CGRectMake(self.preferredImageOffset.x, self.preferredImageOffset.y, self.contentView.fs_width, self.contentView.fs_height);
+    
 }
 
 - (void)layoutSubviews
