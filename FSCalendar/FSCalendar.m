@@ -1603,7 +1603,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.title = [self titleForDate:cell.date];
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.dateIsSelected = [_selectedDates containsObject:cell.date];
-    cell.dateIsToday = [self.gregorian isDate:cell.date inSameDayAsDate:self.today];
+    cell.dateIsToday = self.today?[self.gregorian isDate:cell.date inSameDayAsDate:self.today]:NO;
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *firstPage = [self beginingOfMonth:_minimumDate];

@@ -51,10 +51,6 @@
     _scrollDirection = _calendar.scrollDirection;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     
-//    _calendar.today = nil;
-//    _calendar.today = [self.calendar dateByAddingDays:2 toDate:[NSDate date]];
-    
-    
     [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/05"]];
     
     _datesShouldNotBeSelected = @[@"2015/08/07",

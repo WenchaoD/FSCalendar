@@ -64,7 +64,7 @@ pod 'FSCalendar'
 pod 'FSCalendar'
 ```
 
-> To get the iOS7-compatibility, you will also need to include [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) into your project.
+> [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
 * Alternatively to give it a test run, run the command:
 
@@ -187,6 +187,8 @@ Then:
 ```objc
 NSDate *date = [self.formatter dateFromString:@"2016-09-10"];
 ```
+
+> In `Swift3`, NSDateFormatter has been renamed to **DateFormatter**, see `SwiftExample` for details.
 
 ## How to print out NSDate object
 
