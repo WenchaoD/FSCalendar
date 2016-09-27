@@ -22,6 +22,7 @@
 
 @interface FSCalendar (Dynamic)
 
+@property (readonly, nonatomic) NSExtensionContext *extensionContext;
 @property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;

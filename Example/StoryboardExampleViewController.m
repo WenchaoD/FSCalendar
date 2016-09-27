@@ -51,7 +51,7 @@
     _scrollDirection = _calendar.scrollDirection;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     
-    [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/05"]];
+//    [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/05"]];
     
     _datesShouldNotBeSelected = @[@"2015/08/07",
                                   @"2015/09/07",
@@ -65,6 +65,7 @@
                         @"2015-10-07",
                         @"2015-10-15",
                         @"2015-10-25"];
+    
     
 //    _calendar.locale = [NSLocale currentLocale];
     

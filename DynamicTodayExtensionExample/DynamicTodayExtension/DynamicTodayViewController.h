@@ -1,5 +1,5 @@
 //
-//  TodayViewController.h
+//  DynamicTodayViewController.h
 //  DynamicTodayExtension
 //
 //  Created by dingwenchao on 9/8/16.

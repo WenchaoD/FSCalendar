@@ -219,6 +219,8 @@
         self.transition = FSCalendarTransitionWeekToMonth;
     }
     
+//    animated &= !FSCalendarInAppExtension;
+    
     // Start transition
     self.state = FSCalendarTransitionStateInProgress;
     FSCalendarTransitionAttributes *attr = self.transitionAttributes;
