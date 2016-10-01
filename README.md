@@ -168,6 +168,9 @@ self.calendar = calendar
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
 # <a id="pre-knowledge"></a>Pre-knowledge
+
+> In `Swift3`, `NSDate` and `NSDateFormatter` have been renamed to ***Date*** and ***DateFormatter*** , see `SwiftExample` for details.
+
 ## How to create NSDate object
 
 * By **NSCalendar**.
@@ -196,8 +199,6 @@ Then:
 ```objc
 NSDate *date = [self.formatter dateFromString:@"2016-09-10"];
 ```
-
-> In `Swift3`, NSDateFormatter has been renamed to **DateFormatter**, see `SwiftExample` for details.
 
 ## How to print out NSDate object
 
