@@ -1525,6 +1525,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (_header) {
             [_header removeFromSuperview];
         }
+        if (_deliver) {
+            [_deliver removeFromSuperview];
+        }
         if (_weekdays.count) {
             [_weekdays makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [_weekdays removeAllObjects];
