@@ -582,8 +582,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (_placeholderType == FSCalendarPlaceholderTypeNone) return NO;
         if ([self isDateInRange:cell.date]) {
             [self selectDate:cell.date scrollToDate:YES forPlaceholder:YES];
-        } else if (![self.gregorian isDate:cell.date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitMonth]){
-            [self scrollToPageForDate:cell.date animated:YES];
         }
         return NO;
     }
@@ -847,7 +845,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated
 {
     [self requestBoundingDatesIfNecessary];
-    FSCalendarAssertDateInBounds(currentPage,self.gregorian,self.minimumDate,self.maximumDate);
     if (self.floatingMode || [self isDateInDifferentPage:currentPage]) {
         currentPage = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:currentPage options:0];
         [self scrollToPageForDate:currentPage animated:animated];
@@ -1250,15 +1247,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     animated &= _scrollEnabled; // No animation if _scrollEnabled == NO;
     _supressEvent = !animated;
     
-    FSCalendarAssertDateInBounds(date,self.gregorian,self.minimumDate,self.maximumDate);
-    
     NSInteger scrollOffset = 0;
     switch (_scope) {
         case FSCalendarScopeMonth: {
+            FSCalendarAssertDateInBounds(date,self.gregorian,[self beginingOfMonth:self.minimumDate],[self endOfMonth:self.maximumDate]);
             scrollOffset = [self.gregorian components:NSCalendarUnitMonth fromDate:[self beginingOfMonth:self.minimumDate] toDate:date options:0].month;
             break;
         }
         case FSCalendarScopeWeek: {
+            FSCalendarAssertDateInBounds(date,self.gregorian,[self beginingOfWeek:self.minimumDate],[self endOfWeek:self.maximumDate]);
             scrollOffset = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self beginingOfWeek:self.minimumDate] toDate:date options:0].weekOfYear;
             break;
         }
@@ -1307,10 +1304,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             NSDate *lastPage = _currentPage;
             switch (_scope) {
                 case FSCalendarScopeMonth: {
+                    FSCalendarAssertDateInBounds(date, self.gregorian, [self beginingOfMonth:self.minimumDate], [self endOfMonth:self.maximumDate]);
                     _currentPage = [self beginingOfMonth:date];
                     break;
                 }
                 case FSCalendarScopeWeek: {
+                    FSCalendarAssertDateInBounds(date, self.gregorian, [self beginingOfWeek:self.minimumDate], [self endOfWeek:self.maximumDate]);
                     _currentPage = [self beginingOfWeek:date];
                     break;
                 }
