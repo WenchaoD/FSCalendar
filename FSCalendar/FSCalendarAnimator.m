@@ -571,7 +571,7 @@
             
             self.calendar.contentView.clipsToBounds = YES;
             
-            CGFloat currentAlpha = 1 - progress;
+            CGFloat currentAlpha = MAX(1-progress*1.2,0);
             CGFloat duration = 0.3;
             [self performAlphaAnimationFrom:currentAlpha to:0 duration:0.22 exception:attr.focusedRowNumber completion:^{
                 [self performTransitionCompletionAnimated:YES];
@@ -621,7 +621,7 @@
 {
     switch (transition) {
         case FSCalendarTransitionMonthToWeek: {
-            [self performAlphaAnimationFrom:1-progress to:1 duration:0.3 exception:self.pendingAttributes.focusedRowNumber completion:^{
+            [self performAlphaAnimationFrom:MAX(1-progress*1.2,0) to:1 duration:0.3 exception:self.pendingAttributes.focusedRowNumber completion:^{
                 [self.calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof UICollectionViewCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     obj.contentView.layer.opacity = 1;
                     [obj.contentView.layer removeAnimationForKey:@"opacity"];
@@ -702,7 +702,7 @@
 
 - (void)performAlphaAnimationWithProgress:(CGFloat)progress
 {
-    CGFloat opacity = self.transition == FSCalendarTransitionMonthToWeek ? 1-progress: progress;
+    CGFloat opacity = self.transition == FSCalendarTransitionMonthToWeek ? MAX((1-progress*1.2),0) : progress;
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
         if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
             BOOL shouldPerformAlpha = NO;
