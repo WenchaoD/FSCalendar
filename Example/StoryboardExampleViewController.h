@@ -11,7 +11,8 @@
 
 @interface StoryboardExampleViewController : UIViewController<FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance>
 
-@property (weak, nonatomic) IBOutlet FSCalendar *calendar;
+@property (weak  , nonatomic) IBOutlet FSCalendar *calendar;
+@property (weak  , nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
 @property (assign, nonatomic) NSInteger      theme;
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
@@ -21,7 +22,5 @@
 
 @property (strong, nonatomic) NSArray *datesShouldNotBeSelected;
 @property (strong, nonatomic) NSArray *datesWithEvent;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
 @end

@@ -40,6 +40,7 @@
     calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
+    
 }
 
 - (void)viewDidLayoutSubviews
@@ -56,7 +57,8 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     
-    [self.calendar selectDate:[self.dateFormatter dateFromString:@"2015/02/03"]];
+    
+//    [self.calendar selectDate:[self.dateFormatter dateFromString:@"2015/02/03"]];
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.calendar setScope:FSCalendarScopeWeek animated:YES];

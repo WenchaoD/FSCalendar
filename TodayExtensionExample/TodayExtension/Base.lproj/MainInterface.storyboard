@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="M4Y-Lb-cyx">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Data Source-->
@@ -18,8 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8cI-R5-ARn" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="vdS-18-fsM"/>
                                 </constraints>
@@ -28,39 +28,69 @@
                                         <real key="value" value="0.14999999999999999"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="titleDefaultColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="headerTitleColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="weekdayTextColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="titleWeekendColor">
-                                        <color key="value" red="0.90196078431372551" green="0.86274509803921573" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.90196078431372551" green="0.86274509803921573" blue="0.56862745098039214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="fakeSubtitles" value="YES"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="subtitleDefaultColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="subtitleWeekendColor">
-                                        <color key="value" red="0.90196078430000004" green="0.86274509799999999" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="value" red="0.90196078430000004" green="0.86274509799999999" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="adjustsFontSizeToFitContentSize" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fakedSelectedDay">
+                                        <integer key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="M4Y-Lb-cyx" id="NBU-8C-hY8"/>
                                     <outlet property="delegate" destination="M4Y-Lb-cyx" id="fbj-GS-VOb"/>
                                 </connections>
                             </view>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cQJ-NX-RmL">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="qMi-C1-Iy1"/>
+                                    <constraint firstAttribute="width" constant="30" id="tPJ-LN-m43"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
+                                <state key="normal" image="circle_prev"/>
+                                <connections>
+                                    <action selector="prevClicked:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="vFe-pk-Hqs"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xc-iY-5SS">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="lAc-cg-RCf"/>
+                                    <constraint firstAttribute="width" constant="30" id="uS2-Ah-QIQ"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
+                                <state key="normal" image="circle_next"/>
+                                <connections>
+                                    <action selector="nextClicked:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="dxu-Mq-cc7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="8cI-R5-ARn" secondAttribute="trailing" id="67U-Py-Qf0"/>
+                            <constraint firstAttribute="trailing" secondItem="5xc-iY-5SS" secondAttribute="trailing" constant="28" id="CrB-Vi-bEe"/>
                             <constraint firstItem="8cI-R5-ARn" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" id="D7v-9W-FZm"/>
                             <constraint firstItem="8cI-R5-ARn" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" id="KI3-4a-hia"/>
+                            <constraint firstItem="cQJ-NX-RmL" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="Z13-du-b5B"/>
+                            <constraint firstItem="5xc-iY-5SS" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="av0-Lw-P2Q"/>
+                            <constraint firstItem="cQJ-NX-RmL" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" constant="28" id="zM0-ra-XOS"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="300"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -69,6 +99,8 @@
                     <connections>
                         <outlet property="calendar" destination="8cI-R5-ARn" id="JDC-I6-ySm"/>
                         <outlet property="calendarHeight" destination="vdS-18-fsM" id="oF9-Rz-0pM"/>
+                        <outlet property="nextButton" destination="5xc-iY-5SS" id="qgp-YO-bFJ"/>
+                        <outlet property="prevButton" destination="cQJ-NX-RmL" id="DBr-bh-3u4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -76,4 +108,13 @@
             <point key="canvasLocation" x="516" y="285"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="circle_next" width="42" height="42"/>
+        <image name="circle_prev" width="42" height="42"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
+    </simulatedMetricsContainer>
 </document>

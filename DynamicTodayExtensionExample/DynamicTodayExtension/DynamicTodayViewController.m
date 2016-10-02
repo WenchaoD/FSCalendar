@@ -1,5 +1,5 @@
 //
-//  TodayViewController.m
+//  DynamicTodayViewController.m
 //  DynamicTodayExtension
 //
 //  Created by dingwenchao on 9/8/16.
@@ -11,7 +11,6 @@
 #import "FSCalendar.h"
 
 @interface DynamicTodayViewController () <NCWidgetProviding,FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
-
 
 @property (weak  , nonatomic) IBOutlet FSCalendar *calendar;
 @property (weak  , nonatomic) IBOutlet NSLayoutConstraint *calendarHeight;
@@ -30,31 +29,36 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view from its nib.
     self.calendar.today = nil;
     self.calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
     self.calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+    self.calendar.extensionContext = self.extensionContext;
     
     self.lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     self.lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
     self.lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
     
     self.gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    self.preferredContentSize = CGSizeMake(320, 300);
+    
+    if ([self.extensionContext respondsToSelector:@selector(setWidgetLargestAvailableDisplayMode:)]) {
+        self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
+    }
+    
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidAppear:(BOOL)animated
+- (void)widgetActiveDisplayModeDidChange:(NCWidgetDisplayMode)activeDisplayMode withMaximumSize:(CGSize)maxSize
 {
-    [super viewDidAppear:animated];
-    NSLog(@"%@",NSStringFromCGRect(self.view.frame));
+    if (activeDisplayMode == NCWidgetDisplayModeCompact) {
+        [self.calendar setScope:FSCalendarScopeWeek animated:YES];
+    } else if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
+        [self.calendar setScope:FSCalendarScopeMonth animated:YES];
+    }
 }
 
-- (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler {
+- (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler
+{
     // Perform any setup necessary in order to update the view.
     
     // If an error is encountered, use NCUpdateResultFailed
@@ -99,13 +103,16 @@
 
 - (IBAction)prevClicked:(id)sender
 {
-    NSDate *prevPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:-1 toDate:self.calendar.currentPage options:0];
+    NSCalendarUnit unit = (self.calendar.scope==FSCalendarScopeMonth) ? NSCalendarUnitMonth : NSCalendarUnitWeekOfYear;
+    NSDate *prevPage = [self.gregorian dateByAddingUnit:unit value:-1 toDate:self.calendar.currentPage options:0];
     [self.calendar setCurrentPage:prevPage animated:YES];
+    
 }
 
 - (IBAction)nextClicked:(id)sender
 {
-    NSDate *nextPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:self.calendar.currentPage options:0];
+    NSCalendarUnit unit = (self.calendar.scope==FSCalendarScopeMonth) ? NSCalendarUnitMonth : NSCalendarUnitWeekOfYear;
+    NSDate *nextPage = [self.gregorian dateByAddingUnit:unit value:1 toDate:self.calendar.currentPage options:0];
     [self.calendar setCurrentPage:nextPage animated:YES];
 }
 

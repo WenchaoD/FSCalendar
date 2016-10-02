@@ -10,7 +10,7 @@
 
 # Updates
 
-[NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
+* [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
 # [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
 [**QQ交流群: 323861692**](#qq_group)
@@ -42,10 +42,19 @@
 
 > FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
 
-## Today Extension
+<br>
+
+## Today Extension (iOS8/9)
 ![1](https://cloud.githubusercontent.com/assets/5186464/18406879/0d072d92-7736-11e6-90bc-2633f5ca2b54.gif)
 <br>
 ![2](https://cloud.githubusercontent.com/assets/5186464/18406887/47c4822c-7736-11e6-96f0-ccb4c9cba199.gif)
+
+## Today Extension With NSWidgetDisplayMode (iOS10)
+![1](https://cloud.githubusercontent.com/assets/5186464/18870456/40e3096e-84e3-11e6-9ba9-520a09620fa4.gif)
+<br>
+![2](https://cloud.githubusercontent.com/assets/5186464/18870531/9afa7cd4-84e3-11e6-93c6-4e8811fd71a7.gif)
+
+
 
 # <a id="installation"></a>Installation
 
@@ -64,7 +73,7 @@ pod 'FSCalendar'
 pod 'FSCalendar'
 ```
 
-> To get the iOS7-compatibility, you will also need to include [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) into your project.
+> [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
 * Alternatively to give it a test run, run the command:
 
@@ -159,6 +168,9 @@ self.calendar = calendar
 ![fscalendar - ibdesignable](https://cloud.githubusercontent.com/assets/5186464/9301716/2e76a2ca-4503-11e5-8450-1fa7aa93e9fd.gif)
 
 # <a id="pre-knowledge"></a>Pre-knowledge
+
+> In `Swift3`, `NSDate` and `NSDateFormatter` have been renamed to ***Date*** and ***DateFormatter*** , see `SwiftExample` for details.
+
 ## How to create NSDate object
 
 * By **NSCalendar**.
