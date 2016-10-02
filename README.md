@@ -49,7 +49,7 @@
 <br>
 ![2](https://cloud.githubusercontent.com/assets/5186464/18406887/47c4822c-7736-11e6-96f0-ccb4c9cba199.gif)
 
-## Today Extension With NSWidgetDisplayMode (iOS10)
+## Today Extension With NCWidgetDisplayMode (iOS10)
 ![1](https://cloud.githubusercontent.com/assets/5186464/18870456/40e3096e-84e3-11e6-9ba9-520a09620fa4.gif)
 <br>
 ![2](https://cloud.githubusercontent.com/assets/5186464/18870531/9afa7cd4-84e3-11e6-93c6-4e8811fd71a7.gif)
