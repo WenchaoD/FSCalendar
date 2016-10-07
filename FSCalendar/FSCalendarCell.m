@@ -214,7 +214,7 @@
         
         _imageView.center = CGPointMake(
                                         self.contentView.fs_width/2.0 + self.preferredImageOffset.x,
-                                        _imageView.center.y + self.preferredImageOffset.y
+                                        self.contentView.fs_height/2.0 + self.preferredImageOffset.y
                                        );
     } else {
         _titleLabel.fs_width = self.contentView.fs_width;

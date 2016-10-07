@@ -157,7 +157,7 @@
     return nil;
 }
 
-- (NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorsForDate:(NSDate *)date
+- (NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date
 {
     NSString *dateString = [self.dateFormatter2 stringFromDate:date];
     if ([_datesWithMultipleEvents containsObject:dateString]) {
