@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		300036EC1D9252CB00C795DE /* CALayer+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036CC1D9252CB00C795DE /* CALayer+FSExtension.m */; };
 		300036ED1D9252CB00C795DE /* FSCalendar+Deprecated.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036CD1D9252CB00C795DE /* FSCalendar+Deprecated.m */; };
 		300036EE1D9252CB00C795DE /* FSCalendar+IBExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036CF1D9252CB00C795DE /* FSCalendar+IBExtension.m */; };
 		300036EF1D9252CB00C795DE /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036D11D9252CB00C795DE /* FSCalendar.m */; };
@@ -22,8 +21,7 @@
 		300036F81D9252CB00C795DE /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036E41D9252CB00C795DE /* FSCalendarScopeHandle.m */; };
 		300036F91D9252CB00C795DE /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036E61D9252CB00C795DE /* FSCalendarStickyHeader.m */; };
 		300036FA1D9252CB00C795DE /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 300036E71D9252CB00C795DE /* Info.plist */; };
-		300036FB1D9252CB00C795DE /* NSObject+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036E91D9252CB00C795DE /* NSObject+FSExtension.m */; };
-		300036FC1D9252CB00C795DE /* UIView+FSExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036EB1D9252CB00C795DE /* UIView+FSExtension.m */; };
+		3055B1CE1DA933D0002AFA13 /* FSCalendarExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3055B1CD1DA933D0002AFA13 /* FSCalendarExtensions.m */; };
 		3091756F1D7EBD4100BBEB79 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3091756E1D7EBD4100BBEB79 /* main.m */; };
 		309175721D7EBD4100BBEB79 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 309175711D7EBD4100BBEB79 /* AppDelegate.m */; };
 		309175751D7EBD4100BBEB79 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 309175741D7EBD4100BBEB79 /* ViewController.m */; };
@@ -62,8 +60,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		300036CB1D9252CB00C795DE /* CALayer+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+FSExtension.h"; sourceTree = "<group>"; };
-		300036CC1D9252CB00C795DE /* CALayer+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+FSExtension.m"; sourceTree = "<group>"; };
 		300036CD1D9252CB00C795DE /* FSCalendar+Deprecated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+Deprecated.m"; sourceTree = "<group>"; };
 		300036CE1D9252CB00C795DE /* FSCalendar+IBExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FSCalendar+IBExtension.h"; sourceTree = "<group>"; };
 		300036CF1D9252CB00C795DE /* FSCalendar+IBExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+IBExtension.m"; sourceTree = "<group>"; };
@@ -91,10 +87,8 @@
 		300036E51D9252CB00C795DE /* FSCalendarStickyHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarStickyHeader.h; sourceTree = "<group>"; };
 		300036E61D9252CB00C795DE /* FSCalendarStickyHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarStickyHeader.m; sourceTree = "<group>"; };
 		300036E71D9252CB00C795DE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		300036E81D9252CB00C795DE /* NSObject+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+FSExtension.h"; sourceTree = "<group>"; };
-		300036E91D9252CB00C795DE /* NSObject+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+FSExtension.m"; sourceTree = "<group>"; };
-		300036EA1D9252CB00C795DE /* UIView+FSExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FSExtension.h"; sourceTree = "<group>"; };
-		300036EB1D9252CB00C795DE /* UIView+FSExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FSExtension.m"; sourceTree = "<group>"; };
+		3055B1CC1DA933D0002AFA13 /* FSCalendarExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarExtensions.h; sourceTree = "<group>"; };
+		3055B1CD1DA933D0002AFA13 /* FSCalendarExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarExtensions.m; sourceTree = "<group>"; };
 		3091756A1D7EBD4100BBEB79 /* TodayExtensionExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodayExtensionExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3091756E1D7EBD4100BBEB79 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		309175701D7EBD4100BBEB79 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -159,15 +153,11 @@
 				300036E41D9252CB00C795DE /* FSCalendarScopeHandle.m */,
 				300036E51D9252CB00C795DE /* FSCalendarStickyHeader.h */,
 				300036E61D9252CB00C795DE /* FSCalendarStickyHeader.m */,
+				3055B1CC1DA933D0002AFA13 /* FSCalendarExtensions.h */,
+				3055B1CD1DA933D0002AFA13 /* FSCalendarExtensions.m */,
 				300036CD1D9252CB00C795DE /* FSCalendar+Deprecated.m */,
 				300036CE1D9252CB00C795DE /* FSCalendar+IBExtension.h */,
 				300036CF1D9252CB00C795DE /* FSCalendar+IBExtension.m */,
-				300036E81D9252CB00C795DE /* NSObject+FSExtension.h */,
-				300036E91D9252CB00C795DE /* NSObject+FSExtension.m */,
-				300036EA1D9252CB00C795DE /* UIView+FSExtension.h */,
-				300036EB1D9252CB00C795DE /* UIView+FSExtension.m */,
-				300036CB1D9252CB00C795DE /* CALayer+FSExtension.h */,
-				300036CC1D9252CB00C795DE /* CALayer+FSExtension.m */,
 				300036E71D9252CB00C795DE /* Info.plist */,
 			);
 			name = FSCalendar;
@@ -351,18 +341,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				300036EC1D9252CB00C795DE /* CALayer+FSExtension.m in Sources */,
 				300036F91D9252CB00C795DE /* FSCalendarStickyHeader.m in Sources */,
 				300036EE1D9252CB00C795DE /* FSCalendar+IBExtension.m in Sources */,
 				300036ED1D9252CB00C795DE /* FSCalendar+Deprecated.m in Sources */,
 				300036F01D9252CB00C795DE /* FSCalendarAnimator.m in Sources */,
 				300036F31D9252CB00C795DE /* FSCalendarCollectionView.m in Sources */,
-				300036FC1D9252CB00C795DE /* UIView+FSExtension.m in Sources */,
 				300036F51D9252CB00C795DE /* FSCalendarEventIndicator.m in Sources */,
 				300036F61D9252CB00C795DE /* FSCalendarFlowLayout.m in Sources */,
 				300036F41D9252CB00C795DE /* FSCalendarConstance.m in Sources */,
 				300036F71D9252CB00C795DE /* FSCalendarHeader.m in Sources */,
-				300036FB1D9252CB00C795DE /* NSObject+FSExtension.m in Sources */,
+				3055B1CE1DA933D0002AFA13 /* FSCalendarExtensions.m in Sources */,
 				300036F81D9252CB00C795DE /* FSCalendarScopeHandle.m in Sources */,
 				309175AB1D7EBD6100BBEB79 /* TodayViewController.m in Sources */,
 				300036EF1D9252CB00C795DE /* FSCalendar.m in Sources */,

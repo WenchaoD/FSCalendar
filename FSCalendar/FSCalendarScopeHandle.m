@@ -10,7 +10,7 @@
 #import "FSCalendar.h"
 #import "FSCalendarAnimator.h"
 #import "FSCalendarDynamicHeader.h"
-#import "UIView+FSExtension.h"
+#import "FSCalendarExtensions.h"
 
 @interface FSCalendarScopeHandle () <UIGestureRecognizerDelegate>
 

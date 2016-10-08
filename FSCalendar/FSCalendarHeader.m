@@ -7,7 +7,7 @@
 //
 
 #import "FSCalendar.h"
-#import "UIView+FSExtension.h"
+#import "FSCalendarExtensions.h"
 #import "FSCalendarHeader.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarDynamicHeader.h"

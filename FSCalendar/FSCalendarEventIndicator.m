@@ -8,8 +8,7 @@
 
 #import "FSCalendarEventIndicator.h"
 #import "FSCalendarConstance.h"
-#import "UIView+FSExtension.h"
-#import "CALayer+FSExtension.h"
+#import "FSCalendarExtensions.h"
 
 @interface FSCalendarEventIndicator ()
 

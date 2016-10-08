@@ -9,7 +9,7 @@
 #import "FSCalendarFlowLayout.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendar.h"
-#import "UIView+FSExtension.h"
+#import "FSCalendarExtensions.h"
 #import <objc/runtime.h>
 
 @implementation FSCalendarFlowLayout

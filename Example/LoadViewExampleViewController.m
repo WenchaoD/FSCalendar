@@ -43,14 +43,6 @@
     
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    // Adjusts orientation
-    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
-    self.calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.frame.size.width, height);
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -58,7 +50,8 @@
     self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     
     
-//    [self.calendar selectDate:[self.dateFormatter dateFromString:@"2015/02/03"]];
+    [self.calendar selectDate:[self.dateFormatter dateFromString:@"2015/02/03"]];
+
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.calendar setScope:FSCalendarScopeWeek animated:YES];
@@ -66,7 +59,8 @@
             [self.calendar setScope:FSCalendarScopeMonth animated:YES];
         });
     });
-    */
+     */
+    
     
     
 }
