@@ -14,7 +14,7 @@
 #import "FSCalendarAnimator.h"
 #import "FSCalendarScopeHandle.h"
 
-#import "UIView+FSExtension.h"
+#import "FSCalendarExtensions.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarCollectionView.h"
 
