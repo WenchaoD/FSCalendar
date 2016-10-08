@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "NSObject+FSExtension.h"
+#import "FSCalendarExtensions.h"
 
 @interface FSCalendarExtensionTest : XCTestCase
 

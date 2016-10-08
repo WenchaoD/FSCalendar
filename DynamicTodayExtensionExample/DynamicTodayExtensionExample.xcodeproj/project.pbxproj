@@ -194,9 +194,6 @@
 		305233441D8170E50070AAFE /* FSCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				305233481D8170E50070AAFE /* FSCalendar+Deprecated.m */,
-				305233491D8170E50070AAFE /* FSCalendar+IBExtension.h */,
-				3052334A1D8170E50070AAFE /* FSCalendar+IBExtension.m */,
 				3052334B1D8170E50070AAFE /* FSCalendar.h */,
 				3052334C1D8170E50070AAFE /* FSCalendar.m */,
 				3052334D1D8170E50070AAFE /* FSCalendarAnimator.h */,
@@ -222,6 +219,9 @@
 				305233611D8170E50070AAFE /* FSCalendarStickyHeader.m */,
 				3055B1C91DA933AD002AFA13 /* FSCalendarExtensions.h */,
 				3055B1CA1DA933AD002AFA13 /* FSCalendarExtensions.m */,
+				305233481D8170E50070AAFE /* FSCalendar+Deprecated.m */,
+				305233491D8170E50070AAFE /* FSCalendar+IBExtension.h */,
+				3052334A1D8170E50070AAFE /* FSCalendar+IBExtension.m */,
 				305233621D8170E50070AAFE /* Info.plist */,
 			);
 			name = FSCalendar;
