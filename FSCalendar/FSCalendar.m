@@ -274,9 +274,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [daysContainer addSubview:collectionView];
     self.collectionView = collectionView;
     self.collectionViewLayout = collectionViewLayout;
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
     if ([collectionView respondsToSelector:@selector(setPrefetchingEnabled:)]) {
         collectionView.prefetchingEnabled = NO;
     }
+#endif
     
     if (!FSCalendarInAppExtension) {
         
