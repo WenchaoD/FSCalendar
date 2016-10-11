@@ -102,13 +102,13 @@
             switch (_scrollDirection) {
                 case UICollectionViewScrollDirectionVertical: {
                     NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
-                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month;
+                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month + 1;
                     return months;
                 }
                 case UICollectionViewScrollDirectionHorizontal: {
                     // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
                     NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
-                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month;
+                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month + 1;
                     return months + 2;
                 }
                 default: {
@@ -119,7 +119,7 @@
         }
         case FSCalendarScopeWeek: {
             NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
-            NSInteger weeks = [self.calendar.gregorian components:NSCalendarUnitWeekOfYear fromDate:minimumPage toDate:self.calendar.maximumDate options:0].weekOfYear;
+            NSInteger weeks = [self.calendar.gregorian components:NSCalendarUnitWeekOfYear fromDate:minimumPage toDate:self.calendar.maximumDate options:0].weekOfYear + 1;
             return weeks + 2;
         }
         default: {
