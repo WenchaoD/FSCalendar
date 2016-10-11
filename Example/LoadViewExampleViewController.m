@@ -95,19 +95,19 @@
 
 #pragma mark - <FSCalendarDataSource>
 
-/*
+
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [calendar tomorrowOfDate:[NSDate date]];
+    return [self.dateFormatter dateFromString:@"2015/01/01"];
 }
-*/
 
-/*
+
+
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [_calendar dateWithYear:2026 month:12 day:31];
+    return [self.dateFormatter dateFromString:@"2015/10/10"];
 }
-*/
+
 
 - (UIImage *)calendar:(FSCalendar *)calendar imageForDate:(NSDate *)date
 {

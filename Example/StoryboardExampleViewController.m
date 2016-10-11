@@ -109,12 +109,12 @@
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter1 dateFromString:@"2015/02/01"];
+    return [self.dateFormatter1 dateFromString:@"2016/02/01"];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter1 dateFromString:@"2039/05/31"];
+    return [self.dateFormatter1 dateFromString:@"2019/05/31"];
 }
 
 #pragma mark - FSCalendarDelegate
