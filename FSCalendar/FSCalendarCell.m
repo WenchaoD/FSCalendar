@@ -105,8 +105,8 @@
         CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
         CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
         diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
-        return CGRectMake((self.bounds.size.width-diameter)/2,
-                                       (titleHeight-diameter)/2,
+        return CGRectMake((self.bounds.size.width-diameter)*0.5,
+                                       (titleHeight-diameter)*0.5,
                                        diameter,
                                        diameter);
     } else {
@@ -205,6 +205,8 @@
                 }
                 self.contentView.hidden = (currentLine>lineCount);
             }
+        } else {
+            NSLog(@"ERROR:  ======>>  未占用分支");
         }
     } else if (self.contentView.hidden) {
         self.needsAdjustingViewFrame = YES;
@@ -261,7 +263,7 @@
         }
         
         _imageView.center = CGPointMake(
-                                        self.contentView.fs_width/2.0 + self.preferredImageOffset.x,
+                                        self.contentView.fs_width*0.5 + self.preferredImageOffset.x,
                                         _imageView.center.y + self.preferredImageOffset.y
                                        );
         
@@ -332,6 +334,9 @@
     
     if (![_image isEqual:_imageView.image]) {
         [self invalidateImage];
+        if ((self.dateIsPlaceholder) && (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTailBlankSpace && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode)) {
+            self.imageView.hidden = YES;
+        }
     }
     
     if (_eventIndicator.hidden == (_numberOfEvents > 0)) {
