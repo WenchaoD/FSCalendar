@@ -69,8 +69,9 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     
-    self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-01"];
+    self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-03"];
     self.maximumDate = [self.dateFormatter dateFromString:@"2018-04-10"];
+
 
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

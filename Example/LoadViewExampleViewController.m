@@ -101,8 +101,6 @@
     return [self.dateFormatter dateFromString:@"2015/01/01"];
 }
 
-
-
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
     return [self.dateFormatter dateFromString:@"2015/10/10"];

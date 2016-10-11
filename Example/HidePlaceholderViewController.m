@@ -34,7 +34,7 @@
     
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
-    self.dateFormatter.dateFormat = @"yyyy-MM";
+    self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     
     // 450 for iPad and 300 for iPhone
     CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
@@ -44,7 +44,7 @@
     calendar.delegate = self;
 //    calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
     calendar.placeholderType = FSCalendarPlaceholderTypeNone;
-    calendar.currentPage = [self.dateFormatter dateFromString:@"2016-06"];
+    calendar.currentPage = [self.dateFormatter dateFromString:@"2016-06-01"];
     calendar.firstWeekday = 2;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     [self.view addSubview:calendar];
@@ -96,6 +96,16 @@
     
     self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
+}
+
+- (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
+{
+    return [self.dateFormatter dateFromString:@"2016-01-08"];
+}
+
+- (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
+{
+    return [self.dateFormatter dateFromString:@"2018-10-08"];
 }
 
 - (void)dealloc

@@ -21,8 +21,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 static inline void FSCalendarAssertDateInBounds(NSDate *date, NSCalendar *calendar, NSDate *minimumDate, NSDate *maximumDate) {
-    BOOL notValid = [calendar components:NSCalendarUnitDay fromDate:minimumDate toDate:date options:0].day < 0 || [calendar components:NSCalendarUnitDay fromDate:maximumDate toDate:date options:0].day > 0;
-    if (notValid) {
+    BOOL valid = YES;
+    NSInteger minOffset = [calendar components:NSCalendarUnitDay fromDate:minimumDate toDate:date options:0].day;
+    valid &= minOffset >= 0;
+    if (valid) {
+        NSInteger maxOffset = [calendar components:NSCalendarUnitDay fromDate:maximumDate toDate:date options:0].day;
+        valid &= maxOffset <= 0;
+    }
+    if (!valid) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"yyyy/MM/dd";
         [NSException raise:@"FSCalendar date out of bounds exception" format:@"Target date %@ beyond bounds [%@ - %@]", [formatter stringFromDate:date], [formatter stringFromDate:minimumDate], [formatter stringFromDate:date]];
@@ -139,6 +145,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)scrollToDate:(NSDate *)date animated:(BOOL)animated;
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated;
 
+- (BOOL)isPageInRange:(NSDate *)page;
 - (BOOL)isDateInRange:(NSDate *)date;
 - (BOOL)isDateSelected:(NSDate *)date;
 - (BOOL)isDateInDifferentPage:(NSDate *)date;
@@ -850,7 +857,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self requestBoundingDatesIfNecessary];
     if (self.floatingMode || [self isDateInDifferentPage:currentPage]) {
         currentPage = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:currentPage options:0];
-        [self scrollToPageForDate:currentPage animated:animated];
+        if ([self isPageInRange:currentPage]) {
+            [self scrollToPageForDate:currentPage animated:animated];
+        }
     }
 }
 
@@ -1417,8 +1426,35 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (BOOL)isDateInRange:(NSDate *)date
 {
-    BOOL flag = [self.gregorian components:NSCalendarUnitDay fromDate:date toDate:self.minimumDate options:0].day <= 0;
+    BOOL flag = YES;
+    flag &= [self.gregorian components:NSCalendarUnitDay fromDate:date toDate:self.minimumDate options:0].day <= 0;
     flag &= [self.gregorian components:NSCalendarUnitDay fromDate:date toDate:self.maximumDate options:0].day >= 0;;
+    return flag;
+}
+
+- (BOOL)isPageInRange:(NSDate *)page
+{
+    BOOL flag = YES;
+    switch (self.scope) {
+        case FSCalendarScopeMonth: {
+            NSDateComponents *c1 = [self.gregorian components:NSCalendarUnitDay fromDate:[self beginingOfMonth:self.minimumDate] toDate:page options:0];
+            flag &= (c1.day>=0);
+            if (!flag) break;
+            NSDateComponents *c2 = [self.gregorian components:NSCalendarUnitDay fromDate:page toDate:[self endOfMonth:self.maximumDate] options:0];
+            flag &= (c2.day>=0);
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            NSDateComponents *c1 = [self.gregorian components:NSCalendarUnitDay fromDate:[self beginingOfWeek:self.minimumDate] toDate:page options:0];
+            flag &= (c1.day>=0);
+            if (!flag) break;
+            NSDateComponents *c2 = [self.gregorian components:NSCalendarUnitDay fromDate:page toDate:[self endOfWeek:self.maximumDate] options:0];
+            flag &= (c2.day>=0);
+            break;
+        }
+        default:
+            break;
+    }
     return flag;
 }
 
@@ -1635,7 +1671,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     [self invalidateAppearanceForCell:cell];
     if (cell.dateIsSelected) {
-        if (cell.dateIsPlaceholder) indexPath = [self indexPathForDate:cell.date];
         [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     } else if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:NO];

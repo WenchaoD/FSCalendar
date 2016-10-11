@@ -29,7 +29,6 @@
 @property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
 @property (readonly, nonatomic) FSCalendarAnimator *animator;
 @property (readonly, nonatomic) NSArray *weekdays;
-@property (readonly, nonatomic) BOOL ibEditing;
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) CGFloat preferredHeaderHeight;
@@ -55,6 +54,8 @@
 - (void)invalidateWeekdaySymbols;
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
+- (BOOL)isPageInRange:(NSDate *)page;
+- (BOOL)isDateInRange:(NSDate *)date;
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath;
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath scope:(FSCalendarScope)scope;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
