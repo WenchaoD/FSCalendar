@@ -2108,6 +2108,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         minimumDate = [_dataSource minimumDateForCalendar:self];
     }
     if (!minimumDate) {
+        self.formatter.dateFormat = @"yyyy-MM-dd";
         minimumDate = [self.formatter dateFromString:@"1970-01-01"];
     } else {
         minimumDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:minimumDate options:0];
@@ -2126,6 +2127,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         maximumDate = [_dataSource maximumDateForCalendar:self];
     }
     if (!maximumDate) {
+        self.formatter.dateFormat = @"yyyy-MM-dd";
         maximumDate = [self.formatter dateFromString:@"2099-12-31"];
     } else {
         maximumDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:maximumDate options:0];
