@@ -12,9 +12,6 @@
 
 * [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
-# [中文介绍](http://www.jianshu.com/notebooks/4276521/latest)
-[**QQ交流群: 323861692**](#qq_group)
-
 
 # Table of contents
 * [Screenshots](#screenshots)
@@ -22,6 +19,8 @@
 * [Pre-knowledge](#pre-knowledge)
 * [Support](#support)
 * [Contact](#contact)
+
+[**QQ交流群: 323861692**](#qq_group)
 
 # <a id="screenshots"></a>Screenshots
 
@@ -294,4 +293,10 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
+
+# [中文说明](http://www.jianshu.com/notebooks/4276521/latest)
+<br><br>
+
+
+
 
