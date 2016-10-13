@@ -7,14 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FSCalendar.h"
 
-@interface FullScreenExampleViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate>
+@interface FullScreenExampleViewController : UIViewController
 
-@property (weak, nonatomic) FSCalendar *calendar;
-@property (assign, nonatomic) BOOL showsLunar;
-
-- (void)todayItemClicked:(id)sender;
-- (void)lunarItemClicked:(id)sender;
 
 @end

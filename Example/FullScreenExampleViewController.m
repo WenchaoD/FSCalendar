@@ -7,17 +7,32 @@
 //
 
 #import "FullScreenExampleViewController.h"
+#import <EventKit/EventKit.h>
 
-@interface FullScreenExampleViewController()
+#import "FSCalendar.h"
+
+@interface FullScreenExampleViewController()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+
+@property (weak, nonatomic) FSCalendar *calendar;
+
+@property (assign, nonatomic) BOOL showsLunar;
+@property (assign, nonatomic) BOOL showsEvents;
+
+- (void)todayItemClicked:(id)sender;
+- (void)lunarItemClicked:(id)sender;
+- (void)eventItemClicked:(id)sender;
 
 @property (strong, nonatomic) NSCalendar *lunarCalendar;
 @property (strong, nonatomic) NSCalendar *gregorian;
-@property (strong, nonatomic) NSArray *lunarChars;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) NSDate *minimumDate;
 @property (strong, nonatomic) NSDate *maximumDate;
 
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSArray *lunarChars;
+@property (strong, nonatomic) NSArray<EKEvent *> *events;
+
+- (void)loadCalendarEvents;
 
 @end
 
@@ -57,7 +72,12 @@
     
     UIBarButtonItem *lunarItem = [[UIBarButtonItem alloc] initWithTitle:@"Lunar" style:UIBarButtonItemStylePlain target:self action:@selector(lunarItemClicked:)];
     [lunarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor magentaColor]} forState:UIControlStateNormal];
-    self.navigationItem.rightBarButtonItems = @[lunarItem, todayItem];
+    
+    UIBarButtonItem *eventItem = [[UIBarButtonItem alloc] initWithTitle:@"Event" style:UIBarButtonItemStylePlain target:self action:@selector(eventItemClicked:)];
+    [eventItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor purpleColor]} forState:UIControlStateNormal];
+    
+    self.navigationItem.rightBarButtonItems = @[eventItem ,lunarItem, todayItem];
+
 }
 
 - (void)viewDidLoad
@@ -72,7 +92,8 @@
     self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-03"];
     self.maximumDate = [self.dateFormatter dateFromString:@"2018-04-10"];
 
-
+    [self loadCalendarEvents];
+    
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.minimumDate = [self.dateFormatter dateFromString:@"2015-02-01"];
@@ -89,19 +110,25 @@
 
 - (void)todayItemClicked:(id)sender
 {
-    [_calendar setCurrentPage:[NSDate date] animated:YES];
+    [self.calendar setCurrentPage:[NSDate date] animated:YES];
 }
 
 - (void)lunarItemClicked:(UIBarButtonItem *)item
 {
-    _showsLunar = !_showsLunar;
-    [_calendar reloadData];
+    self.showsLunar = !self.showsLunar;
+    [self.calendar reloadData];
+}
+
+- (void)eventItemClicked:(id)sender
+{
+    self.showsEvents = !self.showsEvents;
+    [self.calendar reloadData];
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    _calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, self.view.bounds.size.height-CGRectGetMaxY(self.navigationController.navigationBar.frame));
+    self.calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, self.view.bounds.size.height-CGRectGetMaxY(self.navigationController.navigationBar.frame));
 }
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
@@ -116,6 +143,14 @@
 
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
+    if (_showsEvents) {
+        EKEvent *event = [self.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [evaluatedObject.occurrenceDate isEqualToDate:date];
+        }]].firstObject;
+        if (event) {
+            return event.title;
+        }
+    }
     if (_showsLunar) {
         NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
         return _lunarChars[day-1];
@@ -131,6 +166,67 @@
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
     NSLog(@"did change page %@",[self.dateFormatter stringFromDate:calendar.currentPage]);
+}
+
+- (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
+{
+    if (!self.showsEvents) return 0;
+    if (!self.events) return 0;
+    NSArray<EKEvent *> *events = [self.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject.occurrenceDate isEqualToDate:date];
+    }]];
+    return events.count;
+}
+
+- (NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date
+{
+    if (!self.showsEvents) return nil;
+    if (!self.events) return nil;
+    NSArray<EKEvent *> *events = [self.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject.occurrenceDate isEqualToDate:date];
+    }]];
+    NSMutableArray<UIColor *> *colors = [NSMutableArray arrayWithCapacity:events.count];
+    [events enumerateObjectsUsingBlock:^(EKEvent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [colors addObject:[UIColor colorWithCGColor:obj.calendar.CGColor]];
+    }];
+    return colors.copy; // Equivalent to [NSArray arrayWithArray:colors];
+}
+
+
+#pragma mark - Private methods
+
+- (void)loadCalendarEvents
+{
+    __weak typeof(self) weakSelf = self;
+    EKEventStore *store = [[EKEventStore alloc] init];
+    [store requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+        
+        if(granted) {
+            NSDate *startDate = self.minimumDate;
+            NSDate *endDate = self.maximumDate;
+            NSPredicate *fetchCalendarEvents = [store predicateForEventsWithStartDate:startDate endDate:endDate calendars:nil];
+            NSArray<EKEvent *> *eventList = [store eventsMatchingPredicate:fetchCalendarEvents];
+            NSArray<EKEvent *> *events = [eventList filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable event, NSDictionary<NSString *,id> * _Nullable bindings) {
+                return event.calendar.subscribed;
+            }]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!weakSelf) return;
+                weakSelf.events = events;
+                [weakSelf.calendar reloadData];
+            });
+            
+        } else {
+            
+            // Alert
+            UIAlertController *alertController = [[UIAlertController alloc] init];
+            alertController.title = @"Error";
+            alertController.message = @"Permission of calendar is required for fetching events.";
+            [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil]];
+            
+        }
+    }];
+    
 }
 
 @end
