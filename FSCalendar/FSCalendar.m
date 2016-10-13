@@ -1308,7 +1308,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
-    if (!date) return;
+    if (!date || ![self isDateInRange:date]) return;
     
     if (!self.floatingMode) {
         if ([self isDateInDifferentPage:date]) {
