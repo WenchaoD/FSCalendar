@@ -18,6 +18,8 @@
 @property (assign, nonatomic) BOOL showsLunar;
 @property (assign, nonatomic) BOOL showsEvents;
 
+@property (strong, nonatomic) NSCache *cache;
+
 - (void)todayItemClicked:(id)sender;
 - (void)lunarItemClicked:(id)sender;
 - (void)eventItemClicked:(id)sender;
@@ -33,6 +35,7 @@
 @property (strong, nonatomic) NSArray<EKEvent *> *events;
 
 - (void)loadCalendarEvents;
+- (NSArray<EKEvent *> *)eventsForDate:(NSDate *)date;
 
 @end
 
@@ -56,7 +59,7 @@
     view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     self.view = view;
     
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, self.view.bounds.size.height-64)];
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.frame.size.height)];
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.dataSource = self;
     calendar.delegate = self;
@@ -103,6 +106,11 @@
     */
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [self.cache removeAllObjects];
+}
+
 - (void)dealloc
 {
     NSLog(@"%s",__FUNCTION__);
@@ -144,9 +152,7 @@
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
     if (_showsEvents) {
-        EKEvent *event = [self.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [evaluatedObject.occurrenceDate isEqualToDate:date];
-        }]].firstObject;
+        EKEvent *event = [self eventsForDate:date].firstObject;
         if (event) {
             return event.title;
         }
@@ -172,9 +178,7 @@
 {
     if (!self.showsEvents) return 0;
     if (!self.events) return 0;
-    NSArray<EKEvent *> *events = [self.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return [evaluatedObject.occurrenceDate isEqualToDate:date];
-    }]];
+    NSArray<EKEvent *> *events = [self eventsForDate:date];
     return events.count;
 }
 
@@ -182,9 +186,7 @@
 {
     if (!self.showsEvents) return nil;
     if (!self.events) return nil;
-    NSArray<EKEvent *> *events = [self.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return [evaluatedObject.occurrenceDate isEqualToDate:date];
-    }]];
+    NSArray<EKEvent *> *events = [self eventsForDate:date];
     NSMutableArray<UIColor *> *colors = [NSMutableArray arrayWithCapacity:events.count];
     [events enumerateObjectsUsingBlock:^(EKEvent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [colors addObject:[UIColor colorWithCGColor:obj.calendar.CGColor]];
@@ -227,6 +229,23 @@
         }
     }];
     
+}
+
+- (NSArray<EKEvent *> *)eventsForDate:(NSDate *)date
+{
+    NSArray<EKEvent *> *events = [self.cache objectForKey:date];
+    if ([events isKindOfClass:[NSNull class]]) {
+        return nil;
+    }
+    NSArray<EKEvent *> *filteredEvents = [self.events filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(EKEvent * _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject.occurrenceDate isEqualToDate:date];
+    }]];
+    if (filteredEvents.count) {
+        [self.cache setObject:filteredEvents forKey:date];
+    } else {
+        [self.cache setObject:[NSNull null] forKey:date];
+    }
+    return filteredEvents;
 }
 
 @end
