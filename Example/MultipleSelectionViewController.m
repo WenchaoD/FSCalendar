@@ -80,7 +80,7 @@
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[self.dateFormatter stringFromDate:date]];
+        [selectedDates addObject:[self.dateFormatter stringFromDate:obj]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
 }
@@ -89,7 +89,7 @@
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [selectedDates addObject:[self.dateFormatter stringFromDate:date]];
+        [selectedDates addObject:[self.dateFormatter stringFromDate:obj]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
 }
