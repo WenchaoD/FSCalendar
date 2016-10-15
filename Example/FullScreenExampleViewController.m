@@ -31,7 +31,7 @@
 @property (strong, nonatomic) NSDate *minimumDate;
 @property (strong, nonatomic) NSDate *maximumDate;
 
-@property (strong, nonatomic) NSArray *lunarChars;
+@property (strong, nonatomic) NSArray<NSString *> *lunarChars;
 @property (strong, nonatomic) NSArray<EKEvent *> *events;
 
 - (void)loadCalendarEvents;
