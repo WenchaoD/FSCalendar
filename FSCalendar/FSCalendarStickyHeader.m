@@ -9,7 +9,7 @@
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendar.h"
 #import "FSCalendarExtensions.h"
-#import "FSCalendarConstance.h"
+#import "FSCalendarConstants.h"
 #import "FSCalendarDynamicHeader.h"
 
 @interface FSCalendarStickyHeader ()

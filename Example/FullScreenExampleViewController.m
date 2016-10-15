@@ -41,6 +41,8 @@
 
 @implementation FullScreenExampleViewController
 
+#pragma mark - Life cycle
+
 - (instancetype)init
 {
     self = [super init];
@@ -111,10 +113,18 @@
     [self.cache removeAllObjects];
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    self.calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, self.view.bounds.size.height-CGRectGetMaxY(self.navigationController.navigationBar.frame));
+}
+
 - (void)dealloc
 {
     NSLog(@"%s",__FUNCTION__);
 }
+
+#pragma mark - Target actions
 
 - (void)todayItemClicked:(id)sender
 {
@@ -133,11 +143,7 @@
     [self.calendar reloadData];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    self.calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, self.view.bounds.size.height-CGRectGetMaxY(self.navigationController.navigationBar.frame));
-}
+#pragma mark - FSCalendarDataSource
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
@@ -163,6 +169,8 @@
     }
     return nil;
 }
+
+#pragma mark - FSCalendarDelegate
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
 {
@@ -191,9 +199,8 @@
     [events enumerateObjectsUsingBlock:^(EKEvent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [colors addObject:[UIColor colorWithCGColor:obj.calendar.CGColor]];
     }];
-    return colors.copy; // Equivalent to [NSArray arrayWithArray:colors];
+    return colors.copy;
 }
-
 
 #pragma mark - Private methods
 
