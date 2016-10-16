@@ -282,11 +282,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.collectionView = collectionView;
     self.collectionViewLayout = collectionViewLayout;
     
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
-    if ([collectionView respondsToSelector:@selector(setPrefetchingEnabled:)]) {
-        collectionView.prefetchingEnabled = NO;
+    
+    SEL selector = NSSelectorFromString(@"setPrefetchingEnabled:");
+    if (selector && [collectionView respondsToSelector:selector]) {
+        [collectionView fs_performSelector:selector withObjects:@NO, nil];
     }
-#endif
     
     if (!FSCalendarInAppExtension) {
         
@@ -841,10 +841,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [self setNeedsLayout];
         }
     }
-    
-    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
-    [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
-    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+    if (self.hasValidateVisibleLayout) {
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
+        [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+    }
 }
 
 - (void)setCurrentPage:(NSDate *)currentPage
