@@ -61,6 +61,10 @@
     view.backgroundColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1.0];
     self.view = view;
     
+#define FULL_SCREEN 1
+    
+#if FULL_SCREEN
+    
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.frame.size.height)];
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.dataSource = self;
@@ -72,6 +76,20 @@
     calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
     [self.view addSubview:calendar];
     self.calendar = calendar;
+    
+#else
+
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height, self.view.bounds.size.width, 300)];
+    calendar.backgroundColor = [UIColor whiteColor];
+    calendar.dataSource = self;
+    calendar.delegate = self;
+    calendar.allowsMultipleSelection = YES;
+    calendar.firstWeekday = 2;
+    calendar.appearance.caseOptions = FSCalendarCaseOptionsWeekdayUsesSingleUpperCase|FSCalendarCaseOptionsHeaderUsesUpperCase;
+    [self.view addSubview:calendar];
+    self.calendar = calendar;
+    
+#endif
     
     UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(todayItemClicked:)];
     
@@ -116,7 +134,12 @@
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
+    
+#if FULL_SCREEN
     self.calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, self.view.bounds.size.height-CGRectGetMaxY(self.navigationController.navigationBar.frame));
+#else
+    self.calendar.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, 300);
+#endif
 }
 
 - (void)dealloc
@@ -164,7 +187,7 @@
         }
     }
     if (_showsLunar) {
-        NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
+        NSInteger day = [_lunarCalendar component:NSCalendarUnitDay fromDate:date];
         return _lunarChars[day-1];
     }
     return nil;

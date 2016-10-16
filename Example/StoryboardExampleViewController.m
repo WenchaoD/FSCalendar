@@ -99,7 +99,7 @@
     if (!_lunar) {
         return nil;
     }
-    NSInteger day = [_lunarCalendar components:NSCalendarUnitDay fromDate:date].day;
+    NSInteger day = [_lunarCalendar component:NSCalendarUnitDay fromDate:date];
     return _lunarChars[day-1];
 }
 
