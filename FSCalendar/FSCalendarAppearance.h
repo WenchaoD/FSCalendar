@@ -8,7 +8,7 @@
 //  https://github.com/WenchaoD
 //
 
-#import "FSCalendarConstance.h"
+#import "FSCalendarConstants.h"
 
 @class FSCalendar;
 

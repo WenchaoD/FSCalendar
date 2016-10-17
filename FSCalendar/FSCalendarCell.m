@@ -10,7 +10,7 @@
 #import "FSCalendar.h"
 #import "FSCalendarExtensions.h"
 #import "FSCalendarDynamicHeader.h"
-#import "FSCalendarConstance.h"
+#import "FSCalendarConstants.h"
 
 @interface FSCalendarCell ()
 

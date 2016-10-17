@@ -7,7 +7,7 @@
 //
 
 #import "FSCalendarEventIndicator.h"
-#import "FSCalendarConstance.h"
+#import "FSCalendarConstants.h"
 #import "FSCalendarExtensions.h"
 
 @interface FSCalendarEventIndicator ()

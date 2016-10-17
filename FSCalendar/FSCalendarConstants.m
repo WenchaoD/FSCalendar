@@ -8,7 +8,7 @@
 //  https://github.com/WenchaoD
 //
 
-#import "FSCalendarConstance.h"
+#import "FSCalendarConstants.h"
 
 CGFloat const FSCalendarStandardHeaderHeight = 40;
 CGFloat const FSCalendarStandardWeekdayHeight = 25;

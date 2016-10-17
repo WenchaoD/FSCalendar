@@ -58,4 +58,28 @@
     }];
 }
 
+
+- (void)testFilter {
+    NSMutableArray<NSNumber *> *array = [NSMutableArray arrayWithCapacity:50];
+    for (int i = 0; i < 50; i++) {
+        [array addObject:@(i)];
+    }
+    [self measureBlock:^{
+        [array filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            return [evaluatedObject compare:@25]==NSOrderedSame;
+        }]];
+    }];
+    
+}
+
+- (void)testCache {
+    NSCache *c = [[NSCache alloc] init];
+    for (int i = 0; i < 50; i++) {
+        [c setObject:@(i) forKey:@(i)];
+    }
+    [self measureBlock:^{
+        [c objectForKey:@25];
+    }];
+}
+
 @end

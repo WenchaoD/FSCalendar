@@ -10,7 +10,7 @@
 
 
 #import "FSCalendar.h"
-#import "FSCalendarConstance.h"
+#import "FSCalendarConstants.h"
 
 IB_DESIGNABLE
 @interface FSCalendar (IBExtension)

@@ -168,8 +168,8 @@
                         // struct
 #define PARAM_STRUCT_TYPES(_type,_getter,_default) \
 if (!strcmp(argType, @encode(_type))) { \
-_type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:_default; \
-[invocation setArgument:&value atIndex:index++]; \
+    _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:_default; \
+    [invocation setArgument:&value atIndex:index++]; \
 }
                         PARAM_STRUCT_TYPES(CGPoint, CGPointValue, CGPointZero)
                         PARAM_STRUCT_TYPES(CGSize, CGSizeValue, CGSizeZero)
@@ -180,13 +180,14 @@ _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:_default
                         PARAM_STRUCT_TYPES(UIEdgeInsets, UIEdgeInsetsValue, UIEdgeInsetsZero)
                         PARAM_STRUCT_TYPES(UIOffset, UIOffsetValue, UIOffsetZero)
                         PARAM_STRUCT_TYPES(NSRange, rangeValue, NSMakeRange(NSNotFound, 0))
+                        
 #undef PARAM_STRUCT_TYPES
                     } else {
                         // basic type
 #define PARAM_BASIC_TYPES(_type,_getter) \
 if (!strcmp(argType, @encode(_type))) { \
-_type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
-[invocation setArgument:&value atIndex:index++]; \
+    _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
+    [invocation setArgument:&value atIndex:index++]; \
 }
                         PARAM_BASIC_TYPES(BOOL, boolValue)
                         PARAM_BASIC_TYPES(int, intValue)
@@ -199,6 +200,7 @@ _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
                         PARAM_BASIC_TYPES(unsigned long long, unsignedLongLongValue)
                         PARAM_BASIC_TYPES(float, floatValue)
                         PARAM_BASIC_TYPES(double, doubleValue)
+                        
 #undef PARAM_BASIC_TYPES
                     }
                 }
@@ -231,9 +233,9 @@ _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
             // struct
 #define RETURN_STRUCT_TYPES(_type) \
 if (!strcmp(returnType, @encode(_type))) { \
-_type value; \
-[invocation getReturnValue:&value]; \
-returnValue = [NSValue value:&value withObjCType:@encode(_type)]; \
+    _type value; \
+    [invocation getReturnValue:&value]; \
+    returnValue = [NSValue value:&value withObjCType:@encode(_type)]; \
 }
             RETURN_STRUCT_TYPES(CGPoint)
             RETURN_STRUCT_TYPES(CGSize)
@@ -244,14 +246,15 @@ returnValue = [NSValue value:&value withObjCType:@encode(_type)]; \
             RETURN_STRUCT_TYPES(UIEdgeInsets)
             RETURN_STRUCT_TYPES(UIOffset)
             RETURN_STRUCT_TYPES(NSRange)
+            
 #undef RETURN_STRUCT_TYPES
         } else {
             // basic
             void *buffer = (void *)malloc(length);
             [invocation getReturnValue:buffer];
 #define RETURN_BASIC_TYPES(_type) \
-if (!strcmp(returnType, @encode(_type))) { \
-returnValue = @(*((_type*)buffer)); \
+    if (!strcmp(returnType, @encode(_type))) { \
+    returnValue = @(*((_type*)buffer)); \
 }
             RETURN_BASIC_TYPES(BOOL)
             RETURN_BASIC_TYPES(int)
@@ -264,6 +267,7 @@ returnValue = @(*((_type*)buffer)); \
             RETURN_BASIC_TYPES(unsigned long long)
             RETURN_BASIC_TYPES(float)
             RETURN_BASIC_TYPES(double)
+            
 #undef RETURN_BASIC_TYPES
         }
     }
