@@ -2142,6 +2142,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!_hasRequestedBoundingDates) {
         _hasRequestedBoundingDates = YES;
         _minimumDate = self.minimumDateForCalendar;
+        if ([_minimumDate compare:_currentPage] == NSOrderedDescending) {
+            _currentPage = [self beginingOfMonth:_minimumDate];
+        }
         _maximumDate = self.maximumDateForCalendar;
     }
 }
