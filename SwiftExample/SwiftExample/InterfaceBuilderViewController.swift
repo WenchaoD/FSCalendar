@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
+class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
 
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
@@ -43,7 +43,6 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         */
 
     }
-    
 
     func minimumDate(for calendar: FSCalendar) -> Date {
         return self.formatter.date(from: "2015/01/01")!
