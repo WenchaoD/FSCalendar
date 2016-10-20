@@ -149,7 +149,6 @@
     if (!invocation) return nil;
     invocation.target = self;
     invocation.selector = selector;
-    
     // Parameters
     if (firstObject) {
         int index = 2;
@@ -169,7 +168,7 @@
 #define PARAM_STRUCT_TYPES(_type,_getter,_default) \
 if (!strcmp(argType, @encode(_type))) { \
     _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:_default; \
-    [invocation setArgument:&value atIndex:index++]; \
+    [invocation setArgument:&value atIndex:index]; \
 }
                         PARAM_STRUCT_TYPES(CGPoint, CGPointValue, CGPointZero)
                         PARAM_STRUCT_TYPES(CGSize, CGSizeValue, CGSizeZero)
@@ -182,12 +181,13 @@ if (!strcmp(argType, @encode(_type))) { \
                         PARAM_STRUCT_TYPES(NSRange, rangeValue, NSMakeRange(NSNotFound, 0))
                         
 #undef PARAM_STRUCT_TYPES
+                        index++;
                     } else {
                         // basic type
 #define PARAM_BASIC_TYPES(_type,_getter) \
 if (!strcmp(argType, @encode(_type))) { \
     _type value = [obj respondsToSelector:@selector(_getter)]?[obj _getter]:0; \
-    [invocation setArgument:&value atIndex:index++]; \
+    [invocation setArgument:&value atIndex:index]; \
 }
                         PARAM_BASIC_TYPES(BOOL, boolValue)
                         PARAM_BASIC_TYPES(int, intValue)
@@ -202,6 +202,7 @@ if (!strcmp(argType, @encode(_type))) { \
                         PARAM_BASIC_TYPES(double, doubleValue)
                         
 #undef PARAM_BASIC_TYPES
+                        index++;
                     }
                 }
             } while((obj = va_arg(args, id)));
