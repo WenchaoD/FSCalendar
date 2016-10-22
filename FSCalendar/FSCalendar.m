@@ -91,7 +91,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     NSMutableArray  *_selectedDates;
 }
-@property (strong, nonatomic) NSMutableArray             *weekdays;
+@property (strong, nonatomic) NSArray<UILabel *>         *weekdays;
 @property (strong, nonatomic) NSMapTable                 *stickyHeaderMapTable;
 
 @property (strong, nonatomic) NSCalendar *gregorian;
@@ -103,6 +103,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (weak  , nonatomic) UIView                     *daysContainer;
 @property (weak  , nonatomic) UIView                     *topBorder;
 @property (weak  , nonatomic) UIView                     *bottomBorder;
+@property (weak  , nonatomic) UIImageView                *weekdayView;
 @property (weak  , nonatomic) FSCalendarScopeHandle      *scopeHandle;
 @property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
 @property (weak  , nonatomic) FSCalendarFlowLayout       *collectionViewLayout;
@@ -161,6 +162,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
+- (void)invalidateWeekdayBackground;
 
 - (void)invalidateViewFrames;
 
@@ -282,12 +284,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.collectionView = collectionView;
     self.collectionViewLayout = collectionViewLayout;
     
-    
-    SEL selector = NSSelectorFromString(@"setPrefetchingEnabled:");
-    if (selector && [collectionView respondsToSelector:selector]) {
-        [collectionView fs_performSelector:selector withObjects:@NO, nil];
-    }
-    
     if (!FSCalendarInAppExtension) {
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
@@ -347,6 +343,23 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+#if !TARGET_INTERFACE_BUILDER
+    if ([key hasPrefix:@"fake"]) {
+        return;
+    }
+#endif
+    if (key.length) {
+        NSString *setter = [NSString stringWithFormat:@"set%@%@:",[key substringToIndex:1].uppercaseString,[key substringFromIndex:1]];
+        if ([self.appearance respondsToSelector:NSSelectorFromString(setter)]) {
+            return [self.appearance setValue:value forKey:key];
+        }
+    }
+    return [super setValue:value forUndefinedKey:key];
+    
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -393,6 +406,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                                             weekdayWidth,
                                             weekdayHeight);
         }];
+        if (_weekdayView) {
+            _weekdayView.frame = CGRectMake(_weekdays.firstObject.fs_left, _weekdays.firstObject.fs_top, _weekdays.lastObject.fs_right, _weekdays.firstObject.fs_height);
+        }
 
         _deliver.frame = CGRectMake(_header.fs_left, _header.fs_top, _header.fs_width, headerHeight+weekdayHeight);
         _deliver.hidden = _header.hidden;
@@ -1526,7 +1542,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
         if (!_weekdays.count) {
             NSArray *weekSymbols = self.gregorian.shortStandaloneWeekdaySymbols;
-            _weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
+            NSMutableArray<UILabel *> *weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
             UIFont *weekdayFont = _appearance.preferredWeekdayFont;
             for (int i = 0; i < weekSymbols.count; i++) {
                 UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -1534,9 +1550,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 weekdayLabel.textAlignment = NSTextAlignmentCenter;
                 weekdayLabel.font = weekdayFont;
                 weekdayLabel.textColor = _appearance.weekdayTextColor;
-                [_weekdays addObject:weekdayLabel];
+                [weekdays addObject:weekdayLabel];
                 [_contentView addSubview:weekdayLabel];
             }
+            self.weekdays = weekdays;
         }
         
         if (self.showsScopeHandle) {
@@ -1569,7 +1586,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         if (_weekdays.count) {
             [_weekdays makeObjectsPerformSelector:@selector(removeFromSuperview)];
-            [_weekdays removeAllObjects];
+            _weekdays = @[];
         }
         
         if (_scopeHandle) {
@@ -1745,6 +1762,30 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)invalidateWeekdayTextColor
 {
     [_weekdays makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
+}
+
+- (void)invalidateWeekdayBackground
+{
+    if (self.appearance.weekdayBackground) {
+        if (!self.weekdayView) {
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+            imageView.contentMode = UIViewContentModeCenter;
+            [self.contentView insertSubview:imageView belowSubview:self.weekdays.firstObject];
+            self.weekdayView = imageView;
+        }
+        if (self.hasValidateVisibleLayout) {
+            self.weekdayView.frame = CGRectMake(self.weekdays.firstObject.fs_left, self.weekdays.firstObject.fs_top, self.weekdays.lastObject.fs_right, self.weekdays.firstObject.fs_height);
+        }
+        if ([self.appearance.weekdayBackground isKindOfClass:[UIImage class]]) {
+            self.weekdayView.image = self.appearance.weekdayBackground;
+            self.weekdayView.backgroundColor = nil;
+        } else {
+            self.weekdayView.image = nil;
+            self.weekdayView.backgroundColor = self.appearance.weekdayBackground;
+        }
+    } else {
+        self.weekdayView = nil;
+    }
 }
 
 - (void)invalidateViewFrames
@@ -1979,10 +2020,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     else if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellShapeForDate:)]) {
         FSCalendarCellShape cellShape = [self.delegateAppearance calendar:self appearance:self.appearance cellShapeForDate:date];
-        return cellShape;
-    }
-    else if (self.delegateAppearance && [self.delegateAppearance respondsToSelector:@selector(calendar:appearance:cellStyleForDate:)]) {
-        FSCalendarCellShape cellShape = (FSCalendarCellShape)[self.delegateAppearance calendar:self appearance:self.appearance cellStyleForDate:date];
         return cellShape;
     }
 #pragma GCC diagnostic pop

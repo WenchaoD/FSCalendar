@@ -495,6 +495,17 @@
     }
 }
 
+- (void)setWeekdayBackground:(id)weekdayBackground
+{
+    if (weekdayBackground && (![weekdayBackground isKindOfClass:[UIImage class]] && ![weekdayBackground isKindOfClass:[UIColor class]])) {
+        [NSException raise:@"Invalidate Argument" format:@"The weekday background could only be a UIImage or UIColor instance"];
+    }
+    if (![_weekdayBackground isEqual:weekdayBackground]) {
+        _weekdayBackground = weekdayBackground;
+        [self invalidateWeekdayBackground];
+    }
+}
+
 - (void)setHeaderTitleColor:(UIColor *)color
 {
     if (![_headerTitleColor isEqual:color]) {
@@ -667,6 +678,12 @@
     [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
 }
 
+- (void)invalidateWeekdayBackground
+{
+    [_calendar invalidateWeekdayBackground];
+    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
+}
+
 - (void)invalidateHeaderFont
 {
     [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
@@ -684,16 +701,6 @@
 
 @implementation FSCalendarAppearance (Deprecated)
 
-- (void)setCellStyle:(FSCalendarCellStyle)cellStyle
-{
-    self.cellShape = (FSCalendarCellShape)cellStyle;
-}
-
-- (FSCalendarCellStyle)cellStyle
-{
-    return (FSCalendarCellStyle)self.cellShape;
-}
-
 - (void)setUseVeryShortWeekdaySymbols:(BOOL)useVeryShortWeekdaySymbols
 {
     _caseOptions &= 15;
@@ -703,16 +710,6 @@
 - (BOOL)useVeryShortWeekdaySymbols
 {
     return (_caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-}
-
-- (void)setAutoAdjustTitleSize:(BOOL)autoAdjustTitleSize
-{
-    self.adjustsFontSizeToFitContentSize = autoAdjustTitleSize;
-}
-
-- (BOOL)autoAdjustTitleSize
-{
-    return self.adjustsFontSizeToFitContentSize;
 }
 
 - (void)setTitleTextSize:(CGFloat)titleTextSize

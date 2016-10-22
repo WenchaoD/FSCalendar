@@ -14,8 +14,9 @@
 
 @interface FSCalendarStickyHeader ()
 
-@property (weak, nonatomic) UIView *contentView;
-@property (weak, nonatomic) UIView *separator;
+@property (weak  , nonatomic) UIView      *contentView;
+@property (weak  , nonatomic) UIView      *separator;
+@property (weak  , nonatomic) UIImageView *weekdayView;
 
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
@@ -84,6 +85,8 @@
         _separator.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
         _titleLabel.frame = CGRectMake(0, _separator.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
         
+        self.weekdayView.frame = CGRectMake(self.weekdayLabels.firstObject.fs_left, self.weekdayLabels.firstObject.fs_top, self.weekdayLabels.lastObject.fs_right, self.weekdayLabels.firstObject.fs_height);
+        
     }
     
     [self reloadData];
@@ -102,6 +105,7 @@
         [self invalidateHeaderTextColor];
         [self invalidateWeekdayFont];
         [self invalidateWeekdayTextColor];
+        [self invalidateWeekdayBackground];
     }
 }
 
@@ -151,6 +155,29 @@
     }];
 }
 
+- (void)invalidateWeekdayBackground
+{
+    if (self.appearance.weekdayBackground) {
+        if (!self.weekdayView) {
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+            imageView.contentMode = UIViewContentModeCenter;
+            [self.contentView insertSubview:imageView belowSubview:self.weekdayLabels.firstObject];
+            self.weekdayView = imageView;
+        }
+        
+        self.weekdayView.frame = CGRectMake(self.weekdayLabels.firstObject.fs_left, self.weekdayLabels.firstObject.fs_top, self.weekdayLabels.lastObject.fs_right, self.weekdayLabels.firstObject.fs_height);
+        
+        if ([self.appearance.weekdayBackground isKindOfClass:[UIImage class]]) {
+            self.weekdayView.image = self.appearance.weekdayBackground;
+            self.weekdayView.backgroundColor = nil;
+        } else {
+            self.weekdayView.image = nil;
+            self.weekdayView.backgroundColor = self.appearance.weekdayBackground;
+        }
+    } else {
+        self.weekdayView = nil;
+    }
+}
 
 @end
 

@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
-#import "FSCalendarEventIndicator.h"
 
+@class FSCalendarEventIndicator;
 @interface FSCalendarCell : UICollectionViewCell
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -70,3 +70,13 @@
 - (void)performSelecting;
 
 @end
+
+
+@interface FSCalendarEventIndicator : UIView
+
+@property (assign, nonatomic) NSInteger numberOfEvents;
+@property (strong, nonatomic) id color;
+@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
+
+@end
+

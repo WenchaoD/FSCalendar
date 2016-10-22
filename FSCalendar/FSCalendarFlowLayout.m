@@ -31,7 +31,6 @@
 {
     [super prepareLayout];
     
-    
     CGFloat rowHeight = self.calendar.preferredRowHeight;
     
     if (!self.calendar.floatingMode) {

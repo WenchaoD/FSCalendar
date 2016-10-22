@@ -28,7 +28,7 @@
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
 @property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
 @property (readonly, nonatomic) FSCalendarAnimator *animator;
-@property (readonly, nonatomic) NSArray *weekdays;
+@property (readonly, nonatomic) NSArray<UILabel *> *weekdays;
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) CGFloat preferredHeaderHeight;
@@ -49,6 +49,7 @@
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
+- (void)invalidateWeekdayBackground;
 
 - (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;

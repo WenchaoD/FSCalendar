@@ -102,6 +102,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
 
 /**
+ * The background color/image for the weekdays
+ */
+@property (strong, nonatomic) id weekdayBackground;
+
+/**
  * The color of month header text.
  */
 @property (strong, nonatomic) UIColor  *headerTitleColor;
@@ -234,9 +239,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @interface FSCalendarAppearance (Deprecated)
 
-@property (assign, nonatomic) FSCalendarCellStyle cellStyle FSCalendarDeprecated('cellShape');
 @property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated('caseOptions');
-@property (assign, nonatomic) BOOL autoAdjustTitleSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
 @property (assign, nonatomic) BOOL adjustsFontSizeToFitCellSize FSCalendarDeprecated('adjustFontSizeToFitContentSize');
 @property (assign, nonatomic) CGFloat titleTextSize FSCalendarDeprecated('titleFont');
 @property (assign, nonatomic) CGFloat subtitleTextSize FSCalendarDeprecated('subtitleFont');
