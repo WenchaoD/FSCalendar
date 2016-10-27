@@ -76,16 +76,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @end
 
-@interface FSCalendar (Private)
-
-- (NSDate *)beginingOfMonth:(NSDate *)month;
-- (NSDate *)endOfMonth:(NSDate *)month;
-- (NSDate *)beginingOfWeek:(NSDate *)week;
-- (NSDate *)endOfWeek:(NSDate *)week;
-- (NSDate *)middleOfWeek:(NSDate *)week;
-- (NSInteger)numberOfDatesInMonth:(NSDate *)month;
-
-@end
 
 @interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
 {
@@ -217,7 +207,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     
     _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:[NSDate date] options:0];
-    _currentPage = [self beginingOfMonth:_today];
+    _currentPage = [self.gregorian fs_firstDayOfMonth:_today];
     
 #if TARGET_INTERFACE_BUILDER
     _minimumDate = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:-1 toDate:_today options:0];
@@ -522,16 +512,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     [self requestBoundingDatesIfNecessary];
     if (self.animator.transition == FSCalendarTransitionWeekToMonth) {
-        NSInteger sections = [self.gregorian components:NSCalendarUnitMonth fromDate:[self beginingOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month + 1;
+        NSInteger sections = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month + 1;
         return sections;
     }
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            NSInteger sections = [self.gregorian components:NSCalendarUnitMonth fromDate:[self beginingOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month + 1;
+            NSInteger sections = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month + 1;
             return sections;
         }
         case FSCalendarScopeWeek: {
-            NSInteger sections = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self beginingOfWeek:self.minimumDate] toDate:self.maximumDate options:0].weekOfYear + 1;
+            NSInteger sections = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:self.maximumDate options:0].weekOfYear + 1;
             return sections;
         }
     }
@@ -552,7 +542,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         }
     } else {
-        NSDate *currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self beginingOfMonth:_minimumDate] options:0];
+        NSDate *currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
         NSInteger numberOfRows = [self numberOfRowsInMonth:currentPage];
         return numberOfRows * 7;
     }
@@ -572,7 +562,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
             FSCalendarStickyHeader *stickyHeader = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
             stickyHeader.calendar = self;
-            stickyHeader.month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self beginingOfMonth:_minimumDate] options:0];
+            stickyHeader.month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
             [stickyHeader setNeedsLayout];
             NSArray *allKeys = [_stickyHeaderMapTable.dictionaryRepresentation allKeysForObject:stickyHeader];
             if (allKeys.count) {
@@ -688,7 +678,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGPoint significantPoint = CGPointMake(_collectionView.fs_width*0.5,MIN(self.preferredRowHeight*2.75, _collectionView.fs_height*0.5)+_collectionView.contentOffset.y);
         NSIndexPath *significantIndexPath = [_collectionView indexPathForItemAtPoint:significantPoint];
         if (significantIndexPath) {
-            currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:significantIndexPath.section toDate:[self beginingOfMonth:_minimumDate] options:0];
+            currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:significantIndexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
         } else {
             FSCalendarStickyHeader *significantHeader = [_stickyHeaderMapTable.dictionaryRepresentation.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarStickyHeader * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
                 return CGRectContainsPoint(evaluatedObject.frame, significantPoint);
@@ -744,12 +734,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSDate *targetPage = nil;
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            NSDate *minimumPage = [self beginingOfMonth:_minimumDate];
+            NSDate *minimumPage = [self.gregorian fs_firstDayOfMonth:_minimumDate];
             targetPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:sections toDate:minimumPage options:0];
             break;
         }
         case FSCalendarScopeWeek: {
-            NSDate *minimumPage = [self beginingOfWeek:_minimumDate];
+            NSDate *minimumPage = [self.gregorian fs_firstDayOfWeek:_minimumDate];
             targetPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:sections toDate:minimumPage options:0];
             break;
         }
@@ -979,8 +969,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredPadding = FSCalendarAutomaticDimension;
         [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
+        [self.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [self setNeedsLayout];
     }
 }
@@ -1274,13 +1264,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSInteger scrollOffset = 0;
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            FSCalendarAssertDateInBounds(date,self.gregorian,[self beginingOfMonth:self.minimumDate],[self endOfMonth:self.maximumDate]);
-            scrollOffset = [self.gregorian components:NSCalendarUnitMonth fromDate:[self beginingOfMonth:self.minimumDate] toDate:date options:0].month;
+            FSCalendarAssertDateInBounds(date,self.gregorian,[self.gregorian fs_firstDayOfMonth:self.minimumDate],[self.gregorian fs_lastDayOfMonth:self.maximumDate]);
+            scrollOffset = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:date options:0].month;
             break;
         }
         case FSCalendarScopeWeek: {
-            FSCalendarAssertDateInBounds(date,self.gregorian,[self beginingOfWeek:self.minimumDate],[self endOfWeek:self.maximumDate]);
-            scrollOffset = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self beginingOfWeek:self.minimumDate] toDate:date options:0].weekOfYear;
+            FSCalendarAssertDateInBounds(date,self.gregorian,[self.gregorian fs_firstDayOfWeek:self.minimumDate],[self.gregorian fs_lastDayOfWeek:self.maximumDate]);
+            scrollOffset = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:date options:0].weekOfYear;
             break;
         }
     }
@@ -1328,13 +1318,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             NSDate *lastPage = _currentPage;
             switch (_scope) {
                 case FSCalendarScopeMonth: {
-                    FSCalendarAssertDateInBounds(date, self.gregorian, [self beginingOfMonth:self.minimumDate], [self endOfMonth:self.maximumDate]);
-                    _currentPage = [self beginingOfMonth:date];
+                    FSCalendarAssertDateInBounds(date, self.gregorian, [self.gregorian fs_firstDayOfMonth:self.minimumDate], [self.gregorian fs_lastDayOfMonth:self.maximumDate]);
+                    _currentPage = [self.gregorian fs_firstDayOfMonth:date];
                     break;
                 }
                 case FSCalendarScopeWeek: {
-                    FSCalendarAssertDateInBounds(date, self.gregorian, [self beginingOfWeek:self.minimumDate], [self endOfWeek:self.maximumDate]);
-                    _currentPage = [self beginingOfWeek:date];
+                    FSCalendarAssertDateInBounds(date, self.gregorian, [self.gregorian fs_firstDayOfWeek:self.minimumDate], [self.gregorian fs_lastDayOfWeek:self.maximumDate]);
+                    _currentPage = [self.gregorian fs_firstDayOfWeek:date];
                     break;
                 }
             }
@@ -1350,7 +1340,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         [self scrollToDate:_currentPage animated:animated];
     } else {
-        [self scrollToDate:[self beginingOfMonth:date] animated:animated];
+        [self scrollToDate:[self.gregorian fs_firstDayOfMonth:date] animated:animated];
     }
 }
 
@@ -1359,7 +1349,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!indexPath) return nil;
     switch (scope) {
         case FSCalendarScopeMonth: {
-            NSDate *currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self beginingOfMonth:_minimumDate] options:0];
+            NSDate *currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
             NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:currentPage];
             NSDate *firstDateOfPage = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:currentPage options:0];
             switch (_collectionViewLayout.scrollDirection) {
@@ -1379,7 +1369,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             break;
         }
         case FSCalendarScopeWeek: {
-            NSDate *currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.section toDate:[self beginingOfWeek:_minimumDate] options:0];
+            NSDate *currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.section toDate:[self.gregorian fs_firstDayOfWeek:_minimumDate] options:0];
             NSDate *date = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:indexPath.item toDate:currentPage options:0];
             return date;
             
@@ -1403,8 +1393,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSInteger section = 0;
     switch (scope) {
         case FSCalendarScopeMonth: {
-            section = [self.gregorian components:NSCalendarUnitMonth fromDate:[self beginingOfMonth:self.minimumDate] toDate:date options:0].month;
-            NSDate *firstDayOfMonth = [self beginingOfMonth:date];
+            section = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:date options:0].month;
+            NSDate *firstDayOfMonth = [self.gregorian fs_firstDayOfMonth:date];
             NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:firstDayOfMonth];
             NSDate *firstDateOfPage = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:firstDayOfMonth options:0];
             switch (_collectionViewLayout.scrollDirection) {
@@ -1423,7 +1413,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             break;
         }
         case FSCalendarScopeWeek: {
-            section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self beginingOfWeek:self.minimumDate] toDate:date options:0].weekOfYear;
+            section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:date options:0].weekOfYear;
             item = (([self.gregorian component:NSCalendarUnitWeekday fromDate:date] - _firstWeekday) + 7) % 7;
             break;
         }
@@ -1449,18 +1439,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     BOOL flag = YES;
     switch (self.scope) {
         case FSCalendarScopeMonth: {
-            NSDateComponents *c1 = [self.gregorian components:NSCalendarUnitDay fromDate:[self beginingOfMonth:self.minimumDate] toDate:page options:0];
+            NSDateComponents *c1 = [self.gregorian components:NSCalendarUnitDay fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:page options:0];
             flag &= (c1.day>=0);
             if (!flag) break;
-            NSDateComponents *c2 = [self.gregorian components:NSCalendarUnitDay fromDate:page toDate:[self endOfMonth:self.maximumDate] options:0];
+            NSDateComponents *c2 = [self.gregorian components:NSCalendarUnitDay fromDate:page toDate:[self.gregorian fs_lastDayOfMonth:self.maximumDate] options:0];
             flag &= (c2.day>=0);
             break;
         }
         case FSCalendarScopeWeek: {
-            NSDateComponents *c1 = [self.gregorian components:NSCalendarUnitDay fromDate:[self beginingOfWeek:self.minimumDate] toDate:page options:0];
+            NSDateComponents *c1 = [self.gregorian components:NSCalendarUnitDay fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:page options:0];
             flag &= (c1.day>=0);
             if (!flag) break;
-            NSDateComponents *c2 = [self.gregorian components:NSCalendarUnitDay fromDate:page toDate:[self endOfWeek:self.maximumDate] options:0];
+            NSDateComponents *c2 = [self.gregorian components:NSCalendarUnitDay fromDate:page toDate:[self.gregorian fs_lastDayOfWeek:self.maximumDate] options:0];
             flag &= (c2.day>=0);
             break;
         }
@@ -1665,7 +1655,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.dateIsToday = self.today?[self.gregorian isDate:cell.date inSameDayAsDate:self.today]:NO;
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            NSDate *firstPage = [self beginingOfMonth:_minimumDate];
+            NSDate *firstPage = [self.gregorian fs_firstDayOfMonth:_minimumDate];
             NSDate *month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:firstPage options:0];
             cell.month = month;
             cell.dateIsPlaceholder = ![self.gregorian isDate:cell.date equalToDate:month toUnitGranularity:NSCalendarUnitMonth] || ![self isDateInRange:cell.date];
@@ -1825,9 +1815,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (!month) return 0;
     if (self.placeholderType == FSCalendarPlaceholderTypeFillSixRows) return 6;
-    NSDate *firstDayOfMonth = [self beginingOfMonth:month];
+    NSDate *firstDayOfMonth = [self.gregorian fs_firstDayOfMonth:month];
     NSInteger weekdayOfFirstDay = [self.gregorian component:NSCalendarUnitWeekday fromDate:firstDayOfMonth];
-    NSInteger numberOfDaysInMonth = [self numberOfDatesInMonth:month];
+    NSInteger numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month];
     NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.firstWeekday) + 7) % 7;
     NSInteger headDayCount = numberOfDaysInMonth + numberOfPlaceholdersForPrev;
     NSInteger numberOfRows = (headDayCount/7) + (headDayCount%7>0);
@@ -2176,71 +2166,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _minimumDate = self.minimumDateForCalendar;
         _maximumDate = self.maximumDateForCalendar;
     }
-}
-
-- (NSDate *)beginingOfMonth:(NSDate *)month
-{
-    if (!month) return nil;
-    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
-    components.day = 1;
-    return [self.gregorian dateFromComponents:components];
-}
-
-- (NSDate *)endOfMonth:(NSDate *)month
-{
-    if (!month) return nil;
-    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
-    components.month++;
-    components.day = 0;
-    return [self.gregorian dateFromComponents:components];
-}
-
-- (NSDate *)beginingOfWeek:(NSDate *)week
-{
-    if (!week) return nil;
-    NSDateComponents *weekdayComponents = [self.gregorian components:NSCalendarUnitWeekday fromDate:week];
-    NSDateComponents *components = self.components;
-    components.day = - (weekdayComponents.weekday - self.gregorian.firstWeekday);
-    components.day = (components.day-7) % 7;
-    NSDate *beginningOfWeek = [self.gregorian dateByAddingComponents:components toDate:week options:0];
-    beginningOfWeek = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:beginningOfWeek options:0];
-    components.day = NSIntegerMax;
-    return beginningOfWeek;
-}
-
-- (NSDate *)endOfWeek:(NSDate *)week
-{
-    if (!week) return nil;
-    NSDateComponents *weekdayComponents = [self.gregorian components:NSCalendarUnitWeekday fromDate:week];
-    NSDateComponents *components = self.components;
-    components.day = - (weekdayComponents.weekday - self.gregorian.firstWeekday);
-    components.day = (components.day-7) % 7 + 6;
-    NSDate *endOfWeek = [self.gregorian dateByAddingComponents:components toDate:week options:0];
-    endOfWeek = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:endOfWeek options:0];
-    components.day = NSIntegerMax;
-    return endOfWeek;
-}
-
-- (NSDate *)middleOfWeek:(NSDate *)week
-{
-    if (!week) return nil;
-    NSDateComponents *weekdayComponents = [self.gregorian components:NSCalendarUnitWeekday fromDate:week];
-    NSDateComponents *componentsToSubtract = self.components;
-    componentsToSubtract.day = - (weekdayComponents.weekday - self.gregorian.firstWeekday) + 3;
-    NSDate *middleOfWeek = [self.gregorian dateByAddingComponents:componentsToSubtract toDate:week options:0];
-    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:middleOfWeek];
-    middleOfWeek = [self.gregorian dateFromComponents:components];
-    componentsToSubtract.day = NSIntegerMax;
-    return middleOfWeek;
-}
-
-- (NSInteger)numberOfDatesInMonth:(NSDate *)month
-{
-    if (!month) return 0;
-    NSRange days = [self.gregorian rangeOfUnit:NSCalendarUnitDay
-                                       inUnit:NSCalendarUnitMonth
-                                      forDate:month];
-    return days.length;
 }
 
 - (void)setIdentifier:(NSString *)identifier

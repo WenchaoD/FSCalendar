@@ -416,12 +416,12 @@
                 }
                 // Focus begining day of month
                 if (!focusedDate) {
-                    focusedDate = [self.calendar beginingOfMonth:self.calendar.currentPage];
+                    focusedDate = [self.calendar.gregorian fs_firstDayOfMonth:self.calendar.currentPage];
                     kCalculateRowNumber
                 }
                 
                 NSDate *currentPage = self.calendar.currentPage;
-                NSDate *minimumPage = [self.calendar beginingOfMonth:self.calendar.minimumDate];
+                NSDate *minimumPage = [self.calendar.gregorian fs_firstDayOfMonth:self.calendar.minimumDate];
                 NSInteger visibleSection = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:currentPage options:0].month;
                 NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:visibleSection];
                 NSDate *firstDate = [self.calendar dateForIndexPath:firstIndexPath scope:FSCalendarScopeMonth];
@@ -452,12 +452,12 @@
                     }
                 }
                 if (!focusedDate) {
-                    focusedDate = [self.calendar endOfWeek:currentPage];
+                    focusedDate = [self.calendar.gregorian fs_lastDayOfWeek:currentPage];
                 }
                 
-                NSDate *firstDayOfMonth = [self.calendar beginingOfMonth:focusedDate];
+                NSDate *firstDayOfMonth = [self.calendar.gregorian fs_firstDayOfMonth:focusedDate];
                 attributes.focusedDate = focusedDate;
-                firstDayOfMonth = firstDayOfMonth ?: [self.calendar beginingOfMonth:currentPage];
+                firstDayOfMonth = firstDayOfMonth ?: [self.calendar.gregorian fs_firstDayOfMonth:currentPage];
                 NSInteger numberOfPlaceholdersForPrev = [self.calendar numberOfHeadPlaceholdersForMonth:firstDayOfMonth];
                 NSDate *firstDateOfPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfPlaceholdersForPrev toDate:firstDayOfMonth options:0];
                 

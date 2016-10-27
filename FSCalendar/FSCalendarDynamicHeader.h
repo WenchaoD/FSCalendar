@@ -65,13 +65,6 @@
 - (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month;
 - (NSInteger)numberOfRowsInMonth:(NSDate *)month;
 
-- (NSDate *)beginingOfMonth:(NSDate *)month;
-- (NSDate *)endOfMonth:(NSDate *)month;
-- (NSDate *)beginingOfWeek:(NSDate *)week;
-- (NSDate *)endOfWeek:(NSDate *)week;
-- (NSDate *)middleOfWeek:(NSDate *)week;
-- (NSInteger)numberOfDatesInMonth:(NSDate *)month;
-
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 
 @end

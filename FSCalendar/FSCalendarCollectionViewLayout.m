@@ -110,7 +110,7 @@
                 return NO;
             }
             
-            NSDate *currentPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:evaluatedObject.indexPath.section toDate:[self.calendar beginingOfMonth:self.calendar.minimumDate] options:0];
+            NSDate *currentPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:evaluatedObject.indexPath.section toDate:[self.calendar.gregorian fs_firstDayOfMonth:self.calendar.minimumDate] options:0];
             NSInteger numberOfRows = [self.calendar numberOfRowsInMonth:currentPage];
             
             switch (self.scrollDirection) {
