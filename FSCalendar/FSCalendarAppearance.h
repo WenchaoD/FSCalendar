@@ -31,6 +31,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsWeekdayUsesSingleUpperCase = 2 << 4,
 };
 
+typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
+    FSCalendarSeparatorInterRows     = 1 << 0,
+    FSCalendarSeparatorInterColumns  = 1 << 1   // Will implemented soon
+};
+
 /**
  * FSCalendarAppearance determines the fonts and colors of components in the calendar.
  *
@@ -207,6 +212,12 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * @see FSCalendarCaseOptions
  */
 @property (assign, nonatomic) FSCalendarCaseOptions caseOptions;
+
+/**
+ * The line integrations for calendar.
+ *
+ */
+@property (assign, nonatomic) FSCalendarSeparators separators;
 
 /**
  * A Boolean value indicates whether the calendar should adjust font size by its content size.

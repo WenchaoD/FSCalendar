@@ -10,7 +10,7 @@
 #import "FSCalendarHeader.h"
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCell.h"
-#import "FSCalendarFlowLayout.h"
+#import "FSCalendarCollectionViewLayout.h"
 #import "FSCalendarAnimator.h"
 #import "FSCalendarScopeHandle.h"
 
@@ -106,8 +106,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (weak  , nonatomic) UIImageView                *weekdayView;
 @property (weak  , nonatomic) FSCalendarScopeHandle      *scopeHandle;
 @property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
-@property (weak  , nonatomic) FSCalendarFlowLayout       *collectionViewLayout;
 @property (strong, nonatomic) FSCalendarAnimator         *animator;
+@property (weak  , nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 
 @property (weak  , nonatomic) FSCalendarHeader           *header;
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
@@ -262,7 +262,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [contentView addSubview:daysContainer];
     self.daysContainer = daysContainer;
     
-    FSCalendarFlowLayout *collectionViewLayout = [[FSCalendarFlowLayout alloc] init];
+    FSCalendarCollectionViewLayout *collectionViewLayout = [[FSCalendarCollectionViewLayout alloc] init];
     collectionViewLayout.calendar = self;
     
     FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
@@ -287,12 +287,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!FSCalendarInAppExtension) {
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardSeparatorColor;
+        view.backgroundColor = FSCalendarStandardLineColor;
         [self addSubview:view];
         self.topBorder = view;
         
         view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardSeparatorColor;
+        view.backgroundColor = FSCalendarStandardLineColor;
         [self addSubview:view];
         self.bottomBorder = view;
         

@@ -8,6 +8,7 @@
 
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarExtensions.h"
+#import "FSCalendarConstants.h"
 
 @interface FSCalendarCollectionView ()
 
@@ -67,4 +68,25 @@
 }
 
 @end
+
+
+@implementation FSCalendarSeparator
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = FSCalendarStandardSeparatorColor;
+    }
+    return self;
+}
+
+- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
+{
+    self.frame = layoutAttributes.frame;
+}
+
+@end
+
+
 

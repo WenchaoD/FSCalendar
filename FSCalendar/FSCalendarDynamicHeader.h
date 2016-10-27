@@ -16,7 +16,7 @@
 #import "FSCalendarHeader.h"
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCollectionView.h"
-#import "FSCalendarFlowLayout.h"
+#import "FSCalendarCollectionViewLayout.h"
 #import "FSCalendarScopeHandle.h"
 #import "FSCalendarAnimator.h"
 
@@ -26,7 +26,7 @@
 @property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
-@property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
+@property (readonly, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 @property (readonly, nonatomic) FSCalendarAnimator *animator;
 @property (readonly, nonatomic) NSArray<UILabel *> *weekdays;
 @property (readonly, nonatomic) BOOL floatingMode;

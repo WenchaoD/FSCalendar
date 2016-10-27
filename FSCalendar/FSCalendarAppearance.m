@@ -602,6 +602,14 @@
     }
 }
 
+- (void)setSeparators:(FSCalendarSeparators)separators
+{
+    if (_separators != separators) {
+        _separators = separators;
+        [_calendar.collectionView.collectionViewLayout invalidateLayout];
+    }
+}
+
 - (void)invalidateAppearance
 {
     [self invalidateFonts];
