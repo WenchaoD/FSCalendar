@@ -629,11 +629,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
         shouldSelect &= [self shouldSelectDate:cell.date];
     }
-    if (shouldSelect) {
-        if (!self.allowsMultipleSelection && self.selectedDate) {
-            [self deselectDate:self.selectedDate];
-        }
-    }
     return shouldSelect && [self isDateInRange:cell.date];
 }
 
