@@ -53,19 +53,20 @@
     
 //    [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/05"]];
     
-    _datesShouldNotBeSelected = @[@"2015/08/07",
-                                  @"2015/09/07",
-                                  @"2015/10/07",
-                                  @"2015/11/07",
-                                  @"2015/12/07",
+    _datesShouldNotBeSelected = @[@"2016/08/07",
+                                  @"2016/09/07",
+                                  @"2016/10/07",
+                                  @"2016/11/07",
+                                  @"2016/12/07",
                                   @"2016/01/07",
                                   @"2016/02/07"];
     
-    _datesWithEvent = @[@"2015-10-03",
-                        @"2015-10-07",
-                        @"2015-10-15",
-                        @"2015-10-25"];
+    _datesWithEvent = @[@"2016-10-03",
+                        @"2016-10-07",
+                        @"2016-10-15",
+                        @"2016-10-25"];
     
+//    self.calendar.appearance.weekdayBackground = [UIColor cyanColor];
 
     
 //    _calendar.locale = [NSLocale currentLocale];

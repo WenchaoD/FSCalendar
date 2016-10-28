@@ -8,7 +8,7 @@
 
 #import "FSCalendar.h"
 #import "FSCalendarCollectionView.h"
-#import "FSCalendarFlowLayout.h"
+#import "FSCalendarCollectionViewLayout.h"
 #import "FSCalendarScopeHandle.h"
 
 typedef NS_ENUM(NSUInteger, FSCalendarTransition) {
@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 
 @property (weak, nonatomic) FSCalendar *calendar;
 @property (weak, nonatomic) FSCalendarCollectionView *collectionView;
-@property (weak, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
+@property (weak, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 
 @property (assign, nonatomic) FSCalendarTransition transition;
 @property (assign, nonatomic) FSCalendarTransitionState state;

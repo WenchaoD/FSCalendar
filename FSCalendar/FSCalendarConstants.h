@@ -18,6 +18,7 @@ UIKIT_EXTERN CGFloat const FSCalendarStandardWeekdayHeight;
 UIKIT_EXTERN CGFloat const FSCalendarStandardMonthlyPageHeight;
 UIKIT_EXTERN CGFloat const FSCalendarStandardWeeklyPageHeight;
 UIKIT_EXTERN CGFloat const FSCalendarStandardCellDiameter;
+UIKIT_EXTERN CGFloat const FSCalendarStandardSeparatorThickness;
 UIKIT_EXTERN CGFloat const FSCalendarAutomaticDimension;
 UIKIT_EXTERN CGFloat const FSCalendarDefaultBounceAnimationDuration;
 UIKIT_EXTERN CGFloat const FSCalendarStandardRowHeight;
@@ -41,7 +42,8 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 #define FSCalendarStandardTitleTextColor   FSColorRGBA(14,69,221 ,1.0)
 #define FSCalendarStandardEventDotColor    FSColorRGBA(31,119,219,0.75)
 
-#define FSCalendarStandardSeparatorColor   [[UIColor lightGrayColor] colorWithAlphaComponent:0.25]
+#define FSCalendarStandardLineColor        [[UIColor lightGrayColor] colorWithAlphaComponent:0.30]
+#define FSCalendarStandardSeparatorColor   [[UIColor lightGrayColor] colorWithAlphaComponent:0.60]
 #define FSCalendarStandardScopeHandleColor [[UIColor lightGrayColor] colorWithAlphaComponent:0.50]
 
 #define FSColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
@@ -54,18 +56,12 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 #endif
 
 #define FSCalendarUseWeakSelf __weak __typeof__(self) FSCalendarWeakSelf = self;
-#define FSCalendarUseStrongSelf __typeof__(self) self = FSCalendarWeakSelf;
+#define FSCalendarUseStrongSelf __strong __typeof__(self) self = FSCalendarWeakSelf;
 
 
 #pragma mark - Deprecated
 
 #define FSCalendarDeprecated(instead) DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")
-
-FSCalendarDeprecated('FSCalendarCellShape')
-typedef NS_ENUM(NSInteger, FSCalendarCellStyle) {
-    FSCalendarCellStyleCircle      = 0,
-    FSCalendarCellStyleRectangle   = 1
-};
 
 FSCalendarDeprecated('FSCalendarScrollDirection')
 typedef NS_ENUM(NSInteger, FSCalendarFlow) {

@@ -101,13 +101,13 @@
         case FSCalendarScopeMonth: {
             switch (_scrollDirection) {
                 case UICollectionViewScrollDirectionVertical: {
-                    NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
+                    NSDate *minimumPage = [_calendar.gregorian fs_firstDayOfMonth:_calendar.minimumDate];
                     NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month + 1;
                     return months;
                 }
                 case UICollectionViewScrollDirectionHorizontal: {
                     // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
-                    NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
+                    NSDate *minimumPage = [_calendar.gregorian fs_firstDayOfMonth:_calendar.minimumDate];
                     NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month + 1;
                     return months + 2;
                 }
@@ -118,7 +118,7 @@
             break;
         }
         case FSCalendarScopeWeek: {
-            NSDate *minimumPage = [_calendar beginingOfMonth:_calendar.minimumDate];
+            NSDate *minimumPage = [self.calendar.gregorian fs_firstDayOfMonth:_calendar.minimumDate];
             NSInteger weeks = [self.calendar.gregorian components:NSCalendarUnitWeekOfYear fromDate:minimumPage toDate:self.calendar.maximumDate options:0].weekOfYear + 1;
             return weeks + 2;
         }
@@ -158,7 +158,7 @@
             if ((indexPath.item == 0 || indexPath.item == [collectionView numberOfItemsInSection:0] - 1)) {
                 text = nil;
             } else {
-                NSDate *firstPage = [_calendar middleOfWeek:_calendar.minimumDate];
+                NSDate *firstPage = [self.calendar.gregorian fs_middleDayOfWeek:self.calendar.minimumDate];
                 NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstPage options:0];
                 text = [_calendar.formatter stringFromDate:date];
             }

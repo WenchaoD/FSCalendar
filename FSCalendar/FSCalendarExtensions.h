@@ -11,7 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 @interface UIView (FSCalendarExtensions)
 
 @property (nonatomic) CGFloat fs_width;
@@ -23,7 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat fs_right;
 
 @end
-
 
 
 @interface CALayer (FSCalendarExtensions)
@@ -38,6 +36,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface NSCalendar (FSCalendarExtensions)
+
+- (nullable NSDate *)fs_firstDayOfMonth:(NSDate *)month;
+- (nullable NSDate *)fs_lastDayOfMonth:(NSDate *)month;
+- (nullable NSDate *)fs_firstDayOfWeek:(NSDate *)week;
+- (nullable NSDate *)fs_lastDayOfWeek:(NSDate *)week;
+- (nullable NSDate *)fs_middleDayOfWeek:(NSDate *)week;
+- (NSInteger)fs_numberOfDaysInMonth:(NSDate *)month;
+
+@end
 
 @interface NSObject (FSCalendarExtensions)
 

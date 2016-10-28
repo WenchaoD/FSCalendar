@@ -11,3 +11,8 @@
 @interface FSCalendarCollectionView : UICollectionView
 
 @end
+
+
+@interface FSCalendarSeparator : UICollectionReusableView
+
+@end

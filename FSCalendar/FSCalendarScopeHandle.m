@@ -33,7 +33,7 @@
         UIView *view;
         
         view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 1)];
-        view.backgroundColor = FSCalendarStandardSeparatorColor;
+        view.backgroundColor = FSCalendarStandardLineColor;
         [self addSubview:view];
         self.topBorder = view;
         

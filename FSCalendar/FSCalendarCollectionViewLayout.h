@@ -10,11 +10,8 @@
 
 @class FSCalendar;
 
-typedef NS_ENUM(NSUInteger, FSCalendarScope);
-
-@interface FSCalendarFlowLayout : UICollectionViewFlowLayout <UICollectionViewDelegateFlowLayout>
+@interface FSCalendarCollectionViewLayout : UICollectionViewFlowLayout
 
 @property (weak, nonatomic) FSCalendar *calendar;
-
 
 @end

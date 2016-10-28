@@ -16,7 +16,7 @@
 #import "FSCalendarHeader.h"
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCollectionView.h"
-#import "FSCalendarFlowLayout.h"
+#import "FSCalendarCollectionViewLayout.h"
 #import "FSCalendarScopeHandle.h"
 #import "FSCalendarAnimator.h"
 
@@ -26,9 +26,9 @@
 @property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
-@property (readonly, nonatomic) FSCalendarFlowLayout *collectionViewLayout;
+@property (readonly, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 @property (readonly, nonatomic) FSCalendarAnimator *animator;
-@property (readonly, nonatomic) NSArray *weekdays;
+@property (readonly, nonatomic) NSArray<UILabel *> *weekdays;
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) CGFloat preferredHeaderHeight;
@@ -49,6 +49,7 @@
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
+- (void)invalidateWeekdayBackground;
 
 - (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;
@@ -63,13 +64,6 @@
 
 - (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month;
 - (NSInteger)numberOfRowsInMonth:(NSDate *)month;
-
-- (NSDate *)beginingOfMonth:(NSDate *)month;
-- (NSDate *)endOfMonth:(NSDate *)month;
-- (NSDate *)beginingOfWeek:(NSDate *)week;
-- (NSDate *)endOfWeek:(NSDate *)week;
-- (NSDate *)middleOfWeek:(NSDate *)week;
-- (NSInteger)numberOfDatesInMonth:(NSDate *)month;
 
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 

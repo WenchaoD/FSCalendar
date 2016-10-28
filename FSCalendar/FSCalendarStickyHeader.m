@@ -14,8 +14,9 @@
 
 @interface FSCalendarStickyHeader ()
 
-@property (weak, nonatomic) UIView *contentView;
-@property (weak, nonatomic) UIView *separator;
+@property (weak  , nonatomic) UIView      *contentView;
+@property (weak  , nonatomic) UIView      *bottomBorder;
+@property (weak  , nonatomic) UIImageView *weekdayView;
 
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
@@ -45,9 +46,9 @@
         self.titleLabel = label;
         
         view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.25];
+        view.backgroundColor = FSCalendarStandardLineColor;
         [_contentView addSubview:view];
-        self.separator = view;
+        self.bottomBorder = view;
         
         NSMutableArray *weekdayLabels = [NSMutableArray arrayWithCapacity:7];
         for (int i = 0; i < 7; i++) {
@@ -81,8 +82,10 @@
         
         CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_appearance.preferredHeaderTitleFont}].height*1.5 + weekdayMargin*3;
         
-        _separator.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
-        _titleLabel.frame = CGRectMake(0, _separator.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
+        _bottomBorder.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
+        _titleLabel.frame = CGRectMake(0, _bottomBorder.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
+        
+        self.weekdayView.frame = CGRectMake(self.weekdayLabels.firstObject.fs_left, self.weekdayLabels.firstObject.fs_top, self.weekdayLabels.lastObject.fs_right, self.weekdayLabels.firstObject.fs_height);
         
     }
     
@@ -102,6 +105,7 @@
         [self invalidateHeaderTextColor];
         [self invalidateWeekdayFont];
         [self invalidateWeekdayTextColor];
+        [self invalidateWeekdayBackground];
     }
 }
 
@@ -151,6 +155,29 @@
     }];
 }
 
+- (void)invalidateWeekdayBackground
+{
+    if (self.appearance.weekdayBackground) {
+        if (!self.weekdayView) {
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+            imageView.contentMode = UIViewContentModeCenter;
+            [self.contentView insertSubview:imageView belowSubview:self.weekdayLabels.firstObject];
+            self.weekdayView = imageView;
+        }
+        
+        self.weekdayView.frame = CGRectMake(self.weekdayLabels.firstObject.fs_left, self.weekdayLabels.firstObject.fs_top, self.weekdayLabels.lastObject.fs_right, self.weekdayLabels.firstObject.fs_height);
+        
+        if ([self.appearance.weekdayBackground isKindOfClass:[UIImage class]]) {
+            self.weekdayView.image = self.appearance.weekdayBackground;
+            self.weekdayView.backgroundColor = nil;
+        } else {
+            self.weekdayView.image = nil;
+            self.weekdayView.backgroundColor = self.appearance.weekdayBackground;
+        }
+    } else {
+        self.weekdayView = nil;
+    }
+}
 
 @end
 

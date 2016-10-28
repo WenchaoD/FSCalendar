@@ -17,13 +17,14 @@
 
 @property (weak, nonatomic) UILabel *titleLabel;
 
-@property (strong, nonatomic) NSArray *weekdayLabels;
+@property (strong, nonatomic) NSArray<UILabel *> *weekdayLabels;
 @property (strong, nonatomic) NSDate *month;
 
 - (void)invalidateHeaderFont;
 - (void)invalidateHeaderTextColor;
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
+- (void)invalidateWeekdayBackground;
 
 - (void)invalidateWeekdaySymbols;
 
