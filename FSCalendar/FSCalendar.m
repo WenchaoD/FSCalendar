@@ -133,6 +133,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)requestBoundingDatesIfNecessary;
 
+- (NSDate *)safeDateForDate:(NSDate *)date;
+
 @end
 
 @implementation FSCalendar
@@ -418,7 +420,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _needsAdjustingMonthPosition = NO;
             [self requestBoundingDatesIfNecessary];
             _supressEvent = NO;
-            [self scrollToPageForDate:_pagingEnabled?_currentPage:(_currentPage?:self.selectedDate) animated:NO];
+            NSDate *targetPage = self.pagingEnabled?self.currentPage:(self.currentPage?:self.selectedDate);
+            [self scrollToPageForDate:targetPage animated:NO];
         }
     }
     
@@ -1279,7 +1282,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated
 {
-    if (!date || ![self isDateInRange:date]) return;
+    if (!date) return;
+    if (![self isDateInRange:date]) {
+        date = [self safeDateForDate:date];
+        if (!date) return;
+    }
     
     if (!self.floatingMode) {
         if ([self isDateInDifferentPage:date]) {
@@ -1287,12 +1294,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             NSDate *lastPage = _currentPage;
             switch (_scope) {
                 case FSCalendarScopeMonth: {
-                    FSCalendarAssertDateInBounds(date, self.gregorian, [self.gregorian fs_firstDayOfMonth:self.minimumDate], [self.gregorian fs_lastDayOfMonth:self.maximumDate]);
                     _currentPage = [self.gregorian fs_firstDayOfMonth:date];
                     break;
                 }
                 case FSCalendarScopeWeek: {
-                    FSCalendarAssertDateInBounds(date, self.gregorian, [self.gregorian fs_firstDayOfWeek:self.minimumDate], [self.gregorian fs_lastDayOfWeek:self.maximumDate]);
                     _currentPage = [self.gregorian fs_firstDayOfWeek:date];
                     break;
                 }
@@ -1799,7 +1804,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _hasRequestedBoundingDates = YES;
         _minimumDate = self.proxy.minimumDateForCalendar;
         _maximumDate = self.proxy.maximumDateForCalendar;
+        NSAssert([self.gregorian compareDate:self.minimumDate toDate:self.maximumDate toUnitGranularity:NSCalendarUnitDay] != NSOrderedDescending, @"The minimum date of calendar should be earlier than the maximum.");
     }
+}
+
+- (NSDate *)safeDateForDate:(NSDate *)date
+{
+    if ([self.gregorian compareDate:date toDate:self.minimumDate toUnitGranularity:NSCalendarUnitDay] == NSOrderedAscending) {
+        date = self.minimumDate;
+    } else if ([self.gregorian compareDate:date toDate:self.maximumDate toUnitGranularity:NSCalendarUnitDay] == NSOrderedDescending) {
+        date = self.maximumDate;
+    }
+    return date;
 }
 
 @end
