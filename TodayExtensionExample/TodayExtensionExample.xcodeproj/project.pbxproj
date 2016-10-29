@@ -17,6 +17,7 @@
 		300036F81D9252CB00C795DE /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036E41D9252CB00C795DE /* FSCalendarScopeHandle.m */; };
 		300036F91D9252CB00C795DE /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 300036E61D9252CB00C795DE /* FSCalendarStickyHeader.m */; };
 		300036FA1D9252CB00C795DE /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 300036E71D9252CB00C795DE /* Info.plist */; };
+		3012FA2E1DC4506000222F38 /* FSCalendarDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3012FA2D1DC4506000222F38 /* FSCalendarDelegateProxy.m */; };
 		3055B1CE1DA933D0002AFA13 /* FSCalendarExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3055B1CD1DA933D0002AFA13 /* FSCalendarExtensions.m */; };
 		30623F6D1DC1F45600FA31B3 /* FSCalendarCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 30623F6C1DC1F45600FA31B3 /* FSCalendarCollectionViewLayout.m */; };
 		3091756F1D7EBD4100BBEB79 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3091756E1D7EBD4100BBEB79 /* main.m */; };
@@ -77,6 +78,8 @@
 		300036E51D9252CB00C795DE /* FSCalendarStickyHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarStickyHeader.h; sourceTree = "<group>"; };
 		300036E61D9252CB00C795DE /* FSCalendarStickyHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarStickyHeader.m; sourceTree = "<group>"; };
 		300036E71D9252CB00C795DE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3012FA2C1DC4506000222F38 /* FSCalendarDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarDelegateProxy.h; sourceTree = "<group>"; };
+		3012FA2D1DC4506000222F38 /* FSCalendarDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarDelegateProxy.m; sourceTree = "<group>"; };
 		3055B1CC1DA933D0002AFA13 /* FSCalendarExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarExtensions.h; sourceTree = "<group>"; };
 		3055B1CD1DA933D0002AFA13 /* FSCalendarExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarExtensions.m; sourceTree = "<group>"; };
 		30623F6B1DC1F45600FA31B3 /* FSCalendarCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarCollectionViewLayout.h; sourceTree = "<group>"; };
@@ -126,10 +129,12 @@
 			children = (
 				300036D01D9252CB00C795DE /* FSCalendar.h */,
 				300036D11D9252CB00C795DE /* FSCalendar.m */,
-				300036D21D9252CB00C795DE /* FSCalendarAnimator.h */,
-				300036D31D9252CB00C795DE /* FSCalendarAnimator.m */,
 				300036D41D9252CB00C795DE /* FSCalendarAppearance.h */,
 				300036D51D9252CB00C795DE /* FSCalendarAppearance.m */,
+				3012FA2C1DC4506000222F38 /* FSCalendarDelegateProxy.h */,
+				3012FA2D1DC4506000222F38 /* FSCalendarDelegateProxy.m */,
+				300036D21D9252CB00C795DE /* FSCalendarAnimator.h */,
+				300036D31D9252CB00C795DE /* FSCalendarAnimator.m */,
 				300036D61D9252CB00C795DE /* FSCalendarCell.h */,
 				300036D71D9252CB00C795DE /* FSCalendarCell.m */,
 				300036D81D9252CB00C795DE /* FSCalendarCollectionView.h */,
@@ -337,6 +342,7 @@
 				300036ED1D9252CB00C795DE /* FSCalendar+Deprecated.m in Sources */,
 				300036F01D9252CB00C795DE /* FSCalendarAnimator.m in Sources */,
 				300036F31D9252CB00C795DE /* FSCalendarCollectionView.m in Sources */,
+				3012FA2E1DC4506000222F38 /* FSCalendarDelegateProxy.m in Sources */,
 				300036F71D9252CB00C795DE /* FSCalendarHeader.m in Sources */,
 				3055B1CE1DA933D0002AFA13 /* FSCalendarExtensions.m in Sources */,
 				300036F81D9252CB00C795DE /* FSCalendarScopeHandle.m in Sources */,
