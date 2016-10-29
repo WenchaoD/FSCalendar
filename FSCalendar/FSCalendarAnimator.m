@@ -41,6 +41,16 @@
 
 @implementation FSCalendarAnimator
 
+- (instancetype)initWithCalendar:(FSCalendar *)calendar
+{
+    self = [super init];
+    if (self) {
+        self.calendar = calendar;
+        self.collectionView = self.calendar.collectionView;
+        self.collectionViewLayout = self.calendar.collectionViewLayout;
+    }
+    return self;
+}
 
 #pragma mark - Target actions
 
@@ -753,7 +763,6 @@
 }
 
 @end
-
 
 @implementation FSCalendarTransitionAttributes
 

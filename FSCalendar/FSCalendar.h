@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class FSCalendar;
 
 /**
- * FSCalendarDataSource is a source set of FSCalendar. The basic job is to provide event、subtitle and min/max day to display for calendar.
+ * FSCalendarDataSource is a source set of FSCalendar. The basic role is to provide event、subtitle and min/max day to display for calendar.
  */
 @protocol FSCalendarDataSource <NSObject>
 
@@ -496,7 +496,6 @@ IB_DESIGNABLE
 @end
 
 
-
 #pragma mark - Deprecate
 
 @interface FSCalendar (Deprecated)
@@ -506,7 +505,7 @@ IB_DESIGNABLE
 - (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated(-selectDate:scrollToDate:);
 
-@property (strong, nonatomic) NSString *identifier DEPRECATED_MSG_ATTRIBUTE("Changing calendar identifier is NOT RECOMMENDED. You should always use this library as a Gregorian calendar. Try to express other calendar as subtitles just as System calendar app does."); // Deprecated in 2.3.1
+@property (strong, nonatomic) NSString *identifier DEPRECATED_MSG_ATTRIBUTE("Changing calendar identifier is NOT RECOMMENDED. ");
 
 // Use NSDateFormatter
 - (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format FSCalendarDeprecated([NSDateFormatter stringFromDate:]);

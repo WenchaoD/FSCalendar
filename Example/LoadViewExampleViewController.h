@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface LoadViewExampleViewController : UIViewController<FSCalendarDataSource, FSCalendarDelegate>
 
 @property (weak, nonatomic) FSCalendar *calendar;
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSDictionary *images;
+@property (strong, nonatomic) NSDictionary<NSString *, UIImage *> *images;
 
 @end
+
+NS_ASSUME_NONNULL_END

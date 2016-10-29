@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+
 @interface NSCalendar (FSCalendarExtensions)
 
 - (nullable NSDate *)fs_firstDayOfMonth:(NSDate *)month;
@@ -47,8 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+
 @interface NSObject (FSCalendarExtensions)
 
+- (void)fs_setVariable:(id)variable forKey:(NSString *)key;
+- (id)fs_variableForKey:(NSString *)key;
 - (id)fs_performSelector:(SEL)selector withObjects:(nullable id)firstObject, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end

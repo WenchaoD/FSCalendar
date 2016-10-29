@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by DingWenchao on 6/25/15.
-//  Copyright (c) 2015 =. All rights reserved.
+//  Copyright (c) 2016 =. All rights reserved.
 //
 
 #import "LoadViewExampleViewController.h"
@@ -17,10 +17,10 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
-        self.images = @{@"2015/02/01":[UIImage imageNamed:@"icon_cat"],
-                        @"2015/02/05":[UIImage imageNamed:@"icon_footprint"],
-                        @"2015/02/20":[UIImage imageNamed:@"icon_cat"],
-                        @"2015/03/07":[UIImage imageNamed:@"icon_footprint"]};
+        self.images = @{@"2016/02/01":[UIImage imageNamed:@"icon_cat"],
+                        @"2016/02/05":[UIImage imageNamed:@"icon_footprint"],
+                        @"2016/02/20":[UIImage imageNamed:@"icon_cat"],
+                        @"2016/03/07":[UIImage imageNamed:@"icon_footprint"]};
     }
     return self;
 }
@@ -50,7 +50,7 @@
     self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     
     
-    [self.calendar selectDate:[self.dateFormatter dateFromString:@"2015/02/03"]];
+    // [self.calendar selectDate:[self.dateFormatter dateFromString:@"2016/02/03"]];
 
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -97,12 +97,12 @@
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2015/01/01"];
+    return [self.dateFormatter dateFromString:@"2016/10/01"];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2015/10/10"];
+    return [self.dateFormatter dateFromString:@"2017/10/10"];
 }
 
 

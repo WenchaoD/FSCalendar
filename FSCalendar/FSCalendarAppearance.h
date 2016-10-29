@@ -32,8 +32,10 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 };
 
 typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
+    FSCalendarSeparatorNone          = 0,
     FSCalendarSeparatorInterRows     = 1 << 0,
-    FSCalendarSeparatorInterColumns  = 1 << 1   // Will implemented soon
+    FSCalendarSeparatorInterColumns  = 1 << 1,   // Will implemented soon
+    FSCalendarSeparatorBelowWeekdays = 1 << 2    // Will implemented soon
 };
 
 /**

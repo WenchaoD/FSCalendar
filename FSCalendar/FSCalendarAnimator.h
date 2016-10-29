@@ -32,6 +32,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 
 @property (assign, nonatomic) CGSize cachedMonthSize;
 
+- (instancetype)initWithCalendar:(FSCalendar *)calendar;
+
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
 - (void)performBoundingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
 
