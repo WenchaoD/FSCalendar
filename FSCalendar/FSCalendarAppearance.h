@@ -213,6 +213,16 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize;
 
+/**
+ * The diameter of the selection circle around the day number in the calendar cell.
+ */
+@property (assign, nonatomic) CGFloat cellDiameter;
+
+/**
+ * The diameter of the event dot in the calendar cell.
+ */
+@property (assign, nonatomic) CGFloat eventDotDiameter;
+
 #if TARGET_INTERFACE_BUILDER
 
 // For preview only

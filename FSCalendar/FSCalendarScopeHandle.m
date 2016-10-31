@@ -14,7 +14,6 @@
 
 @interface FSCalendarScopeHandle () <UIGestureRecognizerDelegate>
 
-@property (weak, nonatomic) UIView *topBorder;
 @property (weak, nonatomic) UIView *handleIndicator;
 
 @property (weak, nonatomic) FSCalendarAppearance *appearance;
@@ -44,7 +43,7 @@
         view.layer.backgroundColor = FSCalendarStandardScopeHandleColor.CGColor;
         [self addSubview:view];
         self.handleIndicator = view;
-
+        
         UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         panGesture.minimumNumberOfTouches = 1;
         panGesture.maximumNumberOfTouches = 2;
@@ -52,7 +51,7 @@
         self.panGesture = panGesture;
         
         self.exclusiveTouch = YES;
-                
+        
     }
     return self;
 }

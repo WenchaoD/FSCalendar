@@ -12,6 +12,7 @@
 
 @interface FSCalendarScopeHandle : UIView <UIGestureRecognizerDelegate>
 
+@property (weak, nonatomic) UIView *topBorder;
 @property (weak, nonatomic) UIPanGestureRecognizer *panGesture;
 @property (weak, nonatomic) FSCalendar *calendar;
 

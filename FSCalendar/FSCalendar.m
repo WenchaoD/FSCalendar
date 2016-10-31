@@ -121,6 +121,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) CGFloat                    preferredWeekdayHeight;
 @property (assign, nonatomic) CGFloat                    preferredRowHeight;
 @property (assign, nonatomic) CGFloat                    preferredPadding;
+@property (assign, nonatomic) CGFloat                    preferredScopeHandleHeight;
+@property (assign, nonatomic) BOOL                       preferredHideScopeHandleTopBorder;
 @property (assign, nonatomic) FSCalendarOrientation      orientation;
 
 @property (readonly, nonatomic) BOOL floatingMode;
@@ -233,6 +235,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
     _preferredPadding       = FSCalendarAutomaticDimension;
+    _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
+    _preferredHideScopeHandleTopBorder = NO;
+    
     _lineHeightMultiplier    = 1.0;
     
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
@@ -366,6 +371,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
         if (_scopeHandle) {
             CGFloat scopeHandleHeight = self.animator.cachedMonthSize.height*0.08;
+            if (_scopeHandleHeight > 0) {
+                _preferredScopeHandleHeight = _scopeHandleHeight;
+                scopeHandleHeight = _preferredScopeHandleHeight;
+            }
+            if (_hideScopeHandleTopBorder != _preferredHideScopeHandleTopBorder) {
+                _preferredHideScopeHandleTopBorder = _hideScopeHandleTopBorder;
+                _scopeHandle.topBorder.hidden = YES;
+            }
             _contentView.frame = CGRectMake(0, 0, self.fs_width, self.fs_height-scopeHandleHeight);
             _scopeHandle.frame = CGRectMake(0, _contentView.fs_bottom, self.fs_width, scopeHandleHeight);
         } else {
@@ -612,11 +625,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     BOOL shouldSelect = YES;
     if (cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
         shouldSelect &= [self shouldSelectDate:cell.date];
-    }
-    if (shouldSelect) {
-        if (!self.allowsMultipleSelection && self.selectedDate) {
-            [self deselectDate:self.selectedDate];
-        }
     }
     return shouldSelect && [self isDateInRange:cell.date];
 }
@@ -900,6 +908,33 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)setRowHeight:(CGFloat)rowHeight
+{
+    if (_rowHeight != rowHeight) {
+        _rowHeight = rowHeight;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setScopeHandleHeight:(CGFloat)scopeHandleHeight
+{
+    if (_scopeHandleHeight != scopeHandleHeight) {
+        _scopeHandleHeight = scopeHandleHeight;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setHideScopeHandleTopBorder:(BOOL)hideScopeHandleTopBorder
+{
+    if (_hideScopeHandleTopBorder != hideScopeHandleTopBorder) {
+        _hideScopeHandleTopBorder = hideScopeHandleTopBorder;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
 - (void)setLocale:(NSLocale *)locale
 {
     if (![_locale isEqual:locale]) {
@@ -965,6 +1000,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredRowHeight = FSCalendarAutomaticDimension;
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
         _preferredPadding = FSCalendarAutomaticDimension;
+        _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
+        _preferredHideScopeHandleTopBorder = NO;
         [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
@@ -1020,7 +1057,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (CGFloat)preferredRowHeight
 {
-    if (_preferredRowHeight == FSCalendarAutomaticDimension) {
+    if (_rowHeight > 0) {
+        _preferredRowHeight = _rowHeight;
+    } else if (_preferredRowHeight == FSCalendarAutomaticDimension) {
         CGFloat headerHeight = self.preferredHeaderHeight;
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat contentHeight = self.animator.cachedMonthSize.height-headerHeight-weekdayHeight-_scopeHandle.fs_height;
@@ -1130,7 +1169,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_placeholderType != placeholderType) {
         _placeholderType = placeholderType;
         if (self.hasValidateVisibleLayout) {
-            _preferredRowHeight = FSCalendarAutomaticDimension;
+            if (_rowHeight > 0) {
+                _preferredRowHeight = _rowHeight;
+            } else {
+                _preferredRowHeight = FSCalendarAutomaticDimension;
+            }
             [_collectionView reloadData];
         }
     }
@@ -1541,6 +1584,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (self.showsScopeHandle) {
             if (!_scopeHandle) {
                 FSCalendarScopeHandle *handle = [[FSCalendarScopeHandle alloc] initWithFrame:CGRectZero];
+                if (_hideScopeHandleTopBorder != _preferredHideScopeHandleTopBorder) {
+                    _preferredHideScopeHandleTopBorder = _hideScopeHandleTopBorder;
+                    _scopeHandle.topBorder.hidden = YES;
+                }
+                
                 handle.calendar = self;
                 [self addSubview:handle];
                 self.scopeHandle = handle;
@@ -1585,6 +1633,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight = FSCalendarAutomaticDimension;
     _preferredPadding = FSCalendarAutomaticDimension;
+    _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
+    _preferredHideScopeHandleTopBorder = NO;
     _needsAdjustingViewFrame = YES;
     [self setNeedsLayout];
 }
@@ -1755,6 +1805,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
     _preferredPadding       = FSCalendarAutomaticDimension;
+    _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
+    _preferredHideScopeHandleTopBorder = NO;
     
     [self.collectionViewLayout invalidateLayout];
     [self.collectionViewLayout layoutAttributesForElementsInRect:CGRectZero];

@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FSCalendarAppearance.h"
 
 @interface FSCalendarEventIndicator : UIView
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (strong, nonatomic) id color;
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
+@property (weak, nonatomic) FSCalendarAppearance *appearance;
 
 @end

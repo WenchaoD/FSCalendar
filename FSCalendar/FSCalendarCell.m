@@ -60,6 +60,7 @@
         eventIndicator = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
         eventIndicator.backgroundColor = [UIColor clearColor];
         eventIndicator.hidden = YES;
+        eventIndicator.appearance = self.appearance;
         [self.contentView addSubview:eventIndicator];
         self.eventIndicator = eventIndicator;
         
@@ -71,6 +72,8 @@
         self.clipsToBounds = NO;
         self.contentView.clipsToBounds = NO;
         
+        _preferredCellDiameter = FSCalendarStandardCellDiameter;
+        
     }
     return self;
 }
@@ -79,8 +82,14 @@
 {
     [super setBounds:bounds];
     CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
-    CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
-    diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
+    CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0, self.bounds.size.width);
+    if (_appearance.cellDiameter > 0) {
+        _preferredCellDiameter = _appearance.cellDiameter;
+        diameter = _preferredCellDiameter;
+    } else {
+        diameter = diameter > _preferredCellDiameter ? (diameter - (diameter-_preferredCellDiameter)*0.5) : diameter;
+    }
+    
     _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
                                    (titleHeight-diameter)/2,
                                    diameter,
@@ -113,6 +122,7 @@
     [CATransaction setDisableActions:YES];
     _shapeLayer.hidden = YES;
     [self.contentView.layer removeAnimationForKey:@"opacity"];
+    [self resetCustomDayNumberDiameter];
 }
 
 #pragma mark - Public
@@ -142,20 +152,43 @@
     
 }
 
+/**
+ * Function to reset the custom cell selection diameter (i.e., the cell's shape layer frame.) The reset will only occur if the cell diameter has been customized.
+ */
+- (void)resetCustomDayNumberDiameter {
+    CGFloat diameter = _appearance.cellDiameter;
+    CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
+    if (diameter > 0) {
+        if (_appearance.cellDiameter > 0) {
+            self.shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
+                                               (titleHeight-diameter)/2,
+                                               diameter, diameter);
+        }
+        
+    }
+}
+
 #pragma mark - Private
 
 - (void)configureCell
 {
     if (self.dateIsPlaceholder) {
         if (self.calendar.placeholderType==FSCalendarPlaceholderTypeNone) {
-            self.contentView.hidden = [self.calendar isDateInRange:self.date]||![self.calendar.gregorian isDate:self.date equalToDate:self.month toUnitGranularity:NSCalendarUnitMonth];
+            if ([self.calendar isDateInRange:self.date]||![self.calendar.gregorian isDate:self.date equalToDate:self.month toUnitGranularity:NSCalendarUnitMonth]) {
+                self.titleLabel.hidden = YES;
+                self.eventIndicator.hidden = YES;
+            } else {
+                self.titleLabel.hidden = NO;
+                self.eventIndicator.hidden = NO;
+            }
         } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
             
             NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
             
             NSInteger lineCount = [self.calendar numberOfRowsInMonth:self.month];
             if (lineCount == 6) {
-                self.contentView.hidden = NO;
+                self.titleLabel.hidden = NO;
+                self.eventIndicator.hidden = NO;
             } else {
                 NSInteger currentLine = 0;
                 if (self.calendar.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
@@ -163,15 +196,22 @@
                 } else {
                     currentLine = indexPath.item%6 + 1;
                 }
-                self.contentView.hidden = (currentLine>lineCount);
+                if (currentLine>lineCount) {
+                    self.titleLabel.hidden = YES;
+                    self.eventIndicator.hidden = YES;
+                } else {
+                    self.titleLabel.hidden = NO;
+                    self.eventIndicator.hidden = NO;
+                }
             }
         }
-    } else if (self.contentView.hidden) {
+    } else if (self.titleLabel.hidden && self.eventIndicator.hidden) {
         self.needsAdjustingViewFrame = YES;
-        self.contentView.hidden = NO;
+        self.titleLabel.hidden = NO;
+        self.eventIndicator.hidden = NO;
     }
     
-    if (self.contentView.hidden) return;
+    if (self.titleLabel.hidden && self.eventIndicator.hidden) return;
     
     _titleLabel.text = self.title ?: @([self.calendar.gregorian component:NSCalendarUnitDay fromDate:_date]).stringValue;
     if (_subtitle) {
@@ -351,6 +391,11 @@
     _imageView.hidden = !_image;
 }
 
+- (void)invalidateEventIndicatorAppearance
+{
+    _eventIndicator.appearance = self.appearance;
+}
+
 #pragma mark - Properties
 
 - (UIColor *)colorForCellFill
@@ -431,6 +476,7 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
     }
     if (![_appearance isEqual:calendar.appearance]) {
         _appearance = calendar.appearance;
+        [self invalidateEventIndicatorAppearance];
         [self invalidateTitleFont];
         [self invalidateSubtitleFont];
         [self invalidateTitleTextColor];

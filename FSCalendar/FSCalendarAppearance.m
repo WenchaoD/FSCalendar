@@ -58,6 +58,8 @@
 - (void)invalidateFillColors;
 - (void)invalidateEventColors;
 - (void)invalidateBorderRadius;
+- (void)invalidateCellDiameter;
+- (void)invalidateEventDotDiameter;
 
 @end
 
@@ -530,6 +532,22 @@
     }
 }
 
+- (void)setCellDiameter:(CGFloat)cellDiameter
+{
+    if (_cellDiameter != cellDiameter) {
+        _cellDiameter = cellDiameter;
+        [self invalidateCellDiameter];
+    }
+}
+
+- (void)setEventDotDiameter:(CGFloat)eventDotDiameter
+{
+    if (_eventDotDiameter != eventDotDiameter) {
+        _eventDotDiameter = eventDotDiameter;
+        [self invalidateEventDotDiameter];
+    }
+}
+
 - (UIFont *)preferredTitleFont
 {
     return [UIFont fontWithName:_titleFontName size:_adjustsFontSizeToFitContentSize?_preferredTitleFontSize:_titleFontSize];
@@ -677,6 +695,16 @@
 {
     [_calendar.header.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
     [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateCellDiameter
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+}
+
+- (void)invalidateEventDotDiameter
+{
+    [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
 }
 
 @end

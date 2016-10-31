@@ -9,13 +9,14 @@
 #import "FSCalendarEventIndicator.h"
 #import "FSCalendarConstance.h"
 #import "FSCalendarExtensions.h"
+#import "FSCalendarAppearance.h"
 
 @interface FSCalendarEventIndicator ()
 
 @property (weak, nonatomic) UIView *contentView;
-
 @property (strong, nonatomic) NSMutableArray *eventLayers;
 @property (assign, nonatomic) BOOL needsInvalidatingColor;
+@property (assign, nonatomic) CGFloat preferredEventDotDiameter;
 
 @end
 
@@ -41,6 +42,8 @@
         _needsInvalidatingColor = YES;
         _needsAdjustingViewFrame = YES;
         
+        _preferredEventDotDiameter = FSCalendarMaximumEventDotDiameter;
+        
     }
     return self;
 }
@@ -49,9 +52,16 @@
 {
     [super layoutSubviews];
     if (_needsAdjustingViewFrame) {
-        CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
-        self.contentView.fs_height = self.fs_height;
-        self.contentView.fs_width = (self.numberOfEvents*2-1)*diameter;
+        CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height), _preferredEventDotDiameter);
+        if (_appearance.eventDotDiameter > 0) {
+            diameter = _appearance.eventDotDiameter;
+            self.contentView.fs_width = diameter;
+            self.contentView.fs_height = diameter;
+            self.fs_height = diameter;
+        } else {
+            self.contentView.fs_width = (self.numberOfEvents*2-1)*diameter;
+            self.contentView.fs_height = self.fs_height;
+        }
         self.contentView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     }
 }
@@ -62,7 +72,10 @@
     if (layer == self.layer) {
         if (_needsAdjustingViewFrame) {
             _needsAdjustingViewFrame = NO;
-            CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
+            CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height), _preferredEventDotDiameter);
+            if (_appearance.eventDotDiameter > 0) {
+                diameter = _appearance.eventDotDiameter;
+            }
             for (int i = 0; i < self.eventLayers.count; i++) {
                 CALayer *eventLayer = self.eventLayers[i];
                 eventLayer.hidden = i >= self.numberOfEvents;

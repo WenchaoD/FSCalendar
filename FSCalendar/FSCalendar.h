@@ -364,6 +364,21 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat lineHeightMultiplier;
 
 /**
+ * The height of the calendar weekday rows (or height of each cell).
+ */
+@property (assign, nonatomic) IBInspectable CGFloat rowHeight;
+
+/**
+ * The height of the calendar scope handle.
+ */
+@property (assign, nonatomic) IBInspectable CGFloat scopeHandleHeight;
+
+/**
+ * The height of the calendar scope handle.
+ */
+@property (assign, nonatomic) IBInspectable BOOL hideScopeHandleTopBorder;
+
+/**
  * The calendar appearance used to control the global fonts、colors .etc
  */
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
