@@ -12,7 +12,6 @@
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarExtensions.h"
 #import "FSCalendarConstants.h"
-#import <objc/runtime.h>
 
 #define kFSCalendarSeparatorInterRows @"FSCalendarSeparatorInterRows"
 #define kFSCalendarSeparatorInterColumns @"FSCalendarSeparatorInterColumns"
@@ -110,15 +109,16 @@
                 return NO;
             }
             
-            NSDate *currentPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:evaluatedObject.indexPath.section toDate:[self.calendar.gregorian fs_firstDayOfMonth:self.calendar.minimumDate] options:0];
-            NSInteger numberOfRows = [self.calendar numberOfRowsInMonth:currentPage];
+            NSInteger numberOfRows = [self.calendar.calculator numberOfRowsInSection:evaluatedObject.indexPath.section];
             
             switch (self.scrollDirection) {
                 case UICollectionViewScrollDirectionHorizontal: {
                     return evaluatedObject.indexPath.item < numberOfRows-1;
                 }
                 case UICollectionViewScrollDirectionVertical: {
-                    return evaluatedObject.indexPath.item%7==0 && evaluatedObject.indexPath.item/7<numberOfRows-1;
+                    BOOL isValid = evaluatedObject.indexPath.item == 0;
+                    isValid |= (evaluatedObject.indexPath.item%7==0 && evaluatedObject.indexPath.item/7<numberOfRows-1);
+                    return isValid;
                 }
             }
             return NO;

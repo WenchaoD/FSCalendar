@@ -657,11 +657,13 @@
 - (void)invalidateTitleFont
 {
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+    _calendar.calculator.titleHeight = -1;
 }
 
 - (void)invalidateSubtitleFont
 {
     [_calendar.collectionView.visibleCells makeObjectsPerformSelector:_cmd];
+    _calendar.calculator.subtitleHeight = -1;
 }
 
 - (void)invalidateTitleTextColor

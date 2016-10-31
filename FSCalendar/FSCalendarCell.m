@@ -153,7 +153,7 @@
             
             NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
             
-            NSInteger lineCount = [self.calendar numberOfRowsInMonth:self.month];
+            NSInteger lineCount = [self.calendar.calculator numberOfRowsInMonth:self.month];
             if (lineCount == 6) {
                 self.contentView.hidden = NO;
             } else {
@@ -187,8 +187,8 @@
     if (_needsAdjustingViewFrame || CGSizeEqualToSize(_titleLabel.frame.size, CGSizeZero)) {
         _needsAdjustingViewFrame = NO;
         if (_subtitle) {
-            CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_titleLabel.font}].height;
-            CGFloat subtitleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_subtitleLabel.font}].height;
+            CGFloat titleHeight = self.calendar.calculator.titleHeight;
+            CGFloat subtitleHeight = self.calendar.calculator.subtitleHeight;
             
             CGFloat height = titleHeight + subtitleHeight;
             _titleLabel.frame = CGRectMake(

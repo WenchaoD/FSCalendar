@@ -313,8 +313,8 @@
 - (void)performBoundingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration
 {
     if (self.calendarScope != FSCalendarScopeMonth) return;
-    NSInteger lastRowCount = [self.calendar numberOfRowsInMonth:fromMonth];
-    NSInteger currentRowCount = [self.calendar numberOfRowsInMonth:toMonth];
+    NSInteger lastRowCount = [self.calendar.calculator numberOfRowsInMonth:fromMonth];
+    NSInteger currentRowCount = [self.calendar.calculator numberOfRowsInMonth:toMonth];
     if (lastRowCount != currentRowCount) {
         CGFloat animationDuration = duration;
         CGRect bounds = (CGRect){CGPointZero,[self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth]};
@@ -399,7 +399,7 @@
                 
 #define kCalculateRowNumber \
                 do { \
-                    UICollectionViewLayoutAttributes *itemAttributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeMonth]]; \
+                    UICollectionViewLayoutAttributes *itemAttributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:[self.calendar.calculator indexPathForDate:focusedDate scope:FSCalendarScopeMonth]]; \
                     CGPoint focuedCenter = itemAttributes.center; \
                     if (CGRectContainsPoint(self.collectionView.bounds, focuedCenter)) { \
                         switch (self.collectionViewLayout.scrollDirection) { \
@@ -434,7 +434,7 @@
                 NSDate *minimumPage = [self.calendar.gregorian fs_firstDayOfMonth:self.calendar.minimumDate];
                 NSInteger visibleSection = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:currentPage options:0].month;
                 NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:visibleSection];
-                NSDate *firstDate = [self.calendar dateForIndexPath:firstIndexPath scope:FSCalendarScopeMonth];
+                NSDate *firstDate = [self.calendar.calculator dateForIndexPath:firstIndexPath scope:FSCalendarScopeMonth];
                 currentPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:focusedRowNumber*7 toDate:firstDate options:0];
                 
                 attributes.focusedRowNumber = focusedRowNumber;
@@ -455,7 +455,7 @@
                 
                 NSDate *focusedDate = self.calendar.selectedDate ?: self.calendar.today;
                 if (focusedDate) {
-                    UICollectionViewLayoutAttributes *itemAttributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:[self.calendar indexPathForDate:focusedDate scope:FSCalendarScopeWeek]];
+                    UICollectionViewLayoutAttributes *itemAttributes = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:[self.calendar.calculator indexPathForDate:focusedDate scope:FSCalendarScopeWeek]];
                     CGPoint focuedCenter = itemAttributes.center;
                     if (!CGRectContainsPoint(self.calendar.collectionView.bounds, focuedCenter)) {
                         focusedDate = nil;
@@ -468,7 +468,7 @@
                 NSDate *firstDayOfMonth = [self.calendar.gregorian fs_firstDayOfMonth:focusedDate];
                 attributes.focusedDate = focusedDate;
                 firstDayOfMonth = firstDayOfMonth ?: [self.calendar.gregorian fs_firstDayOfMonth:currentPage];
-                NSInteger numberOfPlaceholdersForPrev = [self.calendar numberOfHeadPlaceholdersForMonth:firstDayOfMonth];
+                NSInteger numberOfPlaceholdersForPrev = [self.calendar.calculator numberOfHeadPlaceholdersForMonth:firstDayOfMonth];
                 NSDate *firstDateOfPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfPlaceholdersForPrev toDate:firstDayOfMonth options:0];
                 
                 for (int i = 0; i < 6; i++) {
@@ -534,7 +534,7 @@
                                          self.calendar.preferredHeaderHeight+
                                          self.calendar.preferredWeekdayHeight+
                                          self.calendar.preferredPadding*2+
-                                         ([self.calendar numberOfRowsInMonth:page]*self.calendar.preferredRowHeight)+
+                                         ([self.calendar.calculator numberOfRowsInMonth:page]*self.calendar.preferredRowHeight)+
                                          self.calendar.scopeHandle.fs_height);
             }
             break;
