@@ -30,6 +30,7 @@
 		309175AB1D7EBD6100BBEB79 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 309175AA1D7EBD6100BBEB79 /* TodayViewController.m */; };
 		309175AE1D7EBD6100BBEB79 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 309175AC1D7EBD6100BBEB79 /* MainInterface.storyboard */; };
 		309175B21D7EBD6100BBEB79 /* TodayExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 309175A41D7EBD6100BBEB79 /* TodayExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		30948A8D1DC78AE200DA02C9 /* FSCalendarCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 30948A8C1DC78AE200DA02C9 /* FSCalendarCalculator.m */; };
 		30A33A0E1DB1CA8D0039BEA3 /* FSCalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A33A0D1DB1CA8D0039BEA3 /* FSCalendarConstants.m */; };
 		30EDD2961D98C93B009D6CA3 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30EDD2951D98C93B009D6CA3 /* Image.xcassets */; };
 /* End PBXBuildFile section */
@@ -100,6 +101,8 @@
 		309175AA1D7EBD6100BBEB79 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
 		309175AD1D7EBD6100BBEB79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		309175AF1D7EBD6100BBEB79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		30948A8B1DC78AE200DA02C9 /* FSCalendarCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarCalculator.h; sourceTree = "<group>"; };
+		30948A8C1DC78AE200DA02C9 /* FSCalendarCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarCalculator.m; sourceTree = "<group>"; };
 		30A33A0C1DB1CA8D0039BEA3 /* FSCalendarConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarConstants.h; sourceTree = "<group>"; };
 		30A33A0D1DB1CA8D0039BEA3 /* FSCalendarConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarConstants.m; sourceTree = "<group>"; };
 		30EDD2951D98C93B009D6CA3 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
@@ -135,6 +138,8 @@
 				3012FA2D1DC4506000222F38 /* FSCalendarDelegateProxy.m */,
 				300036D21D9252CB00C795DE /* FSCalendarAnimator.h */,
 				300036D31D9252CB00C795DE /* FSCalendarAnimator.m */,
+				30948A8B1DC78AE200DA02C9 /* FSCalendarCalculator.h */,
+				30948A8C1DC78AE200DA02C9 /* FSCalendarCalculator.m */,
 				300036D61D9252CB00C795DE /* FSCalendarCell.h */,
 				300036D71D9252CB00C795DE /* FSCalendarCell.m */,
 				300036D81D9252CB00C795DE /* FSCalendarCollectionView.h */,
@@ -347,6 +352,7 @@
 				3055B1CE1DA933D0002AFA13 /* FSCalendarExtensions.m in Sources */,
 				300036F81D9252CB00C795DE /* FSCalendarScopeHandle.m in Sources */,
 				309175AB1D7EBD6100BBEB79 /* TodayViewController.m in Sources */,
+				30948A8D1DC78AE200DA02C9 /* FSCalendarCalculator.m in Sources */,
 				300036EF1D9252CB00C795DE /* FSCalendar.m in Sources */,
 				300036F21D9252CB00C795DE /* FSCalendarCell.m in Sources */,
 				300036F11D9252CB00C795DE /* FSCalendarAppearance.m in Sources */,

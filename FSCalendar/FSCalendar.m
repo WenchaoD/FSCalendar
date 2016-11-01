@@ -1115,21 +1115,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         return;
     }
     [_selectedDates removeObject:date];
+    [self deselectCounterpartDate:date];
     NSIndexPath *indexPath = [self.calculator indexPathForDate:date];
     if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:YES];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
-        [self deselectCounterpartDate:date];
     }
 }
 
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder
 {
-    if (!self.allowsSelection) {
-        return;
-    }
+    if (!self.allowsSelection || !date) return;
+        
     [self requestBoundingDatesIfNecessary];
     
     FSCalendarAssertDateInBounds(date,self.gregorian,self.minimumDate,self.maximumDate);
