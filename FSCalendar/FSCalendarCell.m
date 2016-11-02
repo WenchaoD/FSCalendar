@@ -117,6 +117,11 @@
     [self configureCell];
 }
 
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];

@@ -57,9 +57,11 @@
 - (instancetype)initWithFrame:(CGRect)frame NS_REQUIRES_SUPER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_REQUIRES_SUPER;
 
+// Configure selected state for div cell.
+- (void)setSelected:(BOOL)selected NS_REQUIRES_SUPER;
+
 // Adjust the frame for subviews for manual-layout
 - (void)layoutSubviews NS_REQUIRES_SUPER;
-
 
 - (void)invalidateTitleFont;
 - (void)invalidateSubtitleFont;

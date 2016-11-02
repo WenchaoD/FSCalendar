@@ -438,12 +438,22 @@ IB_DESIGNABLE
 
 
 /**
- Returns the calendar cell at the specified date.
+ Returns a reusable calendar cell object located by its identifier.
+
+ @param identifier The reuse identifier for the specified cell. This parameter must not be nil.
+ @param date The specific date of the cell.
+ @return A valid FSCalendarCell object.
+ */
+- (__kindof FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date;
+
+/**
+ Returns the calendar cell for the specified date.
 
  @param date The date of the cell
  @return An object representing a cell of the calendar, or nil if the cell is not visible or date is out of range.
  */
 - (__kindof FSCalendarCell *)cellForDate:(NSDate *)date;
+
 
 /**
  Returns the frame for a non-placeholder cell relative to the super view of the calendar.
@@ -451,6 +461,7 @@ IB_DESIGNABLE
  @param date A date is the calendar.
  */
 - (CGRect)frameForDate:(NSDate *)date;
+
 
 /**
  Returns the midpoint for a non-placeholder cell relative to the super view of the calendar.

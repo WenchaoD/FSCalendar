@@ -838,7 +838,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date;
 {
-    if (!identifier || !date) return nil;
+    if (!identifier || !date || ![self isDateInRange:date]) return nil;
     return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:[self.calculator indexPathForDate:date]];
 }
 
