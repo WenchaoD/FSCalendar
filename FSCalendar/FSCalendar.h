@@ -19,6 +19,7 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendarAppearance.h"
 #import "FSCalendarConstants.h"
+#import "FSCalendarCell.h"
 
 //! Project version number for FSCalendar.
 FOUNDATION_EXPORT double FSCalendarVersionNumber;
@@ -77,6 +78,11 @@ NS_ASSUME_NONNULL_BEGIN
  * Asks the dataSource the maximum date to display.
  */
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar;
+
+/**
+ * Asks the data source for a cell to insert in a particular data of the calendar.
+ */
+- (__kindof FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date;
 
 /**
  * Asks the dataSource the number of event dots for a specific date.
@@ -313,133 +319,143 @@ IB_DESIGNABLE
 #endif
 
 /**
- * The index of the first weekday of the calendar. Give a '2' to make Monday in the first column.
+ The index of the first weekday of the calendar. Give a '2' to make Monday in the first column.
  */
 @property (assign, nonatomic) IBInspectable NSUInteger firstWeekday;
 
 /**
- * The height of month header of the calendar. Give a '0' to remove the header.
+ The height of month header of the calendar. Give a '0' to remove the header.
  */
 @property (assign, nonatomic) IBInspectable CGFloat headerHeight;
 
 /**
- * The height of weekday header of the calendar.
+ The height of weekday header of the calendar.
  */
 @property (assign, nonatomic) IBInspectable CGFloat weekdayHeight;
 
 /**
- * A Boolean value that determines whether users can select a date.
+ A Boolean value that determines whether users can select a date.
  */
 @property (assign, nonatomic) IBInspectable BOOL allowsSelection;
 
 /**
- * A Boolean value that determines whether users can select more than one date.
+ A Boolean value that determines whether users can select more than one date.
  */
 @property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
 
 /**
- * A Boolean value that determines whether paging is enabled for the calendar.
+ A Boolean value that determines whether paging is enabled for the calendar.
  */
 @property (assign, nonatomic) IBInspectable BOOL pagingEnabled;
 
 /**
- * A Boolean value that determines whether scrolling is enabled for the calendar.
+ A Boolean value that determines whether scrolling is enabled for the calendar.
  */
 @property (assign, nonatomic) IBInspectable BOOL scrollEnabled;
 
 /**
- * A Boolean value that determines whether scoping animation is centered a visible selected date. Default is YES.
+ A Boolean value that determines whether scoping animation is centered a visible selected date. Default is YES.
  */
 @property (assign, nonatomic) IBInspectable BOOL focusOnSingleSelectedDate;
 
 /**
- * A Boolean value that determines whether the calendar should show a handle for control the scope. Default is NO;
+ A Boolean value that determines whether the calendar should show a handle for control the scope. Default is NO;
  */
 @property (assign, nonatomic) IBInspectable BOOL showsScopeHandle;
 
 /**
- * The multiplier of line height while paging enabled is NO. Default is 1.0;
+ The multiplier of line height while paging enabled is NO. Default is 1.0;
  */
 @property (assign, nonatomic) IBInspectable CGFloat lineHeightMultiplier;
 
 /**
- * The calendar appearance used to control the global fonts、colors .etc
+ The calendar appearance used to control the global fonts、colors .etc
  */
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
 
 /**
- * A date object representing the minimum day enable、visible and selectable. (read-only)
+ A date object representing the minimum day enable、visible and selectable. (read-only)
  */
 @property (readonly, nonatomic) NSDate *minimumDate;
 
 /**
- * A date object representing the maximum day enable、visible and selectable. (read-only)
+ A date object representing the maximum day enable、visible and selectable. (read-only)
  */
 @property (readonly, nonatomic) NSDate *maximumDate;
 
 /**
- * A date object identifying the section of the selected date. (read-only)
+ A date object identifying the section of the selected date. (read-only)
  */
 @property (readonly, nonatomic) NSDate *selectedDate;
 
 /**
- * The dates representing the selected dates. (read-only)
+ The dates representing the selected dates. (read-only)
  */
 @property (readonly, nonatomic) NSArray *selectedDates;
 
 /**
- * Reload the dates and appearance of the calendar.
+ Reload the dates and appearance of the calendar.
  */
 - (void)reloadData;
 
 /**
- * Change the scope of the calendar. Make sure `-calendar:boundingRectWillChange:animated` is correctly adopted.
- *
- * @param scope The target scope to change.
- * @param animated YES if you want to animate the scoping; NO if the change should be immediate.
+ Change the scope of the calendar. Make sure `-calendar:boundingRectWillChange:animated` is correctly adopted.
+ 
+ @param scope The target scope to change.
+ @param animated YES if you want to animate the scoping; NO if the change should be immediate.
  */
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated;
 
 /**
- * Selects a given date in the calendar.
- *
- * @param date A date in the calendar.
+ Selects a given date in the calendar.
+ 
+ @param date A date in the calendar.
  */
 - (void)selectDate:(NSDate *)date;
 
 /**
- * Selects a given date in the calendar, optionally scrolling the date to visible area.
- *
- * @param date A date in the calendar.
- * @param scrollToDate A Boolean value that determines whether the calendar should scroll to the selected date to visible area.
+ Selects a given date in the calendar, optionally scrolling the date to visible area.
+ 
+ @param date A date in the calendar.
+ @param scrollToDate A Boolean value that determines whether the calendar should scroll to the selected date to visible area.
  */
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate;
 
 /**
- * Deselects a given date of the calendar.
- * @param date A date in the calendar.
+ Deselects a given date of the calendar.
+ 
+ @param date A date in the calendar.
  */
 - (void)deselectDate:(NSDate *)date;
 
 /**
- * Changes the current page of the calendar.
- *
- * @param currentPage Representing weekOfYear in week mode, or month in month mode.
- * @param animated YES if you want to animate the change in position; NO if it should be immediate.
+ Changes the current page of the calendar.
+ 
+ @param currentPage Representing weekOfYear in week mode, or month in month mode.
+ @param animated YES if you want to animate the change in position; NO if it should be immediate.
  */
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated;
 
+
 /**
- * Returns the frame for a non-placeholder cell relative to the super view of the calendar.
- *
- * @param date A date is the calendar.
+ Returns the calendar cell at the specified date.
+
+ @param date The date of the cell
+ @return An object representing a cell of the calendar, or nil if the cell is not visible or date is out of range.
+ */
+- (__kindof FSCalendarCell *)cellForDate:(NSDate *)date;
+
+/**
+ Returns the frame for a non-placeholder cell relative to the super view of the calendar.
+ 
+ @param date A date is the calendar.
  */
 - (CGRect)frameForDate:(NSDate *)date;
 
 /**
- * Returns the midpoint for a non-placeholder cell relative to the super view of the calendar.
- *
- * @param date A date is the calendar.
+ Returns the midpoint for a non-placeholder cell relative to the super view of the calendar.
+ 
+ @param date A date is the calendar.
  */
 - (CGPoint)centerForDate:(NSDate *)date;
 
@@ -519,9 +535,6 @@ IB_DESIGNABLE
 - (NSInteger)dayOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
 - (NSInteger)weekdayOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
 - (NSInteger)weekOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
-- (NSInteger)hourOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
-- (NSInteger)miniuteOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
-- (NSInteger)secondOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
 - (NSDate *)dateByIgnoringTimeComponentsOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateBySettingHour:minute:seconds:ofDate:options:]);
 - (NSDate *)tomorrowOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);;
 - (NSDate *)yesterdayOfDate:(NSDate *)date FSCalendarDeprecated([NSCalendar dateByAddingUnit:value:toDate:options:]);

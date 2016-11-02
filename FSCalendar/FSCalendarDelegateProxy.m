@@ -130,6 +130,17 @@
 #endif
 }
 
+- (FSCalendarCell *)cellForDate:(NSDate *)date
+{
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(calendar:cellForDate:)]) {
+        FSCalendarCell *cell = [self.dataSource calendar:self.calendar cellForDate:date];
+        if (cell && ![cell isKindOfClass:[FSCalendarCell class]]) {
+            [NSException raise:@"You must return a valid cell in calendar:cellForDate:" format:@""];
+        }
+        return cell;
+    }
+    return nil;
+}
 
 #pragma mark - Delegate requests
 

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-@class FSCalendar;
+@class FSCalendar, FSCalendarCell;
+
 @interface FSCalendarDelegateProxy : NSObject
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -23,6 +24,7 @@
 - (NSInteger)numberOfEventsForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
+- (__kindof FSCalendarCell *)cellForDate:(NSDate *)date;
 
 // Delegate requests
 - (BOOL)shouldSelectDate:(NSDate *)date;

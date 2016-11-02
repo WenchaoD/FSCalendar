@@ -31,48 +31,60 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
-        _needsAdjustingViewFrame = YES;
-        
-        UILabel *label;
-        CAShapeLayer *shapeLayer;
-        UIImageView *imageView;
-        FSCalendarEventIndicator *eventIndicator;
-        
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor blackColor];
-        [self.contentView addSubview:label];
-        self.titleLabel = label;
-        
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor lightGrayColor];
-        [self.contentView addSubview:label];
-        self.subtitleLabel = label;
-        
-        shapeLayer = [CAShapeLayer layer];
-        shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
-        shapeLayer.hidden = YES;
-        [self.contentView.layer insertSublayer:shapeLayer below:_titleLabel.layer];
-        self.shapeLayer = shapeLayer;
-        
-        eventIndicator = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
-        eventIndicator.backgroundColor = [UIColor clearColor];
-        eventIndicator.hidden = YES;
-        [self.contentView addSubview:eventIndicator];
-        self.eventIndicator = eventIndicator;
-        
-        imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        imageView.contentMode = UIViewContentModeBottom|UIViewContentModeCenter;
-        [self.contentView addSubview:imageView];
-        self.imageView = imageView;
-        
-        self.clipsToBounds = NO;
-        self.contentView.clipsToBounds = NO;
-        
+        [self commonInit];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    _needsAdjustingViewFrame = YES;
+    
+    UILabel *label;
+    CAShapeLayer *shapeLayer;
+    UIImageView *imageView;
+    FSCalendarEventIndicator *eventIndicator;
+    
+    label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor blackColor];
+    [self.contentView addSubview:label];
+    self.titleLabel = label;
+    
+    label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor lightGrayColor];
+    [self.contentView addSubview:label];
+    self.subtitleLabel = label;
+    
+    shapeLayer = [CAShapeLayer layer];
+    shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
+    shapeLayer.hidden = YES;
+    [self.contentView.layer insertSublayer:shapeLayer below:_titleLabel.layer];
+    self.shapeLayer = shapeLayer;
+    
+    eventIndicator = [[FSCalendarEventIndicator alloc] initWithFrame:CGRectZero];
+    eventIndicator.backgroundColor = [UIColor clearColor];
+    eventIndicator.hidden = YES;
+    [self.contentView addSubview:eventIndicator];
+    self.eventIndicator = eventIndicator;
+    
+    imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    imageView.contentMode = UIViewContentModeBottom|UIViewContentModeCenter;
+    [self.contentView addSubview:imageView];
+    self.imageView = imageView;
+    
+    self.clipsToBounds = NO;
+    self.contentView.clipsToBounds = NO;
 }
 
 - (void)setBounds:(CGRect)bounds
@@ -234,7 +246,7 @@
     UIColor *borderColor = self.colorForCellBorder;
     UIColor *fillColor = self.colorForCellFill;
     
-    BOOL shouldHideShapeLayer = !self.selected && !self.dateIsToday && !self.dateIsSelected && !borderColor && !fillColor;
+    BOOL shouldHideShapeLayer = !self.selected && !self.dateIsToday && !borderColor && !fillColor;
     
     if (_shapeLayer.hidden != shouldHideShapeLayer) {
         _shapeLayer.hidden = shouldHideShapeLayer;
@@ -285,7 +297,7 @@
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
-    if (self.isSelected || self.dateIsSelected) {
+    if (self.isSelected) {
         if (self.dateIsToday) {
             return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
         }
@@ -355,7 +367,7 @@
 
 - (UIColor *)colorForCellFill
 {
-    if (self.dateIsSelected || self.isSelected) {
+    if (self.selected) {
         return self.preferredFillSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
     }
     return self.preferredFillDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
@@ -363,7 +375,7 @@
 
 - (UIColor *)colorForTitleLabel
 {
-    if (self.dateIsSelected || self.isSelected) {
+    if (self.selected) {
         return self.preferredTitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
     }
     return self.preferredTitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.titleColors];
@@ -371,7 +383,7 @@
 
 - (UIColor *)colorForSubtitleLabel
 {
-    if (self.dateIsSelected || self.isSelected) {
+    if (self.selected) {
         return self.preferredSubtitleSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
     }
     return self.preferredSubtitleDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.subtitleColors];
@@ -379,7 +391,7 @@
 
 - (UIColor *)colorForCellBorder
 {
-    if (self.dateIsSelected || self.isSelected) {
+    if (self.selected) {
         return _preferredBorderSelectionColor ?: _appearance.borderSelectionColor;
     }
     return _preferredBorderDefaultColor ?: _appearance.borderDefaultColor;
@@ -387,7 +399,7 @@
 
 - (NSArray<UIColor *> *)colorsForEvents
 {
-    if (self.dateIsSelected || self.isSelected) {
+    if (self.selected) {
         return _preferredEventSelectionColors ?: @[_appearance.eventSelectionColor];
     }
     return _preferredEventDefaultColors ?: @[_appearance.eventDefaultColor];

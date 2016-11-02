@@ -112,30 +112,6 @@
     return component.weekOfYear;
 }
 
-- (NSInteger)hourOfDate:(NSDate *)date
-{
-    if (!date) return NSNotFound;
-    NSDateComponents *component = [self.gregorian components:NSCalendarUnitHour
-                                                   fromDate:date];
-    return component.hour;
-}
-
-- (NSInteger)miniuteOfDate:(NSDate *)date
-{
-    if (!date) return NSNotFound;
-    NSDateComponents *component = [self.gregorian components:NSCalendarUnitMinute
-                                                   fromDate:date];
-    return component.minute;
-}
-
-- (NSInteger)secondOfDate:(NSDate *)date
-{
-    if (!date) return NSNotFound;
-    NSDateComponents *component = [self.gregorian components:NSCalendarUnitSecond
-                                                   fromDate:date];
-    return component.second;
-}
-
 - (NSDate *)dateByIgnoringTimeComponentsOfDate:(NSDate *)date
 {
     if (!date) return nil;

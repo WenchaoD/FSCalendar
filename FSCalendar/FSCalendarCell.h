@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FSCalendar.h"
 
-@class FSCalendarEventIndicator;
+@class FSCalendar, FSCalendarAppearance, FSCalendarEventIndicator;
+
 @interface FSCalendarCell : UICollectionViewCell
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -32,7 +32,6 @@
 @property (assign, nonatomic) NSInteger numberOfEvents;
 
 @property (assign, nonatomic) BOOL dateIsPlaceholder;
-@property (assign, nonatomic) BOOL dateIsSelected;
 @property (assign, nonatomic) BOOL dateIsToday;
 
 @property (readonly, nonatomic) BOOL weekend;
@@ -53,6 +52,14 @@
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventDefaultColors;
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventSelectionColors;
 @property (assign, nonatomic) CGFloat preferredBorderRadius;
+
+// Add subviews to self.contentView and set up constraints
+- (instancetype)initWithFrame:(CGRect)frame NS_REQUIRES_SUPER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_REQUIRES_SUPER;
+
+// Adjust the frame for subviews for manual-layout
+- (void)layoutSubviews NS_REQUIRES_SUPER;
+
 
 - (void)invalidateTitleFont;
 - (void)invalidateSubtitleFont;

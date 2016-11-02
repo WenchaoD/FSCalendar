@@ -31,6 +31,9 @@ UIKIT_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
 
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
+UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
+
+
 #if TARGET_INTERFACE_BUILDER
 #define FSCalendarDeviceIsIPad NO
 #else

@@ -9,7 +9,6 @@
 #import "FSCalendar.h"
 #import "FSCalendarHeader.h"
 #import "FSCalendarStickyHeader.h"
-#import "FSCalendarCell.h"
 #import "FSCalendarCollectionViewLayout.h"
 #import "FSCalendarScopeHandle.h"
 
@@ -233,7 +232,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     collectionView.delaysContentTouches = NO;
     collectionView.canCancelContentTouches = YES;
     collectionView.allowsMultipleSelection = NO;
-    [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:@"cell"];
+    [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier];
     [collectionView registerClass:[FSCalendarStickyHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"placeholderHeader"];
     [daysContainer addSubview:collectionView];
@@ -506,7 +505,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FSCalendarCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    FSCalendarCell *cell = [self.proxy cellForDate:[self.calculator dateForIndexPath:indexPath]];
+    if (!cell) {
+        cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
+    }
     [self reloadDataForCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -537,7 +539,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.dateIsSelected = YES;
+    cell.selected = YES;
     [cell performSelecting];
     NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
     if (!_supressEvent) {
@@ -588,7 +590,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
-        cell.dateIsSelected = NO;
+        cell.selected = NO;
         [cell setNeedsLayout];
     }
     NSDate *selectedDate = cell.date ?: [self.calculator dateForIndexPath:indexPath];
@@ -818,6 +820,31 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [self scrollToPageForDate:currentPage animated:animated];
         }
     }
+}
+
+- (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
+{
+    if (!identifier.length) {
+        [NSException raise:@"This identifier must not be nil and must not be an empty string." format:@""];
+    }
+    if ([identifier isEqualToString:@"_FSCalendarDefaultCell"]) {
+        [NSException raise:@"Do not use _FSCalendarDefaultCell as the cell reuse identifier." format:@""];
+    }
+    if (![cellClass isSubclassOfClass:[FSCalendarCell class]]) {
+        [NSException raise:@"The cell class must be a subclass of FSCalendarCell." format:@""];
+    }
+    [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+}
+
+- (FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date;
+{
+    if (!identifier || !date) return nil;
+    return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:[self.calculator indexPathForDate:date]];
+}
+
+- (FSCalendarCell *)cellForDate:(NSDate *)date
+{
+    return (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:[self.calculator indexPathForDate:date]];
 }
 
 - (CGRect)frameForDate:(NSDate *)date
@@ -1120,7 +1147,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:YES];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
-        cell.dateIsSelected = NO;
+        cell.selected = NO;
         [cell setNeedsLayout];
     }
 }
@@ -1526,7 +1553,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.numberOfEvents = [self.proxy numberOfEventsForDate:cell.date];
     cell.title = [self.proxy titleForDate:cell.date];
     cell.subtitle  = [self.proxy subtitleForDate:cell.date];
-    cell.dateIsSelected = [_selectedDates containsObject:cell.date];
+    cell.selected = [_selectedDates containsObject:cell.date];
     cell.dateIsToday = self.today?[self.gregorian isDate:cell.date inSameDayAsDate:self.today]:NO;
     switch (_scope) {
         case FSCalendarScopeMonth: {
@@ -1535,7 +1562,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             cell.month = month;
             cell.dateIsPlaceholder = ![self.gregorian isDate:cell.date equalToDate:month toUnitGranularity:NSCalendarUnitMonth] || ![self isDateInRange:cell.date];
             if (cell.dateIsPlaceholder) {
-                cell.dateIsSelected &= _pagingEnabled;
+                cell.selected &= _pagingEnabled;
                 cell.dateIsToday &= _pagingEnabled;
             }
             break;
@@ -1548,7 +1575,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
     }
     [self invalidateAppearanceForCell:cell];
-    if (cell.dateIsSelected) {
+    if (cell.selected) {
         [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     } else if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:NO];
@@ -1571,9 +1598,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (!self.floatingMode) {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.dateIsPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && !evaluatedObject.dateIsSelected;
+            return evaluatedObject.dateIsPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && !evaluatedObject.selected;
         }]].firstObject;
-        cell.dateIsSelected = YES;
+        cell.selected = YES;
         [cell setNeedsLayout];
     }
 }
@@ -1583,16 +1610,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (self.floatingMode) {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.dateIsPlaceholder && evaluatedObject.dateIsSelected;
+            return evaluatedObject.dateIsPlaceholder && evaluatedObject.selected;
         }]].firstObject;
-        cell.dateIsSelected = NO;
+        cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
         [cell setNeedsLayout];
     } else {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.dateIsPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && evaluatedObject.dateIsSelected;
+            return evaluatedObject.dateIsPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && evaluatedObject.selected;
         }]].firstObject;
-        cell.dateIsSelected = NO;
+        cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
         [cell setNeedsLayout];
     }
