@@ -13,7 +13,7 @@
 #import "DelegateAppearanceViewController.h"
 #import "HidePlaceholderViewController.h"
 #import "ButtonsViewController.h"
-#import "ScopeHandleViewController.h"
+#import "DIVExampleViewController.h"
 
 @implementation FSTableViewController
 
@@ -24,7 +24,7 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     self.viewControllers = @[
-                             [ScopeHandleViewController class],
+                             [DIVExampleViewController class],
                              [ButtonsViewController class],
                              [HidePlaceholderViewController class],
                              [DelegateAppearanceViewController class],

@@ -551,7 +551,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    if (cell.dateIsPlaceholder) {
+    if (cell.isPlaceholder) {
         if (_placeholderType == FSCalendarPlaceholderTypeNone) return NO;
         if ([self isDateInRange:cell.date]) {
             [self selectDate:cell.date scrollToDate:YES forPlaceholder:YES];
@@ -609,6 +609,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     return [self.proxy shouldDeselectDate:(cell.date?:[self.calculator dateForIndexPath:indexPath])];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDate *date = [self.calculator dateForIndexPath:indexPath];
+    [self.proxy willDisplayCell:(FSCalendarCell *)cell forDate:date];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
@@ -839,7 +845,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date;
 {
     if (!identifier || !date || ![self isDateInRange:date]) return nil;
-    return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:[self.calculator indexPathForDate:date]];
+    FSCalendarCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:[self.calculator indexPathForDate:date]];
+    return cell;
 }
 
 - (FSCalendarCell *)cellForDate:(NSDate *)date
@@ -1557,11 +1564,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.dateIsToday = self.today?[self.gregorian isDate:cell.date inSameDayAsDate:self.today]:NO;
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            NSDate *firstPage = [self.gregorian fs_firstDayOfMonth:_minimumDate];
-            NSDate *month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:firstPage options:0];
+            NSDate *month = [self.calculator monthForSection:indexPath.section];
             cell.month = month;
-            cell.dateIsPlaceholder = ![self.gregorian isDate:cell.date equalToDate:month toUnitGranularity:NSCalendarUnitMonth] || ![self isDateInRange:cell.date];
-            if (cell.dateIsPlaceholder) {
+            cell.placeholder = ![self.gregorian isDate:cell.date equalToDate:month toUnitGranularity:NSCalendarUnitMonth] || ![self isDateInRange:cell.date];
+            if (cell.isPlaceholder) {
                 cell.selected &= _pagingEnabled;
                 cell.dateIsToday &= _pagingEnabled;
             }
@@ -1569,7 +1575,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         case FSCalendarScopeWeek: {
             if (_pagingEnabled) {
-                cell.dateIsPlaceholder = ![self isDateInRange:cell.date];
+                cell.placeholder = ![self isDateInRange:cell.date];
             }
             break;
         }
@@ -1598,7 +1604,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (!self.floatingMode) {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.dateIsPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && !evaluatedObject.selected;
+            return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && !evaluatedObject.selected;
         }]].firstObject;
         cell.selected = YES;
         [cell setNeedsLayout];
@@ -1610,14 +1616,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (self.floatingMode) {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.dateIsPlaceholder && evaluatedObject.selected;
+            return evaluatedObject.isPlaceholder && evaluatedObject.selected;
         }]].firstObject;
         cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
         [cell setNeedsLayout];
     } else {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.dateIsPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && evaluatedObject.selected;
+            return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && evaluatedObject.selected;
         }]].firstObject;
         cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];

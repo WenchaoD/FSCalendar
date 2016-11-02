@@ -26,10 +26,6 @@
 @property (readonly, nonatomic) NSDate *minimumDate;
 @property (readonly, nonatomic) NSDate *maximumDate;
 
-- (NSDate *)weekForSection:(NSInteger)section;
-- (NSDate *)monthForSection:(NSInteger)section;
-- (NSDate *)monthHeadForSection:(NSInteger)section;
-
 @end
 
 @implementation FSCalendarCalculator

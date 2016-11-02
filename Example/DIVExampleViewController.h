@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
 
-@interface ScopeHandleViewController : UIViewController
+@interface DIVExampleViewController : UIViewController
 
 @end

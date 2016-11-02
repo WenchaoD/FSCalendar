@@ -31,7 +31,7 @@
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 @property (assign, nonatomic) NSInteger numberOfEvents;
 
-@property (assign, nonatomic) BOOL dateIsPlaceholder;
+@property (assign, nonatomic,getter=isPlaceholder) BOOL placeholder;
 @property (assign, nonatomic) BOOL dateIsToday;
 
 @property (readonly, nonatomic) BOOL weekend;

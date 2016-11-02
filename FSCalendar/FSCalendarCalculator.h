@@ -30,6 +30,10 @@
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope;
 
+- (NSDate *)weekForSection:(NSInteger)section;
+- (NSDate *)monthForSection:(NSInteger)section;
+- (NSDate *)monthHeadForSection:(NSInteger)section;
+
 - (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month;
 - (NSInteger)numberOfRowsInMonth:(NSDate *)month;
 - (NSInteger)numberOfRowsInSection:(NSInteger)section;

@@ -110,37 +110,43 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- * Asks the delegate whether the specific date is allowed to be selected by tapping.
+ Asks the delegate whether the specific date is allowed to be selected by tapping.
  */
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
 
 /**
- * Tells the delegate a date in the calendar is selected by tapping.
+ Tells the delegate a date in the calendar is selected by tapping.
  */
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
 
 /**
- * Asks the delegate whether the specific date is allowed to be deselected by tapping.
+ Asks the delegate whether the specific date is allowed to be deselected by tapping.
  */
 - (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date;
 
 /**
- * Tells the delegate a date in the calendar is deselected by tapping.
+ Tells the delegate a date in the calendar is deselected by tapping.
  */
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date;
 
 /**
- * Tells the delegate the calendar is about to change the bounding rect.
+ Tells the delegate the calendar is about to change the bounding rect.
  */
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated;
 
+
 /**
- * Tells the delegate the calendar is about to change the current page.
+ <#Description#>
+ */
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(__kindof FSCalendarCell *)cell forDate:(NSDate *)date;
+
+/**
+ Tells the delegate the calendar is about to change the current page.
  */
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 
 /**
- * These functions are deprecated
+ These functions are deprecated
  */
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated FSCalendarDeprecated(-calendar:boundingRectWillChange:animated:);
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar FSCalendarDeprecated(-calendarCurrentPageDidChange:);
@@ -436,6 +442,13 @@ IB_DESIGNABLE
  */
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated;
 
+/**
+ Register a class for use in creating new calendar cells.
+
+ @param cellClass The class of a cell that you want to use in the calendar.
+ @param identifier The reuse identifier to associate with the specified class. This parameter must not be nil and must not be an empty string.
+ */
+- (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier;
 
 /**
  Returns a reusable calendar cell object located by its identifier.

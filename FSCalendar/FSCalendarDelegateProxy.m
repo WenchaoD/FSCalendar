@@ -207,6 +207,13 @@
     return NO;
 }
 
+- (void)willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(calendar:willDisplayCell:forDate:)]) {
+        [self.delegate calendar:self.calendar willDisplayCell:cell forDate:date];
+    }
+}
+
 #pragma mark - Delegate appearance requests
 
 - (UIColor *)preferredFillDefaultColorForDate:(NSDate *)date

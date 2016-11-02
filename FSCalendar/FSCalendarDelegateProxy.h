@@ -33,6 +33,7 @@
 - (void)didDeselectDate:(NSDate *)date;
 - (void)currentPageDidChange;
 - (BOOL)boundingRectWillChange:(BOOL)animated;
+- (void)willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date;
 
 // Delegate appearance requests
 - (UIColor *)preferredFillDefaultColorForDate:(NSDate *)date;
