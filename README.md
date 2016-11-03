@@ -20,15 +20,11 @@
 * [Support](#support)
 * [Contact](#contact)
 
-[**QQ交流群: 323861692**](#qq_group)
+[**QQ支持群: 323861692**](#qq_group)
 
 # <a id="screenshots"></a>Screenshots
 
-## iPhone
-![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
-
-## iPad
-![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
+![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19955830/68eff986-a1c0-11e6-8e36-e49c260fe220.jpg)
 
 ## Working with AutoLayout and Orientation
 ![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/13728798/59855e3e-e95e-11e5-84db-60f843427ef3.gif)
