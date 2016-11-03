@@ -45,8 +45,11 @@
     [view addSubview:calendar];
     self.calendar = calendar;
     
+    calendar.calendarHeaderView.backgroundColor = [UIColor orangeColor];
+    calendar.calendarWeekdayView.backgroundColor = [UIColor orangeColor];
     
     calendar.appearance.todayColor = nil;
+    
     [calendar registerClass:[DIVCalendarCell class] forCellReuseIdentifier:@"cell"];
 }
 

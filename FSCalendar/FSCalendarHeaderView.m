@@ -8,11 +8,11 @@
 
 #import "FSCalendar.h"
 #import "FSCalendarExtensions.h"
-#import "FSCalendarHeader.h"
+#import "FSCalendarHeaderView.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarDynamicHeader.h"
 
-@interface FSCalendarHeader ()<UICollectionViewDataSource,UICollectionViewDelegate>
+@interface FSCalendarHeaderView ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (readonly, nonatomic) BOOL hasValidateVisibleLayout;
 
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation FSCalendarHeader
+@implementation FSCalendarHeaderView
 
 #pragma mark - Life cycle
 

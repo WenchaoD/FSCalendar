@@ -354,11 +354,11 @@
                 obj.contentView.layer.opacity = 1;
             }];
             self.collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-            self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
+            self.calendar.calendarHeaderView.scrollDirection = self.collectionViewLayout.scrollDirection;
             self.calendar.needsAdjustingViewFrame = YES;
             self.calendar.needsAdjustingMonthPosition = YES;
             [self.collectionView reloadData];
-            [self.calendar.header reloadData];
+            [self.calendar.calendarHeaderView reloadData];
             break;
         }
         case FSCalendarTransitionWeekToMonth: {
@@ -751,12 +751,12 @@
     self.calendar.contentView.clipsToBounds = YES;
     self.calendar.contentView.fs_height = CGRectGetHeight(self.pendingAttributes.targetBounds)-self.calendar.scopeHandle.fs_height;
     self.collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
-    self.calendar.header.scrollDirection = self.collectionViewLayout.scrollDirection;
+    self.calendar.calendarHeaderView.scrollDirection = self.collectionViewLayout.scrollDirection;
     self.calendar.needsAdjustingMonthPosition = YES;
     self.calendar.needsAdjustingViewFrame = YES;
     [self.calendar setNeedsLayout];
     [self.collectionView reloadData];
-    [self.calendar.header reloadData];
+    [self.calendar.calendarHeaderView reloadData];
     [self.calendar layoutIfNeeded];
     [self.calendar.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];

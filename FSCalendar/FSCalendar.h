@@ -21,6 +21,7 @@
 #import "FSCalendarConstants.h"
 #import "FSCalendarCell.h"
 #import "FSCalendarWeekdayView.h"
+#import "FSCalendarHeaderView.h"
 
 //! Project version number for FSCalendar.
 FOUNDATION_EXPORT double FSCalendarVersionNumber;
@@ -134,7 +135,6 @@ NS_ASSUME_NONNULL_BEGIN
  Tells the delegate the calendar is about to change the bounding rect.
  */
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated;
-
 
 /**
  Tells the delegate that the specified cell is about to be displayed in the calendar.
@@ -338,12 +338,17 @@ IB_DESIGNABLE
 /**
  The height of weekday header of the calendar.
  */
-@property (assign, nonatomic) IBInspectable CGFloat weekdayHeight FSCalendarDeprecated('calendarWeekdayView');
+@property (assign, nonatomic) IBInspectable CGFloat weekdayHeight;
 
 /**
  The weekday view of the calendar
  */
-@property (readonly, nonatomic) FSCalendarWeekdayView *calendarWeekdayView;
+@property (strong, nonatomic) FSCalendarWeekdayView *calendarWeekdayView;
+
+/**
+ The calendar view of the calendar
+ */
+@property (strong, nonatomic) FSCalendarHeaderView *calendarHeaderView;
 
 /**
  A Boolean value that determines whether users can select a date.

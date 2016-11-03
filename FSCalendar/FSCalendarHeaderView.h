@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FSCalendarCollectionView.h"
 
-@class FSCalendar,FSCalendarAppearance, FSCalendarHeaderLayout;
 
-@interface FSCalendarHeader : UIView
+@class FSCalendar, FSCalendarAppearance, FSCalendarHeaderLayout, FSCalendarCollectionView;
+
+@interface FSCalendarHeaderView : UIView
 
 @property (weak, nonatomic) FSCalendarCollectionView *collectionView;
 @property (weak, nonatomic) FSCalendarHeaderLayout *collectionViewLayout;
@@ -32,7 +32,7 @@
 @interface FSCalendarHeaderCell : UICollectionViewCell
 
 @property (weak, nonatomic) UILabel *titleLabel;
-@property (weak, nonatomic) FSCalendarHeader *header;
+@property (weak, nonatomic) FSCalendarHeaderView *header;
 
 - (void)invalidateHeaderFont;
 - (void)invalidateHeaderTextColor;
@@ -46,6 +46,6 @@
 @interface FSCalendarHeaderTouchDeliver : UIView
 
 @property (weak, nonatomic) FSCalendar *calendar;
-@property (weak, nonatomic) FSCalendarHeader *header;
+@property (weak, nonatomic) FSCalendarHeaderView *header;
 
 @end

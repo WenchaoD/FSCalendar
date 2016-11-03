@@ -13,7 +13,7 @@
 
 #import "FSCalendar.h"
 #import "FSCalendarCell.h"
-#import "FSCalendarHeader.h"
+#import "FSCalendarHeaderView.h"
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarCollectionViewLayout.h"
@@ -24,7 +24,6 @@
 
 @interface FSCalendar (Dynamic)
 
-@property (readonly, nonatomic) FSCalendarHeader *header;
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
 @property (readonly, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;

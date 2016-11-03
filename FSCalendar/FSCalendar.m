@@ -7,7 +7,7 @@
 //
 
 #import "FSCalendar.h"
-#import "FSCalendarHeader.h"
+#import "FSCalendarHeaderView.h"
 #import "FSCalendarWeekdayView.h"
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCollectionViewLayout.h"
@@ -68,7 +68,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (strong, nonatomic) FSCalendarDelegateProxy    *proxy;
 @property (strong, nonatomic) FSCalendarCalculator       *calculator;
 
-@property (weak  , nonatomic) FSCalendarHeader           *header;
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
 
 @property (assign, nonatomic) BOOL                       needsAdjustingMonthPosition;
@@ -352,11 +351,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
         if (_needsLayoutForWeekMode) _scope = FSCalendarScopeWeek;
         
-        _header.frame = CGRectMake(0, 0, self.fs_width, headerHeight);
-        self.calendarWeekdayView.frame = CGRectMake(0, self.header.fs_bottom, self.contentView.fs_width, weekdayHeight);
+        self.calendarHeaderView.frame = CGRectMake(0, 0, self.fs_width, headerHeight);
+        self.calendarWeekdayView.frame = CGRectMake(0, self.calendarHeaderView.fs_bottom, self.contentView.fs_width, weekdayHeight);
 
-        _deliver.frame = CGRectMake(_header.fs_left, _header.fs_top, _header.fs_width, headerHeight+weekdayHeight);
-        _deliver.hidden = _header.hidden;
+        _deliver.frame = CGRectMake(self.calendarHeaderView.fs_left, self.calendarHeaderView.fs_top, self.calendarHeaderView.fs_width, headerHeight+weekdayHeight);
+        _deliver.hidden = self.calendarHeaderView.hidden;
         if (!self.floatingMode) {
             switch (_scope) {
                 case FSCalendarScopeMonth: {
@@ -659,7 +658,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 break;
             }
         }
-        _header.scrollOffset = scrollOffset;
+        _calendarHeaderView.scrollOffset = scrollOffset;
     }
 }
 
@@ -748,10 +747,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 _supressEvent = YES;
 
                 _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)scrollDirection;
-                _header.scrollDirection = _collectionViewLayout.scrollDirection;
+                _calendarHeaderView.scrollDirection = _collectionViewLayout.scrollDirection;
                 if (self.hasValidateVisibleLayout) {
                     [_collectionView reloadData];
-                    [_header reloadData];
+                    [_calendarHeaderView reloadData];
                 }
                 _needsAdjustingMonthPosition = YES;
                 _needsAdjustingViewFrame = YES;
@@ -927,7 +926,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _scrollEnabled = scrollEnabled;
         
         _collectionView.scrollEnabled = scrollEnabled;
-        _header.scrollEnabled = scrollEnabled;
+        _calendarHeaderView.scrollEnabled = scrollEnabled;
         
         [self invalidateLayout];
     }
@@ -1063,7 +1062,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _minimumDate = minimumDate;
         _maximumDate = maximumDate;
         [_collectionView reloadData];
-        [_header.collectionView reloadData];
+        [_calendarHeaderView.collectionView reloadData];
         [self setNeedsLayout];
     } else {
         [self reloadVisibleCells];
@@ -1279,8 +1278,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
     }
     
-    if (_header && !animated) {
-        _header.scrollOffset = scrollOffset;
+    if (_calendarHeaderView && !animated) {
+        _calendarHeaderView.scrollOffset = scrollOffset;
     }
     _supressEvent = NO;
 }
@@ -1401,13 +1400,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (!self.floatingMode) {
         
-        if (!_header) {
+        if (!_calendarHeaderView) {
             
-            FSCalendarHeader *header = [[FSCalendarHeader alloc] initWithFrame:CGRectZero];
-            header.calendar = self;
-            header.scrollEnabled = _scrollEnabled;
-            [_contentView addSubview:header];
-            self.header = header;
+            FSCalendarHeaderView *headerView = [[FSCalendarHeaderView alloc] initWithFrame:CGRectZero];
+            headerView.calendar = self;
+            headerView.scrollEnabled = _scrollEnabled;
+            [_contentView addSubview:headerView];
+            self.calendarHeaderView = headerView;
             
         }
         
@@ -1421,7 +1420,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (_scrollEnabled) {
             if (!_deliver) {
                 FSCalendarHeaderTouchDeliver *deliver = [[FSCalendarHeaderTouchDeliver alloc] initWithFrame:CGRectZero];
-                deliver.header = _header;
+                deliver.header = _calendarHeaderView;
                 deliver.calendar = self;
                 [_contentView addSubview:deliver];
                 self.deliver = deliver;
@@ -1452,7 +1451,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
     } else {
         
-        [self.header removeFromSuperview];
+        [self.calendarHeaderView removeFromSuperview];
         [self.deliver removeFromSuperview];
         [self.calendarWeekdayView removeFromSuperview];
         
@@ -1484,7 +1483,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateHeaders
 {
-    [_header.collectionView reloadData];
+    [_calendarHeaderView.collectionView reloadData];
     if (_stickyHeaderMapTable.count) {
         [_stickyHeaderMapTable.objectEnumerator.allObjects makeObjectsPerformSelector:@selector(reloadData)];
     }
@@ -1637,7 +1636,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.appearance invalidateFonts];
-    [self.header setNeedsAdjustingViewFrame:YES];
+    [self.calendarHeaderView setNeedsAdjustingViewFrame:YES];
     [self setNeedsLayout];
     
 }
