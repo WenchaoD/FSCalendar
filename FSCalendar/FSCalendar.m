@@ -8,6 +8,7 @@
 
 #import "FSCalendar.h"
 #import "FSCalendarHeader.h"
+#import "FSCalendarWeekdayView.h"
 #import "FSCalendarStickyHeader.h"
 #import "FSCalendarCollectionViewLayout.h"
 #import "FSCalendarScopeHandle.h"
@@ -48,7 +49,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     NSMutableArray  *_selectedDates;
 }
-@property (strong, nonatomic) NSArray<UILabel *>         *weekdays;
 @property (strong, nonatomic) NSMapTable                 *stickyHeaderMapTable;
 
 @property (strong, nonatomic) NSCalendar *gregorian;
@@ -60,7 +60,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (weak  , nonatomic) UIView                     *daysContainer;
 @property (weak  , nonatomic) UIView                     *topBorder;
 @property (weak  , nonatomic) UIView                     *bottomBorder;
-@property (weak  , nonatomic) UIImageView                *weekdayView;
 @property (weak  , nonatomic) FSCalendarScopeHandle      *scopeHandle;
 @property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
 @property (weak  , nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
@@ -117,7 +116,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
-- (void)invalidateWeekdayBackground;
 
 - (void)invalidateViewFrames;
 
@@ -346,7 +344,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat headerHeight = self.preferredHeaderHeight;
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat rowHeight = self.preferredRowHeight;
-        CGFloat weekdayWidth = self.fs_width/_weekdays.count;
         CGFloat padding = self.preferredPadding;
         if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
             padding = FSCalendarFloor(padding);
@@ -356,15 +353,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (_needsLayoutForWeekMode) _scope = FSCalendarScopeWeek;
         
         _header.frame = CGRectMake(0, 0, self.fs_width, headerHeight);
-        [_weekdays enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
-            weekdayLabel.frame = CGRectMake(index*weekdayWidth,
-                                            _header.fs_height,
-                                            weekdayWidth,
-                                            weekdayHeight);
-        }];
-        if (_weekdayView) {
-            _weekdayView.frame = CGRectMake(_weekdays.firstObject.fs_left, _weekdays.firstObject.fs_top, _weekdays.lastObject.fs_right, _weekdays.firstObject.fs_height);
-        }
+        self.calendarWeekdayView.frame = CGRectMake(0, self.header.fs_bottom, self.contentView.fs_width, weekdayHeight);
 
         _deliver.frame = CGRectMake(_header.fs_left, _header.fs_top, _header.fs_width, headerHeight+weekdayHeight);
         _deliver.hidden = _header.hidden;
@@ -1422,6 +1411,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             
         }
         
+        if (!_calendarWeekdayView) {
+            FSCalendarWeekdayView *calendarWeekdayView = [[FSCalendarWeekdayView alloc] initWithFrame:CGRectZero];
+            calendarWeekdayView.calendar = self;
+            [_contentView addSubview:calendarWeekdayView];
+            _calendarWeekdayView = calendarWeekdayView;
+        }
+        
         if (_scrollEnabled) {
             if (!_deliver) {
                 FSCalendarHeaderTouchDeliver *deliver = [[FSCalendarHeaderTouchDeliver alloc] initWithFrame:CGRectZero];
@@ -1432,22 +1428,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         } else if (_deliver) {
             [_deliver removeFromSuperview];
-        }
-        
-        if (!_weekdays.count) {
-            NSArray *weekSymbols = self.gregorian.shortStandaloneWeekdaySymbols;
-            NSMutableArray<UILabel *> *weekdays = [NSMutableArray arrayWithCapacity:weekSymbols.count];
-            UIFont *weekdayFont = _appearance.preferredWeekdayFont;
-            for (int i = 0; i < weekSymbols.count; i++) {
-                UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-                weekdayLabel.text = weekSymbols[i];
-                weekdayLabel.textAlignment = NSTextAlignmentCenter;
-                weekdayLabel.font = weekdayFont;
-                weekdayLabel.textColor = _appearance.weekdayTextColor;
-                [weekdays addObject:weekdayLabel];
-                [_contentView addSubview:weekdayLabel];
-            }
-            self.weekdays = weekdays;
         }
         
         if (self.showsScopeHandle) {
@@ -1472,16 +1452,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
     } else {
         
-        if (_header) {
-            [_header removeFromSuperview];
-        }
-        if (_deliver) {
-            [_deliver removeFromSuperview];
-        }
-        if (_weekdays.count) {
-            [_weekdays makeObjectsPerformSelector:@selector(removeFromSuperview)];
-            _weekdays = @[];
-        }
+        [self.header removeFromSuperview];
+        [self.deliver removeFromSuperview];
+        [self.calendarWeekdayView removeFromSuperview];
         
         if (_scopeHandle) {
             [_scopeHandle removeFromSuperview];
@@ -1503,14 +1476,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateWeekdaySymbols
 {
-    BOOL useVeryShortWeekdaySymbols = (_appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-    NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? _gregorian.veryShortStandaloneWeekdaySymbols : _gregorian.shortStandaloneWeekdaySymbols;
-    BOOL useDefaultWeekdayCase = (_appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
-    [_weekdays enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger index, BOOL *stop) {
-        index += _firstWeekday-1;
-        index %= 7;
-        label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
-    }];
+    [self.calendarWeekdayView fs_performSelector:_cmd withObjects:nil, nil];
     if (self.visibleStickyHeaders.count) {
         [self.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
     }
@@ -1646,39 +1612,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return _stickyHeaderMapTable.objectEnumerator.allObjects;
 }
 
-
 - (void)invalidateWeekdayFont
 {
-    [_weekdays makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.preferredWeekdayFont];
+    [self.calendarWeekdayView.weekdayLabels makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.preferredWeekdayFont];
 }
 
 - (void)invalidateWeekdayTextColor
 {
-    [_weekdays makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
-}
-
-- (void)invalidateWeekdayBackground
-{
-    if (self.appearance.weekdayBackground) {
-        if (!self.weekdayView) {
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-            imageView.contentMode = UIViewContentModeCenter;
-            [self.contentView insertSubview:imageView belowSubview:self.weekdays.firstObject];
-            self.weekdayView = imageView;
-        }
-        if (self.hasValidateVisibleLayout) {
-            self.weekdayView.frame = CGRectMake(self.weekdays.firstObject.fs_left, self.weekdays.firstObject.fs_top, self.weekdays.lastObject.fs_right, self.weekdays.firstObject.fs_height);
-        }
-        if ([self.appearance.weekdayBackground isKindOfClass:[UIImage class]]) {
-            self.weekdayView.image = self.appearance.weekdayBackground;
-            self.weekdayView.backgroundColor = nil;
-        } else {
-            self.weekdayView.image = nil;
-            self.weekdayView.backgroundColor = self.appearance.weekdayBackground;
-        }
-    } else {
-        self.weekdayView = nil;
-    }
+    [self.calendarWeekdayView.weekdayLabels makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
 }
 
 - (void)invalidateViewFrames
@@ -1733,7 +1674,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _maximumDate = self.proxy.maximumDateForCalendar;
         NSAssert([self.gregorian compareDate:self.minimumDate toDate:self.maximumDate toUnitGranularity:NSCalendarUnitDay] != NSOrderedDescending, @"The minimum date of calendar should be earlier than the maximum.");
         [self.calculator reloadSections];
-        
     }
 }
 

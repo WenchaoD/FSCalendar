@@ -114,7 +114,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self configureCell];
+    [self configureSubviews];
 }
 
 - (void)setSelected:(BOOL)selected
@@ -153,7 +153,7 @@
     group.duration = kAnimationDuration;
     group.animations = @[zoomOut, zoomIn];
     [_shapeLayer addAnimation:group forKey:@"bounce"];
-    [self configureCell];
+    [self configureSubviews];
     
 #undef kAnimationDuration
     
@@ -161,7 +161,7 @@
 
 #pragma mark - Private
 
-- (void)configureCell
+- (void)configureSubviews
 {
     if (self.placeholder) {
         if (self.calendar.placeholderType==FSCalendarPlaceholderTypeNone) {

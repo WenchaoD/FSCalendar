@@ -495,17 +495,6 @@
     }
 }
 
-- (void)setWeekdayBackground:(id)weekdayBackground
-{
-    if (weekdayBackground && (![weekdayBackground isKindOfClass:[UIImage class]] && ![weekdayBackground isKindOfClass:[UIColor class]])) {
-        [NSException raise:@"Invalidate Argument" format:@"The weekday background could only be a UIImage or UIColor instance"];
-    }
-    if (![_weekdayBackground isEqual:weekdayBackground]) {
-        _weekdayBackground = weekdayBackground;
-        [self invalidateWeekdayBackground];
-    }
-}
-
 - (void)setHeaderTitleColor:(UIColor *)color
 {
     if (![_headerTitleColor isEqual:color]) {
@@ -685,12 +674,6 @@
 - (void)invalidateWeekdayTextColor
 {
     [_calendar invalidateWeekdayTextColor];
-    [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
-}
-
-- (void)invalidateWeekdayBackground
-{
-    [_calendar invalidateWeekdayBackground];
     [_calendar.visibleStickyHeaders makeObjectsPerformSelector:_cmd];
 }
 

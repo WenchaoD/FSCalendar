@@ -17,6 +17,7 @@
 		30948A8A1DC78AD000DA02C9 /* FSCalendarCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 30948A891DC78AD000DA02C9 /* FSCalendarCalculator.m */; };
 		309929821DC45086003CE71A /* FSCalendarDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 309929811DC45086003CE71A /* FSCalendarDelegateProxy.m */; };
 		30D458E91DB4E2DB00B163C7 /* LoadViewExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D458E81DB4E2DB00B163C7 /* LoadViewExampleViewController.swift */; };
+		30DDC36C1DCAEBD800EFA4D4 /* FSCalendarWeekdayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30DDC36B1DCAEBD800EFA4D4 /* FSCalendarWeekdayView.m */; };
 		EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */; };
 		EE0954AF1B97DDE0007F6964 /* InterfaceBuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AE1B97DDE0007F6964 /* InterfaceBuilderViewController.swift */; };
 		EE0954B21B97DDE0007F6964 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE0954B01B97DDE0007F6964 /* Main.storyboard */; };
@@ -60,6 +61,8 @@
 		309929801DC45086003CE71A /* FSCalendarDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarDelegateProxy.h; sourceTree = "<group>"; };
 		309929811DC45086003CE71A /* FSCalendarDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarDelegateProxy.m; sourceTree = "<group>"; };
 		30D458E81DB4E2DB00B163C7 /* LoadViewExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadViewExampleViewController.swift; sourceTree = "<group>"; };
+		30DDC36A1DCAEBD800EFA4D4 /* FSCalendarWeekdayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarWeekdayView.h; sourceTree = "<group>"; };
+		30DDC36B1DCAEBD800EFA4D4 /* FSCalendarWeekdayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarWeekdayView.m; sourceTree = "<group>"; };
 		EE0954A71B97DDE0007F6964 /* SwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE0954AB1B97DDE0007F6964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -190,6 +193,8 @@
 				30948A891DC78AD000DA02C9 /* FSCalendarCalculator.m */,
 				EE0954D81B97DDF4007F6964 /* FSCalendarHeader.h */,
 				EE0954D91B97DDF4007F6964 /* FSCalendarHeader.m */,
+				30DDC36A1DCAEBD800EFA4D4 /* FSCalendarWeekdayView.h */,
+				30DDC36B1DCAEBD800EFA4D4 /* FSCalendarWeekdayView.m */,
 				EE2B62811BB6D7FE00ACB430 /* FSCalendarStickyHeader.h */,
 				EE2B62821BB6D7FE00ACB430 /* FSCalendarStickyHeader.m */,
 				3055B1C61DA9338C002AFA13 /* FSCalendarExtensions.h */,
@@ -316,6 +321,7 @@
 				30921AD01DC0F5E000616B57 /* FSCalendarCollectionViewLayout.m in Sources */,
 				303478391DB520C8007BBD2E /* TableViewController.swift in Sources */,
 				EE2B62831BB6D7FE00ACB430 /* FSCalendarStickyHeader.m in Sources */,
+				30DDC36C1DCAEBD800EFA4D4 /* FSCalendarWeekdayView.m in Sources */,
 				306DB1461C96700800A10478 /* FSCalendarAnimator.m in Sources */,
 				EE0954E41B97DDF4007F6964 /* FSCalendar.m in Sources */,
 				3055B1C81DA9338C002AFA13 /* FSCalendarExtensions.m in Sources */,

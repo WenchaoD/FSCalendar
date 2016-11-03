@@ -45,6 +45,8 @@
     [view addSubview:calendar];
     self.calendar = calendar;
     
+    
+    calendar.appearance.todayColor = nil;
     [calendar registerClass:[DIVCalendarCell class] forCellReuseIdentifier:@"cell"];
 }
 
@@ -57,7 +59,7 @@
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     
     [self.calendar selectDate:[self.gregorian dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSDate date] options:0]];
-    
+
     // Uncomment this to perform an 'initial-week-scope'
     // self.calendar.scope = FSCalendarScopeWeek;
 }
@@ -70,11 +72,6 @@
 - (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date
 {
     DIVCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date];
-    if (cell.isPlaceholder) {
-        
-    } else {
-        
-    }
     return cell;
 }
 

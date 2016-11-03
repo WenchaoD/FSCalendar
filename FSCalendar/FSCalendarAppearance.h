@@ -109,11 +109,6 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
 
 /**
- * The background color/image for the weekdays
- */
-@property (strong, nonatomic) id weekdayBackground;
-
-/**
  * The color of month header text.
  */
 @property (strong, nonatomic) UIColor  *headerTitleColor;
