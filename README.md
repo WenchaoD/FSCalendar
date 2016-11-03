@@ -24,7 +24,7 @@
 
 # <a id="screenshots"></a>Screenshots
 
-![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19955830/68eff986-a1c0-11e6-8e36-e49c260fe220.jpg)
+![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
 
 ## Working with AutoLayout and Orientation
 ![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/13728798/59855e3e-e95e-11e5-84db-60f843427ef3.gif)
