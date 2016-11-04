@@ -17,10 +17,10 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
-        self.images = @{@"2016/02/01":[UIImage imageNamed:@"icon_cat"],
-                        @"2016/02/05":[UIImage imageNamed:@"icon_footprint"],
-                        @"2016/02/20":[UIImage imageNamed:@"icon_cat"],
-                        @"2016/03/07":[UIImage imageNamed:@"icon_footprint"]};
+        self.images = @{@"2016/11/01":[UIImage imageNamed:@"icon_cat"],
+                        @"2016/11/05":[UIImage imageNamed:@"icon_footprint"],
+                        @"2016/11/20":[UIImage imageNamed:@"icon_cat"],
+                        @"2016/11/07":[UIImage imageNamed:@"icon_footprint"]};
     }
     return self;
 }

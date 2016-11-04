@@ -7,6 +7,7 @@
 //
 
 #import "DIVCalendarCell.h"
+#import "FSCalendarExtensions.h"
 
 @implementation DIVCalendarCell
 
@@ -14,8 +15,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        UIImageView *divImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_cat"]];
-        [self.contentView addSubview:divImageView];
+        UIImageView *divImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"circle"]];
+        [self.contentView insertSubview:divImageView atIndex:0];
         self.divImageView = divImageView;
         
         self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
@@ -28,8 +29,23 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.divImageView.frame = self.shapeLayer.frame;
+    
     self.backgroundView.frame = CGRectInset(self.bounds, 1, 0.5);
+    self.divImageView.frame = self.backgroundView.frame;
+    
+    self.titleLabel.fs_top += 3;
+    self.shapeLayer.fs_top += 3;
+}
+
+- (void)configureSubviews
+{
+    [super configureSubviews];
+    // Configure your 'selected' and 'unselected' state
+    if (self.selected) {
+        
+    } else {
+        
+    }
 }
 
 @end

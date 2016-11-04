@@ -45,6 +45,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
     FSCalendarPlaceholderTypeFillSixRows   = 2
 };
 
+typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition) {
+    FSCalendarMonthPositionPrevious,
+    FSCalendarMonthPositionCurrent,
+    FSCalendarMonthPositionNext
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class FSCalendar;
@@ -84,7 +90,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Asks the data source for a cell to insert in a particular data of the calendar.
  */
-- (__kindof FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date;
+- (__kindof FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
 /**
  * Asks the dataSource the number of event dots for a specific date.
@@ -139,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Tells the delegate that the specified cell is about to be displayed in the calendar.
  */
-- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
 /**
  Tells the delegate the calendar is about to change the current page.
@@ -468,15 +474,16 @@ IB_DESIGNABLE
  @param date The specific date of the cell.
  @return A valid FSCalendarCell object.
  */
-- (__kindof FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date;
+- (__kindof FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
 /**
  Returns the calendar cell for the specified date.
 
  @param date The date of the cell
+ @param position The month position for the cell
  @return An object representing a cell of the calendar, or nil if the cell is not visible or date is out of range.
  */
-- (__kindof FSCalendarCell *)cellForDate:(NSDate *)date;
+- (__kindof FSCalendarCell *)cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
 
 /**
@@ -486,13 +493,6 @@ IB_DESIGNABLE
  */
 - (CGRect)frameForDate:(NSDate *)date;
 
-
-/**
- Returns the midpoint for a non-placeholder cell relative to the super view of the calendar.
- 
- @param date A date is the calendar.
- */
-- (CGPoint)centerForDate:(NSDate *)date;
 
 @end
 

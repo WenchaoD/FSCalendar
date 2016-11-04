@@ -11,6 +11,8 @@
 
 @class FSCalendar;
 
+typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
+
 @interface FSCalendarCalculator : NSObject
 
 @property (weak  , nonatomic) FSCalendar *calendar;
@@ -29,6 +31,8 @@
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath scope:(FSCalendarScope)scope;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope;
+- (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
+- (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position scope:(FSCalendarScope)scope;
 
 - (NSDate *)weekForSection:(NSInteger)section;
 - (NSDate *)monthForSection:(NSInteger)section;
@@ -37,6 +41,8 @@
 - (NSInteger)numberOfHeadPlaceholdersForMonth:(NSDate *)month;
 - (NSInteger)numberOfRowsInMonth:(NSDate *)month;
 - (NSInteger)numberOfRowsInSection:(NSInteger)section;
+
+- (FSCalendarMonthPosition)monthPositionForIndexPath:(NSIndexPath *)indexPath;
 
 - (void)reloadSections;
 

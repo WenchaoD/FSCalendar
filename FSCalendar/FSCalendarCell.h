@@ -28,7 +28,6 @@
 @property (strong, nonatomic) NSString *subtitle;
 @property (strong, nonatomic) UIImage  *image;
 
-@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 @property (assign, nonatomic) NSInteger numberOfEvents;
 
 @property (assign, nonatomic,getter=isPlaceholder) BOOL placeholder;
@@ -57,10 +56,9 @@
 - (instancetype)initWithFrame:(CGRect)frame NS_REQUIRES_SUPER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_REQUIRES_SUPER;
 
-// Subclass div
-- (void)setSelected:(BOOL)selected NS_REQUIRES_SUPER;
-- (void)layoutSubviews NS_REQUIRES_SUPER;
-- (void)configureSubviews NS_REQUIRES_SUPER;
+// For div overridden
+- (void)layoutSubviews NS_REQUIRES_SUPER; // Configure view frames
+- (void)configureSubviews NS_REQUIRES_SUPER; // Configure for selected/unselected state
 
 - (void)invalidateTitleFont;
 - (void)invalidateSubtitleFont;
@@ -84,7 +82,6 @@
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (strong, nonatomic) id color;
-@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
 @end
 

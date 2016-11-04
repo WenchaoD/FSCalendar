@@ -130,12 +130,12 @@
 #endif
 }
 
-- (FSCalendarCell *)cellForDate:(NSDate *)date
+- (FSCalendarCell *)cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
-    if (self.dataSource && [self.dataSource respondsToSelector:@selector(calendar:cellForDate:)]) {
-        FSCalendarCell *cell = [self.dataSource calendar:self.calendar cellForDate:date];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(calendar:cellForDate:atMonthPosition:)]) {
+        FSCalendarCell *cell = [self.dataSource calendar:self.calendar cellForDate:date atMonthPosition:position];
         if (cell && ![cell isKindOfClass:[FSCalendarCell class]]) {
-            [NSException raise:@"You must return a valid cell in calendar:cellForDate:" format:@""];
+            [NSException raise:@"You must return a valid cell in calendar:cellForDate:atMonthPosition:" format:@""];
         }
         return cell;
     }
@@ -207,10 +207,10 @@
     return NO;
 }
 
-- (void)willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date
+- (void)willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(calendar:willDisplayCell:forDate:)]) {
-        [self.delegate calendar:self.calendar willDisplayCell:cell forDate:date];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(calendar:willDisplayCell:forDate:atMonthPosition:)]) {
+        [self.delegate calendar:self.calendar willDisplayCell:cell forDate:date atMonthPosition:position];
     }
 }
 

@@ -493,7 +493,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FSCalendarCell *cell = [self.proxy cellForDate:[self.calculator dateForIndexPath:indexPath]];
+    FSCalendarMonthPosition position = [self.calculator monthPositionForIndexPath:indexPath];
+    FSCalendarCell *cell = [self.proxy cellForDate:[self.calculator dateForIndexPath:indexPath] atMonthPosition:position];
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
     }
@@ -579,7 +580,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
         cell.selected = NO;
-        [cell setNeedsLayout];
+        [cell configureSubviews];
     }
     NSDate *selectedDate = cell.date ?: [self.calculator dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
@@ -602,7 +603,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    [self.proxy willDisplayCell:(FSCalendarCell *)cell forDate:date];
+    FSCalendarMonthPosition position = [self.calculator monthPositionForIndexPath:indexPath];
+    [self.proxy willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:position];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
@@ -830,16 +832,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
 }
 
-- (FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date;
+- (FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 {
     if (!identifier || !date || ![self isDateInRange:date]) return nil;
-    FSCalendarCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:[self.calculator indexPathForDate:date]];
+    NSIndexPath *indexPath = [self.calculator indexPathForDate:date atMonthPosition:position];
+    FSCalendarCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     return cell;
 }
 
-- (FSCalendarCell *)cellForDate:(NSDate *)date
+- (FSCalendarCell *)cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
-    return (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:[self.calculator indexPathForDate:date]];
+    NSIndexPath *indexPath = [self.calculator indexPathForDate:date atMonthPosition:position];
+    return (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
 }
 
 - (CGRect)frameForDate:(NSDate *)date
@@ -850,15 +854,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     CGRect frame = [_collectionViewLayout layoutAttributesForItemAtIndexPath:[self.calculator indexPathForDate:date]].frame;
     frame = [self.superview convertRect:frame fromView:_collectionView];
     return frame;
-}
-
-- (CGPoint)centerForDate:(NSDate *)date
-{
-    CGRect frame = [self frameForDate:date];
-    if (CGRectIsEmpty(frame)) {
-        return CGPointZero;
-    }
-    return CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
 }
 
 - (void)setHeaderHeight:(CGFloat)headerHeight
@@ -944,9 +939,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredRowHeight = FSCalendarAutomaticDimension;
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
         _preferredPadding = FSCalendarAutomaticDimension;
-        [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [self setNeedsLayout];
     }
@@ -1143,7 +1136,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:YES];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         cell.selected = NO;
-        [cell setNeedsLayout];
+        [cell configureSubviews];
     }
 }
 
@@ -1514,6 +1507,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         cell.preferredImageOffset = [self.proxy preferredImageOffsetForDate:cell.date];
     }
     
+    [cell configureSubviews];
     [cell setNeedsLayout];
 }
 
@@ -1551,7 +1545,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:NO];
     }
-    [cell setNeedsLayout];
+    [cell configureSubviews];
 }
 
 - (void)reloadVisibleCells
@@ -1572,7 +1566,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && !evaluatedObject.selected;
         }]].firstObject;
         cell.selected = YES;
-        [cell setNeedsLayout];
+        [cell configureSubviews];
     }
 }
 
@@ -1585,14 +1579,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }]].firstObject;
         cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
-        [cell setNeedsLayout];
+        [cell configureSubviews];
     } else {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
             return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && evaluatedObject.selected;
         }]].firstObject;
         cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
-        [cell setNeedsLayout];
+        [cell configureSubviews];
     }
 }
 
@@ -1633,8 +1627,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     [self.collectionViewLayout invalidateLayout];
     [self.collectionViewLayout layoutAttributesForElementsInRect:CGRectZero];
-    [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
-    [self.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.appearance invalidateFonts];
     [self.calendarHeaderView setNeedsAdjustingViewFrame:YES];
     [self setNeedsLayout];

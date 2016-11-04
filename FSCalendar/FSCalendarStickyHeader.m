@@ -19,8 +19,6 @@
 @property (weak  , nonatomic) UIView  *bottomBorder;
 @property (weak  , nonatomic) FSCalendarWeekdayView *weekdayView;
 
-@property (assign, nonatomic) BOOL needsAdjustingViewFrame;
-
 @end
 
 @implementation FSCalendarStickyHeader
@@ -29,8 +27,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
-        _needsAdjustingViewFrame = YES;
         
         UIView *view;
         UILabel *label;
@@ -62,25 +58,19 @@
 {
     [super layoutSubviews];
     
-    if (_needsAdjustingViewFrame) {
-        
-        _needsAdjustingViewFrame = NO;
-        _contentView.frame = self.bounds;
-
-        CGFloat weekdayHeight = _calendar.preferredWeekdayHeight;
-        CGFloat weekdayMargin = weekdayHeight * 0.1;
-        CGFloat titleWidth = _contentView.fs_width;
-        
-        self.weekdayView.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin, self.contentView.fs_width, weekdayHeight);
-        
-        CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_appearance.preferredHeaderTitleFont}].height*1.5 + weekdayMargin*3;
-        
-        _bottomBorder.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
-        _titleLabel.frame = CGRectMake(0, _bottomBorder.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
-        
-    }
+    _contentView.frame = self.bounds;
     
-    [self reloadData];
+    CGFloat weekdayHeight = _calendar.preferredWeekdayHeight;
+    CGFloat weekdayMargin = weekdayHeight * 0.1;
+    CGFloat titleWidth = _contentView.fs_width;
+    
+    self.weekdayView.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin, self.contentView.fs_width, weekdayHeight);
+    
+    CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_appearance.preferredHeaderTitleFont}].height*1.5 + weekdayMargin*3;
+    
+    _bottomBorder.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
+    _titleLabel.frame = CGRectMake(0, _bottomBorder.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
+    
 }
 
 #pragma mark - Properties
@@ -97,19 +87,8 @@
         [self invalidateHeaderTextColor];
         [self invalidateWeekdayFont];
         [self invalidateWeekdayTextColor];
+        [self invalidateWeekdaySymbols];
     }
-}
-
-#pragma mark - Public methods
-
-- (void)reloadData
-{
-    [self invalidateWeekdaySymbols];
-    _calendar.formatter.dateFormat = _appearance.headerDateFormat;
-    BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
-    NSString *text = [_calendar.formatter stringFromDate:_month];
-    text = usesUpperCase ? text.uppercaseString : text;
-    _titleLabel.text = text;
 }
 
 #pragma mark - Private methods
@@ -139,6 +118,20 @@
     [self.weekdayView fs_performSelector:_cmd withObjects:nil, nil];
 }
 
+- (void)setMonth:(NSDate *)month
+{
+    _month = month;
+    _calendar.formatter.dateFormat = _appearance.headerDateFormat;
+    BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+    NSString *text = [_calendar.formatter stringFromDate:_month];
+    text = usesUpperCase ? text.uppercaseString : text;
+    self.titleLabel.text = text;
+}
+
+- (void)reloadData
+{
+    self.month = self.month;
+}
 
 @end
 

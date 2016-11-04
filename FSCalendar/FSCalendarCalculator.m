@@ -128,7 +128,17 @@
     return [self dateForIndexPath:indexPath scope:self.calendar.scope];
 }
 
+- (NSIndexPath *)indexPathForDate:(NSDate *)date
+{
+    return [self indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent scope:self.calendar.scope];
+}
+
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope
+{
+    return [self indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent scope:scope];
+}
+
+- (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position scope:(FSCalendarScope)scope
 {
     if (!date) return nil;
     NSInteger item = 0;
@@ -136,6 +146,11 @@
     switch (scope) {
         case FSCalendarScopeMonth: {
             section = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:date options:0].month;
+            if (position == FSCalendarMonthPositionPrevious) {
+                section++;
+            } else if (position == FSCalendarMonthPositionNext) {
+                section--;
+            }
             NSDate *head = [self monthHeadForSection:section];
             switch (self.calendar.collectionViewLayout.scrollDirection) {
                 case UICollectionViewScrollDirectionHorizontal: {
@@ -161,9 +176,9 @@
     return [NSIndexPath indexPathForItem:item inSection:section];
 }
 
-- (NSIndexPath *)indexPathForDate:(NSDate *)date
+- (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
-    return [self indexPathForDate:date scope:self.calendar.scope];
+    return [self indexPathForDate:date atMonthPosition:position scope:self.calendar.scope];
 }
 
 - (void)reloadSections
@@ -176,6 +191,45 @@
     [self.weeks removeAllObjects];
     
     [self.rowNumbers removeAllObjects];
+}
+
+- (NSDate *)monthForSection:(NSInteger)section
+{
+    NSNumber *key = @(section);
+    NSDate *month = self.months[key];
+    if (!month) {
+        month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] options:0];
+        NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
+        NSDate *monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
+        self.months[key] = month;
+        self.monthHeads[key] = monthHead;
+    }
+    return month;
+}
+
+- (NSDate *)monthHeadForSection:(NSInteger)section
+{
+    NSNumber *key = @(section);
+    NSDate *monthHead = self.monthHeads[key];
+    if (!monthHead) {
+        NSDate *month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] options:0];
+        NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
+        monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
+        self.months[key] = month;
+        self.monthHeads[key] = monthHead;
+    }
+    return monthHead;
+}
+
+- (NSDate *)weekForSection:(NSInteger)section
+{
+    NSNumber *key = @(section);
+    NSDate *week = self.weeks[key];
+    if (!week) {
+        week = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:section toDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] options:0];
+        self.weeks[key] = week;
+    }
+    return week;
 }
 
 - (NSInteger)numberOfSections
@@ -226,46 +280,22 @@
     return [self numberOfRowsInMonth:month];
 }
 
+- (FSCalendarMonthPosition)monthPositionForIndexPath:(NSIndexPath *)indexPath
+{
+    NSDate *month = [self monthForSection:indexPath.section];
+    NSDate *date = [self dateForIndexPath:indexPath];
+    NSComparisonResult comparison = [self.gregorian compareDate:date toDate:month toUnitGranularity:NSCalendarUnitMonth];
+    switch (comparison) {
+        case NSOrderedAscending:
+            return FSCalendarMonthPositionPrevious;
+        case NSOrderedSame:
+            return FSCalendarMonthPositionCurrent;
+        case NSOrderedDescending:
+            return FSCalendarMonthPositionNext;
+    }
+}
+
 #pragma mark - Private methods
-
-- (NSDate *)monthForSection:(NSInteger)section
-{
-    NSNumber *key = @(section);
-    NSDate *month = self.months[key];
-    if (!month) {
-        month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] options:0];
-        NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
-        NSDate *monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
-        self.months[key] = month;
-        self.monthHeads[key] = monthHead;
-    }
-    return month;
-}
-
-- (NSDate *)monthHeadForSection:(NSInteger)section
-{
-    NSNumber *key = @(section);
-    NSDate *monthHead = self.monthHeads[key];
-    if (!monthHead) {
-        NSDate *month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] options:0];
-        NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
-        monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
-        self.months[key] = month;
-        self.monthHeads[key] = monthHead;
-    }
-    return monthHead;
-}
-
-- (NSDate *)weekForSection:(NSInteger)section
-{
-    NSNumber *key = @(section);
-    NSDate *week = self.weeks[key];
-    if (!week) {
-        week = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:section toDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] options:0];
-        self.weeks[key] = week;
-    }
-    return week;
-}
 
 - (NSCalendar *)gregorian { return self.calendar.gregorian; }
 - (NSDate *)minimumDate { return self.calendar.minimumDate; }

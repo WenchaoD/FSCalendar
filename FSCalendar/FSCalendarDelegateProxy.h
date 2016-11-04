@@ -11,6 +11,8 @@
 
 @class FSCalendar, FSCalendarCell;
 
+typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
+
 @interface FSCalendarDelegateProxy : NSObject
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -24,7 +26,7 @@
 - (NSInteger)numberOfEventsForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
-- (__kindof FSCalendarCell *)cellForDate:(NSDate *)date;
+- (FSCalendarCell *)cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
 // Delegate requests
 - (BOOL)shouldSelectDate:(NSDate *)date;
@@ -33,7 +35,7 @@
 - (void)didDeselectDate:(NSDate *)date;
 - (void)currentPageDidChange;
 - (BOOL)boundingRectWillChange:(BOOL)animated;
-- (void)willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date;
+- (void)willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
 // Delegate appearance requests
 - (UIColor *)preferredFillDefaultColorForDate:(NSDate *)date;

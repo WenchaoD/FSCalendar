@@ -10,6 +10,6 @@
 
 @interface DIVCalendarCell : FSCalendarCell
 
-@property (strong, nonatomic) UIImageView *divImageView;
+@property (weak, nonatomic) UIImageView *divImageView;
 
 @end

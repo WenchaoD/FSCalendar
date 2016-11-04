@@ -26,4 +26,6 @@
 
 - (void)invalidateWeekdaySymbols;
 
+- (void)reloadData;
+
 @end

@@ -39,16 +39,15 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0,  CGRectGetMaxY(self.navigationController.navigationBar.frame), view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
-//    calendar.showsPlaceholders = NO;
     calendar.scopeGesture.enabled = YES;
-    calendar.backgroundColor = [UIColor whiteColor];
+//    calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
     
     calendar.calendarHeaderView.backgroundColor = [UIColor orangeColor];
     calendar.calendarWeekdayView.backgroundColor = [UIColor orangeColor];
     
-    calendar.appearance.todayColor = nil;
+    calendar.today = nil;
     
     [calendar registerClass:[DIVCalendarCell class] forCellReuseIdentifier:@"cell"];
 }
@@ -61,7 +60,7 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     
-    [self.calendar selectDate:[self.gregorian dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSDate date] options:0]];
+//    [self.calendar selectDate:[self.gregorian dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSDate date] options:0]];
 
     // Uncomment this to perform an 'initial-week-scope'
     // self.calendar.scope = FSCalendarScopeWeek;
@@ -72,20 +71,35 @@
     NSLog(@"%s",__FUNCTION__);
 }
 
-- (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date
+- (NSString *)calendar:(FSCalendar *)calendar titleForDate:(NSDate *)date
 {
-    DIVCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date];
-    NSLog(@"%d",cell.isPlaceholder);
+    if ([self.gregorian isDateInToday:date]) {
+        return @"今";
+    }
+    return nil;
+}
+
+- (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
+{
+    DIVCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date atMonthPosition:position];
     return cell;
 }
 
-- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition: (FSCalendarMonthPosition)position
 {
     DIVCalendarCell *divCell = (DIVCalendarCell *)cell;
-    if (divCell.isPlaceholder) {
-        divCell.divImageView.hidden = YES;
-    } else {
-        divCell.divImageView.hidden = ![self.gregorian isDateInToday:date];
+    switch (position) {
+        case FSCalendarMonthPositionCurrent: {
+            BOOL isToday = [self.gregorian isDateInToday:date];
+            divCell.divImageView.hidden = !isToday;
+            break;
+        }
+        case FSCalendarMonthPositionPrevious:
+        case FSCalendarMonthPositionNext: {
+            divCell.divImageView.hidden = YES;
+        }
+        default:
+            break;
     }
 }
 
