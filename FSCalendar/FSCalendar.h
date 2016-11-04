@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Tells the delegate that the specified cell is about to be displayed in the calendar.
  */
-- (void)calendar:(FSCalendar *)calendar willDisplayCell:(__kindof FSCalendarCell *)cell forDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date;
 
 /**
  Tells the delegate the calendar is about to change the current page.
