@@ -75,6 +75,7 @@
 - (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date
 {
     DIVCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date];
+    NSLog(@"%d",cell.isPlaceholder);
     return cell;
 }
 
