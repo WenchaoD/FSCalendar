@@ -31,6 +31,5 @@
     self.divImageView.frame = self.shapeLayer.frame;
     self.backgroundView.frame = CGRectInset(self.bounds, 1, 0.5);
 }
-}
 
 @end
