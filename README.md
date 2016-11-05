@@ -27,7 +27,8 @@
 ![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
 
 ## Fully DIV support
-![1](https://cloud.githubusercontent.com/assets/5186464/20026796/9da4d2dc-a33c-11e6-8f21-54cd599cb939.gif)
+|  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
+| -------------  |
 
 
 ## Working with AutoLayout and Orientation

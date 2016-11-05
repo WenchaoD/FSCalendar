@@ -197,7 +197,7 @@
 {
     switch (self.calendar.scope) {
         case FSCalendarScopeWeek:
-            return [self weekForSection:section];
+            return [self.gregorian fs_middleDayOfWeek:[self weekForSection:section]];
         case FSCalendarScopeMonth:
             return [self monthForSection:section];
         default:
