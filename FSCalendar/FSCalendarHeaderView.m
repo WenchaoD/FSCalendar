@@ -49,6 +49,7 @@
     _scrollEnabled = YES;
     
     FSCalendarHeaderLayout *collectionViewLayout = [[FSCalendarHeaderLayout alloc] init];
+    collectionViewLayout.header = self;
     self.collectionViewLayout = collectionViewLayout;
     
     FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:collectionViewLayout];
@@ -215,8 +216,8 @@
     _needsAdjustingMonthPosition = YES;
 #endif
     if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-        CGFloat step = self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1);
-        [_collectionView setContentOffset:CGPointMake((scrollOffset+0.5)*step, 0) animated:NO];
+        CGFloat step = self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?_appearance.headerTitleItemSizeMultiplier:1);
+        [_collectionView setContentOffset:CGPointMake((scrollOffset+1.0)*step+_appearance.headerTitleItemSizeOffset, 0) animated:NO];
     } else {
         CGFloat step = self.collectionView.fs_height;
         [_collectionView setContentOffset:CGPointMake(0, scrollOffset*step) animated:NO];
@@ -301,7 +302,7 @@
         CGFloat center = CGRectGetMidY(self.header.bounds);
         self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
     }
-    
+
 }
 
 - (void)invalidateHeaderFont
@@ -337,7 +338,7 @@
     [super prepareLayout];
     
     self.itemSize = CGSizeMake(
-                               self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
+                               self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?self.header.appearance.headerTitleItemSizeMultiplier:1),
                                self.collectionView.fs_height
                               );
     

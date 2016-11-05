@@ -232,6 +232,21 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
  */
 @property (assign, nonatomic) BOOL adjustsHeaderTitleFontSizeToFitContentSize;
 
+/**
+ * The size of the header title items according to the CollectionView size.
+ * If horizontal scrolling is enabled, the default is 0.5.
+ * For vertical scrolling the value is 1.0.
+ *
+ */
+@property (assign, nonatomic) CGFloat headerTitleItemSizeMultiplier;
+
+/**
+ * The offset of the header title within it's item size.
+ *
+ */
+@property (assign, nonatomic) CGFloat headerTitleItemSizeOffset;
+
+
 
 #if TARGET_INTERFACE_BUILDER
 

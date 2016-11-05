@@ -41,6 +41,8 @@
 
 @interface FSCalendarHeaderLayout : UICollectionViewFlowLayout
 
+@property (weak, nonatomic) FSCalendarHeaderView *header;
+
 @end
 
 @interface FSCalendarHeaderTouchDeliver : UIView
