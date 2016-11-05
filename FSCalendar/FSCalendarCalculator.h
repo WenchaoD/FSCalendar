@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 - (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 - (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position scope:(FSCalendarScope)scope;
 
+- (NSDate *)pageForSection:(NSInteger)section;
 - (NSDate *)weekForSection:(NSInteger)section;
 - (NSDate *)monthForSection:(NSInteger)section;
 - (NSDate *)monthHeadForSection:(NSInteger)section;

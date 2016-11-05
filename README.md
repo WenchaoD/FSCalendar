@@ -27,7 +27,7 @@
 ![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
 
 ## Fully DIV support
-![1](https://cloud.githubusercontent.com/assets/5186464/20026517/bbba9b9a-a336-11e6-9bf6-a4f018c8489b.gif)
+![1](https://cloud.githubusercontent.com/assets/5186464/20026796/9da4d2dc-a33c-11e6-8f21-54cd599cb939.gif)
 
 
 ## Working with AutoLayout and Orientation
@@ -35,9 +35,6 @@
 
 ## Hide placeholder dates
 ![fscalendar-showsplaceholder](https://cloud.githubusercontent.com/assets/5186464/13727902/21a90042-e940-11e5-9b9f-392f38cf007d.gif)
-
-## Scope gesture
-![scopegesture](https://cloud.githubusercontent.com/assets/5186464/16909556/276fa8a8-4d06-11e6-8092-587952edb395.gif)
 
 > FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
 

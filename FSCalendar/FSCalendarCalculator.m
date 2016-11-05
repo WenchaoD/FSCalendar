@@ -193,6 +193,18 @@
     [self.rowNumbers removeAllObjects];
 }
 
+- (NSDate *)pageForSection:(NSInteger)section
+{
+    switch (self.calendar.scope) {
+        case FSCalendarScopeWeek:
+            return [self weekForSection:section];
+        case FSCalendarScopeMonth:
+            return [self monthForSection:section];
+        default:
+            break;
+    }
+}
+
 - (NSDate *)monthForSection:(NSInteger)section
 {
     NSNumber *key = @(section);
@@ -282,9 +294,9 @@
 
 - (FSCalendarMonthPosition)monthPositionForIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *month = [self monthForSection:indexPath.section];
+    NSDate *page = [self pageForSection:indexPath.section];
     NSDate *date = [self dateForIndexPath:indexPath];
-    NSComparisonResult comparison = [self.gregorian compareDate:date toDate:month toUnitGranularity:NSCalendarUnitMonth];
+    NSComparisonResult comparison = [self.gregorian compareDate:date toDate:page toUnitGranularity:NSCalendarUnitMonth];
     switch (comparison) {
         case NSOrderedAscending:
             return FSCalendarMonthPositionPrevious;
