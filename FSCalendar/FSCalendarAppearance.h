@@ -246,6 +246,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
  */
 @property (assign, nonatomic) CGFloat headerTitleItemSizeOffset;
 
+/**
+ * The text alignment of the header title.
+ * Default is NSTextAlignmentCenter.
+ */
+@property (assign, nonatomic) NSTextAlignment headerTitleTextAlignment;
 
 
 #if TARGET_INTERFACE_BUILDER

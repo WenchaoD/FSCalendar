@@ -287,6 +287,8 @@
 {
     [super layoutSubviews];
     
+    _titleLabel.textAlignment = self.header.appearance.headerTitleTextAlignment;
+    
     self.titleLabel.frame = self.contentView.bounds;
     
     if (self.header.scrollDirection == UICollectionViewScrollDirectionHorizontal) {

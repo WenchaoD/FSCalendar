@@ -72,6 +72,7 @@
         _adjustsHeaderTitleFontSizeToFitContentSize = YES;
         _headerTitleItemSizeMultiplier = 0.5;
         _headerTitleItemSizeOffset = 0.0;
+        _headerTitleTextAlignment = NSTextAlignmentCenter;
         
         _titleFontSize = _preferredTitleFontSize  = FSCalendarStandardTitleTextSize;
         _subtitleFontSize = _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize;
