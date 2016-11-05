@@ -226,6 +226,13 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
  */
 @property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize;
 
+/**
+ * A Boolean value indicates whether the calendar header should adjust font size 
+ * if adjustsFontSizeToFitContentSize is set.
+ */
+@property (assign, nonatomic) BOOL adjustsHeaderTitleFontSizeToFitContentSize;
+
+
 #if TARGET_INTERFACE_BUILDER
 
 // For preview only
