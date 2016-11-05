@@ -34,7 +34,6 @@
     self.calendar.today = nil;
     self.calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
     self.calendar.placeholderType = FSCalendarPlaceholderTypeNone;
-    self.calendar.extensionContext = self.extensionContext;
     
     self.lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     self.lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
