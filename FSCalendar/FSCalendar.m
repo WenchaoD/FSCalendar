@@ -1049,17 +1049,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)reloadData
 {
     if (!self.hasValidateVisibleLayout) return;
-    NSDate *minimumDate = self.proxy.minimumDateForCalendar;
-    NSDate *maximumDate = self.proxy.maximumDateForCalendar;
-    if (![self.gregorian isDate:minimumDate equalToDate:_minimumDate toUnitGranularity:NSCalendarUnitMonth] || ![self.gregorian isDate:maximumDate equalToDate:_maximumDate toUnitGranularity:NSCalendarUnitMonth]) {
-        _minimumDate = minimumDate;
-        _maximumDate = maximumDate;
-        [_collectionView reloadData];
-        [_calendarHeaderView.collectionView reloadData];
-        [self setNeedsLayout];
-    } else {
-        [self reloadVisibleCells];
-    }
+    _minimumDate = self.proxy.minimumDateForCalendar;
+    _maximumDate = self.proxy.maximumDateForCalendar;
+    [_collectionView reloadData];
+    [_calendarHeaderView.collectionView reloadData];
+    [self setNeedsLayout];
     [self invalidateWeekdayFont];
     [self invalidateWeekdayTextColor];
     [self invalidateWeekdaySymbols];

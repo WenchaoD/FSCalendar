@@ -22,9 +22,13 @@
 
 [**QQ支持群: 323861692**](#qq_group)
 
-# <a id="screenshots"></a>Screenshots
+## <a id="screenshots"></a>Screenshots
 
 ![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
+
+## Fully DIV support
+![1](https://cloud.githubusercontent.com/assets/5186464/20026517/bbba9b9a-a336-11e6-9bf6-a4f018c8489b.gif)
+
 
 ## Working with AutoLayout and Orientation
 ![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/13728798/59855e3e-e95e-11e5-84db-60f843427ef3.gif)
@@ -40,9 +44,7 @@
 <br>
 
 ## Today Extension (iOS8/9)
-![1](https://cloud.githubusercontent.com/assets/5186464/18406879/0d072d92-7736-11e6-90bc-2633f5ca2b54.gif)
-<br>
-![2](https://cloud.githubusercontent.com/assets/5186464/18406887/47c4822c-7736-11e6-96f0-ccb4c9cba199.gif)
+![1](https://cloud.githubusercontent.com/assets/5186464/18406887/47c4822c-7736-11e6-96f0-ccb4c9cba199.gif)
 
 ## Today Extension With NCWidgetDisplayMode (iOS10)
 ![2](https://cloud.githubusercontent.com/assets/5186464/18870531/9afa7cd4-84e3-11e6-93c6-4e8811fd71a7.gif)
@@ -289,9 +291,6 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
-
-# [中文说明](http://www.jianshu.com/notebooks/4276521/latest)
-<br><br>
 
 
 

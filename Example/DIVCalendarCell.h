@@ -8,8 +8,11 @@
 
 #import <FSCalendar/FSCalendar.h>
 
+
 @interface DIVCalendarCell : FSCalendarCell
 
-@property (weak, nonatomic) UIImageView *divImageView;
+@property (weak, nonatomic) UIImageView *circleImageView;
+
+@property (weak, nonatomic) CAShapeLayer *selectionLayer;
 
 @end

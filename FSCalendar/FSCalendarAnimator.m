@@ -758,7 +758,6 @@
     [self.collectionView reloadData];
     [self.calendar.calendarHeaderView reloadData];
     [self.calendar layoutIfNeeded];
-    [self.calendar.collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
     [self.calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 

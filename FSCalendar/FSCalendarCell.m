@@ -69,7 +69,7 @@
     shapeLayer.backgroundColor = [UIColor clearColor].CGColor;
     shapeLayer.borderWidth = 1.0;
     shapeLayer.borderColor = [UIColor clearColor].CGColor;
-    shapeLayer.hidden = YES;
+    shapeLayer.opacity = 0;
     [self.contentView.layer insertSublayer:shapeLayer below:_titleLabel.layer];
     self.shapeLayer = shapeLayer;
     
@@ -191,7 +191,7 @@
     _month = nil;
     _date = nil;
     [CATransaction setDisableActions:YES];
-    _shapeLayer.hidden = YES;
+    _shapeLayer.opacity = 0;
     [self.contentView.layer removeAnimationForKey:@"opacity"];
 }
 
@@ -199,7 +199,7 @@
 
 - (void)performSelecting
 {
-    _shapeLayer.hidden = NO;
+    _shapeLayer.opacity = 1;
     
 #define kAnimationDuration FSCalendarDefaultBounceAnimationDuration
     
@@ -242,8 +242,8 @@
     
     BOOL shouldHideShapeLayer = !self.selected && !self.dateIsToday && !borderColor && !fillColor;
     
-    if (_shapeLayer.hidden != shouldHideShapeLayer) {
-        _shapeLayer.hidden = shouldHideShapeLayer;
+    if (_shapeLayer.opacity == shouldHideShapeLayer) {
+        _shapeLayer.opacity = !shouldHideShapeLayer;
     }
     if (!shouldHideShapeLayer) {
         
