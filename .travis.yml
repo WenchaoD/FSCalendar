@@ -3,7 +3,7 @@ osx_image: xcode8
 
 script:
 
-    - xcodebuild -project Example/FSCalendar.xcodeproj -sdk iphonesimulator -alltargets
-    - xcodebuild -project SwiftExample/SwiftExample.xcodeproj -sdk iphonesimulator -alltargets
-    - xcodebuild -project TodayExtensionExample/TodayExtensionExample.xcodeproj -sdk iphonesimulator -alltargets
-    - xcodebuild -project DynamicTodayExtensionExample/DynamicTodayExtensionExample.xcodeproj -sdk iphonesimulator -alltargets
+    - xcodebuild -project Example-Objc/FSCalendar.xcodeproj -sdk iphonesimulator -alltargets
+    - xcodebuild -project Example-Swift/SwiftExample.xcodeproj -sdk iphonesimulator -alltargets
+    - xcodebuild -project Example-TodayExtension1/Example-TodayExtension.xcodeproj -sdk iphonesimulator -alltargets
+    - xcodebuild -project Example-TodayExtension2/Example-TodayExtension.xcodeproj -sdk iphonesimulator -alltargets
