@@ -11,7 +11,7 @@ _calendar.scrollDirection = FSCalendarScrollDirectionVertical;
 * Swift
 
 ```swift
-calendar.scrollDirection = .Vertical 
+calendar.scrollDirection = .vertical 
 ```
 
 ![fscalendar-vertical](https://cloud.githubusercontent.com/assets/5186464/8448624/384e344c-1ffc-11e5-8b0b-1c3951dab2e1.gif)
@@ -56,7 +56,7 @@ calendar.scrollDirection = .Horizontal
 
 ### For week mode
 
-* Objective - c
+* Objective-C
 
 ```objective-c
 _calendar.scope = FSCalendarScopeWeek;
@@ -65,7 +65,7 @@ _calendar.scope = FSCalendarScopeWeek;
 * Swift
 
 ```swift
-calendar.scope = .Week 
+calendar.scope = .week 
 ```
 
 ### For month mode
@@ -79,23 +79,40 @@ _calendar.scope = FSCalendarScopeMonth; // By default
 * Swift
 
 ```swift
-calendar.scope = .Month 
+calendar.scope = .month 
 ```
 
 ![fscalendar-scope](https://cloud.githubusercontent.com/assets/5186464/12474251/aec94a32-c054-11e5-8b30-9e3d03d9a846.gif)
 
 ### To select more than one date
 
+* Objective-C 
+
 ```objective-c
-_calendar.allowsMultipleSelection = YES;
+calendar.allowsMultipleSelection = YES;
 ```
+
+* Swift
+
+```swift
+calendar.allowsMultipleSelection = true;
+```
+
 
 ![fscalendar-mulipleselection](https://cloud.githubusercontent.com/assets/5186464/9751497/368f55f6-56d8-11e5-9af5-0d09ba13f0eb.png)
 
 ### If you want `FSCalendar` to use `Monday` as the first column (or any other weekday)
 
+* Objective-C 
+
 ```objective-c
 _calendar.firstWeekday = 2; 
+```
+
+* Swift
+
+```swift
+calendar.firstWeekday = 2
 ```
 
 ![fscalendar---monday](https://cloud.githubusercontent.com/assets/5186464/8448782/c92505e4-1ffd-11e5-95c0-9bf3c8bec669.png)
@@ -103,13 +120,23 @@ _calendar.firstWeekday = 2;
 
 ### The date format of header can be customized
 
+* Objective-C 
+
 ```objective-c
-_calendar.appearance.headerDateFormat = @"MMM yy";
+calendar.appearance.headerDateFormat = @"MMM yy";
+```
+
+* Swift
+
+```swift
+calendar.appearance.headerDateFormat = "MMM yy"
 ```
 
 ![fscalendar---headerformat](https://cloud.githubusercontent.com/assets/5186464/8449322/15d79168-2003-11e5-997a-06c6721dd807.png)
 
 ### You can define the appearance
+
+* Objective-c
 
 ```objective-c
 _calendar.appearance.weekdayTextColor = [UIColor redColor];
@@ -120,25 +147,39 @@ _calendar.appearance.todayColor = [UIColor orangeColor];
 _calendar.appearance.todaySelectionColor = [UIColor blackColor];
 ```
 
+* Swift
+
+```objective-c
+calendar.appearance.weekdayTextColor = UIColor.redColor
+calendar.appearance.headerTitleColor = UIColor.redColor
+calendar.appearance.eventColor = UIColor.greenColor
+calendar.appearance.selectionColor = UIColor.blueColor
+calendar.appearance.todayColor = UIColor.orangeColor
+calendar.appearance.todaySelectionColor = UIColor.blackColor
+```
+
+
 ![fscalendar---colors](https://cloud.githubusercontent.com/assets/5186464/8449300/d55d1c7a-2002-11e5-8de6-be04f3783456.png)
 
 ### The day shape doesn't have to be a circle
 
-* Objective - c
+* Objective-C
+
 ```objective-c
-_calendar.appearance.cellStyle = FSCalendarCellStyleRectangle;
+calendar.appearance.borderRadius = 0
 ```
 
 * Swift
+
 ```swift
-calendar.appearance.cellStyle = .Rectangle
+calendar.appearance.borderRadius = 0
 ```
 
 ![fscalendar---rectangle](https://cloud.githubusercontent.com/assets/5186464/8449186/d38ea39c-2001-11e5-99f4-32fcd6120a01.png)
 
 ### `FSCalendar` can show subtitle for each day
 
-* Objective - c
+* Objective-C
 
 ```objective-c
 // FSCalendarDataSource
@@ -152,7 +193,7 @@ calendar.appearance.cellStyle = .Rectangle
 
 ```swift
 // FSCalendarDataSource
-func calendar(calendar: FSCalendar!, subtitleForDate date: NSDate!) -> String! {
+func calendar(_ calendar: FSCalendar!, subtitleFor date: NSDate!) -> String! {
     return yourSubtitle
 }
 ```
@@ -163,7 +204,7 @@ func calendar(calendar: FSCalendar!, subtitleForDate date: NSDate!) -> String! {
 
 ### And event dot for some days
 
-* Objective - c
+* Objective-C
 
 ```objective-c
 // FSCalendarDataSource
@@ -198,7 +239,7 @@ func calendar(calendar: FSCalendar!, hasEventForDate date: NSDate!) -> Bool {
 
 ```swift
 // FSCalendarDataSource
-func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
+func calendar(_ calendar: FSCalendar!, imageFor date: NSDate!) -> UIImage! {
     return anyImage
 }
 ```
@@ -207,7 +248,7 @@ func calendar(calendar: FSCalendar!, imageForDate date: NSDate!) -> UIImage! {
 
 #### You can hide top and bottom borders
 
-* Objective - c
+* Objective-C
 
 ```objective-c
 calendar.clipsToBounds = YES
@@ -285,9 +326,9 @@ func calendar(calendar: FSCalendar!, shouldSelectDate date: NSDate!) -> Bool {
 ```
  
 
-### You will get notified when `FSCalendar` changes the month
+### You will get notified when `FSCalendar` changes the month or week
 
-* Objective - c
+* Objective-C
 
 ```objective-c
 - (void)calendarCurrentMonthDidChange:(FSCalendar *)calendar
@@ -299,7 +340,7 @@ func calendar(calendar: FSCalendar!, shouldSelectDate date: NSDate!) -> Bool {
 * Swift
 
 ```swift
-func calendarCurrentMonthDidChange(calendar: FSCalendar!) {
+func calendarCurrentMonthDidChange(_ calendar: FSCalendar!) {
     // Do something
 }
 ```
