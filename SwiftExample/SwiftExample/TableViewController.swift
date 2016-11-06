@@ -18,7 +18,10 @@ class TableViewController: UITableViewController {
    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        super.tableView(tableView, didSelectRowAt: indexPath)
-        if indexPath.row == 1 {
+        if indexPath.row == 0 {
+            let viewController = DIVExampleViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } else if indexPath.row == 2 {
             let viewController = LoadViewExampleViewController()
             self.navigationController?.pushViewController(viewController, animated: true)
         }

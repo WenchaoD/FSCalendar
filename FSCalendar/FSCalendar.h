@@ -412,7 +412,7 @@ IB_DESIGNABLE
 /**
  The dates representing the selected dates. (read-only)
  */
-@property (readonly, nonatomic) NSArray *selectedDates;
+@property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
 
 /**
  Reload the dates and appearance of the calendar.

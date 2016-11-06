@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		30031AA81DCEA82200FC34FE /* DIVExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30031AA71DCEA82200FC34FE /* DIVExampleViewController.swift */; };
+		30031AAA1DCEA83200FC34FE /* DIVCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30031AA91DCEA83200FC34FE /* DIVCalendarCell.swift */; };
 		300414221CD751B200453AEB /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 300414211CD751B200453AEB /* FSCalendarScopeHandle.m */; };
 		300414261CD751CF00453AEB /* FSCalendar+Deprecated.m in Sources */ = {isa = PBXBuildFile; fileRef = 300414241CD751CF00453AEB /* FSCalendar+Deprecated.m */; };
 		303478391DB520C8007BBD2E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303478381DB520C8007BBD2E /* TableViewController.swift */; };
@@ -44,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		30031AA71DCEA82200FC34FE /* DIVExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIVExampleViewController.swift; sourceTree = "<group>"; };
+		30031AA91DCEA83200FC34FE /* DIVCalendarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIVCalendarCell.swift; sourceTree = "<group>"; };
 		300414201CD751B200453AEB /* FSCalendarScopeHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarScopeHandle.h; sourceTree = "<group>"; };
 		300414211CD751B200453AEB /* FSCalendarScopeHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarScopeHandle.m; sourceTree = "<group>"; };
 		300414241CD751CF00453AEB /* FSCalendar+Deprecated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+Deprecated.m"; sourceTree = "<group>"; };
@@ -132,6 +136,8 @@
 				EE0954CC1B97DDF4007F6964 /* FSCalendar */,
 				EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */,
 				303478381DB520C8007BBD2E /* TableViewController.swift */,
+				30031AA71DCEA82200FC34FE /* DIVExampleViewController.swift */,
+				30031AA91DCEA83200FC34FE /* DIVCalendarCell.swift */,
 				EE0954AE1B97DDE0007F6964 /* InterfaceBuilderViewController.swift */,
 				30D458E81DB4E2DB00B163C7 /* LoadViewExampleViewController.swift */,
 				EE0954B01B97DDE0007F6964 /* Main.storyboard */,
@@ -311,6 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30031AA81DCEA82200FC34FE /* DIVExampleViewController.swift in Sources */,
 				309929821DC45086003CE71A /* FSCalendarDelegateProxy.m in Sources */,
 				EE0954E61B97DDF4007F6964 /* FSCalendarCell.m in Sources */,
 				30948A8A1DC78AD000DA02C9 /* FSCalendarCalculator.m in Sources */,
@@ -327,6 +334,7 @@
 				30D458E91DB4E2DB00B163C7 /* LoadViewExampleViewController.swift in Sources */,
 				EE0954E51B97DDF4007F6964 /* FSCalendarAppearance.m in Sources */,
 				30A07C011DCAF7EB0071F025 /* FSCalendarHeaderView.m in Sources */,
+				30031AAA1DCEA83200FC34FE /* DIVCalendarCell.swift in Sources */,
 				EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */,
 				EE0954AF1B97DDE0007F6964 /* InterfaceBuilderViewController.swift in Sources */,
 				300414221CD751B200453AEB /* FSCalendarScopeHandle.m in Sources */,
