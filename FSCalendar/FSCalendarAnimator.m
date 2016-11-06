@@ -431,15 +431,13 @@
                 }
                 
                 NSDate *currentPage = self.calendar.currentPage;
-                NSDate *minimumPage = [self.calendar.gregorian fs_firstDayOfMonth:self.calendar.minimumDate];
-                NSInteger visibleSection = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:currentPage options:0].month;
-                NSIndexPath *firstIndexPath = [NSIndexPath indexPathForItem:0 inSection:visibleSection];
-                NSDate *firstDate = [self.calendar.calculator dateForIndexPath:firstIndexPath scope:FSCalendarScopeMonth];
-                currentPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:focusedRowNumber*7 toDate:firstDate options:0];
+                NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:currentPage];
+                NSDate *monthHead = [self.calendar.calculator monthHeadForSection:indexPath.section];
+                NSDate *targetPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:focusedRowNumber*7 toDate:monthHead options:0];
                 
                 attributes.focusedRowNumber = focusedRowNumber;
                 attributes.focusedDate = focusedDate;
-                attributes.targetPage = currentPage;
+                attributes.targetPage = targetPage;
                 
                 attributes.targetBounds = [self boundingRectForScope:FSCalendarScopeWeek page:attributes.targetPage];
 #undef kCalculateRowNumber

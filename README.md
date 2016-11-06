@@ -20,16 +20,13 @@
 * [Support](#support)
 * [Contact](#contact)
 
-[**QQ支持群: 323861692**](#qq_group)
-
 ## <a id="screenshots"></a>Screenshots
 
 ![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
-
-## Fully DIV support
-|  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
-| -------------  |
-
+------
+![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
+------
+![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
 ## Working with AutoLayout and Orientation
 ![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/13728798/59855e3e-e95e-11e5-84db-60f843427ef3.gif)
@@ -47,6 +44,9 @@
 ## Today Extension With NCWidgetDisplayMode (iOS10)
 ![2](https://cloud.githubusercontent.com/assets/5186464/18870531/9afa7cd4-84e3-11e6-93c6-4e8811fd71a7.gif)
 
+## DIV support
+|  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
+| -------------  |
 
 
 # <a id="installation"></a>Installation
@@ -131,7 +131,7 @@ view.addSubview(calendar)
 self.calendar = calendar
 ```
 
-> **FSCalendar** is fully compatible for Swift3, see `SwiftExample` for more details.
+> To use **FSCalendar** in Swift3, see `Example-Swift` for details.
 
 <br/>
 
@@ -290,6 +290,4 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.
 
-
-
-
+###[Documentation](http://cocoadocs.org/docsets/FSCalendar/) | [More Usage](https://github.com/WenchaoD/FSCalendar/blob/master/MOREUSAGE.md) | [简书](http://www.jianshu.com/notebooks/4276521/latest)
