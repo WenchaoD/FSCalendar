@@ -48,7 +48,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
 typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition) {
     FSCalendarMonthPositionPrevious,
     FSCalendarMonthPositionCurrent,
-    FSCalendarMonthPositionNext
+    FSCalendarMonthPositionNext,               
+    FSCalendarMonthPositionOutOfBounds,
+    FSCalendarMonthPositionNotFound = NSNotFound
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -483,6 +485,13 @@ IB_DESIGNABLE
  */
 - (__kindof FSCalendarCell *)cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
+
+/**
+ Returns an array of visible cells currently displayed by the calendar.
+ 
+ @return An array of FSCalendarCell objects. If no cells are visible, this method returns an empty array.
+ */
+- (NSArray<__kindof FSCalendarCell *> *)visibleCells;
 
 /**
  Returns the frame for a non-placeholder cell relative to the super view of the calendar.

@@ -31,7 +31,7 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
 //        self.calendar.scope = .week
         self.calendar.scopeGesture.isEnabled = true
 //        calendar.allowsMultipleSelection = true
-        
+
         // Uncomment this to test month->week and week->month transition
         /*
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (Int64)(2.5 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in

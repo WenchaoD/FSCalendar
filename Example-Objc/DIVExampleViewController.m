@@ -28,6 +28,8 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
+- (void)configureCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
+
 @end
 
 @implementation DIVExampleViewController
@@ -117,6 +119,55 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 
 - (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition: (FSCalendarMonthPosition)position
 {
+    [self configureCell:cell forDate:date atMonthPosition:position];
+}
+
+
+- (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
+{
+    return 2;
+}
+
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+    
+    self.eventLabel.frame = CGRectMake(0, CGRectGetMaxY(calendar.frame)+10, self.view.frame.size.width, 50);
+    
+}
+
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+{
+    NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
+    [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDate *date = obj.date;
+        FSCalendarMonthPosition position = obj.monthPosition;
+        [self configureCell:obj forDate:date atMonthPosition:position];
+    }];
+}
+
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
+{
+    NSLog(@"did deselect date %@",[self.dateFormatter stringFromDate:date]);
+    [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDate *date = obj.date;
+        FSCalendarMonthPosition position = obj.monthPosition;
+        [self configureCell:obj forDate:date atMonthPosition:position];
+    }];
+}
+
+- (NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date
+{
+    if ([self.gregorian isDateInToday:date]) {
+        return @[[UIColor orangeColor]];
+    }
+    return @[appearance.eventDefaultColor];
+}
+
+#pragma mark - Private methods
+
+- (void)configureCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
+{
     
     DIVCalendarCell *divCell = (DIVCalendarCell *)cell;
     
@@ -130,15 +181,15 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
         divCell.eventIndicator.hidden = NO;
         
         SelectionType selectionType = SelectionTypeNone;
-        if ([calendar.selectedDates containsObject:date]) {
+        if ([self.calendar.selectedDates containsObject:date]) {
             NSDate *previousDate = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-1 toDate:date options:0];
             NSDate *nextDate = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:1 toDate:date options:0];
-            if ([calendar.selectedDates containsObject:date]) {
-                if ([calendar.selectedDates containsObject:previousDate] && [calendar.selectedDates containsObject:nextDate]) {
+            if ([self.calendar.selectedDates containsObject:date]) {
+                if ([self.calendar.selectedDates containsObject:previousDate] && [self.calendar.selectedDates containsObject:nextDate]) {
                     selectionType = SelectionTypeMiddle;
-                } else if ([calendar.selectedDates containsObject:previousDate] && [calendar.selectedDates containsObject:date]) {
+                } else if ([self.calendar.selectedDates containsObject:previousDate] && [self.calendar.selectedDates containsObject:date]) {
                     selectionType = SelectionTypeRightBorder;
-                } else if ([calendar.selectedDates containsObject:nextDate]) {
+                } else if ([self.calendar.selectedDates containsObject:nextDate]) {
                     selectionType = SelectionTypeLeftBorder;
                 } else {
                     selectionType = SelectionTypeSingle;
@@ -173,7 +224,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
             divCell.selectionLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(divCell.contentView.fs_width/2-diameter/2, divCell.contentView.fs_height/2-diameter/2, diameter, diameter)].CGPath;
             
         }
-
+        
     } else if (position == FSCalendarMonthPositionNext || position == FSCalendarMonthPositionPrevious) {
         
         divCell.circleImageView.hidden = YES;
@@ -183,39 +234,6 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
             divCell.titleLabel.textColor = self.calendar.appearance.titlePlaceholderColor; // Prevent placeholders from changing text color
         }
     }
-    
-}
-
-- (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
-{
-    return 2;
-}
-
-- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
-{
-    calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
-    
-    self.eventLabel.frame = CGRectMake(0, CGRectGetMaxY(calendar.frame)+10, self.view.frame.size.width, 50);
-    
-}
-
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
-{
-    NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
-    [calendar reloadData];
-}
-
-- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
-{
-    [calendar reloadData];
-}
-
-- (NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date
-{
-    if ([self.gregorian isDateInToday:date]) {
-        return @[[UIColor orangeColor]];
-    }
-    return @[appearance.eventDefaultColor];
 }
 
 @end

@@ -90,6 +90,55 @@ class DIVExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
     
     
     func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
+        configure(cell: cell, for: date, at: position)
+    }
+    
+    
+    func calendar(_ calendar: FSCalendar, titleFor date: Date) -> String? {
+        if self.gregorian.isDateInToday(date) {
+            return "今"
+        }
+        return nil
+    }
+    
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        return 2
+    }
+    
+    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        self.calendar.frame.size.height = bounds.height
+        self.eventLabel.frame.origin.y = calendar.frame.maxY + 10
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
+        print("did select date \(self.formatter.string(from: date))")
+        calendar.visibleCells().forEach { (cell) in
+            let date = cell.date
+            let position = cell.monthPosition
+            self.configure(cell: cell, for: date!, at: position)
+        }
+    }
+    
+    func calendar(_ calendar: FSCalendar, didDeselect date: Date) {
+        print("did deselect date \(self.formatter.string(from: date))")
+        calendar.visibleCells().forEach { (cell) in
+            let date = cell.date
+            let position = cell.monthPosition
+            self.configure(cell: cell, for: date!, at: position)
+        }
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
+        if self.gregorian.isDateInToday(date) {
+            return [UIColor.orange]
+        }
+        return [appearance.eventDefaultColor]
+    }
+    
+    // MARK: - Private functions
+    
+    func configure(cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
+        
         let divCell = (cell as! DIVCalendarCell)
         // Custom today circle
         divCell.circleImageView.isHidden = !self.gregorian.isDateInToday(date)
@@ -152,41 +201,6 @@ class DIVExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
                 // Prevent placeholders from changing text color
             }
         }
-        
-    }
-    
-    
-    func calendar(_ calendar: FSCalendar, titleFor date: Date) -> String? {
-        if self.gregorian.isDateInToday(date) {
-            return "今"
-        }
-        return nil
-    }
-    
-    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        return 2
-    }
-    
-    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        self.calendar.frame.size.height = bounds.height
-        self.eventLabel.frame.origin.y = calendar.frame.maxY + 10
-    }
-    
-    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
-        print("did select date \(self.formatter.string(from: date))")
-        calendar.reloadData()
-    }
-    
-    func calendar(_ calendar: FSCalendar, didDeselect date: Date) {
-        print("did deselect date \(self.formatter.string(from: date))")
-        calendar.reloadData()
-    }
-    
-    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        if self.gregorian.isDateInToday(date) {
-            return [UIColor.orange]
-        }
-        return [appearance.eventDefaultColor]
     }
     
 }

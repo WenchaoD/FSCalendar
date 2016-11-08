@@ -21,6 +21,7 @@
         
         CAShapeLayer *selectionLayer = [[CAShapeLayer alloc] init];
         selectionLayer.fillColor = [UIColor blackColor].CGColor;
+        selectionLayer.actions = @{@"hidden":[NSNull null]}; 
         [self.contentView.layer insertSublayer:selectionLayer below:self.titleLabel.layer];
         self.selectionLayer = selectionLayer;
         

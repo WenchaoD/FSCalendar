@@ -10,6 +10,8 @@
 
 @class FSCalendar, FSCalendarAppearance, FSCalendarEventIndicator;
 
+typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
+
 @interface FSCalendarCell : UICollectionViewCell
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -27,13 +29,13 @@
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *subtitle;
 @property (strong, nonatomic) UIImage  *image;
+@property (assign, nonatomic) FSCalendarMonthPosition monthPosition;
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
-
-@property (assign, nonatomic,getter=isPlaceholder) BOOL placeholder;
 @property (assign, nonatomic) BOOL dateIsToday;
 
 @property (readonly, nonatomic) BOOL weekend;
+@property (readonly, nonatomic,getter=isPlaceholder) BOOL placeholder;
 
 @property (strong, nonatomic) UIColor *preferredFillDefaultColor;
 @property (strong, nonatomic) UIColor *preferredFillSelectionColor;

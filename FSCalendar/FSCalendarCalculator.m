@@ -294,8 +294,11 @@
 
 - (FSCalendarMonthPosition)monthPositionForIndexPath:(NSIndexPath *)indexPath
 {
-    NSDate *page = [self pageForSection:indexPath.section];
+    if (!indexPath) return FSCalendarMonthPositionNotFound;
     NSDate *date = [self dateForIndexPath:indexPath];
+    if (![self.calendar isDateInRange:date]) return FSCalendarMonthPositionOutOfBounds;
+    
+    NSDate *page = [self pageForSection:indexPath.section];
     NSComparisonResult comparison = [self.gregorian compareDate:date toDate:page toUnitGranularity:NSCalendarUnitMonth];
     switch (comparison) {
         case NSOrderedAscending:

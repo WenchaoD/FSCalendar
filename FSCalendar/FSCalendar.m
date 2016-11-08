@@ -846,6 +846,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
 }
 
+- (NSArray<FSCalendarCell *> *)visibleCells
+{
+    return self.collectionView.visibleCells;
+}
+
 - (CGRect)frameForDate:(NSDate *)date
 {
     if (!self.superview) {
@@ -1519,7 +1524,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case FSCalendarScopeMonth: {
             NSDate *month = [self.calculator monthForSection:indexPath.section];
             cell.month = month;
-            cell.placeholder = ![self.gregorian isDate:cell.date equalToDate:month toUnitGranularity:NSCalendarUnitMonth] || ![self isDateInRange:cell.date];
+            cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
             if (cell.isPlaceholder) {
                 cell.selected &= _pagingEnabled;
                 cell.dateIsToday &= _pagingEnabled;
@@ -1528,7 +1533,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         case FSCalendarScopeWeek: {
             if (_pagingEnabled) {
-                cell.placeholder = ![self isDateInRange:cell.date];
+                cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
             }
             break;
         }
