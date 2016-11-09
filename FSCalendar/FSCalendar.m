@@ -1226,19 +1226,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     animated &= _scrollEnabled; // No animation if _scrollEnabled == NO;
     _supressEvent = !animated;
     
-    NSInteger scrollOffset = 0;
-    switch (_scope) {
-        case FSCalendarScopeMonth: {
-            FSCalendarAssertDateInBounds(date,self.gregorian,[self.gregorian fs_firstDayOfMonth:self.minimumDate],[self.gregorian fs_lastDayOfMonth:self.maximumDate]);
-            scrollOffset = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:date options:0].month;
-            break;
-        }
-        case FSCalendarScopeWeek: {
-            FSCalendarAssertDateInBounds(date,self.gregorian,[self.gregorian fs_firstDayOfWeek:self.minimumDate],[self.gregorian fs_lastDayOfWeek:self.maximumDate]);
-            scrollOffset = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:date options:0].weekOfYear;
-            break;
-        }
-    }
+    date = [self.calculator safeDateForDate:date];
+    NSInteger scrollOffset = [self.calculator indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent].section;
+    
     if (!self.floatingMode) {
         
         switch (_collectionViewLayout.scrollDirection) {
