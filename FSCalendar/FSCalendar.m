@@ -568,11 +568,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
+    if ([self.calculator monthPositionForIndexPath:indexPath] != FSCalendarMonthPositionCurrent) {
+        [collectionView deselectItemAtIndexPath:[self.calculator indexPathForDate:selectedDate] animated:NO];
+    }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.selected = NO;
     [cell configureAppearance];
     
-    NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
     [self deselectCounterpartDate:selectedDate];
     [self.proxy didDeselectDate:selectedDate];
@@ -1571,8 +1574,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else {
         FSCalendarCell *cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
         if (!cell) cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
-        cell.selected = NO;
-        [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
+        if (cell.selected) cell.selected = NO;
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+        if([self.collectionView.indexPathsForSelectedItems containsObject:indexPath]) [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
         [cell configureAppearance];
     }
 }
