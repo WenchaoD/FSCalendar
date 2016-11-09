@@ -434,7 +434,7 @@ IB_DESIGNABLE
  
  @param date A date in the calendar.
  */
-- (void)selectDate:(NSDate *)date;
+- (void)selectDate:(nullable NSDate *)date;
 
 /**
  Selects a given date in the calendar, optionally scrolling the date to visible area.
@@ -442,7 +442,7 @@ IB_DESIGNABLE
  @param date A date in the calendar.
  @param scrollToDate A Boolean value that determines whether the calendar should scroll to the selected date to visible area.
  */
-- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate;
+- (void)selectDate:(nullable NSDate *)date scrollToDate:(BOOL)scrollToDate;
 
 /**
  Deselects a given date of the calendar.
