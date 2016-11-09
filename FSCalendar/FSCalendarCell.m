@@ -95,12 +95,12 @@
     
     if (self.placeholder) {
         if (self.calendar.placeholderType==FSCalendarPlaceholderTypeNone) {
-            self.contentView.hidden = [self.calendar isDateInRange:self.date]||![self.calendar.gregorian isDate:self.date equalToDate:self.month toUnitGranularity:NSCalendarUnitMonth];
+            self.contentView.hidden = self.monthPosition != FSCalendarMonthPositionCurrent;
         } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
             
             NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
             
-            NSInteger lineCount = [self.calendar.calculator numberOfRowsInMonth:self.month];
+            NSInteger lineCount = [self.calendar.calculator numberOfRowsInSection:indexPath.section];
             if (lineCount == 6) {
                 self.contentView.hidden = NO;
             } else {
@@ -188,7 +188,6 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    _month = nil;
     _date = nil;
     [CATransaction setDisableActions:YES];
     _shapeLayer.opacity = 0;

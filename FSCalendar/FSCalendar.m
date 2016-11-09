@@ -93,8 +93,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 
-- (NSInteger)numberOfRowsInMonth:(NSDate *)month;
-
 - (void)scrollToDate:(NSDate *)date;
 - (void)scrollToDate:(NSDate *)date animated:(BOOL)animated;
 - (void)scrollToPageForDate:(NSDate *)date animated:(BOOL)animated;
@@ -360,7 +358,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             switch (_scope) {
                 case FSCalendarScopeMonth: {
                     CGFloat contentHeight = rowHeight*6 + padding*2;
-                    CGFloat currentHeight = rowHeight*[self numberOfRowsInMonth:self.currentPage] + padding*2;
+                    CGFloat currentHeight = rowHeight*[self.calculator numberOfRowsInMonth:self.currentPage] + padding*2;
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, currentHeight);
                     _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight);
                     if (needsAdjustingBoundingRect) {
@@ -445,7 +443,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!self.floatingMode) {
         switch (scope) {
             case FSCalendarScopeMonth: {
-                CGFloat height = weekdayHeight + headerHeight + [self numberOfRowsInMonth:_currentPage]*rowHeight + paddings;
+                CGFloat height = weekdayHeight + headerHeight + [self.calculator numberOfRowsInMonth:_currentPage]*rowHeight + paddings;
                 height += _scopeHandle.fs_height;
                 return CGSizeMake(size.width, height);
             }
@@ -484,8 +482,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         }
     } else {
-        NSDate *currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
-        NSInteger numberOfRows = [self numberOfRowsInMonth:currentPage];
+        NSInteger numberOfRows = [self.calculator numberOfRowsInSection:section];
         return numberOfRows * 7;
     }
     return 7;
@@ -1522,8 +1519,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.dateIsToday = self.today?[self.gregorian isDate:cell.date inSameDayAsDate:self.today]:NO;
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            NSDate *month = [self.calculator monthForSection:indexPath.section];
-            cell.month = month;
             cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
             if (cell.isPlaceholder) {
                 cell.selected &= _pagingEnabled;
@@ -1641,19 +1636,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     CGSize sizeInPoints = [UIScreen mainScreen].bounds.size;
     FSCalendarOrientation orientation = scale * sizeInPoints.width == nativeSize.width ? FSCalendarOrientationPortrait : FSCalendarOrientationLandscape;
     return orientation;
-}
-
-- (NSInteger)numberOfRowsInMonth:(NSDate *)month
-{
-    if (!month) return 0;
-    if (self.placeholderType == FSCalendarPlaceholderTypeFillSixRows) return 6;
-    NSDate *firstDayOfMonth = [self.gregorian fs_firstDayOfMonth:month];
-    NSInteger weekdayOfFirstDay = [self.gregorian component:NSCalendarUnitWeekday fromDate:firstDayOfMonth];
-    NSInteger numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month];
-    NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.firstWeekday) + 7) % 7;
-    NSInteger headDayCount = numberOfDaysInMonth + numberOfPlaceholdersForPrev;
-    NSInteger numberOfRows = (headDayCount/7) + (headDayCount%7>0);
-    return numberOfRows;
 }
 
 - (void)requestBoundingDatesIfNecessary
