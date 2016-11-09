@@ -431,7 +431,7 @@
                 }
                 
                 NSDate *currentPage = self.calendar.currentPage;
-                NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:currentPage];
+                NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:currentPage scope:FSCalendarScopeMonth];
                 NSDate *monthHead = [self.calendar.calculator monthHeadForSection:indexPath.section];
                 NSDate *targetPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:focusedRowNumber*7 toDate:monthHead options:0];
                 
