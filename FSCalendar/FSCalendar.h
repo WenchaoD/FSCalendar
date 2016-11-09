@@ -559,7 +559,6 @@ IB_DESIGNABLE
 @interface FSCalendar (Deprecated)
 @property (assign, nonatomic) IBInspectable BOOL showsPlaceholders FSCalendarDeprecated('placeholderType');
 @property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated('currentPage');
-@property (assign, nonatomic) FSCalendarFlow flow FSCalendarDeprecated('scrollDirection');
 - (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);
 - (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated(-selectDate:scrollToDate:);
 

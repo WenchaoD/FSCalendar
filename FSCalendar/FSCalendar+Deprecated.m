@@ -36,16 +36,6 @@
     return self.currentPage;
 }
 
-- (void)setFlow:(FSCalendarFlow)flow
-{
-    self.scrollDirection = (FSCalendarScrollDirection)flow;
-}
-
-- (FSCalendarFlow)flow
-{
-    return (FSCalendarFlow)self.scrollDirection;
-}
-
 - (void)setSelectedDate:(NSDate *)selectedDate
 {
     [self selectDate:selectedDate];
