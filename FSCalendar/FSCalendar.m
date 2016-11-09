@@ -577,7 +577,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
         cell.selected = NO;
-        [cell configureSubviews];
+        [cell configureAppearance];
     }
     NSDate *selectedDate = cell.date ?: [self.calculator dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
@@ -1132,7 +1132,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:YES];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         cell.selected = NO;
-        [cell configureSubviews];
+        [cell configureAppearance];
     }
 }
 
@@ -1503,7 +1503,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         cell.preferredImageOffset = [self.proxy preferredImageOffsetForDate:cell.date];
     }
     
-    [cell configureSubviews];
+    [cell configureAppearance];
     [cell setNeedsLayout];
 }
 
@@ -1539,7 +1539,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
         [_collectionView deselectItemAtIndexPath:indexPath animated:NO];
     }
-    [cell configureSubviews];
+    [cell configureAppearance];
 }
 
 - (void)reloadVisibleCells
@@ -1560,7 +1560,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && !evaluatedObject.selected;
         }]].firstObject;
         cell.selected = YES;
-        [cell configureSubviews];
+        [cell configureAppearance];
     }
 }
 
@@ -1573,14 +1573,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }]].firstObject;
         cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
-        [cell configureSubviews];
+        [cell configureAppearance];
     } else {
         FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
             return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && evaluatedObject.selected;
         }]].firstObject;
         cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
-        [cell configureSubviews];
+        [cell configureAppearance];
     }
 }
 

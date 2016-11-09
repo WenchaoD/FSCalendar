@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 
 // For div overridden
 - (void)layoutSubviews NS_REQUIRES_SUPER; // Configure view frames
-- (void)configureSubviews NS_REQUIRES_SUPER; // Configure for selected/unselected state
+- (void)configureAppearance NS_REQUIRES_SUPER; // Configure appearance for cell
 
 - (void)invalidateTitleFont;
 - (void)invalidateSubtitleFont;

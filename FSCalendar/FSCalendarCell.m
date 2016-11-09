@@ -215,7 +215,7 @@
     group.duration = kAnimationDuration;
     group.animations = @[zoomOut, zoomIn];
     [_shapeLayer addAnimation:group forKey:@"bounce"];
-    [self configureSubviews];
+    [self configureAppearance];
     
 #undef kAnimationDuration
     
@@ -223,7 +223,7 @@
 
 #pragma mark - Private
 
-- (void)configureSubviews
+- (void)configureAppearance
 {
     UIColor *textColor = self.colorForTitleLabel;
     if (![textColor isEqual:_titleLabel.textColor]) {
