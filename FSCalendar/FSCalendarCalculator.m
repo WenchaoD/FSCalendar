@@ -122,6 +122,7 @@
 
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
+    if (!indexPath) return nil;
     if (self.calendar.animator.transition == FSCalendarTransitionWeekToMonth && self.calendar.animator.state == FSCalendarTransitionStateInProgress) {
         return [self dateForIndexPath:indexPath scope:FSCalendarScopeMonth];
     }

@@ -24,7 +24,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (weak, nonatomic) CAShapeLayer *shapeLayer;
 @property (weak, nonatomic) FSCalendarEventIndicator *eventIndicator;
 
-@property (strong, nonatomic) NSDate   *date;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *subtitle;
 @property (strong, nonatomic) UIImage  *image;
@@ -33,7 +32,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (assign, nonatomic) BOOL dateIsToday;
 
-@property (readonly, nonatomic) BOOL weekend;
+@property (assign, nonatomic) BOOL weekend;
+
 @property (readonly, nonatomic,getter=isPlaceholder) BOOL placeholder;
 
 @property (strong, nonatomic) UIColor *preferredFillDefaultColor;

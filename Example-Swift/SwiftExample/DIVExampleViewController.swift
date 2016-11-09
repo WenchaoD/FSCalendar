@@ -113,18 +113,18 @@ class DIVExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
     func calendar(_ calendar: FSCalendar, didSelect date: Date) {
         print("did select date \(self.formatter.string(from: date))")
         calendar.visibleCells().forEach { (cell) in
-            let date = cell.date
-            let position = cell.monthPosition
-            self.configure(cell: cell, for: date!, at: position)
+            let date = calendar.date(for: cell)
+            let position = calendar.monthPosition(for: cell)
+            self.configure(cell: cell, for: date, at: position)
         }
     }
     
     func calendar(_ calendar: FSCalendar, didDeselect date: Date) {
         print("did deselect date \(self.formatter.string(from: date))")
         calendar.visibleCells().forEach { (cell) in
-            let date = cell.date
-            let position = cell.monthPosition
-            self.configure(cell: cell, for: date!, at: position)
+            let date = calendar.date(for: cell)
+            let position = calendar.monthPosition(for: cell)
+            self.configure(cell: cell, for: date, at: position)
         }
     }
     

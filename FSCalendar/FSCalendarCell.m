@@ -119,7 +119,7 @@
     
     if (self.contentView.hidden) return;
     
-    _titleLabel.text = self.title ?: @([self.calendar.gregorian component:NSCalendarUnitDay fromDate:_date]).stringValue;
+    _titleLabel.text = self.title;
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
         if (_subtitleLabel.hidden) {
@@ -188,7 +188,6 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    _date = nil;
     [CATransaction setDisableActions:YES];
     _shapeLayer.opacity = 0;
     [self.contentView.layer removeAnimationForKey:@"opacity"];
@@ -272,12 +271,6 @@
 
 }
 
-- (BOOL)isWeekend
-{
-    if (!_date) return NO;
-    return [self.calendar.gregorian isDateInWeekend:self.date];
-}
-
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
     if (self.isSelected) {
@@ -292,7 +285,7 @@
     if (self.placeholder && [[dictionary allKeys] containsObject:@(FSCalendarCellStatePlaceholder)]) {
         return dictionary[@(FSCalendarCellStatePlaceholder)];
     }
-    if (self.isWeekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {
+    if (self.weekend && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekend)]) {
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];

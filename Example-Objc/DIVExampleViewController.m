@@ -140,8 +140,8 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 {
     NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
     [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDate *date = obj.date;
-        FSCalendarMonthPosition position = obj.monthPosition;
+        NSDate *date = [calendar dateForCell:obj];
+        FSCalendarMonthPosition position = [calendar monthPositionForCell:obj];
         [self configureCell:obj forDate:date atMonthPosition:position];
     }];
 }
@@ -150,8 +150,8 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 {
     NSLog(@"did deselect date %@",[self.dateFormatter stringFromDate:date]);
     [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDate *date = obj.date;
-        FSCalendarMonthPosition position = obj.monthPosition;
+        NSDate *date = [calendar dateForCell:obj];
+        FSCalendarMonthPosition position = [calendar monthPositionForCell:obj];
         [self configureCell:obj forDate:date atMonthPosition:position];
     }];
 }

@@ -109,7 +109,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)invalidateLayout;
 - (void)invalidateWeekdaySymbols;
 - (void)invalidateHeaders;
-- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
+- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell forDate:(NSDate *)date;
 
 - (void)invalidateWeekdayFont;
 - (void)invalidateWeekdayTextColor;
@@ -537,10 +537,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    NSDate *date = [self dateForCell:cell];
     if (cell.isPlaceholder) {
         if (_placeholderType == FSCalendarPlaceholderTypeNone) return NO;
-        if ([self isDateInRange:cell.date]) {
-            [self selectDate:cell.date scrollToDate:YES forPlaceholder:YES];
+        if ([self isDateInRange:date]) {
+            [self selectDate:date scrollToDate:YES forPlaceholder:YES];
         }
         return NO;
     }
@@ -559,10 +560,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         return NO;
     }
     BOOL shouldSelect = YES;
-    if (cell.date && [self isDateInRange:cell.date] && !_supressEvent) {
-        shouldSelect &= [self.proxy shouldSelectDate:cell.date];
+    if (date && [self isDateInRange:date] && !_supressEvent) {
+        shouldSelect &= [self.proxy shouldSelectDate:date];
     }
-    return shouldSelect && [self isDateInRange:cell.date];
+    return shouldSelect && [self isDateInRange:date];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -571,7 +572,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.selected = NO;
     [cell configureAppearance];
     
-    NSDate *selectedDate = cell.date ?: [self.calculator dateForIndexPath:indexPath];
+    NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
     [self deselectCounterpartDate:selectedDate];
     [self.proxy didDeselectDate:selectedDate];
@@ -585,8 +586,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             return [self collectionView:collectionView shouldDeselectItemAtIndexPath:selectedIndexPath];
         }
     }
-    FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    return [self.proxy shouldDeselectDate:(cell.date?:[self.calculator dateForIndexPath:indexPath])];
+    return [self.proxy shouldDeselectDate:[self.calculator dateForIndexPath:indexPath]];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
@@ -833,6 +833,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     NSIndexPath *indexPath = [self.calculator indexPathForDate:date atMonthPosition:position];
     return (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+}
+
+- (NSDate *)dateForCell:(FSCalendarCell *)cell
+{
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    return [self.calculator dateForIndexPath:indexPath];
+}
+
+- (FSCalendarMonthPosition)monthPositionForCell:(FSCalendarCell *)cell
+{
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    return [self.calculator monthPositionForIndexPath:indexPath];
 }
 
 - (NSArray<FSCalendarCell *> *)visibleCells
@@ -1460,29 +1472,29 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
-- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell
+- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell forDate:(NSDate *)date
 {
-    cell.preferredFillSelectionColor = [self.proxy preferredFillSelectionColorForDate:cell.date];
-    cell.preferredFillDefaultColor = [self.proxy preferredFillDefaultColorForDate:cell.date];
-    cell.preferredTitleDefaultColor = [self.proxy preferredTitleDefaultColorForDate:cell.date];
-    cell.preferredTitleSelectionColor = [self.proxy preferredTitleSelectionColorForDate:cell.date];
-    cell.preferredTitleOffset = [self.proxy preferredTitleOffsetForDate:cell.date];
+    cell.preferredFillSelectionColor = [self.proxy preferredFillSelectionColorForDate:date];
+    cell.preferredFillDefaultColor = [self.proxy preferredFillDefaultColorForDate:date];
+    cell.preferredTitleDefaultColor = [self.proxy preferredTitleDefaultColorForDate:date];
+    cell.preferredTitleSelectionColor = [self.proxy preferredTitleSelectionColorForDate:date];
+    cell.preferredTitleOffset = [self.proxy preferredTitleOffsetForDate:date];
     if (cell.subtitle) {
-        cell.preferredSubtitleDefaultColor = [self.proxy preferredSubtitleDefaultColorForDate:cell.date];
-        cell.preferredSubtitleSelectionColor = [self.proxy preferredSubtitleSelectionColorForDate:cell.date];
-        cell.preferredSubtitleOffset = [self.proxy preferredSubtitleOffsetForDate:cell.date];
+        cell.preferredSubtitleDefaultColor = [self.proxy preferredSubtitleDefaultColorForDate:date];
+        cell.preferredSubtitleSelectionColor = [self.proxy preferredSubtitleSelectionColorForDate:date];
+        cell.preferredSubtitleOffset = [self.proxy preferredSubtitleOffsetForDate:date];
     }
     if (cell.numberOfEvents) {
-        cell.preferredEventDefaultColors = [self.proxy preferredEventDefaultColorsForDate:cell.date];
-        cell.preferredEventSelectionColors = [self.proxy preferredEventSelectionColorsForDate:cell.date];
-        cell.preferredEventOffset = [self.proxy preferredEventOffsetForDate:cell.date];
+        cell.preferredEventDefaultColors = [self.proxy preferredEventDefaultColorsForDate:date];
+        cell.preferredEventSelectionColors = [self.proxy preferredEventSelectionColorsForDate:date];
+        cell.preferredEventOffset = [self.proxy preferredEventOffsetForDate:date];
     }
-    cell.preferredBorderDefaultColor = [self.proxy preferredBorderDefaultColorForDate:cell.date];
-    cell.preferredBorderSelectionColor = [self.proxy preferredBorderSelectionColorForDate:cell.date];
-    cell.preferredBorderRadius = [self.proxy preferredBorderRadiusForDate:cell.date];
+    cell.preferredBorderDefaultColor = [self.proxy preferredBorderDefaultColorForDate:date];
+    cell.preferredBorderSelectionColor = [self.proxy preferredBorderSelectionColorForDate:date];
+    cell.preferredBorderRadius = [self.proxy preferredBorderRadiusForDate:date];
     
     if (cell.image) {
-        cell.preferredImageOffset = [self.proxy preferredImageOffsetForDate:cell.date];
+        cell.preferredImageOffset = [self.proxy preferredImageOffsetForDate:date];
     }
     
     [cell configureAppearance];
@@ -1492,13 +1504,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.calendar = self;
-    cell.date = [self.calculator dateForIndexPath:indexPath];
-    cell.image = [self.proxy imageForDate:cell.date];
-    cell.numberOfEvents = [self.proxy numberOfEventsForDate:cell.date];
-    cell.title = [self.proxy titleForDate:cell.date];
-    cell.subtitle  = [self.proxy subtitleForDate:cell.date];
-    cell.selected = [_selectedDates containsObject:cell.date];
-    cell.dateIsToday = self.today?[self.gregorian isDate:cell.date inSameDayAsDate:self.today]:NO;
+    NSDate *date = [self.calculator dateForIndexPath:indexPath];
+    cell.image = [self.proxy imageForDate:date];
+    cell.numberOfEvents = [self.proxy numberOfEventsForDate:date];
+    cell.title = [self.proxy titleForDate:date] ?: @([self.gregorian component:NSCalendarUnitDay fromDate:date]).stringValue;
+    cell.subtitle  = [self.proxy subtitleForDate:date];
+    cell.selected = [_selectedDates containsObject:date];
+    cell.dateIsToday = self.today?[self.gregorian isDate:date inSameDayAsDate:self.today]:NO;
+    cell.weekend = [self.gregorian isDateInWeekend:date];
     switch (_scope) {
         case FSCalendarScopeMonth: {
             cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
@@ -1515,7 +1528,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             break;
         }
     }
-    [self invalidateAppearanceForCell:cell];
+    [self invalidateAppearanceForCell:cell forDate:date];
     if (cell.selected) {
         [_collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     } else if ([_collectionView.indexPathsForSelectedItems containsObject:indexPath]) {
@@ -1538,9 +1551,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (!self.floatingMode) {
-        FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && !evaluatedObject.selected;
-        }]].firstObject;
+        FSCalendarCell *cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
+        if (!cell) cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
         cell.selected = YES;
         [cell configureAppearance];
     }
@@ -1557,9 +1569,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
         [cell configureAppearance];
     } else {
-        FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.isPlaceholder && [self.gregorian isDate:evaluatedObject.date inSameDayAsDate:date] && evaluatedObject.selected;
-        }]].firstObject;
+        FSCalendarCell *cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
+        if (!cell) cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
         cell.selected = NO;
         [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
         [cell configureAppearance];

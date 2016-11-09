@@ -54,7 +54,6 @@
 
 - (void)invalidateHeaders;
 - (void)invalidateWeekdaySymbols;
-- (void)invalidateAppearanceForCell:(FSCalendarCell *)cell;
 
 - (BOOL)isPageInRange:(NSDate *)page;
 - (BOOL)isDateInRange:(NSDate *)date;

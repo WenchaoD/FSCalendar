@@ -487,6 +487,23 @@ IB_DESIGNABLE
 
 
 /**
+ Returns the date of the specified cell.
+ 
+ @param cell The cell object whose date you want.
+ @return The date of the cell or nil if the specified cell is not in the calendar.
+ */
+- (NSDate *)dateForCell:(FSCalendarCell *)cell;
+
+/**
+ Returns the month position of the specified cell.
+ 
+ @param cell The cell object whose month position you want.
+ @return The month position of the cell or FSCalendarMonthPositionNotFound if the specified cell is not in the calendar.
+ */
+- (FSCalendarMonthPosition)monthPositionForCell:(FSCalendarCell *)cell;
+
+
+/**
  Returns an array of visible cells currently displayed by the calendar.
  
  @return An array of FSCalendarCell objects. If no cells are visible, this method returns an empty array.
