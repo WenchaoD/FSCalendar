@@ -257,6 +257,21 @@
     return variable;
 }
 
+- (void)fs_setUnsignedIntegerVariable:(NSUInteger)value forKey:(NSString *)key
+{
+    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String);
+    ((void (*)(id, Ivar, NSUInteger))object_setIvar)(self, ivar, value);
+}
+
+- (NSUInteger)fs_unsignedIntegerVariableForKey:(NSString *)key
+{
+    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String);
+    ptrdiff_t offset = ivar_getOffset(ivar);
+    unsigned char *bytes = (unsigned char *)(__bridge void*)self;
+    NSUInteger value = *((NSUInteger *)(bytes+offset));
+    return value;
+}
+
 - (id)fs_performSelector:(SEL)selector withObjects:(nullable id)firstObject, ...
 {
     if (!selector) return nil;

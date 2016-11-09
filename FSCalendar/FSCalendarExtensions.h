@@ -60,6 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)fs_setVariable:(id)variable forKey:(NSString *)key;
 - (id)fs_variableForKey:(NSString *)key;
+
+- (void)fs_setUnsignedIntegerVariable:(NSUInteger)value forKey:(NSString *)key;
+- (NSUInteger)fs_unsignedIntegerVariableForKey:(NSString *)key;
+
 - (id)fs_performSelector:(SEL)selector withObjects:(nullable id)firstObject, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
