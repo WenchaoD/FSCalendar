@@ -567,18 +567,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.allowsMultipleSelection && self.selectedDate) {
-        NSIndexPath *selectedIndexPath = [self.calculator indexPathForDate:self.selectedDate];
-        if (![indexPath isEqual:selectedIndexPath]) {
-            [self collectionView:collectionView didDeselectItemAtIndexPath:selectedIndexPath];
-            return;
-        }
-    }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    if (cell) {
-        cell.selected = NO;
-        [cell configureAppearance];
-    }
+    cell.selected = NO;
+    [cell configureAppearance];
+    
     NSDate *selectedDate = cell.date ?: [self.calculator dateForIndexPath:indexPath];
     [_selectedDates removeObject:selectedDate];
     [self deselectCounterpartDate:selectedDate];
