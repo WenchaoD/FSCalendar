@@ -1,5 +1,5 @@
 //
-//  DIVCalendarCell.swift
+//  DIYCalendarCell.swift
 //  SwiftExample
 //
 //  Created by dingwenchao on 06/11/2016.
@@ -9,7 +9,7 @@
 import Foundation
 
 import UIKit
-class DIVCalendarCell: FSCalendarCell {
+class DIYCalendarCell: FSCalendarCell {
     
     weak var circleImageView: UIImageView!
     weak var selectionLayer: CAShapeLayer!

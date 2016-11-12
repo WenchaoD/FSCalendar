@@ -1,5 +1,5 @@
 //
-//  ScopeHandleViewController.h
+//  DIYExampleViewController.h
 //  FSCalendar
 //
 //  Created by dingwenchao on 5/8/16.
@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "FSCalendar.h"
 
-@interface DIVExampleViewController : UIViewController
+@interface DIYExampleViewController : UIViewController
 
 @end

@@ -1,15 +1,15 @@
 //
-//  DIVCalendarCell.m
+//  DIYCalendarCell.m
 //  FSCalendar
 //
 //  Created by dingwenchao on 02/11/2016.
 //  Copyright © 2016 wenchaoios. All rights reserved.
 //
 
-#import "DIVCalendarCell.h"
+#import "DIYCalendarCell.h"
 #import "FSCalendarExtensions.h"
 
-@implementation DIVCalendarCell
+@implementation DIYCalendarCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

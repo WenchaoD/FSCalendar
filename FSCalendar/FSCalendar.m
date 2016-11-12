@@ -969,9 +969,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_headerHeight == FSCalendarAutomaticDimension) {
         if (_preferredWeekdayHeight == FSCalendarAutomaticDimension) {
             if (!self.floatingMode) {
-                CGFloat divider = FSCalendarStandardMonthlyPageHeight;
+                CGFloat DIYider = FSCalendarStandardMonthlyPageHeight;
                 CGFloat contentHeight = self.animator.cachedMonthSize.height*(1-_showsScopeHandle*0.08);
-                _preferredHeaderHeight = (FSCalendarStandardHeaderHeight/divider)*contentHeight;
+                _preferredHeaderHeight = (FSCalendarStandardHeaderHeight/DIYider)*contentHeight;
                 _preferredHeaderHeight -= (_preferredHeaderHeight-FSCalendarStandardHeaderHeight)*0.5;
             } else {
                 _preferredHeaderHeight = FSCalendarStandardHeaderHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
@@ -987,9 +987,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_weekdayHeight == FSCalendarAutomaticDimension) {
         if (_preferredWeekdayHeight == FSCalendarAutomaticDimension) {
             if (!self.floatingMode) {
-                CGFloat divider = FSCalendarStandardMonthlyPageHeight;
+                CGFloat DIYider = FSCalendarStandardMonthlyPageHeight;
                 CGFloat contentHeight = self.animator.cachedMonthSize.height*(1-_showsScopeHandle*0.08);
-                _preferredWeekdayHeight = (FSCalendarStandardWeekdayHeight/divider)*contentHeight;
+                _preferredWeekdayHeight = (FSCalendarStandardWeekdayHeight/DIYider)*contentHeight;
             } else {
                 _preferredWeekdayHeight = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier;
             }
@@ -1022,9 +1022,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_preferredPadding == FSCalendarAutomaticDimension) {
         if (!self.floatingMode) {
-            CGFloat divider = FSCalendarStandardMonthlyPageHeight;
+            CGFloat DIYider = FSCalendarStandardMonthlyPageHeight;
             CGFloat contentHeight = self.animator.cachedMonthSize.height*(1-_showsScopeHandle*0.08);
-            _preferredPadding = (FSCalendarStandardWeekdayHeight/divider)*contentHeight*0.1;
+            _preferredPadding = (FSCalendarStandardWeekdayHeight/DIYider)*contentHeight*0.1;
         } else {
             _preferredPadding = FSCalendarStandardWeekdayHeight*MAX(1, FSCalendarDeviceIsIPad*1.5)*_lineHeightMultiplier*0.1;
         }

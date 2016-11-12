@@ -44,7 +44,7 @@
 ## Today Extension With NCWidgetDisplayMode (iOS10)
 ![2](https://cloud.githubusercontent.com/assets/5186464/18870531/9afa7cd4-84e3-11e6-93c6-4e8811fd71a7.gif)
 
-## DIV support
+## DIY support
 |  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
 | -------------  |
 

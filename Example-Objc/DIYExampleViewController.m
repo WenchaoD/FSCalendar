@@ -1,13 +1,13 @@
 //
-//  ScopeHandleViewController.m
+//  DIYExampleViewController.m
 //  FSCalendar
 //
 //  Created by dingwenchao on 5/8/16.
 //  Copyright © 2016 wenchaoios. All rights reserved.
 //
 
-#import "DIVExampleViewController.h"
-#import "DIVCalendarCell.h"
+#import "DIYExampleViewController.h"
+#import "DIYCalendarCell.h"
 #import "FSCalendarExtensions.h"
 
 typedef NS_ENUM(NSUInteger, SelectionType) {
@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 };
 
 
-@interface DIVExampleViewController () <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+@interface DIYExampleViewController () <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 
 @property (weak, nonatomic) FSCalendar *calendar;
 
@@ -32,7 +32,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 
 @end
 
-@implementation DIVExampleViewController
+@implementation DIYExampleViewController
 
 - (instancetype)init
 {
@@ -64,7 +64,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
     calendar.appearance.eventSelectionColor = [UIColor whiteColor];
     calendar.appearance.eventOffset = CGPointMake(0, -7);
     calendar.today = nil; // Hide the today circle
-    [calendar registerClass:[DIVCalendarCell class] forCellReuseIdentifier:@"cell"];
+    [calendar registerClass:[DIYCalendarCell class] forCellReuseIdentifier:@"cell"];
     
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(calendar.frame)+10, self.view.frame.size.width, 50)];
@@ -113,7 +113,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 
 - (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
-    DIVCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date atMonthPosition:position];
+    DIYCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date atMonthPosition:position];
     return cell;
 }
 
@@ -169,16 +169,16 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 - (void)configureCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
     
-    DIVCalendarCell *divCell = (DIVCalendarCell *)cell;
+    DIYCalendarCell *diyCell = (DIYCalendarCell *)cell;
     
     // Custom today circle
-    divCell.circleImageView.hidden = ![self.gregorian isDateInToday:date];
+    diyCell.circleImageView.hidden = ![self.gregorian isDateInToday:date];
     
     
     // Configure selection layer
     if (position == FSCalendarMonthPositionCurrent || self.calendar.scope == FSCalendarScopeWeek) {
         
-        divCell.eventIndicator.hidden = NO;
+        diyCell.eventIndicator.hidden = NO;
         
         SelectionType selectionType = SelectionTypeNone;
         if ([self.calendar.selectedDates containsObject:date]) {
@@ -200,38 +200,38 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
         }
         
         if (selectionType == SelectionTypeNone) {
-            divCell.selectionLayer.hidden = YES;
+            diyCell.selectionLayer.hidden = YES;
             return;
         }
         
-        divCell.selectionLayer.hidden = NO;
+        diyCell.selectionLayer.hidden = NO;
         
         if (selectionType == SelectionTypeMiddle) {
             
-            divCell.selectionLayer.path = [UIBezierPath bezierPathWithRect:divCell.selectionLayer.bounds].CGPath;
+            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithRect:diyCell.selectionLayer.bounds].CGPath;
             
         } else if (selectionType == SelectionTypeLeftBorder) {
             
-            divCell.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:divCell.selectionLayer.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft cornerRadii:CGSizeMake(divCell.selectionLayer.fs_width/2, divCell.selectionLayer.fs_width/2)].CGPath;
+            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:diyCell.selectionLayer.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft cornerRadii:CGSizeMake(diyCell.selectionLayer.fs_width/2, diyCell.selectionLayer.fs_width/2)].CGPath;
             
         } else if (selectionType == SelectionTypeRightBorder) {
             
-            divCell.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:divCell.selectionLayer.bounds byRoundingCorners:UIRectCornerTopRight|UIRectCornerBottomRight cornerRadii:CGSizeMake(divCell.selectionLayer.fs_width/2, divCell.selectionLayer.fs_width/2)].CGPath;
+            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:diyCell.selectionLayer.bounds byRoundingCorners:UIRectCornerTopRight|UIRectCornerBottomRight cornerRadii:CGSizeMake(diyCell.selectionLayer.fs_width/2, diyCell.selectionLayer.fs_width/2)].CGPath;
             
         } else if (selectionType == SelectionTypeSingle) {
             
-            CGFloat diameter = MIN(divCell.selectionLayer.fs_height, divCell.selectionLayer.fs_width);
-            divCell.selectionLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(divCell.contentView.fs_width/2-diameter/2, divCell.contentView.fs_height/2-diameter/2, diameter, diameter)].CGPath;
+            CGFloat diameter = MIN(diyCell.selectionLayer.fs_height, diyCell.selectionLayer.fs_width);
+            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(diyCell.contentView.fs_width/2-diameter/2, diyCell.contentView.fs_height/2-diameter/2, diameter, diameter)].CGPath;
             
         }
         
     } else if (position == FSCalendarMonthPositionNext || position == FSCalendarMonthPositionPrevious) {
         
-        divCell.circleImageView.hidden = YES;
-        divCell.selectionLayer.hidden = YES;
-        divCell.eventIndicator.hidden = YES; // Hide default event indicator
+        diyCell.circleImageView.hidden = YES;
+        diyCell.selectionLayer.hidden = YES;
+        diyCell.eventIndicator.hidden = YES; // Hide default event indicator
         if ([self.calendar.selectedDates containsObject:date]) {
-            divCell.titleLabel.textColor = self.calendar.appearance.titlePlaceholderColor; // Prevent placeholders from changing text color
+            diyCell.titleLabel.textColor = self.calendar.appearance.titlePlaceholderColor; // Prevent placeholders from changing text color
         }
     }
 }

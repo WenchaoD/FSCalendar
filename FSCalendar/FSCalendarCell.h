@@ -57,7 +57,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 - (instancetype)initWithFrame:(CGRect)frame NS_REQUIRES_SUPER;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_REQUIRES_SUPER;
 
-// For div overridden
+// For DIY overridden
 - (void)layoutSubviews NS_REQUIRES_SUPER; // Configure view frames
 - (void)configureAppearance NS_REQUIRES_SUPER; // Configure appearance for cell
 

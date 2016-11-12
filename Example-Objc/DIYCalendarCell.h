@@ -1,5 +1,5 @@
 //
-//  DIVCalendarCell.h
+//  DIYCalendarCell.h
 //  FSCalendar
 //
 //  Created by dingwenchao on 02/11/2016.
@@ -9,7 +9,7 @@
 #import <FSCalendar/FSCalendar.h>
 
 
-@interface DIVCalendarCell : FSCalendarCell
+@interface DIYCalendarCell : FSCalendarCell
 
 @property (weak, nonatomic) UIImageView *circleImageView;
 

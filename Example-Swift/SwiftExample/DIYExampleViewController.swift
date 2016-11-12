@@ -1,5 +1,5 @@
 //
-//  DIVViewController.swift
+//  DIYViewController.swift
 //  SwiftExample
 //
 //  Created by dingwenchao on 06/11/2016.
@@ -16,7 +16,7 @@ enum SelectionType : Int {
     case rightBorder
 }
 
-class DIVExampleViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
+class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
     
     private let gregorian = NSCalendar(calendarIdentifier: .gregorian)!
     private let formatter: DateFormatter = {
@@ -49,7 +49,7 @@ class DIVExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         calendar.appearance.eventSelectionColor = UIColor.white
         calendar.appearance.eventOffset = CGPoint(x: 0, y: -7)
         calendar.today = nil // Hide the today circle
-        calendar.register(DIVCalendarCell.self, forCellReuseIdentifier: "cell")
+        calendar.register(DIYCalendarCell.self, forCellReuseIdentifier: "cell")
         
         calendar.clipsToBounds = true // Remove top/bottom line
         
@@ -139,13 +139,13 @@ class DIVExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
     
     func configure(cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
         
-        let divCell = (cell as! DIVCalendarCell)
+        let diyCell = (cell as! DIYCalendarCell)
         // Custom today circle
-        divCell.circleImageView.isHidden = !self.gregorian.isDateInToday(date)
+        diyCell.circleImageView.isHidden = !self.gregorian.isDateInToday(date)
         // Configure selection layer
         if position == .current || calendar.scope == .week {
             
-            divCell.eventIndicator.isHidden = false
+            diyCell.eventIndicator.isHidden = false
             
             var selectionType = SelectionType.none
             
@@ -171,33 +171,33 @@ class DIVExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
                 selectionType = .none
             }
             if selectionType == .none {
-                divCell.selectionLayer.isHidden = true
+                diyCell.selectionLayer.isHidden = true
                 return
             }
             
-            divCell.selectionLayer.isHidden = false
+            diyCell.selectionLayer.isHidden = false
             if selectionType == .middle {
-                divCell.selectionLayer.path = UIBezierPath(rect: divCell.selectionLayer.bounds).cgPath
+                diyCell.selectionLayer.path = UIBezierPath(rect: diyCell.selectionLayer.bounds).cgPath
             }
             else if selectionType == .leftBorder {
-                divCell.selectionLayer.path = UIBezierPath(roundedRect: divCell.selectionLayer.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: divCell.selectionLayer.frame.width / 2, height: divCell.selectionLayer.frame.width / 2)).cgPath
+                diyCell.selectionLayer.path = UIBezierPath(roundedRect: diyCell.selectionLayer.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: diyCell.selectionLayer.frame.width / 2, height: diyCell.selectionLayer.frame.width / 2)).cgPath
             }
             else if selectionType == .rightBorder {
-                divCell.selectionLayer.path = UIBezierPath(roundedRect: divCell.selectionLayer.bounds, byRoundingCorners: [.topRight, .bottomRight], cornerRadii: CGSize(width: divCell.selectionLayer.frame.width / 2, height: divCell.selectionLayer.frame.width / 2)).cgPath
+                diyCell.selectionLayer.path = UIBezierPath(roundedRect: diyCell.selectionLayer.bounds, byRoundingCorners: [.topRight, .bottomRight], cornerRadii: CGSize(width: diyCell.selectionLayer.frame.width / 2, height: diyCell.selectionLayer.frame.width / 2)).cgPath
             }
             else if selectionType == .single {
-                let diameter: CGFloat = min(divCell.selectionLayer.frame.height, divCell.selectionLayer.frame.width)
-                divCell.selectionLayer.path = UIBezierPath(ovalIn: CGRect(x: divCell.contentView.frame.width / 2 - diameter / 2, y: divCell.contentView.frame.height / 2 - diameter / 2, width: diameter, height: diameter)).cgPath
+                let diameter: CGFloat = min(diyCell.selectionLayer.frame.height, diyCell.selectionLayer.frame.width)
+                diyCell.selectionLayer.path = UIBezierPath(ovalIn: CGRect(x: diyCell.contentView.frame.width / 2 - diameter / 2, y: diyCell.contentView.frame.height / 2 - diameter / 2, width: diameter, height: diameter)).cgPath
             }
             
         }
         else if position == .next || position == .previous {
-            divCell.circleImageView.isHidden = true
-            divCell.selectionLayer.isHidden = true
-            divCell.eventIndicator.isHidden = true
+            diyCell.circleImageView.isHidden = true
+            diyCell.selectionLayer.isHidden = true
+            diyCell.eventIndicator.isHidden = true
             // Hide default event indicator
             if self.calendar.selectedDates.contains(date) {
-                divCell.titleLabel!.textColor = self.calendar.appearance.titlePlaceholderColor
+                diyCell.titleLabel!.textColor = self.calendar.appearance.titlePlaceholderColor
                 // Prevent placeholders from changing text color
             }
         }
