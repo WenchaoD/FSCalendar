@@ -106,14 +106,13 @@
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.allowsMultipleSelection = YES;
+    calendar.swipeToChooseGesture.enabled = YES;
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
     [self.view addSubview:calendar];
     self.calendar = calendar;
     
     [calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/03"]];
-
-    
     
     UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStylePlain target:self action:@selector(todayItemClicked:)];
     self.navigationItem.rightBarButtonItem = todayItem;

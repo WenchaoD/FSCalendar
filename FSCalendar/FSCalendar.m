@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarOrientationPortrait
 };
 
-@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate>
+@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate>
 {
     NSMutableArray  *_selectedDates;
 }
@@ -86,8 +86,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (readonly, nonatomic) BOOL hasValidateVisibleLayout;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) FSCalendarOrientation currentCalendarOrientation;
-
 @property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
+
+@property (strong, nonatomic) NSIndexPath *lastPressedIndexPath;
 
 - (void)orientationDidChange:(NSNotification *)notification;
 
@@ -116,6 +117,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateViewFrames;
 
+- (void)handleSwipeToChoose:(UILongPressGestureRecognizer *)pressGesture;
+
 - (void)selectCounterpartDate:(NSDate *)date;
 - (void)deselectCounterpartDate:(NSDate *)date;
 
@@ -130,6 +133,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @dynamic selectedDate;
 @synthesize scrollDirection = _scrollDirection, firstWeekday = _firstWeekday, appearance = _appearance;
+@synthesize scopeGesture = _scopeGesture, swipeToChooseGesture = _swipeToChooseGesture;
 
 #pragma mark - Life Cycle && Initialize
 
@@ -254,15 +258,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.animator = [[FSCalendarAnimator alloc] initWithCalendar:self];
     self.proxy = [[FSCalendarDelegateProxy alloc] initWithCalendar:self];
     self.calculator = [[FSCalendarCalculator alloc] initWithCalendar:self];
-    
-    // Gestures
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.animator action:@selector(handlePan:)];
-    panGesture.delegate = self.animator;
-    panGesture.minimumNumberOfTouches = 1;
-    panGesture.maximumNumberOfTouches = 2;
-    panGesture.enabled = NO;
-    [self.daysContainer addGestureRecognizer:panGesture];
-    _scopeGesture = panGesture;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
@@ -720,6 +715,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }];
 }
 
+#pragma mark - <UIGestureRecognizerDelegate>
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
 #pragma mark - Notification
 
 - (void)orientationDidChange:(NSNotification *)notification
@@ -1051,6 +1053,35 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _showsScopeHandle = showsScopeHandle;
         [self invalidateLayout];
     }
+}
+
+- (UIPanGestureRecognizer *)scopeGesture
+{
+    if (!_scopeGesture) {
+        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.animator action:@selector(handlePan:)];
+        panGesture.delegate = self.animator;
+        panGesture.minimumNumberOfTouches = 1;
+        panGesture.maximumNumberOfTouches = 2;
+        panGesture.enabled = NO;
+        [self.daysContainer addGestureRecognizer:panGesture];
+        _scopeGesture = panGesture;
+    }
+    return _scopeGesture;
+}
+
+- (UILongPressGestureRecognizer *)swipeToChooseGesture
+{
+    if (!_swipeToChooseGesture) {
+        UILongPressGestureRecognizer *pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeToChoose:)];
+        pressGesture.enabled = NO;
+        pressGesture.numberOfTapsRequired = 0;
+        pressGesture.numberOfTouchesRequired = 1;
+        pressGesture.minimumPressDuration = 0.8;
+        [self.daysContainer addGestureRecognizer:pressGesture];
+        [self.collectionView.panGestureRecognizer requireGestureRecognizerToFail:pressGesture];
+        _swipeToChooseGesture = pressGesture;
+    }
+    return _swipeToChooseGesture;
 }
 
 #pragma mark - Public methods
@@ -1548,6 +1579,40 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         FSCalendarCell *cell = (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [self reloadDataForCell:cell atIndexPath:indexPath];
     }];
+}
+
+- (void)handleSwipeToChoose:(UILongPressGestureRecognizer *)pressGesture
+{
+    switch (pressGesture.state) {
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged: {
+            NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[pressGesture locationInView:self.collectionView]];
+            FSCalendarMonthPosition position = [self.calculator monthPositionForIndexPath:indexPath];
+            if (position == FSCalendarMonthPositionCurrent) {
+                if (![indexPath isEqual:self.lastPressedIndexPath]) {
+                    NSDate *date = [self.calculator dateForIndexPath:indexPath];
+                    if (![self.selectedDates containsObject:date]) {
+                        [self selectDate:date scrollToDate:NO forPlaceholder:NO];
+                        [self.proxy didSelectDate:date];
+                    } else {
+                        [self deselectDate:date];
+                        [self.proxy didDeselectDate:date];
+                    }
+                }
+                self.lastPressedIndexPath = indexPath;
+            }
+            break;
+        }
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled: {
+            self.lastPressedIndexPath = nil;
+            break;
+        }
+        default:
+            break;
+    }
+   
+    
 }
 
 - (void)selectCounterpartDate:(NSDate *)date
