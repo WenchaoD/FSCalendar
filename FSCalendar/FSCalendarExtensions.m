@@ -158,7 +158,8 @@
 {
     if (!month) return nil;
     NSDateComponents *components = [self components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
-    components.day = 1;
+    components.month++;
+    components.day = 0;
     return [self dateFromComponents:components];
 }
 
