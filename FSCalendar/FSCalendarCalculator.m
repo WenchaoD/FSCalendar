@@ -281,8 +281,8 @@
         NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.gregorian.firstWeekday) + 7) % 7;
         NSInteger headDayCount = numberOfDaysInMonth + numberOfPlaceholdersForPrev;
         NSInteger numberOfRows = (headDayCount/7) + (headDayCount%7>0);
-        self.rowNumbers[month] = @(numberOfRows);
         rowNumber = @(numberOfRows);
+        self.rowNumbers[month] = rowNumber;
     }
     return rowNumber.integerValue;
 }
