@@ -48,8 +48,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
 typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition) {
     FSCalendarMonthPositionPrevious,
     FSCalendarMonthPositionCurrent,
-    FSCalendarMonthPositionNext,               
-    FSCalendarMonthPositionOutOfBounds,
+    FSCalendarMonthPositionNext,
+    
+    FSCalendarMonthPositionOutOfBounds = NSNotFound-1,
     FSCalendarMonthPositionNotFound = NSNotFound
 };
 
@@ -122,22 +123,26 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Asks the delegate whether the specific date is allowed to be selected by tapping.
  */
-- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date;
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date FSCalendarDeprecated(-calendar:shouldSelectDate:atMonthPosition:);
 
 /**
  Tells the delegate a date in the calendar is selected by tapping.
  */
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date FSCalendarDeprecated(-calendar:didSelectDate:atMonthPosition:);
 
 /**
  Asks the delegate whether the specific date is allowed to be deselected by tapping.
  */
-- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date;
+- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
+- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date FSCalendarDeprecated(-calendar:shouldDeselectDate:atMonthPosition:);
 
 /**
  Tells the delegate a date in the calendar is deselected by tapping.
  */
-- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date;
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date FSCalendarDeprecated(-calendar:didDeselectDate:atMonthPosition:);
 
 /**
  Tells the delegate the calendar is about to change the bounding rect.
@@ -147,7 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Tells the delegate that the specified cell is about to be displayed in the calendar.
  */
-- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
 
 /**
  Tells the delegate the calendar is about to change the current page.

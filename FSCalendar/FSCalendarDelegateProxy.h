@@ -1,5 +1,5 @@
 //
-//  FSCalendarProxy.h
+//  FSCalendarDelegateProxy.h
 //  FSCalendar
 //
 //  Created by dingwenchao on 10/27/16.
@@ -29,10 +29,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 - (FSCalendarCell *)cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
 // Delegate requests
-- (BOOL)shouldSelectDate:(NSDate *)date;
-- (void)didSelectDate:(NSDate *)date;
-- (BOOL)shouldDeselectDate:(NSDate *)date;
-- (void)didDeselectDate:(NSDate *)date;
+- (BOOL)shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
+- (void)didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
+- (BOOL)shouldDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
+- (void)didDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 - (void)currentPageDidChange;
 - (BOOL)boundingRectWillChange:(BOOL)animated;
 - (void)willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;

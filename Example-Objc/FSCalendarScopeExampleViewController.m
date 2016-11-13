@@ -38,7 +38,7 @@
     [self.view layoutIfNeeded];
 }
 
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
     

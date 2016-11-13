@@ -71,13 +71,13 @@
 
 #pragma mark - <FSCalendarDelegate>
 
-- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"should select date %@",[self.dateFormatter stringFromDate:date]);
     return YES;
 }
 
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
 }

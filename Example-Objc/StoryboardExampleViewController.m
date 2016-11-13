@@ -121,7 +121,7 @@
 
 #pragma mark - FSCalendarDelegate
 
-- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     BOOL shouldSelect = ![_datesShouldNotBeSelected containsObject:[self.dateFormatter1 stringFromDate:date]];
     if (!shouldSelect) {
@@ -136,7 +136,7 @@
     return shouldSelect;
 }
 
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did select date %@",[self.dateFormatter1 stringFromDate:date]);
     CGRect frame = [self.calendar frameForDate:date];

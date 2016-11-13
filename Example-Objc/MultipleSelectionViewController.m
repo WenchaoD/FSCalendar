@@ -76,7 +76,7 @@
     return YES;
 }
 
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -85,7 +85,7 @@
     NSLog(@"selected dates is %@",selectedDates);
 }
 
-- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSMutableArray *selectedDates = [NSMutableArray arrayWithCapacity:calendar.selectedDates.count];
     [calendar.selectedDates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

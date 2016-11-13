@@ -103,7 +103,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (BOOL)isDateSelected:(NSDate *)date;
 - (BOOL)isDateInDifferentPage:(NSDate *)date;
 
-- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder;
+- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate atMonthPosition:(FSCalendarMonthPosition)monthPosition;
 - (void)enqueueSelectedDate:(NSDate *)date;
 
 - (void)invalidateDateTools;
@@ -517,81 +517,75 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 #pragma mark - <UICollectionViewDelegate>
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    if (self.placeholderType == FSCalendarPlaceholderTypeNone && monthPosition != FSCalendarMonthPositionCurrent) {
+        return NO;
+    }
+    NSDate *date = [self.calculator dateForIndexPath:indexPath];
+    return [self.proxy shouldSelectDate:date atMonthPosition:monthPosition];
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.selected = YES;
-    [cell performSelecting];
     NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
+    FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    if (monthPosition == FSCalendarMonthPositionCurrent) {
+        cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    } else {
+        cell = [self cellForDate:selectedDate atMonthPosition:FSCalendarMonthPositionCurrent];
+    }
+    if (![_selectedDates containsObject:selectedDate]) {
+        cell.selected = YES;
+        [cell performSelecting];
+    }
     if (!_supressEvent) {
-        [self.proxy didSelectDate:selectedDate];
+        [self.proxy didSelectDate:selectedDate atMonthPosition:[self.calculator monthPositionForIndexPath:indexPath]];
     }
     [self selectCounterpartDate:selectedDate];
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    NSDate *date = [self dateForCell:cell];
-    if (cell.isPlaceholder) {
-        if (_placeholderType == FSCalendarPlaceholderTypeNone) return NO;
-        if ([self isDateInRange:date]) {
-            [self selectDate:date scrollToDate:YES forPlaceholder:YES];
-        }
+    FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    if (self.placeholderType == FSCalendarPlaceholderTypeNone && monthPosition != FSCalendarMonthPositionCurrent) {
         return NO;
     }
-    NSDate *targetDate = [self.calculator dateForIndexPath:indexPath];
-    if ([self isDateSelected:targetDate]) {
-        // Click on a selected date in multiple-selection mode
-        if (self.allowsMultipleSelection) {
-            if ([self collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath]) {
-                [collectionView deselectItemAtIndexPath:indexPath animated:YES];
-                [self collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
-            }
-        } else {
-            // Click on a selected date in single-selection mode
-            [self.proxy didSelectDate:self.selectedDate];
-        }
-        return NO;
-    }
-    BOOL shouldSelect = YES;
-    if (date && [self isDateInRange:date] && !_supressEvent) {
-        shouldSelect &= [self.proxy shouldSelectDate:date];
-    }
-    return shouldSelect && [self isDateInRange:date];
+    NSDate *date = [self.calculator dateForIndexPath:indexPath];
+    return [self.proxy shouldDeselectDate:date atMonthPosition:monthPosition];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
-    if ([self.calculator monthPositionForIndexPath:indexPath] != FSCalendarMonthPositionCurrent) {
+    FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    if (monthPosition != FSCalendarMonthPositionCurrent) {
         [collectionView deselectItemAtIndexPath:[self.calculator indexPathForDate:selectedDate] animated:NO];
     }
-    FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    FSCalendarCell *cell;
+    if (monthPosition == FSCalendarMonthPositionCurrent) {
+        cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    } else {
+        cell = [self cellForDate:selectedDate atMonthPosition:FSCalendarMonthPositionCurrent];
+    }
     cell.selected = NO;
-    [cell configureAppearance];
+    [cell configureAppearance];;
     
     [_selectedDates removeObject:selectedDate];
-    [self deselectCounterpartDate:selectedDate];
-    [self.proxy didDeselectDate:selectedDate];
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (!self.allowsMultipleSelection) {
-        NSIndexPath *selectedIndexPath = [self.calculator indexPathForDate:self.selectedDate];
-        if (![indexPath isEqual:selectedIndexPath]) {
-            return [self collectionView:collectionView shouldDeselectItemAtIndexPath:selectedIndexPath];
-        }
+    if (!_supressEvent) {
+        [self.proxy didDeselectDate:selectedDate atMonthPosition:monthPosition];
     }
-    return [self.proxy shouldDeselectDate:[self.calculator dateForIndexPath:indexPath]];
+    [self deselectCounterpartDate:selectedDate];
+    
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    FSCalendarMonthPosition position = [self.calculator monthPositionForIndexPath:indexPath];
-    [self.proxy willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:position];
+    FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    [self.proxy willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:monthPosition];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
@@ -1154,7 +1148,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate
 {
-    [self selectDate:date scrollToDate:scrollToDate forPlaceholder:NO];
+    [self selectDate:date scrollToDate:scrollToDate atMonthPosition:FSCalendarMonthPositionCurrent];
 }
 
 - (void)deselectDate:(NSDate *)date
@@ -1174,7 +1168,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
-- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate forPlaceholder:(BOOL)forPlaceholder
+- (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     if (!self.allowsSelection || !date) return;
         
@@ -1187,18 +1181,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     BOOL shouldSelect = !_supressEvent;
     // 跨月份点击
-    if (forPlaceholder) {
+    if (monthPosition==FSCalendarMonthPositionPrevious||monthPosition==FSCalendarMonthPositionNext) {
         if (self.allowsMultipleSelection) {
             // 处理多选模式
             if ([self isDateSelected:targetDate]) {
                 // 已经选中的日期，是否应该反选，如果不应该，则不切换月份，不选中
-                BOOL shouldDeselect = [self.proxy shouldDeselectDate:targetDate];
+                BOOL shouldDeselect = [self.proxy shouldDeselectDate:targetDate atMonthPosition:monthPosition];
                 if (!shouldDeselect) {
                     return;
                 }
             } else {
                 // 未选中的日期，判断是否应该选中，不应该选中则不切换月份，不选中
-                shouldSelect &= [self.proxy shouldSelectDate:targetDate];
+                shouldSelect &= [self.proxy shouldSelectDate:targetDate atMonthPosition:monthPosition];
                 if (!shouldSelect) {
                     return;
                 }
@@ -1207,10 +1201,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         } else {
             // 处理单选模式
-            shouldSelect &= [self.proxy shouldSelectDate:targetDate];
+            shouldSelect &= [self.proxy shouldSelectDate:targetDate atMonthPosition:monthPosition];
             if (shouldSelect) {
                 if ([self isDateSelected:targetDate]) {
-                    [self.proxy didSelectDate:targetDate];
+                    [self.proxy didSelectDate:targetDate atMonthPosition:monthPosition];
                 } else {
                     NSDate *selectedDate = self.selectedDate;
                     if (selectedDate) {
@@ -1242,7 +1236,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     if (scrollToDate) {
         // 如果跨月份点击日期，并且该日期不应该选中，则不跳转页面，其他情况均跳转
-        if (forPlaceholder && !shouldSelect) {
+        if (!shouldSelect) {
             return;
         }
         [self scrollToPageForDate:targetDate animated:YES];
@@ -1587,20 +1581,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case UIGestureRecognizerStateBegan:
         case UIGestureRecognizerStateChanged: {
             NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[pressGesture locationInView:self.collectionView]];
-            FSCalendarMonthPosition position = [self.calculator monthPositionForIndexPath:indexPath];
-            if (position == FSCalendarMonthPositionCurrent) {
-                if (![indexPath isEqual:self.lastPressedIndexPath]) {
-                    NSDate *date = [self.calculator dateForIndexPath:indexPath];
-                    if (![self.selectedDates containsObject:date]) {
-                        [self selectDate:date scrollToDate:NO forPlaceholder:NO];
-                        [self.proxy didSelectDate:date];
-                    } else {
-                        [self deselectDate:date];
-                        [self.proxy didDeselectDate:date];
-                    }
+            if (indexPath && ![indexPath isEqual:self.lastPressedIndexPath]) {
+                NSDate *date = [self.calculator dateForIndexPath:indexPath];
+                FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+                if (![self.selectedDates containsObject:date]) {
+                    [self selectDate:date scrollToDate:NO atMonthPosition:monthPosition];
+                    [self.proxy didSelectDate:date atMonthPosition:monthPosition];
+                } else {
+                    [self deselectDate:date];
+                    [self.proxy didDeselectDate:date atMonthPosition:monthPosition];
                 }
-                self.lastPressedIndexPath = indexPath;
             }
+            self.lastPressedIndexPath = indexPath;
             break;
         }
         case UIGestureRecognizerStateEnded:
@@ -1612,7 +1604,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             break;
     }
    
-    
 }
 
 - (void)selectCounterpartDate:(NSDate *)date

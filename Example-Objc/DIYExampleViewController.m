@@ -112,15 +112,15 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
     return nil;
 }
 
-- (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
+- (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
-    DIYCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date atMonthPosition:position];
+    DIYCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date atMonthPosition:monthPosition];
     return cell;
 }
 
-- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition: (FSCalendarMonthPosition)position
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition: (FSCalendarMonthPosition)monthPosition
 {
-    [self configureCell:cell forDate:date atMonthPosition:position];
+    [self configureCell:cell forDate:date atMonthPosition:monthPosition];
 }
 
 
@@ -137,7 +137,12 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
     
 }
 
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+- (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
+{
+    return monthPosition == FSCalendarMonthPositionCurrent;
+}
+
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
     [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -147,7 +152,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
     }];
 }
 
-- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did deselect date %@",[self.dateFormatter stringFromDate:date]);
     [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -167,7 +172,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 
 #pragma mark - Private methods
 
-- (void)configureCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
+- (void)configureCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     
     DIYCalendarCell *diyCell = (DIYCalendarCell *)cell;
@@ -177,7 +182,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
     
     
     // Configure selection layer
-    if (position == FSCalendarMonthPositionCurrent || self.calendar.scope == FSCalendarScopeWeek) {
+    if (monthPosition == FSCalendarMonthPositionCurrent || self.calendar.scope == FSCalendarScopeWeek) {
         
         diyCell.eventIndicator.hidden = NO;
         
@@ -226,7 +231,7 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
             
         }
         
-    } else if (position == FSCalendarMonthPositionNext || position == FSCalendarMonthPositionPrevious) {
+    } else if (monthPosition == FSCalendarMonthPositionNext || monthPosition == FSCalendarMonthPositionPrevious) {
         
         diyCell.circleImageView.hidden = YES;
         diyCell.selectionLayer.hidden = YES;

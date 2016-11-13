@@ -195,7 +195,7 @@
 
 #pragma mark - FSCalendarDelegate
 
-- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did select %@",[self.dateFormatter stringFromDate:date]);
 }
