@@ -202,7 +202,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _needsAdjustingMonthPosition = YES;
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     _orientation = self.currentCalendarOrientation;
-    _focusOnSingleSelectedDate = YES;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -1587,7 +1586,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 if (![self.selectedDates containsObject:date]) {
                     [self selectDate:date scrollToDate:NO atMonthPosition:monthPosition];
                     [self.proxy didSelectDate:date atMonthPosition:monthPosition];
-                } else {
+                } else if (self.collectionView.allowsMultipleSelection) {
                     [self deselectDate:date];
                     [self.proxy didDeselectDate:date atMonthPosition:monthPosition];
                 }

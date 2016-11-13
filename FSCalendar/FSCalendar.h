@@ -391,11 +391,6 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL scrollEnabled;
 
 /**
- A Boolean value that determines whether scoping animation is centered a visible selected date. Default is YES.
- */
-@property (assign, nonatomic) IBInspectable BOOL focusOnSingleSelectedDate;
-
-/**
  A Boolean value that determines whether the calendar should show a handle for control the scope. Default is NO;
  */
 @property (assign, nonatomic) IBInspectable BOOL showsScopeHandle;
@@ -589,19 +584,10 @@ IB_DESIGNABLE
 
 @interface FSCalendar (Deprecated)
 @property (assign, nonatomic) IBInspectable BOOL showsPlaceholders FSCalendarDeprecated('placeholderType');
-@property (strong, nonatomic) NSDate *currentMonth FSCalendarDeprecated('currentPage');
-- (void)setSelectedDate:(NSDate *)selectedDate FSCalendarDeprecated(-selectDate:);
-- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate FSCalendarDeprecated(-selectDate:scrollToDate:);
-
 @property (strong, nonatomic) NSString *identifier DEPRECATED_MSG_ATTRIBUTE("Changing calendar identifier is NOT RECOMMENDED. ");
 
-// Use NSDateFormatter
-- (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format FSCalendarDeprecated([NSDateFormatter stringFromDate:]);
-- (NSString *)stringFromDate:(NSDate *)date FSCalendarDeprecated([NSDateFormatter stringFromDate:]);
-- (NSDate *)dateFromString:(NSString *)string format:(NSString *)format FSCalendarDeprecated([NSDateFormatter dateFromString:]);
-- (NSDate *)dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day FSCalendarDeprecated([NSDateFormatter dateFromString:]);
-
 // Use NSCalendar.
+- (NSDate *)dateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day FSCalendarDeprecated([NSDateFormatter dateFromString:]);
 - (NSInteger)yearOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
 - (NSInteger)monthOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
 - (NSInteger)dayOfDate:(NSDate *)date FSCalendarDeprecated(NSCalendar component:fromDate:]);
