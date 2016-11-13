@@ -1464,15 +1464,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self.calendarHeaderView removeFromSuperview];
         [self.deliver removeFromSuperview];
         [self.calendarWeekdayView removeFromSuperview];
-        
-        if (_scopeHandle) {
-            [_scopeHandle removeFromSuperview];
-        }
+        [self.scopeHandle removeFromSuperview];
         
         _collectionView.pagingEnabled = NO;
         _collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         
-        [self deselectCounterpartDate:nil];
     }
     
     _preferredHeaderHeight = FSCalendarAutomaticDimension;

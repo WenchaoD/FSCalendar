@@ -8,7 +8,6 @@
 
 #import "FSTableViewController.h"
 #import "LoadViewExampleViewController.h"
-#import "MultipleSelectionViewController.h"
 #import "FullScreenExampleViewController.h"
 #import "DelegateAppearanceViewController.h"
 #import "HidePlaceholderViewController.h"
@@ -29,7 +28,6 @@
                              [HidePlaceholderViewController class],
                              [DelegateAppearanceViewController class],
                              [FullScreenExampleViewController class],
-                             [MultipleSelectionViewController class],
                              [NSObject class],
                              [NSObject class],
                              [LoadViewExampleViewController class]
