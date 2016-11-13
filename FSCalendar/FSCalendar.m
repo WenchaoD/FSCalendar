@@ -570,7 +570,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         cell = [self cellForDate:selectedDate atMonthPosition:FSCalendarMonthPositionCurrent];
     }
     cell.selected = NO;
-    [cell configureAppearance];;
+    [cell configureAppearance];
     
     [_selectedDates removeObject:selectedDate];
     if (!_supressEvent) {
@@ -1608,9 +1608,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)selectCounterpartDate:(NSDate *)date
 {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
+    if (self.scope == FSCalendarScopeWeek) return;
     if (!self.floatingMode) {
-        FSCalendarCell *cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
-        if (!cell) cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
+        NSInteger numberOfDays = [self.gregorian fs_numberOfDaysInMonth:date];
+        NSInteger day = [self.gregorian component:NSCalendarUnitDay fromDate:date];
+        FSCalendarCell *cell;
+        if (day < numberOfDays/2+1) {
+            cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
+        } else {
+            cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
+        }
         cell.selected = YES;
         [cell configureAppearance];
     }
@@ -1619,21 +1626,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)deselectCounterpartDate:(NSDate *)date
 {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
-    if (self.floatingMode) {
-        FSCalendarCell *cell = [_collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarCell *  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return evaluatedObject.isPlaceholder && evaluatedObject.selected;
-        }]].firstObject;
-        cell.selected = NO;
-        [_collectionView deselectItemAtIndexPath:[_collectionView indexPathForCell:cell] animated:NO];
-        [cell configureAppearance];
+    if (self.scope == FSCalendarScopeWeek) return;
+    NSInteger numberOfDays = [self.gregorian fs_numberOfDaysInMonth:date];
+    NSInteger day = [self.gregorian component:NSCalendarUnitDay fromDate:date];
+    FSCalendarCell *cell;
+    if (day < numberOfDays/2+1) {
+        cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
     } else {
-        FSCalendarCell *cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
-        if (!cell) cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
-        if (cell.selected) cell.selected = NO;
-        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-        if([self.collectionView.indexPathsForSelectedItems containsObject:indexPath]) [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
-        [cell configureAppearance];
+        cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
     }
+    if (cell.selected) cell.selected = NO;
+    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+    if([self.collectionView.indexPathsForSelectedItems containsObject:indexPath]) [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    [cell configureAppearance];
 }
 
 - (void)enqueueSelectedDate:(NSDate *)date
