@@ -1579,12 +1579,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             if (indexPath && ![indexPath isEqual:self.lastPressedIndexPath]) {
                 NSDate *date = [self.calculator dateForIndexPath:indexPath];
                 FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-                if (![self.selectedDates containsObject:date]) {
+                if (![self.selectedDates containsObject:date] && [self collectionView:self.collectionView shouldSelectItemAtIndexPath:indexPath]) {
                     [self selectDate:date scrollToDate:NO atMonthPosition:monthPosition];
-                    [self.proxy didSelectDate:date atMonthPosition:monthPosition];
-                } else if (self.collectionView.allowsMultipleSelection) {
+                    [self collectionView:self.collectionView didSelectItemAtIndexPath:indexPath];
+                } else if (self.collectionView.allowsMultipleSelection && [self collectionView:self.collectionView shouldDeselectItemAtIndexPath:indexPath]) {
                     [self deselectDate:date];
-                    [self.proxy didDeselectDate:date atMonthPosition:monthPosition];
+                    [self collectionView:self.collectionView didDeselectItemAtIndexPath:indexPath];
                 }
             }
             self.lastPressedIndexPath = indexPath;
@@ -1605,18 +1605,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_placeholderType == FSCalendarPlaceholderTypeNone) return;
     if (self.scope == FSCalendarScopeWeek) return;
-    if (!self.floatingMode) {
-        NSInteger numberOfDays = [self.gregorian fs_numberOfDaysInMonth:date];
-        NSInteger day = [self.gregorian component:NSCalendarUnitDay fromDate:date];
-        FSCalendarCell *cell;
-        if (day < numberOfDays/2+1) {
-            cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
-        } else {
-            cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
-        }
-        cell.selected = YES;
-        [cell configureAppearance];
+    NSInteger numberOfDays = [self.gregorian fs_numberOfDaysInMonth:date];
+    NSInteger day = [self.gregorian component:NSCalendarUnitDay fromDate:date];
+    FSCalendarCell *cell;
+    if (day < numberOfDays/2+1) {
+        cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionNext];
+    } else {
+        cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
     }
+    if (cell && self.collectionView.allowsMultipleSelection) {
+        cell.selected = YES;
+        [self.collectionView selectItemAtIndexPath:[self.collectionView indexPathForCell:cell] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+    }
+    [cell configureAppearance];
+    
 }
 
 - (void)deselectCounterpartDate:(NSDate *)date
@@ -1631,9 +1633,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else {
         cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
     }
-    if (cell.selected) cell.selected = NO;
-    NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
-    if([self.collectionView.indexPathsForSelectedItems containsObject:indexPath]) [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    if (cell) {
+        cell.selected = NO;
+        [self.collectionView deselectItemAtIndexPath:[self.collectionView indexPathForCell:cell] animated:NO];
+    }
     [cell configureAppearance];
 }
 
