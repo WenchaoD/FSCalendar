@@ -449,7 +449,7 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
 
 @property (weak, nonatomic) UIView *contentView;
 
-@property (strong, nonatomic) NSMutableArray *eventLayers;
+@property (strong, nonatomic) NSPointerArray *eventLayers;
 @property (assign, nonatomic) BOOL needsInvalidatingColor;
 
 @end
@@ -465,12 +465,12 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
         [self addSubview:view];
         self.contentView = view;
         
-        self.eventLayers = [NSMutableArray arrayWithCapacity:3];
+        self.eventLayers = [NSPointerArray weakObjectsPointerArray];
         for (int i = 0; i < 3; i++) {
             CALayer *layer = [CALayer layer];
             layer.backgroundColor = [UIColor clearColor].CGColor;
-            [self.eventLayers addObject:layer];
             [self.contentView.layer addSublayer:layer];
+            [self.eventLayers addPointer:(__bridge void * _Nullable)(layer)];
         }
         
         _needsInvalidatingColor = YES;
@@ -495,7 +495,7 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
         
         CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
         for (int i = 0; i < self.eventLayers.count; i++) {
-            CALayer *eventLayer = self.eventLayers[i];
+            CALayer *eventLayer = [self.eventLayers pointerAtIndex:i];
             eventLayer.hidden = i >= self.numberOfEvents;
             if (!eventLayer.hidden) {
                 eventLayer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
@@ -508,7 +508,7 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
         if (_needsInvalidatingColor) {
             _needsInvalidatingColor = NO;
             if ([_color isKindOfClass:[UIColor class]]) {
-                [self.eventLayers makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:(id)[_color CGColor]];
+                [self.eventLayers.allObjects makeObjectsPerformSelector:@selector(setBackgroundColor:) withObject:(id)[_color CGColor]];
             } else if ([_color isKindOfClass:[NSArray class]]) {
                 NSArray *colors = (NSArray *)_color;
                 if (colors.count) {
@@ -517,7 +517,7 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
                         if (i < colors.count) {
                             lastColor = colors[i];
                         }
-                        CALayer *eventLayer = self.eventLayers[i];
+                        CALayer *eventLayer = [self.eventLayers pointerAtIndex:i];
                         eventLayer.backgroundColor = lastColor.CGColor;
                     }
                 }

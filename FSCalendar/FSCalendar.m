@@ -1654,12 +1654,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateWeekdayFont
 {
-    [self.calendarWeekdayView.weekdayLabels makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.preferredWeekdayFont];
+    [self.calendarWeekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.preferredWeekdayFont];
 }
 
 - (void)invalidateWeekdayTextColor
 {
-    [self.calendarWeekdayView.weekdayLabels makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
+    [self.calendarWeekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
 }
 
 - (void)invalidateViewFrames

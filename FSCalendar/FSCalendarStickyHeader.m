@@ -105,12 +105,12 @@
 
 - (void)invalidateWeekdayFont
 {
-    [self.weekdayView.weekdayLabels makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.weekdayFont];
+    [self.weekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.weekdayFont];
 }
 
 - (void)invalidateWeekdayTextColor
 {
-    [self.weekdayView.weekdayLabels makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
+    [self.weekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
 }
 
 - (void)invalidateWeekdaySymbols
