@@ -23,17 +23,15 @@
 ## <a id="screenshots"></a>Screenshots
 
 ![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
-------
+
+## iPhone
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
-------
+
+## iPad
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
-## Working with AutoLayout and Orientation
-![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/13728798/59855e3e-e95e-11e5-84db-60f843427ef3.gif)
-
-> FSCalendar doesn't change frame or the constraint by itself, see [Adjusts frame dynamicly](#adjusts_frame_dynamicly)
-
-<br>
+## Safe Orientation
+![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/20325758/ea125e1e-abc0-11e6-9e29-491acbcb0d07.gif)
 
 ## Today Extension
 |    iOS8/9    |    iOS10    |
@@ -44,6 +42,8 @@
 ## DIY support
 |  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
 | -------------  |
+> To customize your own cell, view DIY Example in `Example-Swift` or `Example-Objc`
+
 
 ## Swipe-To-Choose
 
