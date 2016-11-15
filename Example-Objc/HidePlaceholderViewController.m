@@ -97,6 +97,7 @@
     self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
     self.calendar.appearance.separators = FSCalendarSeparatorInterRows;
+    self.calendar.swipeToChooseGesture.enabled = YES;
     
 }
 

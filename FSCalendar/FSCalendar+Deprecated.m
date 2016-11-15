@@ -26,43 +26,6 @@
     return self.placeholderType == FSCalendarPlaceholderTypeFillSixRows;
 }
 
-- (void)setCurrentMonth:(NSDate *)currentMonth
-{
-    self.currentPage = currentMonth;
-}
-
-- (NSDate *)currentMonth
-{
-    return self.currentPage;
-}
-
-- (void)setSelectedDate:(NSDate *)selectedDate
-{
-    [self selectDate:selectedDate];
-}
-
-- (void)setSelectedDate:(NSDate *)selectedDate animate:(BOOL)animate
-{
-    [self selectDate:selectedDate scrollToDate:animate];
-}
-
-- (NSString *)stringFromDate:(NSDate *)date format:(NSString *)format
-{
-    self.formatter.dateFormat = format;
-    return [self.formatter stringFromDate:date];
-}
-
-- (NSString *)stringFromDate:(NSDate *)date
-{
-    return [self stringFromDate:date format:@"yyyy-MM-dd"];
-}
-
-- (NSDate *)dateFromString:(NSString *)string format:(NSString *)format
-{
-    self.formatter.dateFormat = format;
-    return [self.formatter dateFromString:string];
-}
-
 #pragma mark - Public methods
 
 - (NSInteger)yearOfDate:(NSDate *)date
