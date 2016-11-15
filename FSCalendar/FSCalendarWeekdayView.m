@@ -43,12 +43,12 @@
     [self addSubview:contentView];
     _contentView = contentView;
     
-    _weekdayLabels = [NSPointerArray weakObjectsPointerArray];
+    _weekdayLabels = [NSHashTable weakObjectsHashTable];
     for (int i = 0; i < 7; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:weekdayLabel];
-        [_weekdayLabels addPointer:(__bridge void * _Nullable)(weekdayLabel)];
+        [_weekdayLabels addObject:weekdayLabel];
     }
 }
 

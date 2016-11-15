@@ -1069,7 +1069,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         pressGesture.enabled = NO;
         pressGesture.numberOfTapsRequired = 0;
         pressGesture.numberOfTouchesRequired = 1;
-        pressGesture.minimumPressDuration = 0.8;
+        pressGesture.minimumPressDuration = 0.7;
         [self.daysContainer addGestureRecognizer:pressGesture];
         [self.collectionView.panGestureRecognizer requireGestureRecognizerToFail:pressGesture];
         _swipeToChooseGesture = pressGesture;

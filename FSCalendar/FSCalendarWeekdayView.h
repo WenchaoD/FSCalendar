@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FSCalendarWeekdayView : UIView
 
-@property (readonly, nonatomic) NSPointerArray *weekdayLabels;
+@property (readonly, nonatomic) NSHashTable<UILabel *> *weekdayLabels;
 @property (readonly, nonatomic) UIView *contentView;
 
 @property (weak, nonatomic) FSCalendar *calendar;

@@ -56,7 +56,6 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
     calendar.scopeGesture.enabled = YES;
     calendar.swipeToChooseGesture.enabled = YES;
     calendar.allowsMultipleSelection = YES;
-//    calendar.backgroundColor = [UIColor whiteColor];
     [view addSubview:calendar];
     self.calendar = calendar;
     
