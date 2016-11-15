@@ -53,6 +53,8 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         
         calendar.clipsToBounds = true // Remove top/bottom line
         
+        calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
+        
         let label = UILabel(frame: CGRect(x: 0, y: calendar.frame.maxY + 10, width: self.view.frame.size.width, height: 50))
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
