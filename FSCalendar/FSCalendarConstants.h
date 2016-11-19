@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-#pragma mark - Constance
+#pragma mark - Constants
 
 UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderHeight;
 UIKIT_EXTERN CGFloat const FSCalendarStandardWeekdayHeight;
@@ -32,6 +32,7 @@ UIKIT_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
+UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 
 
 #if TARGET_INTERFACE_BUILDER

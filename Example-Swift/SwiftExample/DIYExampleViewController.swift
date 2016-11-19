@@ -18,7 +18,7 @@ enum SelectionType : Int {
 
 class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
     
-    private let gregorian = NSCalendar(calendarIdentifier: .gregorian)!
+    private let gregorian = Calendar(identifier: .gregorian)
     private let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -69,6 +69,7 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         attributedText.append(NSAttributedString(string: "  Hey Daily Event  "))
         attributedText.append(NSAttributedString(attachment: attatchment))
         self.eventLabel.attributedText = attributedText
+        
     }
     
     override func viewDidLoad() {
@@ -84,17 +85,27 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         print("\(#function)")
     }
     
-    
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
         let cell = calendar.dequeueReusableCell(withIdentifier: "cell", for: date, at: position)
         return cell
     }
     
-    
     func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
         configure(cell: cell, for: date, at: position)
     }
     
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
+        return monthPosition == .current;
+    }
+    
+//    func minimumDate(for calendar: FSCalendar) -> Date {
+//        return Date()
+//    }
+//    
+//    func maximumDate(for calendar: FSCalendar) -> Date {
+//        let oneYearFromNow = self.gregorian.date(byAdding: .year, value: 1, to: Date(), wrappingComponents: true)
+//        return oneYearFromNow!
+//    }
     
     func calendar(_ calendar: FSCalendar, titleFor date: Date) -> String? {
         if self.gregorian.isDateInToday(date) {
@@ -152,8 +163,8 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
             var selectionType = SelectionType.none
             
             if calendar.selectedDates.contains(date) {
-                let previousDate = self.gregorian.date(byAdding: .day, value: -1, to: date, options: NSCalendar.Options(rawValue: 0))!
-                let nextDate = self.gregorian.date(byAdding: .day, value: 1, to: date, options: NSCalendar.Options(rawValue: 0))!
+                let previousDate = self.gregorian.date(byAdding: .day, value: -1, to: date)!
+                let nextDate = self.gregorian.date(byAdding: .day, value: 1, to: date)!
                 if calendar.selectedDates.contains(date) {
                     if calendar.selectedDates.contains(previousDate) && calendar.selectedDates.contains(nextDate) {
                         selectionType = .middle

@@ -808,10 +808,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
 {
     if (!identifier.length) {
-        [NSException raise:@"This identifier must not be nil and must not be an empty string." format:@""];
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"This identifier must not be nil and must not be an empty string."];
     }
-    if ([identifier isEqualToString:@"_FSCalendarDefaultCell"]) {
-        [NSException raise:@"Do not use _FSCalendarDefaultCell as the cell reuse identifier." format:@""];
+    if ([identifier isEqualToString:FSCalendarDefaultCellReuseIdentifier]) {
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"Do not use %@ as the cell reuse identifier.", FSCalendarDefaultCellReuseIdentifier];
     }
     if (![cellClass isSubclassOfClass:[FSCalendarCell class]]) {
         [NSException raise:@"The cell class must be a subclass of FSCalendarCell." format:@""];
@@ -821,8 +821,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (FSCalendarCell *)dequeueReusableCellWithIdentifier:(NSString *)identifier forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 {
-    if (!identifier || !date || ![self isDateInRange:date]) return nil;
+    if (!identifier.length) {
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"This identifier must not be nil and must not be an empty string."];
+    }
     NSIndexPath *indexPath = [self.calculator indexPathForDate:date atMonthPosition:position];
+    if (!indexPath) {
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"Attempting to dequeue a cell with invalid date."];
+    }
     FSCalendarCell *cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     return cell;
 }
