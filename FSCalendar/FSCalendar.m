@@ -530,11 +530,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
     FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-    FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    FSCalendarCell *cell;
     if (monthPosition == FSCalendarMonthPositionCurrent) {
         cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     } else {
         cell = [self cellForDate:selectedDate atMonthPosition:FSCalendarMonthPositionCurrent];
+        NSIndexPath *indexPath = [collectionView indexPathForCell:cell];
+        if (indexPath) {
+            [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        }
     }
     if (![_selectedDates containsObject:selectedDate]) {
         cell.selected = YES;
@@ -560,14 +564,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     NSDate *selectedDate = [self.calculator dateForIndexPath:indexPath];
     FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-    if (monthPosition != FSCalendarMonthPositionCurrent) {
-        [collectionView deselectItemAtIndexPath:[self.calculator indexPathForDate:selectedDate] animated:NO];
-    }
     FSCalendarCell *cell;
     if (monthPosition == FSCalendarMonthPositionCurrent) {
         cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     } else {
         cell = [self cellForDate:selectedDate atMonthPosition:FSCalendarMonthPositionCurrent];
+        NSIndexPath *indexPath = [collectionView indexPathForCell:cell];
+        if (indexPath) {
+            [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+        }
     }
     cell.selected = NO;
     [cell configureAppearance];
@@ -1618,9 +1623,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else {
         cell = [self cellForDate:date atMonthPosition:FSCalendarMonthPositionPrevious];
     }
-    if (cell && self.collectionView.allowsMultipleSelection) {
+    if (cell) {
         cell.selected = YES;
-        [self.collectionView selectItemAtIndexPath:[self.collectionView indexPathForCell:cell] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        if (self.collectionView.allowsMultipleSelection) {   
+            [self.collectionView selectItemAtIndexPath:[self.collectionView indexPathForCell:cell] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        }
     }
     [cell configureAppearance];
     
