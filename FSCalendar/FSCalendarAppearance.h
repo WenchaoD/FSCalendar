@@ -252,6 +252,16 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
  */
 @property (assign, nonatomic) NSTextAlignment headerTitleTextAlignment;
 
+/**
+ * The line color of the top border view.
+ */
+@property (strong, nonatomic) UIColor  *topBorderLineColor;
+
+/**
+ * The line color of the bottom border view.
+ */
+@property (strong, nonatomic) UIColor  *bottomBorderLineColor;
+
 
 #if TARGET_INTERFACE_BUILDER
 

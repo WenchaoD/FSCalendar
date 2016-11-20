@@ -73,6 +73,8 @@
         _headerTitleItemSizeMultiplier = 0.5;
         _headerTitleItemSizeOffset = 0.0;
         _headerTitleTextAlignment = NSTextAlignmentCenter;
+        _topBorderLineColor = FSCalendarStandardLineColor;
+        _bottomBorderLineColor = FSCalendarStandardLineColor;
         
         _titleFontSize = _preferredTitleFontSize  = FSCalendarStandardTitleTextSize;
         _subtitleFontSize = _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize;

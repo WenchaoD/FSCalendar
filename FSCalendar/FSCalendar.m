@@ -239,12 +239,12 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!FSCalendarInAppExtension) {
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardLineColor;
+        view.backgroundColor = _appearance.topBorderLineColor;
         [self addSubview:view];
         self.topBorder = view;
         
         view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardLineColor;
+        view.backgroundColor = _appearance.bottomBorderLineColor;
         [self addSubview:view];
         self.bottomBorder = view;
         
@@ -385,7 +385,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             
         }
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
+        _topBorder.backgroundColor = _appearance.topBorderLineColor;
         _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
+        _bottomBorder.backgroundColor = _appearance.bottomBorderLineColor;
         _scopeHandle.fs_bottom = _bottomBorder.fs_top;
         
     }
