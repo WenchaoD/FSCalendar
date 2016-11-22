@@ -89,6 +89,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date;
 
 /**
+ * Asks the dataSource for an accessibility label for the specific date's title (day number).
+ */
+- (nullable NSString *)calendar:(FSCalendar *)calendar accessibilityLabelForDate:(NSDate *)date;
+
+/**
+ * Asks the dataSource for an accessibility identifier for the specific date's cell.
+ */
+- (nullable NSString *)calendar:(FSCalendar *)calendar accessibilityIdentifierForDate:(NSDate *)date;
+
+/**
+ * Asks the dataSource for accessibility traits for the specific date's title (day number) label.
+ */
+- (UIAccessibilityTraits)calendar:(FSCalendar *)calendar accessibilityTraitsForDate:(NSDate *)date;
+
+/**
  * This function is deprecated
  */
 - (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date FSCalendarDeprecated(-calendar:numberOfEventsForDate:);
@@ -374,9 +389,19 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat scopeHandleHeight;
 
 /**
- * The height of the calendar scope handle.
+ * Whether or not to hide the scope handle top border.
  */
 @property (assign, nonatomic) IBInspectable BOOL hideScopeHandleTopBorder;
+
+/**
+ * The accessibility trait for the calendar day cell. Default is UIAccessibilityTraitNone.
+ */
+@property (assign, nonatomic) IBInspectable UIAccessibilityTraits accessibilityTraitForCell;
+
+/**
+ * The accessibility trait for the selected calendar day cell. Default is UIAccessibilityTraitNone.
+ */
+@property (assign, nonatomic) IBInspectable UIAccessibilityTraits accessibilityTraitForSelectedCell;
 
 /**
  * The calendar appearance used to control the global fonts、colors .etc
@@ -458,6 +483,13 @@ IB_DESIGNABLE
  * @param date A date is the calendar.
  */
 - (CGPoint)centerForDate:(NSDate *)date;
+
+/**
+ * Returns the cell's title label corresponding to date.
+ *
+ * @param date A date in the calendar.
+ */
+- (UILabel *)cellTitleLabelForDate:(NSDate *)date;
 
 @end
 

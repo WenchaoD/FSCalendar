@@ -50,6 +50,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (UIImage *)imageForDate:(NSDate *)date;
 - (NSDate *)minimumDateForCalendar;
 - (NSDate *)maximumDateForCalendar;
+- (NSString *)accessibilityLabelForDate:(NSDate *)date;
+- (NSString *)accessibilityIdentifierForDate:(NSDate *)date;
+- (UIAccessibilityTraits)accessibilityTraitsForDate:(NSDate *)date;
 
 - (UIColor *)preferredFillSelectionColorForDate:(NSDate *)date;
 - (UIColor *)preferredTitleDefaultColorForDate:(NSDate *)date;
@@ -123,6 +126,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) CGFloat                    preferredPadding;
 @property (assign, nonatomic) CGFloat                    preferredScopeHandleHeight;
 @property (assign, nonatomic) BOOL                       preferredHideScopeHandleTopBorder;
+@property (assign, nonatomic) UIAccessibilityTraits      preferredAccessibilityTraitForCell;
+@property (assign, nonatomic) UIAccessibilityTraits      preferredAccessibilityTraitForSelectedCell;
 @property (assign, nonatomic) FSCalendarOrientation      orientation;
 
 @property (readonly, nonatomic) BOOL floatingMode;
@@ -237,6 +242,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredPadding       = FSCalendarAutomaticDimension;
     _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
     _preferredHideScopeHandleTopBorder = NO;
+    _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
+    _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
     
     _lineHeightMultiplier    = 1.0;
     
@@ -385,6 +392,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _contentView.frame = self.bounds;
         }
 
+        if (_accessibilityTraitForCell != _preferredAccessibilityTraitForCell) {
+            _preferredAccessibilityTraitForCell = _accessibilityTraitForCell;
+        }
+        
+        if (_accessibilityTraitForSelectedCell != _preferredAccessibilityTraitForSelectedCell) {
+            _preferredAccessibilityTraitForSelectedCell = _accessibilityTraitForSelectedCell;
+        }
+        
         if (_needsLayoutForWeekMode) _scope = FSCalendarScopeMonth;
         
         CGFloat headerHeight = self.preferredHeaderHeight;
@@ -590,6 +605,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.dateIsSelected = YES;
+    cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell;
     [cell performSelecting];
     NSDate *selectedDate = [self dateForIndexPath:indexPath];
     if (!_supressEvent) {
@@ -640,6 +656,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if (cell) {
+        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForCell;
         cell.dateIsSelected = NO;
         [cell setNeedsLayout];
     }
@@ -935,6 +952,24 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)setAccessibilityTraitForCell:(UIAccessibilityTraits)accessibilityTraitForCell
+{
+    if (_accessibilityTraitForCell != accessibilityTraitForCell) {
+        _accessibilityTraitForCell = accessibilityTraitForCell;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setAccessibilityTraitForSelectedCell:(UIAccessibilityTraits)accessibilityTraitForSelectedCell
+{
+    if (_accessibilityTraitForSelectedCell != accessibilityTraitForSelectedCell) {
+        _accessibilityTraitForSelectedCell = accessibilityTraitForSelectedCell;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
 - (void)setLocale:(NSLocale *)locale
 {
     if (![_locale isEqual:locale]) {
@@ -1002,6 +1037,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredPadding = FSCalendarAutomaticDimension;
         _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
         _preferredHideScopeHandleTopBorder = NO;
+        _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
+        _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
+        
         [self.visibleStickyHeaders setValue:@YES forKey:@"needsAdjustingViewFrame"];
         [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [_collectionView.visibleCells setValue:@YES forKey:@"needsAdjustingViewFrame"];
@@ -1269,6 +1307,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
+        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell;
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
         [self selectCounterpartDate:targetDate];
@@ -1285,6 +1324,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         [self scrollToPageForDate:targetDate animated:YES];
     }
+}
+
+- (UILabel *)cellTitleLabelForDate:(NSDate *)date
+{
+    NSIndexPath *indexPath = [self indexPathForDate:date];
+    FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+    return cell.titleLabel;
 }
 
 #pragma mark - Private methods
@@ -1603,6 +1649,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         }
         
+        if (_accessibilityTraitForCell != _preferredAccessibilityTraitForCell) {
+            _preferredAccessibilityTraitForCell = _accessibilityTraitForCell;
+        }
+        
+        if (_accessibilityTraitForSelectedCell != _preferredAccessibilityTraitForSelectedCell) {
+            _preferredAccessibilityTraitForSelectedCell = _accessibilityTraitForSelectedCell;
+        }
+        
         _collectionView.pagingEnabled = YES;
         _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.scrollDirection;
         
@@ -1635,6 +1689,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredPadding = FSCalendarAutomaticDimension;
     _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
     _preferredHideScopeHandleTopBorder = NO;
+    _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
+    _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
     _needsAdjustingViewFrame = YES;
     [self setNeedsLayout];
 }
@@ -1700,6 +1756,24 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.subtitle  = [self subtitleForDate:cell.date];
     cell.dateIsSelected = [_selectedDates containsObject:cell.date];
     cell.dateIsToday = self.today?[self.gregorian isDate:cell.date inSameDayAsDate:self.today]:NO;
+    cell.titleLabel.accessibilityLabel = [self accessibilityLabelForDate:cell.date];
+    cell.titleLabel.accessibilityTraits = [self accessibilityTraitsForDate:cell.date];
+    NSString *accessibilityIdentifierForDate = [self accessibilityIdentifierForDate:cell.date];
+    
+    if (cell.dateIsSelected) {
+        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell;
+    } else {
+        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForCell;
+    }
+    
+    if (accessibilityIdentifierForDate != NULL) {
+        cell.accessibilityIdentifier = [accessibilityIdentifierForDate stringByAppendingString:NSStringFromClass([cell class])];
+        cell.titleLabel.accessibilityIdentifier = [accessibilityIdentifierForDate stringByAppendingString:NSStringFromClass([cell.titleLabel class])];
+        if (cell.numberOfEvents > 0) {
+            cell.eventIndicator.accessibilityIdentifier = [accessibilityIdentifierForDate stringByAppendingString:NSStringFromClass([cell.eventIndicator class])];
+        }
+    }
+    
     switch (_scope) {
         case FSCalendarScopeMonth: {
             NSDate *firstPage = [self beginingOfMonth:_minimumDate];
@@ -1807,6 +1881,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredPadding       = FSCalendarAutomaticDimension;
     _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
     _preferredHideScopeHandleTopBorder = NO;
+    _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
+    _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
     
     [self.collectionViewLayout invalidateLayout];
     [self.collectionViewLayout layoutAttributesForElementsInRect:CGRectZero];
@@ -2094,6 +2170,30 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:titleForDate:)]) {
         return [_dataSource calendar:self titleForDate:date];
+    }
+    return nil;
+}
+
+- (NSString *)accessibilityLabelForDate:(NSDate *)date
+{
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:accessibilityLabelForDate:)]) {
+        return [_dataSource calendar:self accessibilityLabelForDate:date];
+    }
+    return nil;
+}
+
+- (UIAccessibilityTraits)accessibilityTraitsForDate:(NSDate *)date
+{
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:accessibilityTraitsForDate:)]) {
+        return [_dataSource calendar:self accessibilityTraitsForDate:date];
+    }
+    return nil;
+}
+
+- (NSString *)accessibilityIdentifierForDate:(NSDate *)date
+{
+    if (_dataSource && [_dataSource respondsToSelector:@selector(calendar:accessibilityIdentifierForDate:)]) {
+        return [_dataSource calendar:self accessibilityIdentifierForDate:date];
     }
     return nil;
 }
