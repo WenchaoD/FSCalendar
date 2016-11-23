@@ -10,15 +10,6 @@
 #import "DIYCalendarCell.h"
 #import "FSCalendarExtensions.h"
 
-typedef NS_ENUM(NSUInteger, SelectionType) {
-    SelectionTypeNone,
-    SelectionTypeSingle,
-    SelectionTypeLeftBorder,
-    SelectionTypeMiddle,
-    SelectionTypeRightBorder
-};
-
-
 @interface DIYExampleViewController () <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -92,8 +83,10 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     
-//    [self.calendar selectDate:[self.gregorian dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSDate date] options:0]];
-
+    [self.calendar selectDate:[self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-1 toDate:[NSDate date] options:0] scrollToDate:NO];
+    [self.calendar selectDate:[NSDate date] scrollToDate:NO];
+    [self.calendar selectDate:[self.gregorian dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSDate date] options:0] scrollToDate:NO];
+    
     // Uncomment this to perform an 'initial-week-scope'
     // self.calendar.scope = FSCalendarScopeWeek;
 }
@@ -144,21 +137,13 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
-    [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDate *date = [calendar dateForCell:obj];
-        FSCalendarMonthPosition position = [calendar monthPositionForCell:obj];
-        [self configureCell:obj forDate:date atMonthPosition:position];
-    }];
+    [self configureVisibleCells];
 }
 
 - (void)calendar:(FSCalendar *)calendar didDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did deselect date %@",[self.dateFormatter stringFromDate:date]);
-    [calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSDate *date = [calendar dateForCell:obj];
-        FSCalendarMonthPosition position = [calendar monthPositionForCell:obj];
-        [self configureCell:obj forDate:date atMonthPosition:position];
-    }];
+    [self configureVisibleCells];
 }
 
 - (NSArray<UIColor *> *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date
@@ -170,6 +155,15 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
 }
 
 #pragma mark - Private methods
+
+- (void)configureVisibleCells
+{
+    [self.calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSDate *date = [self.calendar dateForCell:obj];
+        FSCalendarMonthPosition position = [self.calendar monthPositionForCell:obj];
+        [self configureCell:obj forDate:date atMonthPosition:position];
+    }];
+}
 
 - (void)configureCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
@@ -210,25 +204,8 @@ typedef NS_ENUM(NSUInteger, SelectionType) {
         }
         
         diyCell.selectionLayer.hidden = NO;
-        
-        if (selectionType == SelectionTypeMiddle) {
-            
-            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithRect:diyCell.selectionLayer.bounds].CGPath;
-            
-        } else if (selectionType == SelectionTypeLeftBorder) {
-            
-            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:diyCell.selectionLayer.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft cornerRadii:CGSizeMake(diyCell.selectionLayer.fs_width/2, diyCell.selectionLayer.fs_width/2)].CGPath;
-            
-        } else if (selectionType == SelectionTypeRightBorder) {
-            
-            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:diyCell.selectionLayer.bounds byRoundingCorners:UIRectCornerTopRight|UIRectCornerBottomRight cornerRadii:CGSizeMake(diyCell.selectionLayer.fs_width/2, diyCell.selectionLayer.fs_width/2)].CGPath;
-            
-        } else if (selectionType == SelectionTypeSingle) {
-            
-            CGFloat diameter = MIN(diyCell.selectionLayer.fs_height, diyCell.selectionLayer.fs_width);
-            diyCell.selectionLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(diyCell.contentView.fs_width/2-diameter/2, diyCell.contentView.fs_height/2-diameter/2, diameter, diameter)].CGPath;
-            
-        }
+        diyCell.selectionType = selectionType;
+
         
     } else if (monthPosition == FSCalendarMonthPositionNext || monthPosition == FSCalendarMonthPositionPrevious) {
         

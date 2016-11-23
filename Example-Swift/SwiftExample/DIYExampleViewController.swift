@@ -8,14 +8,6 @@
 
 import Foundation
 
-enum SelectionType : Int {
-    case none
-    case single
-    case leftBorder
-    case middle
-    case rightBorder
-}
-
 class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
     
     private let gregorian = Calendar(identifier: .gregorian)
@@ -76,9 +68,13 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         super.viewDidLoad()
         
         self.title = "FSCalendar"
-        //    [self.calendar selectDate:[self.gregorian dateByAddingUnit:NSCalendarUnitDay value:1 toDate:[NSDate date] options:0]];
         // Uncomment this to perform an 'initial-week-scope'
         // self.calendar.scope = FSCalendarScopeWeek;
+        
+        self.calendar.select(self.gregorian.date(byAdding: .day, value: -1, to: Date()), scrollToDate: false)
+        self.calendar.select(self.gregorian.date(byAdding: .day, value: 0, to: Date()), scrollToDate: false)
+        self.calendar.select(self.gregorian.date(byAdding: .day, value: 1, to: Date()), scrollToDate: false)
+        
     }
     
     deinit {
@@ -125,20 +121,12 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date) {
         print("did select date \(self.formatter.string(from: date))")
-        calendar.visibleCells().forEach { (cell) in
-            let date = calendar.date(for: cell)
-            let position = calendar.monthPosition(for: cell)
-            self.configure(cell: cell, for: date, at: position)
-        }
+        self.configureVisibleCells()
     }
     
     func calendar(_ calendar: FSCalendar, didDeselect date: Date) {
         print("did deselect date \(self.formatter.string(from: date))")
-        calendar.visibleCells().forEach { (cell) in
-            let date = calendar.date(for: cell)
-            let position = calendar.monthPosition(for: cell)
-            self.configure(cell: cell, for: date, at: position)
-        }
+        self.configureVisibleCells()
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
@@ -150,7 +138,15 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
     
     // MARK: - Private functions
     
-    func configure(cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
+    private func configureVisibleCells() {
+        calendar.visibleCells().forEach { (cell) in
+            let date = calendar.date(for: cell)
+            let position = calendar.monthPosition(for: cell)
+            self.configure(cell: cell, for: date, at: position)
+        }
+    }
+    
+    private func configure(cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
         
         let diyCell = (cell as! DIYCalendarCell)
         // Custom today circle
@@ -189,19 +185,7 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
             }
             
             diyCell.selectionLayer.isHidden = false
-            if selectionType == .middle {
-                diyCell.selectionLayer.path = UIBezierPath(rect: diyCell.selectionLayer.bounds).cgPath
-            }
-            else if selectionType == .leftBorder {
-                diyCell.selectionLayer.path = UIBezierPath(roundedRect: diyCell.selectionLayer.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: diyCell.selectionLayer.frame.width / 2, height: diyCell.selectionLayer.frame.width / 2)).cgPath
-            }
-            else if selectionType == .rightBorder {
-                diyCell.selectionLayer.path = UIBezierPath(roundedRect: diyCell.selectionLayer.bounds, byRoundingCorners: [.topRight, .bottomRight], cornerRadii: CGSize(width: diyCell.selectionLayer.frame.width / 2, height: diyCell.selectionLayer.frame.width / 2)).cgPath
-            }
-            else if selectionType == .single {
-                let diameter: CGFloat = min(diyCell.selectionLayer.frame.height, diyCell.selectionLayer.frame.width)
-                diyCell.selectionLayer.path = UIBezierPath(ovalIn: CGRect(x: diyCell.contentView.frame.width / 2 - diameter / 2, y: diyCell.contentView.frame.height / 2 - diameter / 2, width: diameter, height: diameter)).cgPath
-            }
+            diyCell.selectionType = selectionType
             
         }
         else if position == .next || position == .previous {

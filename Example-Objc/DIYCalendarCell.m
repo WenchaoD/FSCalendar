@@ -42,6 +42,33 @@
     self.circleImageView.frame = self.backgroundView.frame;
     
     self.selectionLayer.frame = CGRectInset(self.bounds, -1, 0);
+    
+    if (self.selectionType == SelectionTypeMiddle) {
+        
+        self.selectionLayer.path = [UIBezierPath bezierPathWithRect:self.selectionLayer.bounds].CGPath;
+        
+    } else if (self.selectionType == SelectionTypeLeftBorder) {
+        
+        self.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.selectionLayer.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft cornerRadii:CGSizeMake(self.selectionLayer.fs_width/2, self.selectionLayer.fs_width/2)].CGPath;
+        
+    } else if (self.selectionType == SelectionTypeRightBorder) {
+        
+        self.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.selectionLayer.bounds byRoundingCorners:UIRectCornerTopRight|UIRectCornerBottomRight cornerRadii:CGSizeMake(self.selectionLayer.fs_width/2, self.selectionLayer.fs_width/2)].CGPath;
+        
+    } else if (self.selectionType == SelectionTypeSingle) {
+        
+        CGFloat diameter = MIN(self.selectionLayer.fs_height, self.selectionLayer.fs_width);
+        self.selectionLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.contentView.fs_width/2-diameter/2, self.contentView.fs_height/2-diameter/2, diameter, diameter)].CGPath;
+        
+    }
+}
+
+- (void)setSelectionType:(SelectionType)selectionType
+{
+    if (_selectionType != selectionType) {
+        _selectionType = selectionType;
+        [self setNeedsLayout];
+    }
 }
 
 @end
