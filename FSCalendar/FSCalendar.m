@@ -34,7 +34,7 @@ static inline void FSCalendarAssertDateInBounds(NSDate *date, NSCalendar *calend
     if (!valid) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"yyyy/MM/dd";
-        [NSException raise:@"FSCalendar date out of bounds exception" format:@"Target date %@ beyond bounds [%@ - %@]", [formatter stringFromDate:date], [formatter stringFromDate:minimumDate], [formatter stringFromDate:date]];
+        [NSException raise:@"FSCalendar date out of bounds exception" format:@"Target date %@ beyond bounds [%@ - %@]", [formatter stringFromDate:date], [formatter stringFromDate:minimumDate], [formatter stringFromDate:maximumDate]];
     }
 }
 
@@ -1545,19 +1545,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.selected = [_selectedDates containsObject:date];
     cell.dateIsToday = self.today?[self.gregorian isDate:date inSameDayAsDate:self.today]:NO;
     cell.weekend = [self.gregorian isDateInWeekend:date];
+    cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
     switch (_scope) {
         case FSCalendarScopeMonth: {
-            cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-            if (cell.isPlaceholder) {
+            cell.placeholder = (cell.monthPosition == FSCalendarMonthPositionPrevious || cell.monthPosition == FSCalendarMonthPositionNext) || ![self isDateInRange:date];
+            if (cell.placeholder) {
                 cell.selected &= _pagingEnabled;
                 cell.dateIsToday &= _pagingEnabled;
             }
             break;
         }
         case FSCalendarScopeWeek: {
-            if (_pagingEnabled) {
-                cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-            }
+            cell.placeholder = ![self isDateInRange:date];
             break;
         }
     }

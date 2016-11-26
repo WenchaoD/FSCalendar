@@ -437,11 +437,6 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
     }
 }
 
-- (BOOL)isPlaceholder
-{
-    return (self.calendar.scope == FSCalendarScopeMonth && (self.monthPosition == FSCalendarMonthPositionPrevious || self.monthPosition == FSCalendarMonthPositionNext)) || self.monthPosition == FSCalendarMonthPositionOutOfBounds;
-}
-
 @end
 
 

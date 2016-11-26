@@ -31,10 +31,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (assign, nonatomic) BOOL dateIsToday;
-
 @property (assign, nonatomic) BOOL weekend;
-
-@property (readonly, nonatomic,getter=isPlaceholder) BOOL placeholder;
+@property (assign, nonatomic) BOOL placeholder;
 
 @property (strong, nonatomic) UIColor *preferredFillDefaultColor;
 @property (strong, nonatomic) UIColor *preferredFillSelectionColor;

@@ -50,7 +50,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition) {
     FSCalendarMonthPositionCurrent,
     FSCalendarMonthPositionNext,
     
-    FSCalendarMonthPositionOutOfBounds = NSNotFound-1,
     FSCalendarMonthPositionNotFound = NSNotFound
 };
 
