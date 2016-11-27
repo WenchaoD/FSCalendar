@@ -47,7 +47,9 @@
         [selectedDates addObject:[self.dateFormatter stringFromDate:obj]];
     }];
     NSLog(@"selected dates is %@",selectedDates);
-    
+    if (monthPosition == FSCalendarMonthPositionNext || monthPosition == FSCalendarMonthPositionPrevious) {
+        [calendar setCurrentPage:date animated:YES];
+    }
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar

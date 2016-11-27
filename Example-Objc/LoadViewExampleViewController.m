@@ -80,6 +80,9 @@
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     NSLog(@"did select date %@",[self.dateFormatter stringFromDate:date]);
+    if (monthPosition == FSCalendarMonthPositionNext || monthPosition == FSCalendarMonthPositionPrevious) {
+        [calendar setCurrentPage:date animated:YES];
+    }
 }
 
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar

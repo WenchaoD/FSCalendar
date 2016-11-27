@@ -61,8 +61,11 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
         NSLog("change page to \(self.formatter.string(from: calendar.currentPage))")
     }
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         NSLog("calendar did select date \(self.formatter.string(from: date))")
+        if monthPosition == .previous || monthPosition == .next {
+            calendar.setCurrentPage(date, animated: true)
+        }
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
