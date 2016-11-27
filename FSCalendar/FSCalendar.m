@@ -523,7 +523,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         return NO;
     }
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    return [self.proxy shouldSelectDate:date atMonthPosition:monthPosition];
+    return [self isDateInRange:date] && [self.proxy shouldSelectDate:date atMonthPosition:monthPosition];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -557,7 +557,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         return NO;
     }
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    return [self.proxy shouldDeselectDate:date atMonthPosition:monthPosition];
+    return [self isDateInRange:date] && [self.proxy shouldDeselectDate:date atMonthPosition:monthPosition];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
