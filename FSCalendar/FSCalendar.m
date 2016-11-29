@@ -74,7 +74,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsAdjustingTextSize;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
-@property (assign, nonatomic) BOOL                       hasRequestedBoundingDates;
+@property (assign, nonatomic) BOOL                       needsRequestingBoundingDates;
 @property (assign, nonatomic) BOOL                       supressEvent;
 @property (assign, nonatomic) CGFloat                    preferredHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferredWeekdayHeight;
@@ -200,6 +200,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _needsAdjustingViewFrame = YES;
     _needsAdjustingTextSize = YES;
     _needsAdjustingMonthPosition = YES;
+    _needsRequestingBoundingDates = YES;
     _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
@@ -768,6 +769,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_firstWeekday != firstWeekday) {
         _firstWeekday = firstWeekday;
+        _needsRequestingBoundingDates = YES;
         [self invalidateDateTools];
         [self invalidateWeekdaySymbols];
         if (self.hasValidateVisibleLayout) {
@@ -1707,8 +1709,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)requestBoundingDatesIfNecessary
 {
-    if (!_hasRequestedBoundingDates) {
-        _hasRequestedBoundingDates = YES;
+    if (_needsRequestingBoundingDates) {
+        _needsRequestingBoundingDates = NO;
         _minimumDate = self.proxy.minimumDateForCalendar;
         _maximumDate = self.proxy.maximumDateForCalendar;
         NSAssert([self.gregorian compareDate:self.minimumDate toDate:self.maximumDate toUnitGranularity:NSCalendarUnitDay] != NSOrderedDescending, @"The minimum date of calendar should be earlier than the maximum.");
