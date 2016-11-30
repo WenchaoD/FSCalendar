@@ -126,6 +126,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) CGFloat                    preferredPadding;
 @property (assign, nonatomic) CGFloat                    preferredScopeHandleHeight;
 @property (assign, nonatomic) BOOL                       preferredHideScopeHandleTopBorder;
+@property (assign, nonatomic) BOOL                       preferredRoundItemSizeWidthForAccessibility;
 @property (assign, nonatomic) UIAccessibilityTraits      preferredAccessibilityTraitForCell;
 @property (assign, nonatomic) UIAccessibilityTraits      preferredAccessibilityTraitForSelectedCell;
 @property (assign, nonatomic) FSCalendarOrientation      orientation;
@@ -242,6 +243,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredPadding       = FSCalendarAutomaticDimension;
     _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
     _preferredHideScopeHandleTopBorder = NO;
+    _preferredRoundItemSizeWidthForAccessibility = NO;
     _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
     _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
     
@@ -398,6 +400,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
         if (_accessibilityTraitForSelectedCell != _preferredAccessibilityTraitForSelectedCell) {
             _preferredAccessibilityTraitForSelectedCell = _accessibilityTraitForSelectedCell;
+        }
+        
+        if (_roundItemSizeWidthForAccessibility != _preferredRoundItemSizeWidthForAccessibility) {
+            _preferredRoundItemSizeWidthForAccessibility = _roundItemSizeWidthForAccessibility;
         }
         
         if (_needsLayoutForWeekMode) _scope = FSCalendarScopeMonth;
@@ -952,6 +958,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)setRoundItemSizeWidthForAccessibility:(BOOL)roundItemSizeWidthForAccessibility
+{
+    if (_roundItemSizeWidthForAccessibility != roundItemSizeWidthForAccessibility) {
+        _roundItemSizeWidthForAccessibility = roundItemSizeWidthForAccessibility;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
 - (void)setAccessibilityTraitForCell:(UIAccessibilityTraits)accessibilityTraitForCell
 {
     if (_accessibilityTraitForCell != accessibilityTraitForCell) {
@@ -1037,6 +1052,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredPadding = FSCalendarAutomaticDimension;
         _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
         _preferredHideScopeHandleTopBorder = NO;
+        _preferredRoundItemSizeWidthForAccessibility = NO;
         _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
         _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
         
@@ -1657,6 +1673,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _preferredAccessibilityTraitForSelectedCell = _accessibilityTraitForSelectedCell;
         }
         
+        if (_roundItemSizeWidthForAccessibility != _preferredRoundItemSizeWidthForAccessibility) {
+            _preferredRoundItemSizeWidthForAccessibility = _roundItemSizeWidthForAccessibility;
+        }
+        
         _collectionView.pagingEnabled = YES;
         _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.scrollDirection;
         
@@ -1689,6 +1709,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredPadding = FSCalendarAutomaticDimension;
     _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
     _preferredHideScopeHandleTopBorder = NO;
+    _preferredRoundItemSizeWidthForAccessibility = NO;
     _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
     _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
     _needsAdjustingViewFrame = YES;
@@ -1881,6 +1902,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredPadding       = FSCalendarAutomaticDimension;
     _preferredScopeHandleHeight = FSCalendarStandardScopeHandleHeight;
     _preferredHideScopeHandleTopBorder = NO;
+    _preferredRoundItemSizeWidthForAccessibility = NO;
     _preferredAccessibilityTraitForCell = UIAccessibilityTraitNone;
     _preferredAccessibilityTraitForSelectedCell = UIAccessibilityTraitNone;
     

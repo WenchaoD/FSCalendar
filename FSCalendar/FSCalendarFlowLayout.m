@@ -48,10 +48,14 @@
                 
             case FSCalendarScopeMonth: {
                 
-                CGSize itemSize = CGSizeMake(
-                                             self.collectionView.fs_width/7.0-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
-                                             rowHeight
-                                             );
+                CGFloat columnWidth = self.collectionView.fs_width/7.0-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.5;
+                
+                if (self.calendar.roundItemSizeWidthForAccessibility) {
+                    columnWidth = roundf(self.collectionView.fs_width/7.0-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.5);
+                }
+                
+                CGSize itemSize = CGSizeMake(columnWidth, rowHeight);
+                
                 self.itemSize = itemSize;
                 
                 break;
@@ -72,7 +76,7 @@
         self.headerReferenceSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
         
         CGSize itemSize = CGSizeMake(
-                                     self.collectionView.fs_width/7-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
+                                     self.collectionView.fs_width/7.0-(self.scrollDirection == UICollectionViewScrollDirectionVertical)*0.1,
                                      rowHeight
                                      );
         self.itemSize = itemSize;

@@ -394,6 +394,15 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL hideScopeHandleTopBorder;
 
 /**
+ * Whether or not to round the itemSize width for accessibility. If true, the itemSize width will be rounded to ensure
+ * that when VoiceOver is enabled, upon swiping to the end of the week, the calendar days do not unexpectedly shift.
+ * Additionally, this rounding will only be done if the scroll direction is vertical.
+ * This is a fix for: https://github.com/WenchaoD/FSCalendar/issues/501
+ * This should only be set if VoiceOver is enabled (logic should be handled in the view controller).
+ */
+@property (assign, nonatomic) IBInspectable BOOL roundItemSizeWidthForAccessibility;
+
+/**
  * The accessibility trait for the calendar day cell. Default is UIAccessibilityTraitNone.
  */
 @property (assign, nonatomic) IBInspectable UIAccessibilityTraits accessibilityTraitForCell;
