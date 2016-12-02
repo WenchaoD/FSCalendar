@@ -618,6 +618,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self didSelectDate:selectedDate];
     }
     [self selectCounterpartDate:selectedDate];
+    [self updateWeekViewHeader:selectedDate];
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -1577,6 +1578,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case FSCalendarScopeMonth:
             return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitMonth];
         case FSCalendarScopeWeek:
+            [self updateWeekViewHeader:date];
             return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitWeekOfYear];
     }
 }
@@ -1783,6 +1785,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     if (cell.dateIsSelected) {
         cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell;
+        [self updateWeekViewHeader:cell.date];
     } else {
         cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForCell;
     }
@@ -1945,6 +1948,22 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSInteger headDayCount = numberOfDaysInMonth + numberOfPlaceholdersForPrev;
     NSInteger numberOfRows = (headDayCount/7) + (headDayCount%7>0);
     return numberOfRows;
+}
+
+/**
+ * Updates the month/year header based on date. Header will only be updated if the calendar is in week view.
+ * Fix for: https://github.com/WenchaoD/FSCalendar/issues/474
+ *
+ * @date The reference date for the month/year header.
+ */
+- (void)updateWeekViewHeader:(NSDate *)date {
+    if (self.scope == FSCalendarScopeWeek) {
+        BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+        NSString *text = [self.formatter stringFromDate:date];
+        for (int i = 0; i < _header.collectionView.visibleCells.count; i++) {
+            ((FSCalendarHeaderCell *)_header.collectionView.visibleCells[i]).titleLabel.text = usesUpperCase ? text.uppercaseString : text;
+        }
+    }
 }
 
 #pragma mark - Delegate
