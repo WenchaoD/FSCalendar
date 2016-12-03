@@ -806,6 +806,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }];
 }
 
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self updateWeekViewHeader:self.selectedDate];
+}
+
 #pragma mark - Notification
 
 - (void)orientationDidChange:(NSNotification *)notification
@@ -1578,7 +1582,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case FSCalendarScopeMonth:
             return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitMonth];
         case FSCalendarScopeWeek:
-            [self updateWeekViewHeader:date];
             return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitWeekOfYear];
     }
 }
