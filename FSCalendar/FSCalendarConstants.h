@@ -30,6 +30,7 @@ UIKIT_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
 UIKIT_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
 
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
+UIKIT_EXTERN NSInteger const FSCalendarMaximumNumberOfEvents;
 
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
 UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
