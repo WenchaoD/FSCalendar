@@ -1321,7 +1321,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         }
         
-    } else if (![self isDateSelected:targetDate]){
+    } else if (![self isDateSelected:targetDate] && self.animator.state == FSCalendarTransitionStateIdle){ // Checking if calendar is idle to prevent potential crash if a UIScrollView is below the calendar and is also being scrolled.
         // 调用代码选中未选中日期
         if (self.selectedDate && !self.allowsMultipleSelection) {
             [self deselectDate:self.selectedDate];
@@ -1333,7 +1333,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self enqueueSelectedDate:targetDate];
         [self selectCounterpartDate:targetDate];
         
-    } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath]) {
+    } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath] && self.animator.state == FSCalendarTransitionStateIdle){ // Checking if calendar is idle to prevent potential crash if a UIScrollView is below the calendar and is also being scrolled.
         // 调用代码选中已选中日期
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
