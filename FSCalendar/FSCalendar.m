@@ -1284,7 +1284,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     BOOL shouldSelect = !_supressEvent;
     
-    if (!forPlaceholder && !self.allowsMultipleSelection) {
+    if (forPlaceholder == NO && self.allowsMultipleSelection == NO) {
         [self updateWeekViewHeader:date];
     }
     
