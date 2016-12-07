@@ -1283,6 +1283,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSIndexPath *targetIndexPath = [self indexPathForDate:targetDate];
     
     BOOL shouldSelect = !_supressEvent;
+    
+    if (!forPlaceholder && !self.allowsMultipleSelection) {
+        [self updateWeekViewHeader:date];
+    }
+    
     // 跨月份点击
     if (forPlaceholder) {
         if (self.allowsMultipleSelection) {
