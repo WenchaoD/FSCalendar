@@ -108,6 +108,8 @@
 
 - (void)scopeTransitionDidBegin:(UIPanGestureRecognizer *)panGesture
 {
+    // Do not allow interaction with the calendar as the calendar is transitioning. This prevents a potential crash when there is another scrolling scroll view on screen.
+    self.collectionView.userInteractionEnabled = NO;
     self.state = FSCalendarTransitionStateInProgress;
     self.transition = self.calendar.scope == FSCalendarScopeMonth ? FSCalendarTransitionMonthToWeek : FSCalendarTransitionWeekToMonth;
     self.pendingAttributes = self.transitionAttributes;
@@ -314,6 +316,7 @@
                 self.calendar.needsAdjustingViewFrame = YES;
                 [self.calendar setNeedsLayout];
                 self.state = FSCalendarTransitionStateIdle;
+                self.collectionView.userInteractionEnabled = YES;
             });
         };
         if (FSCalendarInAppExtension) {
@@ -371,6 +374,7 @@
     self.pendingAttributes = nil;
     [self.calendar setNeedsLayout];
     [self.calendar layoutIfNeeded];
+    self.collectionView.userInteractionEnabled = YES;
 }
 
 - (FSCalendarTransitionAttributes *)transitionAttributes
@@ -626,6 +630,7 @@
                 }];
                 self.pendingAttributes = nil;
                 self.state = FSCalendarTransitionStateIdle;
+                self.collectionView.userInteractionEnabled = YES;
             }];
             
             if (self.calendar.delegate && ([self.calendar.delegate respondsToSelector:@selector(calendar:boundingRectWillChange:animated:)] || [self.calendar.delegate respondsToSelector:@selector(calendarCurrentScopeWillChange:animated:)])) {
