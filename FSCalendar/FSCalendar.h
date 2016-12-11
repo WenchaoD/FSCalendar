@@ -365,7 +365,7 @@ IB_DESIGNABLE
 @property (strong, nonatomic) FSCalendarWeekdayView *calendarWeekdayView;
 
 /**
- The calendar view of the calendar
+ The header view of the calendar
  */
 @property (strong, nonatomic) FSCalendarHeaderView *calendarHeaderView;
 
