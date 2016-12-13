@@ -20,7 +20,7 @@
 #import "FSCalendarScopeHandle.h"
 #import "FSCalendarCalculator.h"
 #import "FSCalendarAnimator.h"
-#import "FSCalendarDelegateProxy.h"
+#import "FSCalendarDelegationProxies.h"
 
 @interface FSCalendar (Dynamic)
 
@@ -29,7 +29,6 @@
 @property (readonly, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 @property (readonly, nonatomic) FSCalendarAnimator *animator;
 @property (readonly, nonatomic) FSCalendarCalculator *calculator;
-@property (readonly, nonatomic) FSCalendarDelegateProxy *proxy;
 @property (readonly, nonatomic) BOOL floatingMode;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) CGFloat preferredHeaderHeight;
@@ -79,4 +78,10 @@
 - (void)invalidateFonts;
 
 @end
+
+@interface FSCalendarDataSourceProxy()<FSCalendarDataSource>
+@end
+@interface FSCalendarDelegateProxy()<FSCalendarDelegate,FSCalendarDelegateAppearance>
+@end
+
 

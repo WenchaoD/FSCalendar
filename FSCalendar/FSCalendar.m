@@ -18,8 +18,8 @@
 #import "FSCalendarCollectionView.h"
 
 #import "FSCalendarAnimator.h"
-#import "FSCalendarDelegateProxy.h"
 #import "FSCalendarCalculator.h"
+#import "FSCalendarDelegationProxies.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -65,7 +65,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (weak  , nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 
 @property (strong, nonatomic) FSCalendarAnimator         *animator;
-@property (strong, nonatomic) FSCalendarDelegateProxy    *proxy;
 @property (strong, nonatomic) FSCalendarCalculator       *calculator;
 
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
@@ -87,6 +86,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) FSCalendarOrientation currentCalendarOrientation;
 @property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
+
+@property (strong, nonatomic) FSCalendarDataSourceProxy  *dataSourceProxy;
+@property (strong, nonatomic) FSCalendarDelegateProxy    *delegateProxy;
 
 @property (strong, nonatomic) NSIndexPath *lastPressedIndexPath;
 
@@ -204,6 +206,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
+    _dataSourceProxy = [[FSCalendarDataSourceProxy alloc] init];
+    _delegateProxy = [[FSCalendarDelegateProxy alloc] init];
+    
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
     [self addSubview:contentView];
@@ -255,7 +260,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     // Assistants
     self.animator = [[FSCalendarAnimator alloc] initWithCalendar:self];
-    self.proxy = [[FSCalendarDelegateProxy alloc] initWithCalendar:self];
     self.calculator = [[FSCalendarCalculator alloc] initWithCalendar:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -357,7 +361,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight);
                     if (needsAdjustingBoundingRect) {
                         self.animator.state = FSCalendarTransitionStateInProgress;
-                        [self.proxy boundingRectWillChange:NO];
+                        CGRect boundingRect = (CGRect){CGPointZero,[self sizeThatFits:self.frame.size]};
+                        [self.delegateProxy calendar:self boundingRectWillChange:boundingRect animated:NO];
                         self.animator.state = FSCalendarTransitionStateIdle;
                     }
                     break;
@@ -485,7 +490,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarMonthPosition position = [self.calculator monthPositionForIndexPath:indexPath];
-    FSCalendarCell *cell = [self.proxy cellForDate:[self.calculator dateForIndexPath:indexPath] atMonthPosition:position];
+    NSDate *date = [self.calculator dateForIndexPath:indexPath];
+    FSCalendarCell *cell = [self.dataSourceProxy calendar:self cellForDate:date atMonthPosition:position];
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
     }
@@ -523,7 +529,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         return NO;
     }
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    return [self isDateInRange:date] && [self.proxy shouldSelectDate:date atMonthPosition:monthPosition];
+    return [self isDateInRange:date] && (![self.delegateProxy respondsToSelector:@selector(calendar:shouldSelectDate:atMonthPosition:)] || [self.delegateProxy calendar:self shouldSelectDate:date atMonthPosition:monthPosition]);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -544,8 +550,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         cell.selected = YES;
         [cell performSelecting];
     }
+    [self enqueueSelectedDate:selectedDate];
     if (!_supressEvent) {
-        [self.proxy didSelectDate:selectedDate atMonthPosition:[self.calculator monthPositionForIndexPath:indexPath]];
+        FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+        [self.delegateProxy calendar:self didSelectDate:selectedDate atMonthPosition:monthPosition];
     }
     [self selectCounterpartDate:selectedDate];
 }
@@ -557,7 +565,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         return NO;
     }
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    return [self isDateInRange:date] && [self.proxy shouldDeselectDate:date atMonthPosition:monthPosition];
+    return [self isDateInRange:date] && (![self.delegateProxy respondsToSelector:@selector(calendar:shouldDeselectDate:atMonthPosition:)]||[self.delegateProxy calendar:self shouldDeselectDate:date atMonthPosition:monthPosition]);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -579,7 +587,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     [_selectedDates removeObject:selectedDate];
     if (!_supressEvent) {
-        [self.proxy didDeselectDate:selectedDate atMonthPosition:monthPosition];
+        [self.delegateProxy calendar:self didDeselectDate:selectedDate atMonthPosition:monthPosition];
     }
     [self deselectCounterpartDate:selectedDate];
     
@@ -589,7 +597,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
     FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-    [self.proxy willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:monthPosition];
+    [self.delegateProxy calendar:self willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:monthPosition];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
@@ -603,11 +611,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (_supressEvent) {
-        return;
-    }
+    if (_supressEvent || !self.window) return;
     if (self.floatingMode && _collectionView.indexPathsForVisibleItems.count) {
-        if (!self.window) return;
         // Do nothing on bouncing
         if (_collectionView.contentOffset.y < 0 || _collectionView.contentOffset.y > _collectionView.contentSize.height-_collectionView.fs_height) {
             return;
@@ -629,7 +634,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (![self.gregorian isDate:currentPage equalToDate:_currentPage toUnitGranularity:NSCalendarUnitMonth]) {
             [self willChangeValueForKey:@"currentPage"];
             _currentPage = currentPage;
-            [self.proxy currentPageDidChange];
+            [self.delegateProxy calendarCurrentPageDidChange:self];
             [self didChangeValueForKey:@"currentPage"];
         }
         
@@ -687,7 +692,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         NSDate *lastPage = _currentPage;
         [self willChangeValueForKey:@"currentPage"];
         _currentPage = targetPage;
-        [self.proxy currentPageDidChange];
+        [self.delegateProxy calendarCurrentPageDidChange:self];
         if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows) {
             [self.animator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
         }
@@ -1037,14 +1042,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return _preferredPadding;
 }
 
-- (id<FSCalendarDelegateAppearance>)delegateAppearance
-{
-    if (_delegate && [_delegate conformsToProtocol:@protocol(FSCalendarDelegateAppearance)]) {
-        return (id<FSCalendarDelegateAppearance>)_delegate;
-    }
-    return nil;
-}
-
 - (BOOL)floatingMode
 {
     return _scope == FSCalendarScopeMonth && _scrollEnabled && !_pagingEnabled;
@@ -1087,13 +1084,33 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return _swipeToChooseGesture;
 }
 
+- (void)setDataSource:(id<FSCalendarDataSource>)dataSource
+{
+    self.dataSourceProxy.delegation = dataSource;
+}
+
+- (id<FSCalendarDataSource>)dataSource
+{
+    return self.dataSourceProxy.delegation;
+}
+
+- (void)setDelegate:(id<FSCalendarDelegate>)delegate
+{
+    self.delegateProxy.delegation = delegate;
+}
+
+- (id<FSCalendarDelegate>)delegate
+{
+    return self.delegateProxy.delegation;
+}
+
 #pragma mark - Public methods
 
 - (void)reloadData
 {
     if (!self.hasValidateVisibleLayout) return;
-    _minimumDate = self.proxy.minimumDateForCalendar;
-    _maximumDate = self.proxy.maximumDateForCalendar;
+    _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self];
+    _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self];
     [_collectionView reloadData];
     [_calendarHeaderView.collectionView reloadData];
     [self setNeedsLayout];
@@ -1192,16 +1209,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     // 跨月份点击
     if (monthPosition==FSCalendarMonthPositionPrevious||monthPosition==FSCalendarMonthPositionNext) {
         if (self.allowsMultipleSelection) {
-            // 处理多选模式
             if ([self isDateSelected:targetDate]) {
-                // 已经选中的日期，是否应该反选，如果不应该，则不切换月份，不选中
-                BOOL shouldDeselect = [self.proxy shouldDeselectDate:targetDate atMonthPosition:monthPosition];
+                BOOL shouldDeselect = ![self.delegateProxy respondsToSelector:@selector(calendar:shouldDeselectDate:atMonthPosition:)] || [self.delegateProxy calendar:self shouldDeselectDate:targetDate atMonthPosition:monthPosition];
                 if (!shouldDeselect) {
                     return;
                 }
             } else {
-                // 未选中的日期，判断是否应该选中，不应该选中则不切换月份，不选中
-                shouldSelect &= [self.proxy shouldSelectDate:targetDate atMonthPosition:monthPosition];
+                shouldSelect &= (![self.delegateProxy respondsToSelector:@selector(calendar:shouldSelectDate:atMonthPosition:)] || [self.delegateProxy calendar:self shouldSelectDate:targetDate atMonthPosition:monthPosition]);
                 if (!shouldSelect) {
                     return;
                 }
@@ -1209,11 +1223,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 [self collectionView:_collectionView didSelectItemAtIndexPath:targetIndexPath];
             }
         } else {
-            // 处理单选模式
-            shouldSelect &= [self.proxy shouldSelectDate:targetDate atMonthPosition:monthPosition];
+            shouldSelect &= (![self.delegateProxy respondsToSelector:@selector(calendar:shouldSelectDate:atMonthPosition:)] || [self.delegateProxy calendar:self shouldSelectDate:targetDate atMonthPosition:monthPosition]);
             if (shouldSelect) {
                 if ([self isDateSelected:targetDate]) {
-                    [self.proxy didSelectDate:targetDate atMonthPosition:monthPosition];
+                    [self.delegateProxy calendar:self didSelectDate:targetDate atMonthPosition:monthPosition];
                 } else {
                     NSDate *selectedDate = self.selectedDate;
                     if (selectedDate) {
@@ -1228,7 +1241,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         
     } else if (![self isDateSelected:targetDate]){
-        // 调用代码选中未选中日期
         if (self.selectedDate && !self.allowsMultipleSelection) {
             [self deselectDate:self.selectedDate];
         }
@@ -1239,12 +1251,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self selectCounterpartDate:targetDate];
         
     } else if (![_collectionView.indexPathsForSelectedItems containsObject:targetIndexPath]) {
-        // 调用代码选中已选中日期
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
     
     if (scrollToDate) {
-        // 如果跨月份点击日期，并且该日期不应该选中，则不跳转页面，其他情况均跳转
         if (!shouldSelect) {
             return;
         }
@@ -1328,7 +1338,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
             if (!_supressEvent && self.hasValidateVisibleLayout) {
                 _supressEvent = YES;
-                [self.proxy currentPageDidChange];
+                [self.delegateProxy calendarCurrentPageDidChange:self];
                 if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows && self.animator.state == FSCalendarTransitionStateIdle) {
                     [self.animator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.33];
                 }
@@ -1507,41 +1517,51 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell forDate:(NSDate *)date
 {
-    cell.preferredFillSelectionColor = [self.proxy preferredFillSelectionColorForDate:date];
-    cell.preferredFillDefaultColor = [self.proxy preferredFillDefaultColorForDate:date];
-    cell.preferredTitleDefaultColor = [self.proxy preferredTitleDefaultColorForDate:date];
-    cell.preferredTitleSelectionColor = [self.proxy preferredTitleSelectionColorForDate:date];
-    cell.preferredTitleOffset = [self.proxy preferredTitleOffsetForDate:date];
+#define FSCalendarInvalidateCellAppearance(SEL1,SEL2) \
+    cell.SEL1 = [self.delegateProxy calendar:self appearance:self.appearance SEL2:date];
+    
+    FSCalendarInvalidateCellAppearance(preferredFillDefaultColor,fillDefaultColorForDate);
+    FSCalendarInvalidateCellAppearance(preferredFillSelectionColor,fillSelectionColorForDate);
+    FSCalendarInvalidateCellAppearance(preferredTitleDefaultColor,titleDefaultColorForDate);
+    FSCalendarInvalidateCellAppearance(preferredTitleSelectionColor,titleSelectionColorForDate);
+    FSCalendarInvalidateCellAppearance(preferredTitleOffset,titleOffsetForDate);
     if (cell.subtitle) {
-        cell.preferredSubtitleDefaultColor = [self.proxy preferredSubtitleDefaultColorForDate:date];
-        cell.preferredSubtitleSelectionColor = [self.proxy preferredSubtitleSelectionColorForDate:date];
-        cell.preferredSubtitleOffset = [self.proxy preferredSubtitleOffsetForDate:date];
+        FSCalendarInvalidateCellAppearance(preferredSubtitleDefaultColor,subtitleDefaultColorForDate);
+        FSCalendarInvalidateCellAppearance(preferredSubtitleSelectionColor,subtitleSelectionColorForDate);
+        FSCalendarInvalidateCellAppearance(preferredSubtitleOffset,subtitleOffsetForDate);
     }
     if (cell.numberOfEvents) {
-        cell.preferredEventDefaultColors = [self.proxy preferredEventDefaultColorsForDate:date];
-        cell.preferredEventSelectionColors = [self.proxy preferredEventSelectionColorsForDate:date];
-        cell.preferredEventOffset = [self.proxy preferredEventOffsetForDate:date];
+        FSCalendarInvalidateCellAppearance(preferredEventDefaultColors,eventDefaultColorsForDate);
+        FSCalendarInvalidateCellAppearance(preferredEventSelectionColors,eventSelectionColorsForDate);
+        FSCalendarInvalidateCellAppearance(preferredEventOffset,eventOffsetForDate);
     }
-    cell.preferredBorderDefaultColor = [self.proxy preferredBorderDefaultColorForDate:date];
-    cell.preferredBorderSelectionColor = [self.proxy preferredBorderSelectionColorForDate:date];
-    cell.preferredBorderRadius = [self.proxy preferredBorderRadiusForDate:date];
+    FSCalendarInvalidateCellAppearance(preferredBorderDefaultColor,borderDefaultColorForDate);
+    FSCalendarInvalidateCellAppearance(preferredBorderSelectionColor,borderSelectionColorForDate);
     
-    if (cell.image) {
-        cell.preferredImageOffset = [self.proxy preferredImageOffsetForDate:date];
+    if ([self.delegateProxy respondsToSelector:@selector(calendar:appearance:borderRadiusForDate:)]) {
+        FSCalendarInvalidateCellAppearance(preferredBorderRadius,borderRadiusForDate);
+    } else {
+        cell.preferredBorderRadius = -1;
     }
+    if (cell.image) {
+        FSCalendarInvalidateCellAppearance(preferredImageOffset,imageOffsetForDate);
+    }
+    
+#undef FSCalendarInvalidateCellAppearance
     
     [cell configureAppearance];
     [cell setNeedsLayout];
+    
 }
 
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.calendar = self;
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    cell.image = [self.proxy imageForDate:date];
-    cell.numberOfEvents = [self.proxy numberOfEventsForDate:date];
-    cell.title = [self.proxy titleForDate:date] ?: @([self.gregorian component:NSCalendarUnitDay fromDate:date]).stringValue;
-    cell.subtitle  = [self.proxy subtitleForDate:date];
+    cell.image = [self.dataSourceProxy calendar:self imageForDate:date];
+    cell.numberOfEvents = [self.dataSourceProxy calendar:self numberOfEventsForDate:date];
+    cell.title = [self.dataSourceProxy calendar:self titleForDate:date] ?: @([self.gregorian component:NSCalendarUnitDay fromDate:date]).stringValue;
+    cell.subtitle  = [self.dataSourceProxy calendar:self subtitleForDate:date];
     cell.selected = [_selectedDates containsObject:date];
     cell.dateIsToday = self.today?[self.gregorian isDate:date inSameDayAsDate:self.today]:NO;
     cell.weekend = [self.gregorian isDateInWeekend:date];
@@ -1709,8 +1729,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (!_hasRequestedBoundingDates) {
         _hasRequestedBoundingDates = YES;
-        _minimumDate = self.proxy.minimumDateForCalendar;
-        _maximumDate = self.proxy.maximumDateForCalendar;
+        _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self]?:[self.formatter dateFromString:@"1970-01-01"];
+        _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self]?:[self.formatter dateFromString:@"2099-12-31"];
         NSAssert([self.gregorian compareDate:self.minimumDate toDate:self.maximumDate toUnitGranularity:NSCalendarUnitDay] != NSOrderedDescending, @"The minimum date of calendar should be earlier than the maximum.");
         [self.calculator reloadSections];
     }

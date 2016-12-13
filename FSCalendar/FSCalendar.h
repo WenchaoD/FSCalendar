@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class FSCalendar;
 
 /**
- * FSCalendarDataSource is a source set of FSCalendar. The basic role is to provide event、subtitle and min/max day to display for calendar.
+ * FSCalendarDataSource is a source set of FSCalendar. The basic role is to provide event、subtitle and min/max day to display, or customized day cell for the calendar.
  */
 @protocol FSCalendarDataSource <NSObject>
 
