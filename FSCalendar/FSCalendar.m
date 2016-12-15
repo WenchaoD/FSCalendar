@@ -795,7 +795,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (self.hasValidateVisibleLayout) {
         [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
         [[_collectionView cellForItemAtIndexPath:[self.calculator indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
     }
 }
 
