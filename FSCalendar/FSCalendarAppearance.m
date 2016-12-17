@@ -69,6 +69,12 @@
     if (self) {
         
         _adjustsFontSizeToFitContentSize = YES;
+        _adjustsHeaderTitleFontSizeToFitContentSize = YES;
+        _headerTitleItemSizeMultiplier = 0.5;
+        _headerTitleItemSizeOffset = 0.0;
+        _headerTitleTextAlignment = NSTextAlignmentCenter;
+        _topBorderLineColor = FSCalendarStandardLineColor;
+        _bottomBorderLineColor = FSCalendarStandardLineColor;
         
         _titleFontSize = _preferredTitleFontSize  = FSCalendarStandardTitleTextSize;
         _subtitleFontSize = _preferredSubtitleFontSize = FSCalendarStandardSubtitleTextSize;
@@ -543,7 +549,7 @@
 
 - (UIFont *)preferredHeaderTitleFont
 {
-    return [UIFont fontWithName:_headerTitleFontName size:_adjustsFontSizeToFitContentSize?_preferredHeaderTitleFontSize:_headerTitleFontSize];
+    return [UIFont fontWithName:_headerTitleFontName size:_adjustsHeaderTitleFontSizeToFitContentSize?_preferredHeaderTitleFontSize:_headerTitleFontSize];
 }
 
 - (void)adjustTitleIfNecessary
