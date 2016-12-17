@@ -34,6 +34,8 @@ UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
 UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 
+#define CGPointInfinity CGPointMake(NSIntegerMax,NSIntegerMax)
+
 
 #if TARGET_INTERFACE_BUILDER
 #define FSCalendarDeviceIsIPad NO

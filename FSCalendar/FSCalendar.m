@@ -1517,34 +1517,39 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #define FSCalendarInvalidateCellAppearance(SEL1,SEL2) \
     cell.SEL1 = [self.delegateProxy calendar:self appearance:self.appearance SEL2:date];
     
+#define FSCalendarInvalidateCellAppearanceWithDefault(SEL1,SEL2,DEFAULT) \
+    if ([self.delegateProxy respondsToSelector:@selector(calendar:appearance:SEL2:)]) { \
+        cell.SEL1 = [self.delegateProxy calendar:self appearance:self.appearance SEL2:date]; \
+    } else { \
+        cell.SEL1 = DEFAULT; \
+    }
+    
     FSCalendarInvalidateCellAppearance(preferredFillDefaultColor,fillDefaultColorForDate);
     FSCalendarInvalidateCellAppearance(preferredFillSelectionColor,fillSelectionColorForDate);
     FSCalendarInvalidateCellAppearance(preferredTitleDefaultColor,titleDefaultColorForDate);
     FSCalendarInvalidateCellAppearance(preferredTitleSelectionColor,titleSelectionColorForDate);
-    FSCalendarInvalidateCellAppearance(preferredTitleOffset,titleOffsetForDate);
+
+    FSCalendarInvalidateCellAppearanceWithDefault(preferredTitleOffset,titleOffsetForDate,CGPointInfinity);
     if (cell.subtitle) {
         FSCalendarInvalidateCellAppearance(preferredSubtitleDefaultColor,subtitleDefaultColorForDate);
         FSCalendarInvalidateCellAppearance(preferredSubtitleSelectionColor,subtitleSelectionColorForDate);
-        FSCalendarInvalidateCellAppearance(preferredSubtitleOffset,subtitleOffsetForDate);
+        FSCalendarInvalidateCellAppearanceWithDefault(preferredSubtitleOffset,subtitleOffsetForDate,CGPointInfinity);
     }
     if (cell.numberOfEvents) {
         FSCalendarInvalidateCellAppearance(preferredEventDefaultColors,eventDefaultColorsForDate);
         FSCalendarInvalidateCellAppearance(preferredEventSelectionColors,eventSelectionColorsForDate);
-        FSCalendarInvalidateCellAppearance(preferredEventOffset,eventOffsetForDate);
+        FSCalendarInvalidateCellAppearanceWithDefault(preferredEventOffset,eventOffsetForDate,CGPointInfinity);
     }
     FSCalendarInvalidateCellAppearance(preferredBorderDefaultColor,borderDefaultColorForDate);
     FSCalendarInvalidateCellAppearance(preferredBorderSelectionColor,borderSelectionColorForDate);
-    
-    if ([self.delegateProxy respondsToSelector:@selector(calendar:appearance:borderRadiusForDate:)]) {
-        FSCalendarInvalidateCellAppearance(preferredBorderRadius,borderRadiusForDate);
-    } else {
-        cell.preferredBorderRadius = -1;
-    }
+    FSCalendarInvalidateCellAppearanceWithDefault(preferredBorderRadius,borderRadiusForDate,-1);
+
     if (cell.image) {
-        FSCalendarInvalidateCellAppearance(preferredImageOffset,imageOffsetForDate);
+        FSCalendarInvalidateCellAppearanceWithDefault(preferredImageOffset,imageOffsetForDate,CGPointInfinity);
     }
     
 #undef FSCalendarInvalidateCellAppearance
+#undef FSCalendarInvalidateCellAppearanceWithDefault
     
     [cell configureAppearance];
     [cell setNeedsLayout];
