@@ -171,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @see FSCalendarAppearance
  */
-@protocol FSCalendarDelegateAppearance <NSObject>
+@protocol FSCalendarDelegateAppearance <FSCalendarDelegate>
 
 @optional
 

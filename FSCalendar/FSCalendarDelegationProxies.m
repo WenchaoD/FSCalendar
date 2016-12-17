@@ -7,6 +7,7 @@
 //
 
 #import "FSCalendarDelegationProxies.h"
+#import <objc/runtime.h>
 
 @implementation FSCalendarDelegationProxy
 
@@ -49,7 +50,9 @@
     if ([self.delegation respondsToSelector:selector]) {
         return [(NSObject *)self.delegation methodSignatureForSelector:selector];
     }
-    return [NSObject methodSignatureForSelector:@selector(init)];
+    struct objc_method_description desc = protocol_getMethodDescription(self.protocol, sel, NO, YES);
+    const char *types = desc.types;
+    return [NSMethodSignature signatureWithObjCTypes:types];
 }
 
 - (SEL)deprecatedSelectorOfSelector:(SEL)selector
@@ -70,6 +73,7 @@
 {
     self = [super init];
     if (self) {
+        self.protocol = @protocol(FSCalendarDataSource);
         self.deprecations = @{FSCalendarSelectorEntry(calendar:numberOfEventsForDate:, calendar:hasEventForDate:)};
     }
     return self;
@@ -83,6 +87,7 @@
 {
     self = [super init];
     if (self) {
+        self.protocol = @protocol(FSCalendarDelegateAppearance);
         self.deprecations = @{
                               FSCalendarSelectorEntry(calendarCurrentPageDidChange:, calendarCurrentMonthDidChange:),
                               FSCalendarSelectorEntry(calendar:shouldSelectDate:atMonthPosition:, calendar:shouldSelectDate:),
