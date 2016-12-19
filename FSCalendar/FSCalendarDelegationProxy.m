@@ -1,12 +1,12 @@
 //
-//  FSCalendarDelegationProxies.m
+//  FSCalendarDelegationProxy.m
 //  FSCalendar
 //
 //  Created by dingwenchao on 11/12/2016.
 //  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
-#import "FSCalendarDelegationProxies.h"
+#import "FSCalendarDelegationProxy.h"
 #import <objc/runtime.h>
 
 @implementation FSCalendarDelegationProxy
@@ -66,42 +66,3 @@
 }
 
 @end
-
-
-#define FSCalendarSelectorEntry(SEL1,SEL2) NSStringFromSelector(@selector(SEL1)):NSStringFromSelector(@selector(SEL2))
-
-@implementation FSCalendarDataSourceProxy
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.protocol = @protocol(FSCalendarDataSource);
-        self.deprecations = @{FSCalendarSelectorEntry(calendar:numberOfEventsForDate:, calendar:hasEventForDate:)};
-    }
-    return self;
-}
-
-@end
-
-@implementation FSCalendarDelegateProxy
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        self.protocol = @protocol(FSCalendarDelegateAppearance);
-        self.deprecations = @{
-                              FSCalendarSelectorEntry(calendarCurrentPageDidChange:, calendarCurrentMonthDidChange:),
-                              FSCalendarSelectorEntry(calendar:shouldSelectDate:atMonthPosition:, calendar:shouldSelectDate:),
-                              FSCalendarSelectorEntry(calendar:didSelectDate:atMonthPosition:, calendar:didSelectDate:),
-                              FSCalendarSelectorEntry(calendar:shouldDeselectDate:atMonthPosition:, calendar:shouldDeselectDate:),
-                              FSCalendarSelectorEntry(calendar:didDeselectDate:atMonthPosition:, calendar:didDeselectDate:)
-                             };
-    }
-    return self;
-}
-
-@end
-
-#undef FSCalendarSelectorEntry

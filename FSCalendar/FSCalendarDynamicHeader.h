@@ -20,7 +20,7 @@
 #import "FSCalendarScopeHandle.h"
 #import "FSCalendarCalculator.h"
 #import "FSCalendarAnimator.h"
-#import "FSCalendarDelegationProxies.h"
+#import "FSCalendarDelegationProxy.h"
 
 @interface FSCalendar (Dynamic)
 
@@ -67,9 +67,7 @@
 
 @end
 
-@interface FSCalendarDataSourceProxy()<FSCalendarDataSource>
-@end
-@interface FSCalendarDelegateProxy()<FSCalendarDelegate,FSCalendarDelegateAppearance>
+@interface FSCalendarDelegationProxy()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 @end
 
 

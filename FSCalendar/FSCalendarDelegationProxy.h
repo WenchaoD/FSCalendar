@@ -1,5 +1,5 @@
 //
-//  FSCalendarDelegationProxies.h
+//  FSCalendarDelegationProxy.h
 //  FSCalendar
 //
 //  Created by dingwenchao on 11/12/2016.
@@ -24,14 +24,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init;
 - (SEL)deprecatedSelectorOfSelector:(SEL)selector;
-
-@end
-
-@interface FSCalendarDataSourceProxy : FSCalendarDelegationProxy
-
-@end
-
-@interface FSCalendarDelegateProxy : FSCalendarDelegationProxy
 
 @end
 

@@ -19,7 +19,7 @@
 
 #import "FSCalendarAnimator.h"
 #import "FSCalendarCalculator.h"
-#import "FSCalendarDelegationProxies.h"
+#import "FSCalendarDelegationFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -101,8 +101,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (readonly, nonatomic) FSCalendarOrientation currentCalendarOrientation;
 @property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
 
-@property (strong, nonatomic) FSCalendarDataSourceProxy  *dataSourceProxy;
-@property (strong, nonatomic) FSCalendarDelegateProxy    *delegateProxy;
+@property (strong, nonatomic) FSCalendarDelegationProxy  *dataSourceProxy;
+@property (strong, nonatomic) FSCalendarDelegationProxy    *delegateProxy;
 
 @property (strong, nonatomic) NSIndexPath *lastPressedIndexPath;
 @property (strong, nonatomic) NSPointerArray *weekPointers;
@@ -216,8 +216,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
-    _dataSourceProxy = [[FSCalendarDataSourceProxy alloc] init];
-    _delegateProxy = [[FSCalendarDelegateProxy alloc] init];
+    _dataSourceProxy = [FSCalendarDelegationFactory dataSourceProxy];
+    _delegateProxy = [FSCalendarDelegationFactory delegateProxy];
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
