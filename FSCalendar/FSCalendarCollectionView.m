@@ -60,6 +60,9 @@
 - (void)setContentInset:(UIEdgeInsets)contentInset
 {
     [super setContentInset:UIEdgeInsetsZero];
+    if (contentInset.top) {
+        self.contentOffset = CGPointMake(self.contentOffset.x, self.contentOffset.y+contentInset.top);
+    }
 }
 
 - (void)setScrollsToTop:(BOOL)scrollsToTop
