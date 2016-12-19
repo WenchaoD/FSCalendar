@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 11/12/2016.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendarDelegationProxies.h"
@@ -50,6 +50,9 @@
     if ([self.delegation respondsToSelector:selector]) {
         return [(NSObject *)self.delegation methodSignatureForSelector:selector];
     }
+#if TARGET_INTERFACE_BUILDER
+    return [NSObject methodSignatureForSelector:@selector(init)];
+#endif
     struct objc_method_description desc = protocol_getMethodDescription(self.protocol, sel, NO, YES);
     const char *types = desc.types;
     return [NSMethodSignature signatureWithObjCTypes:types];

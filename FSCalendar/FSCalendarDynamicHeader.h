@@ -47,11 +47,7 @@
 @property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
-- (void)invalidateWeekdayFont;
-- (void)invalidateWeekdayTextColor;
-
 - (void)invalidateHeaders;
-- (void)invalidateWeekdaySymbols;
 
 - (BOOL)isPageInRange:(NSDate *)page;
 - (BOOL)isDateInRange:(NSDate *)date;
@@ -68,14 +64,6 @@
 @property (readonly, nonatomic) NSDictionary *titleColors;
 @property (readonly, nonatomic) NSDictionary *subtitleColors;
 @property (readonly, nonatomic) NSDictionary *borderColors;
-
-@property (readonly, nonatomic) UIFont *preferredTitleFont;
-@property (readonly, nonatomic) UIFont *preferredSubtitleFont;
-@property (readonly, nonatomic) UIFont *preferredWeekdayFont;
-@property (readonly, nonatomic) UIFont *preferredHeaderTitleFont;
-
-- (void)adjustTitleIfNecessary;
-- (void)invalidateFonts;
 
 @end
 

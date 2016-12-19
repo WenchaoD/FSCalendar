@@ -25,6 +25,7 @@
 @property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
 
 - (void)reloadData;
+- (void)configureAppearance;
 
 @end
 
@@ -33,9 +34,6 @@
 
 @property (weak, nonatomic) UILabel *titleLabel;
 @property (weak, nonatomic) FSCalendarHeaderView *header;
-
-- (void)invalidateHeaderFont;
-- (void)invalidateHeaderTextColor;
 
 @end
 

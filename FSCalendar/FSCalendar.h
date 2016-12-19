@@ -525,6 +525,7 @@ IB_DESIGNABLE
  */
 - (CGRect)frameForDate:(NSDate *)date;
 
+- (void)setNeedsConfigureAppearance;
 
 @end
 

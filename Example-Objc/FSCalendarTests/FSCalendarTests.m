@@ -3,7 +3,7 @@
 //  FSCalendarTests
 //
 //  Created by dingwenchao on 8/24/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

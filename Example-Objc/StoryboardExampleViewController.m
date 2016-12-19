@@ -51,7 +51,7 @@
     _scrollDirection = _calendar.scrollDirection;
     _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
     
-//    [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/05"]];
+    [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2016/12/05"]];
     
     _datesShouldNotBeSelected = @[@"2016/08/07",
                                   @"2016/09/07",
@@ -61,25 +61,10 @@
                                   @"2016/01/07",
                                   @"2016/02/07"];
     
-    _datesWithEvent = @[@"2016-10-03",
-                        @"2016-10-07",
-                        @"2016-10-15",
-                        @"2016-10-25"];
-    
-//    self.calendar.appearance.weekdayBackground = [UIColor cyanColor];
-
-    
-//    _calendar.locale = [NSLocale currentLocale];
-    
-    // Uncomment this to test the month->week & week->month transition
-    /*
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_calendar setScope:FSCalendarScopeWeek animated:YES];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [_calendar setScope:FSCalendarScopeMonth animated:YES];
-        });
-    });
-     */
+    _datesWithEvent = @[@"2016-12-03",
+                        @"2016-12-07",
+                        @"2016-12-15",
+                        @"2016-12-25"];
     
 }
 

@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 9/17/15.
-//  Copyright (c) 2015 wenchaoios. All rights reserved.
+//  Copyright (c) 2015 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendarStickyHeader.h"
@@ -66,7 +66,7 @@
     
     self.weekdayView.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin, self.contentView.fs_width, weekdayHeight);
     
-    CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:_appearance.preferredHeaderTitleFont}].height*1.5 + weekdayMargin*3;
+    CGFloat titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:self.calendar.appearance.headerTitleFont}].height*1.5 + weekdayMargin*3;
     
     _bottomBorder.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
     _titleLabel.frame = CGRectMake(0, _bottomBorder.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
@@ -80,49 +80,24 @@
     if (![_calendar isEqual:calendar]) {
         _calendar = calendar;
         _weekdayView.calendar = calendar;
-    }
-    if (![_appearance isEqual:calendar.appearance]) {
-        _appearance = calendar.appearance;
-        [self invalidateHeaderFont];
-        [self invalidateHeaderTextColor];
-        [self invalidateWeekdayFont];
-        [self invalidateWeekdayTextColor];
-        [self invalidateWeekdaySymbols];
+        [self configureAppearance];
     }
 }
 
 #pragma mark - Private methods
 
-- (void)invalidateHeaderFont
+- (void)configureAppearance
 {
-    _titleLabel.font = _appearance.preferredHeaderTitleFont;
-}
-
-- (void)invalidateHeaderTextColor
-{
-    _titleLabel.textColor = _appearance.headerTitleColor;
-}
-
-- (void)invalidateWeekdayFont
-{
-    [self.weekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setFont:) withObject:_appearance.weekdayFont];
-}
-
-- (void)invalidateWeekdayTextColor
-{
-    [self.weekdayView.weekdayLabels.allObjects makeObjectsPerformSelector:@selector(setTextColor:) withObject:_appearance.weekdayTextColor];
-}
-
-- (void)invalidateWeekdaySymbols
-{
-    [self.weekdayView fs_performSelector:_cmd withObjects:nil, nil];
+    _titleLabel.font = self.calendar.appearance.headerTitleFont;
+    _titleLabel.textColor = self.calendar.appearance.headerTitleColor;
+    [self.weekdayView configureAppearance];
 }
 
 - (void)setMonth:(NSDate *)month
 {
     _month = month;
-    _calendar.formatter.dateFormat = _appearance.headerDateFormat;
-    BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+    _calendar.formatter.dateFormat = self.calendar.appearance.headerDateFormat;
+    BOOL usesUpperCase = (self.calendar.appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
     NSString *text = [_calendar.formatter stringFromDate:_month];
     text = usesUpperCase ? text.uppercaseString : text;
     self.titleLabel.text = text;

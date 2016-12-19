@@ -78,7 +78,7 @@
     if (_needsAdjustingMonthPosition) {
         _needsAdjustingMonthPosition = NO;
         [self scrollToOffset:_scrollOffset];
-    };
+    }
     
 }
 
@@ -133,7 +133,7 @@
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.header = self;
-    cell.titleLabel.font = _appearance.preferredHeaderTitleFont;
+    cell.titleLabel.font = _appearance.headerTitleFont;
     cell.titleLabel.textColor = _appearance.headerTitleColor;
     _calendar.formatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
@@ -257,6 +257,14 @@
     [_collectionView reloadData];
 }
 
+- (void)configureAppearance
+{
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarHeaderCell * _Nonnull cell, NSUInteger idx, BOOL * _Nonnull stop) {
+        cell.titleLabel.font = self.appearance.headerTitleFont;
+        cell.titleLabel.textColor = self.appearance.headerTitleColor;
+    }];
+}
+
 @end
 
 
@@ -302,16 +310,6 @@
         self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
     }
     
-}
-
-- (void)invalidateHeaderFont
-{
-    _titleLabel.font = self.header.appearance.preferredHeaderTitleFont;
-}
-
-- (void)invalidateHeaderTextColor
-{
-    _titleLabel.textColor = self.header.appearance.headerTitleColor;
 }
 
 @end

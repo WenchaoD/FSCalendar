@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 4/29/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendar.h"
@@ -225,7 +225,6 @@
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:identifier];
     [self setValue:gregorian forKey:@"gregorian"];
     [self fs_performSelector:NSSelectorFromString(@"invalidateDateTools") withObjects:nil, nil];
-    [self fs_performSelector:NSSelectorFromString(@"invalidateWeekdaySymbols") withObjects:nil, nil];
     
     if ([[self valueForKey:@"hasValidateVisibleLayout"] boolValue]) {
         [self reloadData];

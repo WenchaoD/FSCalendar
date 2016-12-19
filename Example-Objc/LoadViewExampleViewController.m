@@ -38,6 +38,7 @@
     calendar.delegate = self;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     calendar.backgroundColor = [UIColor whiteColor];
+    
     [view addSubview:calendar];
     self.calendar = calendar;
     

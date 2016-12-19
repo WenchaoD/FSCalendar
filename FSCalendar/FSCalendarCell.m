@@ -46,8 +46,7 @@
 }
 
 - (void)commonInit
-{
-    
+{   
     UILabel *label;
     CAShapeLayer *shapeLayer;
     UIImageView *imageView;
@@ -228,10 +227,18 @@
     if (![textColor isEqual:_titleLabel.textColor]) {
         _titleLabel.textColor = textColor;
     }
+    UIFont *titleFont = self.calendar.appearance.titleFont;
+    if (![titleFont isEqual:_titleLabel.font]) {
+        _titleLabel.font = titleFont;
+    }
     if (_subtitle) {
         textColor = self.colorForSubtitleLabel;
         if (![textColor isEqual:_subtitleLabel.textColor]) {
             _subtitleLabel.textColor = textColor;
+        }
+        titleFont = self.calendar.appearance.subtitleFont;
+        if (![titleFont isEqual:_subtitleLabel.font]) {
+            _subtitleLabel.font = titleFont;
         }
     }
     
@@ -255,10 +262,17 @@
             _shapeLayer.strokeColor = cellBorderColor;
         }
         
+        CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
+                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
+        if (!CGPathEqualToPath(_shapeLayer.path, path)) {
+            _shapeLayer.path = path;
+        }
+        
     }
     
     if (![_image isEqual:_imageView.image]) {
-        [self invalidateImage];
+        _imageView.image = _image;
+        _imageView.hidden = !_image;
     }
     
     if (_eventIndicator.hidden == (_numberOfEvents > 0)) {
@@ -289,54 +303,6 @@
         return dictionary[@(FSCalendarCellStateWeekend)];
     }
     return dictionary[@(FSCalendarCellStateNormal)];
-}
-
-- (void)invalidateTitleFont
-{
-    _titleLabel.font = self.appearance.preferredTitleFont;
-}
-
-- (void)invalidateTitleTextColor
-{
-    _titleLabel.textColor = self.colorForTitleLabel;
-}
-
-- (void)invalidateSubtitleFont
-{
-    _subtitleLabel.font = self.appearance.preferredSubtitleFont;
-}
-
-- (void)invalidateSubtitleTextColor
-{
-    _subtitleLabel.textColor = self.colorForSubtitleLabel;
-}
-
-- (void)invalidateBorderColors
-{
-    _shapeLayer.strokeColor = self.colorForCellBorder.CGColor;
-}
-
-- (void)invalidateFillColors
-{
-    _shapeLayer.fillColor = self.colorForCellFill.CGColor;
-}
-
-- (void)invalidateEventColors
-{
-    _eventIndicator.color = self.colorsForEvents;
-}
-
-- (void)invalidateBorderRadius
-{
-    CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
-                                                cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
-    _shapeLayer.path = path;
-}
-
-- (void)invalidateImage
-{
-    _imageView.image = _image;
-    _imageView.hidden = !_image;
 }
 
 #pragma mark - Properties
@@ -415,14 +381,8 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
 {
     if (![_calendar isEqual:calendar]) {
         _calendar = calendar;
-    }
-    if (![_appearance isEqual:calendar.appearance]) {
         _appearance = calendar.appearance;
-        [self invalidateTitleFont];
-        [self invalidateSubtitleFont];
-        [self invalidateTitleTextColor];
-        [self invalidateSubtitleTextColor];
-        [self invalidateEventColors];
+        [self configureAppearance];
     }
 }
 

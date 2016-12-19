@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 03/11/2016.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 dingwenchao. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -15,12 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FSCalendarWeekdayView : UIView
 
-@property (readonly, nonatomic) NSHashTable<UILabel *> *weekdayLabels;
-@property (readonly, nonatomic) UIView *contentView;
-
 @property (weak, nonatomic) FSCalendar *calendar;
 
-- (void)invalidateWeekdaySymbols;
+- (void)configureAppearance;
 
 @end
 

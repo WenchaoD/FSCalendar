@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 4/15/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "ButtonsViewController.h"
