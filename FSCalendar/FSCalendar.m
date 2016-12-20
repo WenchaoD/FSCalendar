@@ -424,7 +424,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)prepareForInterfaceBuilder
 {
     NSDate *date = [NSDate date];
-    [self selectDate:[self dateWithYear:[self yearOfDate:date] month:[self monthOfDate:date] day:_appearance.fakedSelectedDay?:1]];
+    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    components.day = _appearance.fakedSelectedDay?:1;
+    [_selectedDates addObject:[self.gregorian dateFromComponents:components]];
+    [self reloadVisibleCells];
 }
 #endif
 
