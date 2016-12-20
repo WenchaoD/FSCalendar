@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsConfigureAppearance;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
-@property (assign, nonatomic) BOOL                       hasRequestedBoundingDates;
+@property (assign, nonatomic) BOOL                       needsRequestingBoundingDates;
 @property (assign, nonatomic) BOOL                       supressEvent;
 @property (assign, nonatomic) CGFloat                    preferredHeaderHeight;
 @property (assign, nonatomic) CGFloat                    preferredWeekdayHeight;
@@ -1744,8 +1744,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)requestBoundingDatesIfNecessary
 {
-    if (!_hasRequestedBoundingDates) {
-        _hasRequestedBoundingDates = YES;
+    if (!_needsRequestingBoundingDates) {
+        _needsRequestingBoundingDates = YES;
         self.formatter.dateFormat = @"yyyy-MM-dd";
         _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self]?:[self.formatter dateFromString:@"1970-01-01"];
         _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self]?:[self.formatter dateFromString:@"2099-12-31"];
