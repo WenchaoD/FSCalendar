@@ -1,12 +1,15 @@
 
 ![logo](https://cloud.githubusercontent.com/assets/5186464/16540124/efc51f72-408b-11e6-934a-4e750b8b55bb.png)
 <br/><br/>
+[![Apps Using](https://img.shields.io/badge/Apps%20Using-%3E%206,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+[![Total Downloads](https://img.shields.io/badge/Total%20Downloads-%3E%20310,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+<br>
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/badge/platform-iOS%207%2B-blue.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
-[![Swift2 compatible](https://img.shields.io/badge/swift-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-
+<br>
+[![Languages](https://img.shields.io/badge/language-objc%20|%20swift-FF69B4.svg?style=plastic)](#)
 
 # Updates
 
