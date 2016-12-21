@@ -55,7 +55,7 @@
 #endif
     struct objc_method_description desc = protocol_getMethodDescription(self.protocol, sel, NO, YES);
     const char *types = desc.types;
-    return [NSMethodSignature signatureWithObjCTypes:types];
+    return types?[NSMethodSignature signatureWithObjCTypes:types]:[NSObject methodSignatureForSelector:@selector(init)];
 }
 
 - (SEL)deprecatedSelectorOfSelector:(SEL)selector
