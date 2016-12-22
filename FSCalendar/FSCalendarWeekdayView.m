@@ -13,8 +13,9 @@
 
 @interface FSCalendarWeekdayView()
 
-@property (strong, nonatomic) NSPointerArray *weekdayLabels;
+@property (strong, nonatomic) NSPointerArray *weekdayPointers;
 @property (weak  , nonatomic) UIView *contentView;
+@property (weak  , nonatomic) FSCalendar *calendar;
 
 - (void)commonInit;
 
@@ -46,12 +47,12 @@
     [self addSubview:contentView];
     _contentView = contentView;
     
-    _weekdayLabels = [NSPointerArray weakObjectsPointerArray];
+    _weekdayPointers = [NSPointerArray weakObjectsPointerArray];
     for (int i = 0; i < 7; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:weekdayLabel];
-        [_weekdayLabels addPointer:(__bridge void * _Nullable)(weekdayLabel)];
+        [_weekdayPointers addPointer:(__bridge void * _Nullable)(weekdayLabel)];
     }
 }
 
@@ -62,7 +63,7 @@
     self.contentView.frame = self.bounds;
     
     CGFloat weekdayWidth = self.fs_width/self.weekdayLabels.count;
-    [self.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
+    [self.weekdayLabels enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
         weekdayLabel.frame = CGRectMake(index*weekdayWidth, 0, weekdayWidth, self.contentView.fs_height);
     }];
     
@@ -89,11 +90,11 @@
     };
     
 #if TARGET_INTERFACE_BUILDER
-    [self.weekdayLabels.allObjects enumerateObjectsUsingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.weekdayLabels enumerateObjectsUsingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
         configureLabel(label,idx);
     }];
 #else
-    [self.weekdayLabels.allObjects enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.weekdayLabels enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(UILabel * _Nonnull label, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([NSThread isMainThread]) {
             configureLabel(label,idx);
         } else {
@@ -104,7 +105,8 @@
     }];
 #endif
     
-    
 }
+
+- (NSArray<UILabel *> *)weekdayLabels { return self.weekdayPointers.allObjects; }
 
 @end

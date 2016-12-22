@@ -15,7 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FSCalendarWeekdayView : UIView
 
-@property (weak, nonatomic) FSCalendar *calendar;
+/**
+ An array of UILabel objects displaying the weekday symbols.
+ */
+@property (readonly, nonatomic) NSArray<UILabel *> *weekdayLabels;
 
 - (void)configureAppearance;
 

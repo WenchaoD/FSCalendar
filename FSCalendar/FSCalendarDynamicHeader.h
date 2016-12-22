@@ -67,6 +67,12 @@
 
 @end
 
+@interface FSCalendarWeekdayView (Dynamic)
+
+@property (readwrite, nonatomic) FSCalendar *calendar;
+
+@end
+
 @interface FSCalendarDelegationProxy()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 @end
 
