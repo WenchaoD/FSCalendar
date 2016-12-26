@@ -51,7 +51,6 @@
     for (int i = 0; i < 7; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
-        weekdayLabel.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.5];
         [self.contentView addSubview:weekdayLabel];
         [_weekdayPointers addPointer:(__bridge void * _Nullable)(weekdayLabel)];
     }
