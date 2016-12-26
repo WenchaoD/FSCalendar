@@ -51,6 +51,7 @@
     for (int i = 0; i < 7; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
+        weekdayLabel.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.5];
         [self.contentView addSubview:weekdayLabel];
         [_weekdayPointers addPointer:(__bridge void * _Nullable)(weekdayLabel)];
     }
@@ -62,10 +63,31 @@
     
     self.contentView.frame = self.bounds;
     
-    CGFloat weekdayWidth = self.fs_width/self.weekdayLabels.count;
+    // Position Calculation
+    NSInteger count = self.weekdayPointers.count;
+    size_t size = sizeof(CGFloat)*count;
+    CGFloat *widths = malloc(size);
+    
+    CGFloat contentWidth = self.contentView.fs_width;
+    for (int i = 0; i < count; i++) {
+        NSInteger currentCount = count-i;
+        CGFloat actualWidth = FSCalendarRound(contentWidth/currentCount*2)*0.5;
+        contentWidth -= actualWidth;
+        widths[i] = actualWidth;
+    }
+    CGFloat *positions = malloc(size);
+    memcpy(positions, widths, size);
+    positions[0] = 0;
+    for (int i = 1; i < count; i++) {
+        positions[i] = positions[i-1] + widths[i-1];
+    }
     [self.weekdayLabels enumerateObjectsUsingBlock:^(UILabel *weekdayLabel, NSUInteger index, BOOL *stop) {
-        weekdayLabel.frame = CGRectMake(index*weekdayWidth, 0, weekdayWidth, self.contentView.fs_height);
+        CGFloat x = positions[index];
+        CGFloat width = widths[index];
+        weekdayLabel.frame = CGRectMake(x, 0, width, self.contentView.fs_height);
     }];
+    free(positions);
+    free(widths);
     
 }
 

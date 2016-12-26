@@ -30,6 +30,8 @@
 
 @implementation FSCalendarCalculator
 
+@dynamic gregorian,minimumDate,maximumDate;
+
 - (instancetype)initWithCalendar:(FSCalendar *)calendar
 {
     self = [super init];
@@ -55,6 +57,14 @@
         self.rowNumbers.delegate = self;
     }
     return self;
+}
+
+- (id)forwardingTargetForSelector:(SEL)selector
+{
+    if ([self.calendar respondsToSelector:selector]) {
+        return self.calendar;
+    }
+    return [super forwardingTargetForSelector:selector];
 }
 
 #pragma mark - <NSCacheDelegate>
@@ -315,10 +325,36 @@
     }
 }
 
-#pragma mark - Private methods
-
-- (NSCalendar *)gregorian { return self.calendar.gregorian; }
-- (NSDate *)minimumDate { return self.calendar.minimumDate; }
-- (NSDate *)maximumDate { return self.calendar.maximumDate; }
+- (FSCalendarCoordinate)coordinateForIndexPath:(NSIndexPath *)indexPath
+{
+    FSCalendarCoordinate coordinate;
+    switch (self.calendar.scope) {
+        case FSCalendarScopeMonth: {
+            switch (self.calendar.collectionViewLayout.scrollDirection) {
+                case UICollectionViewScrollDirectionHorizontal: {
+                    coordinate.row = indexPath.item % 6;
+                    coordinate.column = indexPath.item / 6;
+                    break;
+                }
+                case UICollectionViewScrollDirectionVertical: {
+                    coordinate.row = indexPath.item / 7;
+                    coordinate.column = indexPath.item % 7;
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            coordinate.row = 0;
+            coordinate.column = indexPath.item;
+            break;
+        }
+        default:
+            break;
+    }
+    return coordinate;
+}
 
 @end

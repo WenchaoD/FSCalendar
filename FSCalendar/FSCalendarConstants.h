@@ -57,9 +57,12 @@ UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 
 #if CGFLOAT_IS_DOUBLE
 #define FSCalendarFloor(c) floor(c)
+#define FSCalendarRound(c) round(c)
 #else
 #define FSCalendarFloor(c) floorf(c)
+#define FSCalendarRound(c) roundf(c)
 #endif
+
 
 #define FSCalendarUseWeakSelf __weak __typeof__(self) FSCalendarWeakSelf = self;
 #define FSCalendarUseStrongSelf __strong __typeof__(self) self = FSCalendarWeakSelf;

@@ -244,8 +244,6 @@
 				30B0BAC21B8D8E22004B9476 /* FSCalendarAppearance.m */,
 				30DBE3C21DC641AD005A22B7 /* FSCalendarCalculator.h */,
 				30DBE3C31DC641AD005A22B7 /* FSCalendarCalculator.m */,
-				309225381B905C4300123031 /* FSCalendarConstants.h */,
-				309225391B905C4300123031 /* FSCalendarConstants.m */,
 				3065CA941CD31B81006C218D /* FSCalendarScopeHandle.h */,
 				3065CA951CD31B81006C218D /* FSCalendarScopeHandle.m */,
 				30B0BAC31B8D8E22004B9476 /* FSCalendarCell.h */,
@@ -269,6 +267,8 @@
 				3055B1C01DA9323A002AFA13 /* FSCalendarExtensions.h */,
 				3055B1C11DA9323A002AFA13 /* FSCalendarExtensions.m */,
 				30B0BAC51B8D8E22004B9476 /* FSCalendarDynamicHeader.h */,
+				309225381B905C4300123031 /* FSCalendarConstants.h */,
+				309225391B905C4300123031 /* FSCalendarConstants.m */,
 				3065CAA61CD3506A006C218D /* FSCalendar+Deprecated.m */,
 				30B0BAF31B8D9A91004B9476 /* Supporting Files */,
 			);

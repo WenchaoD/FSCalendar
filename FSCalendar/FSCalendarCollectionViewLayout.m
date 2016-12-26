@@ -94,12 +94,76 @@
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray<UICollectionViewLayoutAttributes *> *attributesArray = [super layoutAttributesForElementsInRect:rect];
+    if (self.calendar.floatingMode) {
+        return attributesArray;
+    }
+    attributesArray = attributesArray.copy;
+        
+    // Calculate item widths and lefts
+    NSInteger columnCount = 7;
+    size_t columnSize = sizeof(CGFloat)*columnCount;
+    CGFloat *widths = malloc(columnSize);
+    CGFloat contentWidth = self.collectionView.fs_width;
+    for (int i = 0; i < columnCount; i++) {
+        NSInteger currentCount = columnCount-i;
+        CGFloat actualWidth = FSCalendarRound(contentWidth/currentCount*2)*0.5;
+        contentWidth -= actualWidth;
+        widths[i] = actualWidth;
+    }
+    CGFloat *lefts = malloc(columnSize);
+    memcpy(lefts, widths, columnSize);
+    lefts[0] = 0;
+    for (int i = 1; i < columnCount; i++) {
+        lefts[i] = lefts[i-1] + widths[i-1];
+    }
     
-    // Clean on week mode
+    // Calculate item heights and tops
+    NSInteger rowCount = self.calendar.scope == FSCalendarScopeWeek ? 1 : 6;
+    size_t rowSize = sizeof(CGFloat)*rowCount;
+    CGFloat *heights = malloc(rowSize);
+    CGFloat contentHeight = self.collectionView.fs_height-self.sectionInset.top-self.sectionInset.bottom;
+    for (int i = 0; i < rowCount; i++) {
+        NSInteger currentCount = rowCount-i;
+        CGFloat actualHeight = FSCalendarRound(contentHeight/currentCount*2)*0.5;
+        contentHeight -= actualHeight;
+        heights[i] = actualHeight;
+    }
+    CGFloat *tops = malloc(rowSize);
+    memcpy(tops, heights, rowSize);
+    tops[0] = self.sectionInset.top;
+    for (int i = 1; i < rowCount; i++) {
+        tops[i] = tops[i-1] + heights[i-1];
+    }
+    
+    // Applying new frames
+    [attributesArray enumerateObjectsUsingBlock:^(UICollectionViewLayoutAttributes * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.representedElementCategory == UICollectionElementCategoryCell) {
+            FSCalendarCoordinate coordinate = [self.calendar.calculator coordinateForIndexPath:obj.indexPath];
+            CGFloat x = lefts[coordinate.column];
+            CGFloat y = tops[coordinate.row];
+            CGFloat width = widths[coordinate.column];
+            CGFloat height = heights[coordinate.row];
+            if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+                x += self.collectionView.fs_width * obj.indexPath.section;
+            } else {
+                y += self.collectionView.fs_height * obj.indexPath.section;
+            }
+            obj.frame = CGRectMake(x, y, width, height);
+        }
+    }];
+    
+    free(widths);
+    free(lefts);
+    
+    free(heights);
+    free(tops);
+    
+    // No separator in week mode
     if (self.calendar.scope == FSCalendarScopeWeek) {
         return attributesArray;
     }
     
+    // Draw separators
     if ((self.calendar.appearance.separators & FSCalendarSeparatorInterRows) != 0) {
         
         // Get row leadings
