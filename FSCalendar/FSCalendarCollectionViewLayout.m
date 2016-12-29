@@ -276,11 +276,11 @@
                 numberOfColumns += (7-columnCountDelta1) % 7;
                 NSInteger startColumn = startSection*7 + columnCountDelta1%7;
                 
-                CGFloat widthDelta2 = FSCalendarMod(CGRectGetMaxX(rect), self.collectionView.fs_width);
-                widthDelta2 = MAX(0, widthDelta2-self.sectionInsets.right);
+                CGFloat widthDelta2 = FSCalendarMod(CGRectGetMaxX(rect), self.collectionView.fs_width - self.sectionInsets.left);
+                widthDelta2 = MAX(0, widthDelta2);
                 
                 NSInteger columnCountDelta2 = FSCalendarCeil(widthDelta2/self.estimatedItemSize.width);
-                numberOfColumns += columnCountDelta2;
+                numberOfColumns += columnCountDelta2%7;
                 
                 NSInteger endColumn = startColumn + numberOfColumns - 1;
                 

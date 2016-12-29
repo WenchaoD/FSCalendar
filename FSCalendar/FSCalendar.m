@@ -63,7 +63,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     NSMutableArray  *_selectedDates;
 }
-@property (strong, nonatomic) NSMapTable                 *stickyHeaderMapTable;
 
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *formatter;
@@ -98,7 +97,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (readonly, nonatomic) BOOL hasValidateVisibleLayout;
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) FSCalendarOrientation currentCalendarOrientation;
-@property (readonly, nonatomic) id<FSCalendarDelegateAppearance> delegateAppearance;
 
 @property (strong, nonatomic) FSCalendarDelegationProxy  *dataSourceProxy;
 @property (strong, nonatomic) FSCalendarDelegationProxy  *delegateProxy;
@@ -209,7 +207,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
     _needsAdjustingMonthPosition = YES;;
-    _stickyHeaderMapTable = [NSMapTable weakToWeakObjectsMapTable];
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
@@ -522,13 +519,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             stickyHeader.calendar = self;
             stickyHeader.month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
             [stickyHeader setNeedsLayout];
-            NSArray *allKeys = [_stickyHeaderMapTable.dictionaryRepresentation allKeysForObject:stickyHeader];
-            if (allKeys.count) {
-                [allKeys enumerateObjectsUsingBlock:^(NSIndexPath *itemIndexPath, NSUInteger idx, BOOL *stop) {
-                    [_stickyHeaderMapTable removeObjectForKey:itemIndexPath];
-                }];
-            }
-            [_stickyHeaderMapTable setObject:stickyHeader forKey:indexPath];
             return stickyHeader;
         }
     }
@@ -638,7 +628,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (significantIndexPath) {
             currentPage = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:significantIndexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
         } else {
-            FSCalendarStickyHeader *significantHeader = [_stickyHeaderMapTable.dictionaryRepresentation.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarStickyHeader * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+            FSCalendarStickyHeader *significantHeader = [self.visibleStickyHeaders filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(FSCalendarStickyHeader * _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
                 return CGRectContainsPoint(evaluatedObject.frame, significantPoint);
             }]].firstObject;
             if (significantHeader) {
@@ -1048,7 +1038,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (UIPanGestureRecognizer *)scopeGesture
 {
     if (!_scopeGesture) {
-        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.animator action:@selector(handlePan:)];
+        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.animator action:@selector(handleScopeGesture:)];
         panGesture.delegate = self.animator;
         panGesture.minimumNumberOfTouches = 1;
         panGesture.maximumNumberOfTouches = 2;
@@ -1248,6 +1238,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         [self scrollToPageForDate:targetDate animated:YES];
     }
+}
+
+- (void)handleScopeGesture:(UIPanGestureRecognizer *)sender
+{
+    [self.animator handleScopeGesture:sender];
 }
 
 #pragma mark - Private methods
@@ -1468,6 +1463,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [_deliver removeFromSuperview];
         }
         
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         if (self.showsScopeHandle) {
             if (!_scopeHandle) {
                 FSCalendarScopeHandle *handle = [[FSCalendarScopeHandle alloc] initWithFrame:CGRectZero];
@@ -1484,6 +1481,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 [self setNeedsLayout];
             }
         }
+#pragma GCC diagnostic pop
         
         _collectionView.pagingEnabled = YES;
         _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.scrollDirection;
@@ -1509,10 +1507,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)invalidateHeaders
 {
-    [_calendarHeaderView.collectionView reloadData];
-    if (_stickyHeaderMapTable.count) {
-        [_stickyHeaderMapTable.objectEnumerator.allObjects makeObjectsPerformSelector:@selector(reloadData)];
-    }
+    [self.calendarHeaderView.collectionView reloadData];
+    [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(reloadData)];
 }
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell forDate:(NSDate *)date
@@ -1688,7 +1684,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSArray *)visibleStickyHeaders
 {
-    return _stickyHeaderMapTable.objectEnumerator.allObjects;
+    return [self.collectionView visibleSupplementaryViewsOfKind:UICollectionElementKindSectionHeader];
 }
 
 - (void)invalidateViewFrames

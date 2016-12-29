@@ -38,10 +38,9 @@
 {
     [super layoutSubviews];
     
-    self.backgroundView.frame = CGRectInset(self.bounds, 1, 0.5);
+    self.backgroundView.frame = CGRectInset(self.bounds, 1, 1);
     self.circleImageView.frame = self.backgroundView.frame;
-    
-    self.selectionLayer.frame = CGRectInset(self.bounds, -1, 0);
+    self.selectionLayer.frame = self.bounds;
     
     if (self.selectionType == SelectionTypeMiddle) {
         

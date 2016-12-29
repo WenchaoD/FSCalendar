@@ -30,9 +30,7 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         let calendar = FSCalendar(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.maxY, width: view.frame.size.width, height: height))
         calendar.dataSource = self
         calendar.delegate = self
-        calendar.scopeGesture.isEnabled = true
         calendar.allowsMultipleSelection = true
-        //    calendar.backgroundColor = [UIColor whiteColor];
         view.addSubview(calendar)
         self.calendar = calendar
         
@@ -42,10 +40,13 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         calendar.appearance.eventOffset = CGPoint(x: 0, y: -7)
         calendar.today = nil // Hide the today circle
         calendar.register(DIYCalendarCell.self, forCellReuseIdentifier: "cell")
-        
         calendar.clipsToBounds = true // Remove top/bottom line
         
         calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
+        
+        let scopeGesture = UIPanGestureRecognizer(target: calendar, action: #selector(calendar.handleScopeGesture(_:)));
+        calendar.addGestureRecognizer(scopeGesture)
+        
         
         let label = UILabel(frame: CGRect(x: 0, y: calendar.frame.maxY + 10, width: self.view.frame.size.width, height: 50))
         label.textAlignment = .center

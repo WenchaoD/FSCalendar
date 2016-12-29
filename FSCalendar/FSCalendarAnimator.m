@@ -54,7 +54,7 @@
 
 #pragma mark - Target actions
 
-- (void)handlePan:(UIPanGestureRecognizer *)sender
+- (void)handleScopeGesture:(UIPanGestureRecognizer *)sender
 {
     switch (sender.state) {
         case UIGestureRecognizerStateBegan: {
@@ -90,16 +90,19 @@
     if (self.state != FSCalendarTransitionStateIdle) {
         return NO;
     }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    
     if (gestureRecognizer == self.calendar.scopeGesture && self.calendar.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
         return NO;
     }
     if (gestureRecognizer == self.calendar.scopeHandle.panGesture) {
         CGFloat velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view].y;
-        return self.calendarScope == FSCalendarScopeWeek ? velocity>=0 : velocity<=0;
+        return self.calendar.scope == FSCalendarScopeWeek ? velocity >= 0 : velocity <= 0;
     }
-    if (gestureRecognizer == self.calendar.scopeGesture) {
-        CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:self.calendar.daysContainer];
-        BOOL shouldStart = self.calendarScope == FSCalendarScopeWeek ? velocity.y>=0 : velocity.y<=0;
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && [[gestureRecognizer valueForKey:@"_targets"] containsObject:self.calendar]) {
+        CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view];
+        BOOL shouldStart = self.calendar.scope == FSCalendarScopeWeek ? velocity.y >= 0 : velocity.y <= 0;
         if (!shouldStart) return NO;
         shouldStart = (ABS(velocity.x)<=ABS(velocity.y));
         if (shouldStart) {
@@ -108,6 +111,10 @@
         }
         return shouldStart;
     }
+    return YES;
+    
+#pragma GCC diagnostic pop
+    
     return NO;
 }
 
@@ -118,13 +125,33 @@
 
 - (void)scopeTransitionDidBegin:(UIPanGestureRecognizer *)panGesture
 {
-    self.state = FSCalendarTransitionStateInProgress;
-    self.transition = self.calendar.scope == FSCalendarScopeMonth ? FSCalendarTransitionMonthToWeek : FSCalendarTransitionWeekToMonth;
+    if (self.state != FSCalendarTransitionStateIdle) return;
+    
+    CGPoint velocity = [panGesture velocityInView:panGesture.view];
+    switch (self.calendar.scope) {
+        case FSCalendarScopeMonth: {
+            if (velocity.y < 0) {
+                self.state = FSCalendarTransitionStateInProgress;
+                self.transition = FSCalendarTransitionMonthToWeek;
+            }
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            if (velocity.y > 0) {
+                self.state = FSCalendarTransitionStateInProgress;
+                self.transition = FSCalendarTransitionWeekToMonth;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    if (self.state != FSCalendarTransitionStateInProgress) return;
+    
     self.pendingAttributes = self.transitionAttributes;
     self.lastTranslation = [panGesture translationInView:panGesture.view].y;
     
     if (self.transition == FSCalendarTransitionWeekToMonth) {
-        
         self.calendarScope = FSCalendarScopeMonth;
         self.calendarCurrentPage = self.pendingAttributes.targetPage;
         
@@ -137,12 +164,17 @@
 
 - (void)scopeTransitionDidUpdate:(UIPanGestureRecognizer *)panGesture
 {
+    if (self.state != FSCalendarTransitionStateInProgress) return;
+    
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
     switch (self.transition) {
         case FSCalendarTransitionMonthToWeek: {
             CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
             translation = MAX(minTranslation, translation);
             translation = MIN(0, translation);
+            if (minTranslation == 0) {
+                NSLog(@"000");
+            }
             CGFloat progress = translation/minTranslation;
             [CATransaction begin];
             [CATransaction setDisableActions:YES];
@@ -171,6 +203,8 @@
 
 - (void)scopeTransitionDidEnd:(UIPanGestureRecognizer *)panGesture
 {
+    if (self.state != FSCalendarTransitionStateInProgress) return;
+    
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
     CGFloat velocity = [panGesture velocityInView:panGesture.view].y;
     switch (self.transition) {

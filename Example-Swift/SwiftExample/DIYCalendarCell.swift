@@ -59,8 +59,8 @@ class DIYCalendarCell: FSCalendarCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.circleImageView.frame = self.contentView.bounds
-        self.backgroundView?.frame = self.bounds.insetBy(dx: 1, dy: 0.5)
-        self.selectionLayer.frame = self.contentView.bounds.insetBy(dx: -1, dy: 0)
+        self.backgroundView?.frame = self.bounds.insetBy(dx: 1, dy: 1)
+        self.selectionLayer.frame = self.contentView.bounds
         
         if selectionType == .middle {
             self.selectionLayer.path = UIBezierPath(rect: self.selectionLayer.bounds).cgPath

@@ -20,10 +20,19 @@
     self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     
     [_calendar selectDate:[NSDate date]];
-    _calendar.scopeGesture.enabled = YES;
+    
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.calendar action:@selector(handleScopeGesture:)];
+    panGesture.delegate = self;
+    panGesture.minimumNumberOfTouches = 1;
+    panGesture.maximumNumberOfTouches = 2;
+    [self.view addGestureRecognizer:panGesture];
+    self.scopeGesture = panGesture;
+    
+    // While the scope gesture begin, the tableView gesture cancel.
+    [self.tableView.panGestureRecognizer requireGestureRecognizerToFail:panGesture];
     
     // Uncomment this to perform an 'initial-week-scope'
-//    _calendar.scope = FSCalendarScopeWeek;
+    _calendar.scope = FSCalendarScopeWeek;
 }
 
 - (void)dealloc
@@ -31,6 +40,23 @@
     NSLog(@"%s",__FUNCTION__);
 }
 
+#pragma mark - UIGestureRecognizerDelegate
+
+// Whether scope gesture should begin
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    BOOL shouldBegin = self.tableView.contentOffset.y == -self.tableView.contentInset.top;
+    if (shouldBegin) {
+        CGPoint velocity = [self.scopeGesture velocityInView:self.view];
+        switch (self.calendar.scope) {
+            case FSCalendarScopeMonth:
+                return velocity.y < 0;
+            case FSCalendarScopeWeek:
+                return velocity.y > 0;
+        }
+    }
+    return shouldBegin;
+}
 
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
@@ -61,19 +87,25 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    NSInteger numbers[2] = {2,20};
+    return numbers[section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = @[@"cell_month",@"cell_week"][indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    return cell;
+    if (indexPath.section == 0) {
+        NSString *identifier = @[@"cell_month",@"cell_week"][indexPath.row];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        return cell;
+    } else {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+        return cell;
+    }
 }
 
 #pragma mark - <UITableViewDelegate>
@@ -81,8 +113,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    FSCalendarScope selectedScope = indexPath.row == 0 ? FSCalendarScopeMonth : FSCalendarScopeWeek;
-    [_calendar setScope:selectedScope animated:_animationSwitch.on];
+    if (indexPath.section == 0) {
+        FSCalendarScope selectedScope = indexPath.row == 0 ? FSCalendarScopeMonth : FSCalendarScopeWeek;
+        [self.calendar setScope:selectedScope animated:self.animationSwitch.on];
+    }
     
 }
 

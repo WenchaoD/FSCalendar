@@ -66,7 +66,7 @@
 
 - (void)handlePan:(id)sender
 {
-    [self.calendar.animator handlePan:sender];
+    [self.calendar.animator handleScopeGesture:sender];
 }
 
 - (void)setCalendar:(FSCalendar *)calendar

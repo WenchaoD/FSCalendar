@@ -44,7 +44,6 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0,  CGRectGetMaxY(self.navigationController.navigationBar.frame), view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.scopeGesture.enabled = YES;
     calendar.swipeToChooseGesture.enabled = YES;
     calendar.allowsMultipleSelection = YES;
     [view addSubview:calendar];
@@ -56,6 +55,9 @@
     calendar.appearance.eventOffset = CGPointMake(0, -7);
     calendar.today = nil; // Hide the today circle
     [calendar registerClass:[DIYCalendarCell class] forCellReuseIdentifier:@"cell"];
+    
+    UIPanGestureRecognizer *scopeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:calendar action:@selector(handleScopeGesture:)];
+    [calendar addGestureRecognizer:scopeGesture];
     
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(calendar.frame)+10, self.view.frame.size.width, 50)];
