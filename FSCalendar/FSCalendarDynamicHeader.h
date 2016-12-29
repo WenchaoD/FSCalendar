@@ -33,8 +33,6 @@
 @property (readonly, nonatomic) NSArray *visibleStickyHeaders;
 @property (readonly, nonatomic) CGFloat preferredHeaderHeight;
 @property (readonly, nonatomic) CGFloat preferredWeekdayHeight;
-@property (readonly, nonatomic) CGFloat preferredRowHeight;
-@property (readonly, nonatomic) CGFloat preferredPadding;
 @property (readonly, nonatomic) UIView *bottomBorder;
 
 @property (readonly, nonatomic) NSCalendar *gregorian;
@@ -70,6 +68,12 @@
 @interface FSCalendarWeekdayView (Dynamic)
 
 @property (readwrite, nonatomic) FSCalendar *calendar;
+
+@end
+
+@interface FSCalendarCollectionViewLayout (Dynamic)
+
+@property (readonly, nonatomic) CGSize estimatedItemSize;
 
 @end
 

@@ -15,12 +15,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_calendar selectDate:[NSDate date]];
-    
-    _calendar.scopeGesture.enabled = YES;
     
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy/MM/dd";
+    
+    [_calendar selectDate:[NSDate date]];
+    _calendar.scopeGesture.enabled = YES;
     
     // Uncomment this to perform an 'initial-week-scope'
 //    _calendar.scope = FSCalendarScopeWeek;
