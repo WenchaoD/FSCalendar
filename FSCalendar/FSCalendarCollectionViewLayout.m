@@ -493,6 +493,16 @@
     }
 }
 
+#pragma mark - Private properties
+
+- (void)setScrollDirection:(UICollectionViewScrollDirection)scrollDirection
+{
+    if (_scrollDirection != scrollDirection) {
+        _scrollDirection = scrollDirection;
+        self.collectionViewSize = CGSizeAutomatic;
+    }
+}
+
 #pragma mark - Private functions
 
 - (NSInteger)searchStartSection:(CGRect)rect :(NSInteger)left :(NSInteger)right
