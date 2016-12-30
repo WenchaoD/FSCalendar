@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		30031AA81DCEA82200FC34FE /* DIYExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30031AA71DCEA82200FC34FE /* DIYExampleViewController.swift */; };
 		30031AAA1DCEA83200FC34FE /* DIYCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30031AA91DCEA83200FC34FE /* DIYCalendarCell.swift */; };
+		3024AF171E164F8C008B6001 /* DelegateAppearanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3024AF161E164F8C008B6001 /* DelegateAppearanceViewController.swift */; };
 		303478391DB520C8007BBD2E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303478381DB520C8007BBD2E /* TableViewController.swift */; };
+		305282C91E1608A100CC2877 /* FSCalendarScopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305282C81E1608A100CC2877 /* FSCalendarScopeViewController.swift */; };
 		30D458E91DB4E2DB00B163C7 /* LoadViewExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D458E81DB4E2DB00B163C7 /* LoadViewExampleViewController.swift */; };
 		30F4C9391E07C3AD00D2EC4D /* FSCalendar+Deprecated.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F4C9181E07C3AD00D2EC4D /* FSCalendar+Deprecated.m */; };
 		30F4C93A1E07C3AD00D2EC4D /* FSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F4C91A1E07C3AD00D2EC4D /* FSCalendar.m */; };
@@ -49,7 +51,9 @@
 /* Begin PBXFileReference section */
 		30031AA71DCEA82200FC34FE /* DIYExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIYExampleViewController.swift; sourceTree = "<group>"; };
 		30031AA91DCEA83200FC34FE /* DIYCalendarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIYCalendarCell.swift; sourceTree = "<group>"; };
+		3024AF161E164F8C008B6001 /* DelegateAppearanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegateAppearanceViewController.swift; sourceTree = "<group>"; };
 		303478381DB520C8007BBD2E /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		305282C81E1608A100CC2877 /* FSCalendarScopeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSCalendarScopeViewController.swift; sourceTree = "<group>"; };
 		30D458E81DB4E2DB00B163C7 /* LoadViewExampleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadViewExampleViewController.swift; sourceTree = "<group>"; };
 		30F4C9181E07C3AD00D2EC4D /* FSCalendar+Deprecated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+Deprecated.m"; sourceTree = "<group>"; };
 		30F4C9191E07C3AD00D2EC4D /* FSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendar.h; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				30031AA71DCEA82200FC34FE /* DIYExampleViewController.swift */,
 				30031AA91DCEA83200FC34FE /* DIYCalendarCell.swift */,
 				EE0954AE1B97DDE0007F6964 /* InterfaceBuilderViewController.swift */,
+				3024AF161E164F8C008B6001 /* DelegateAppearanceViewController.swift */,
+				305282C81E1608A100CC2877 /* FSCalendarScopeViewController.swift */,
 				30D458E81DB4E2DB00B163C7 /* LoadViewExampleViewController.swift */,
 				EE0954B01B97DDE0007F6964 /* Main.storyboard */,
 				EE0954B31B97DDE0007F6964 /* Images.xcassets */,
@@ -333,7 +339,9 @@
 				30F4C9461E07C3AD00D2EC4D /* FSCalendarScopeHandle.m in Sources */,
 				30F4C9451E07C3AD00D2EC4D /* FSCalendarHeaderView.m in Sources */,
 				303478391DB520C8007BBD2E /* TableViewController.swift in Sources */,
+				3024AF171E164F8C008B6001 /* DelegateAppearanceViewController.swift in Sources */,
 				30F4C93A1E07C3AD00D2EC4D /* FSCalendar.m in Sources */,
+				305282C91E1608A100CC2877 /* FSCalendarScopeViewController.swift in Sources */,
 				30F4C9431E07C3AD00D2EC4D /* FSCalendarDelegationProxy.m in Sources */,
 				30F4C93C1E07C3AD00D2EC4D /* FSCalendarAppearance.m in Sources */,
 				30F4C9481E07C3AD00D2EC4D /* FSCalendarWeekdayView.m in Sources */,

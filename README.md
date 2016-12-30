@@ -41,6 +41,9 @@
 |--------------|-------------|
 |![today1](https://cloud.githubusercontent.com/assets/5186464/20288375/ed3fba0e-ab0d-11e6-8b15-43d3dc656f22.gif)|![today2](https://cloud.githubusercontent.com/assets/5186464/20288378/f11e318c-ab0d-11e6-8d1d-9d89b563e9d7.gif)|
 
+## Interactive Scope Gesture
+| ![1](https://cloud.githubusercontent.com/assets/5186464/21559640/e92a9ccc-ce8a-11e6-8c60-e52204f33249.gif) |
+| ---- |
 
 ## DIY support
 |  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
@@ -126,7 +129,7 @@ self.calendar = calendar;
 
 
 ```swift
-private weak var calendar: FSCalendar!
+fileprivate weak var calendar: FSCalendar!
 ```
 ```swift
 // In loadView or viewDidLoad

@@ -22,7 +22,6 @@ class LoadViewExampleViewController: UIViewController, FSCalendarDataSource, FSC
         calendar.dataSource = self
         calendar.delegate = self
         calendar.backgroundColor = UIColor.white
-        calendar.scopeGesture.isEnabled = true
         self.view.addSubview(calendar)
         self.calendar = calendar
         
@@ -31,11 +30,6 @@ class LoadViewExampleViewController: UIViewController, FSCalendarDataSource, FSC
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "FSCalendar"
-    }
-    
-    // Update your frame
-    func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        calendar.frame = CGRect(x: 0, y: self.navigationController!.navigationBar.frame.maxY, width: bounds.width, height: bounds.height)
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {

@@ -10,22 +10,11 @@ import UIKit
 
 class TableViewController: UITableViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-    
-   
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        super.tableView(tableView, didSelectRowAt: indexPath)
-        if indexPath.row == 0 {
-            let viewController = DIYExampleViewController()
-            self.navigationController?.pushViewController(viewController, animated: true)
-        } else if indexPath.row == 2 {
-            let viewController = LoadViewExampleViewController()
+        let objects = [DIYExampleViewController(), NSObject(),DelegateAppearanceViewController(),LoadViewExampleViewController()]
+        if let viewController = objects[indexPath.row] as? UIViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
 
 }
