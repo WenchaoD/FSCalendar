@@ -45,7 +45,7 @@
 // Whether scope gesture should begin
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    BOOL shouldBegin = self.tableView.contentOffset.y == -self.tableView.contentInset.top;
+    BOOL shouldBegin = self.tableView.contentOffset.y <= -self.tableView.contentInset.top;
     if (shouldBegin) {
         CGPoint velocity = [self.scopeGesture velocityInView:self.view];
         switch (self.calendar.scope) {

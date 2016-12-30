@@ -131,14 +131,14 @@
     switch (self.calendar.scope) {
         case FSCalendarScopeMonth: {
             if (velocity.y < 0) {
-                self.state = FSCalendarTransitionStateInProgress;
+                self.state = FSCalendarTransitionStateChanging;
                 self.transition = FSCalendarTransitionMonthToWeek;
             }
             break;
         }
         case FSCalendarScopeWeek: {
             if (velocity.y > 0) {
-                self.state = FSCalendarTransitionStateInProgress;
+                self.state = FSCalendarTransitionStateChanging;
                 self.transition = FSCalendarTransitionWeekToMonth;
             }
             break;
@@ -146,7 +146,7 @@
         default:
             break;
     }
-    if (self.state != FSCalendarTransitionStateInProgress) return;
+    if (self.state != FSCalendarTransitionStateChanging) return;
     
     self.pendingAttributes = self.transitionAttributes;
     self.lastTranslation = [panGesture translationInView:panGesture.view].y;
@@ -164,7 +164,7 @@
 
 - (void)scopeTransitionDidUpdate:(UIPanGestureRecognizer *)panGesture
 {
-    if (self.state != FSCalendarTransitionStateInProgress) return;
+    if (self.state != FSCalendarTransitionStateChanging) return;
     
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
     switch (self.transition) {
@@ -203,7 +203,9 @@
 
 - (void)scopeTransitionDidEnd:(UIPanGestureRecognizer *)panGesture
 {
-    if (self.state != FSCalendarTransitionStateInProgress) return;
+    if (self.state != FSCalendarTransitionStateChanging) return;
+    
+    self.state = FSCalendarTransitionStateFinishing;
     
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
     CGFloat velocity = [panGesture velocityInView:panGesture.view].y;
@@ -264,7 +266,7 @@
     }
     
     // Start transition
-    self.state = FSCalendarTransitionStateInProgress;
+    self.state = FSCalendarTransitionStateChanging;
     FSCalendarTransitionAttributes *attr = self.transitionAttributes;
     self.pendingAttributes = attr;
     
@@ -352,7 +354,7 @@
     if (lastRowCount != currentRowCount) {
         CGFloat animationDuration = duration;
         CGRect bounds = (CGRect){CGPointZero,[self.calendar sizeThatFits:self.calendar.frame.size scope:FSCalendarScopeMonth]};
-        self.state = FSCalendarTransitionStateInProgress;
+        self.state = FSCalendarTransitionStateChanging;
         void (^completion)(BOOL) = ^(BOOL finished) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(MAX(0, duration-animationDuration) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 self.calendar.needsAdjustingViewFrame = YES;

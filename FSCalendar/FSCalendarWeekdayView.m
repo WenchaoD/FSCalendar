@@ -75,7 +75,6 @@
         widths[i] = actualWidth;
     }
     CGFloat *positions = malloc(size);
-    memcpy(positions, widths, size);
     positions[0] = 0;
     for (int i = 1; i < count; i++) {
         positions[i] = positions[i-1] + widths[i-1];

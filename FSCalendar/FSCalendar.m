@@ -373,7 +373,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, currentHeight);
                     _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight);
                     if (needsAdjustingBoundingRect) {
-                        self.animator.state = FSCalendarTransitionStateInProgress;
+                        self.animator.state = FSCalendarTransitionStateChanging;
                         CGRect boundingRect = (CGRect){CGPointZero,[self sizeThatFits:self.frame.size]};
                         [self.delegateProxy calendar:self boundingRectWillChange:boundingRect animated:NO];
                         self.animator.state = FSCalendarTransitionStateIdle;
@@ -435,7 +435,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case FSCalendarTransitionNone:
             return [self sizeThatFits:size scope:_scope];
         case FSCalendarTransitionWeekToMonth:
-            if (self.animator.state == FSCalendarTransitionStateInProgress) {
+            if (self.animator.state == FSCalendarTransitionStateChanging) {
                 return [self sizeThatFits:size scope:FSCalendarScopeMonth];
             }
         case FSCalendarTransitionMonthToWeek:
@@ -480,7 +480,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (self.animator.transition == FSCalendarTransitionWeekToMonth && self.animator.state == FSCalendarTransitionStateInProgress) {
+    if (self.animator.transition == FSCalendarTransitionWeekToMonth && self.animator.state == FSCalendarTransitionStateChanging) {
         return 42;
     }
     if (!self.floatingMode) {

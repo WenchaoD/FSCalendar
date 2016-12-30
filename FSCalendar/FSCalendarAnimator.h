@@ -18,7 +18,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransition) {
 };
 typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
     FSCalendarTransitionStateIdle,
-    FSCalendarTransitionStateInProgress
+    FSCalendarTransitionStateChanging,
+    FSCalendarTransitionStateFinishing,
 };
 
 @interface FSCalendarAnimator : NSObject <UIGestureRecognizerDelegate>
