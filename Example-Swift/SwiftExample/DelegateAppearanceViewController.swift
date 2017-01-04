@@ -58,7 +58,7 @@ class DelegateAppearanceViewController: UIViewController, FSCalendarDataSource, 
     }
     
     deinit {
-        print("deinit")
+        print("\(#function)")
     }
     
     @objc

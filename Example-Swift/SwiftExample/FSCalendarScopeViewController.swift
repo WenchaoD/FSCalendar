@@ -42,7 +42,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     }
     
     deinit {
-        print("deinit")
+        print("\(#function)")
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
