@@ -778,6 +778,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_firstWeekday != firstWeekday) {
         _firstWeekday = firstWeekday;
+        [self.calculator reloadSections];
         [self invalidateDateTools];
         [self setNeedsConfigureAppearance];
         if (self.hasValidateVisibleLayout) {
