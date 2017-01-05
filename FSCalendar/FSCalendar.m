@@ -772,6 +772,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
++ (BOOL)automaticallyNotifiesObserversOfScope
+{
+    return NO;
+}
+
 - (void)setScope:(FSCalendarScope)scope
 {
     [self setScope:scope animated:NO];
@@ -1106,20 +1111,21 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
 {
     if (self.floatingMode) return;
-    if (self.scope == scope) return;
     if (self.transitionCoordinator.state != FSCalendarTransitionStateIdle) return;
     
     FSCalendarScope prevScope = _scope;
     [self willChangeValueForKey:@"scope"];
     _scope = scope;
     [self didChangeValueForKey:@"scope"];
+    
+    if (prevScope == scope) return;
+    
     if (!self.hasValidateVisibleLayout && prevScope == FSCalendarScopeMonth && scope == FSCalendarScopeWeek) {
         _needsLayoutForWeekMode = YES;
         [self setNeedsLayout];
     } else if (self.transitionCoordinator.state == FSCalendarTransitionStateIdle) {
         [self.transitionCoordinator performScopeTransitionFromScope:prevScope toScope:scope animated:animated];
     }
-    
 
 }
 

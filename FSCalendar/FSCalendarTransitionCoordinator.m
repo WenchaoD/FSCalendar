@@ -17,8 +17,6 @@
 @property (strong  , nonatomic) FSCalendarTransitionAttributes *pendingAttributes;
 @property (assign  , nonatomic) CGFloat lastTranslation;
 
-@property (strong  , nonatomic) NSDate *calendarCurrentPage;
-
 - (void)performTransitionCompletionAnimated:(BOOL)animated;
 - (void)performTransitionCompletion:(FSCalendarTransition)transition animated:(BOOL)animated;
 
@@ -151,10 +149,8 @@
     self.lastTranslation = [panGesture translationInView:panGesture.view].y;
     
     if (self.transition == FSCalendarTransitionWeekToMonth) {
-        self.calendarCurrentPage = self.pendingAttributes.targetPage;
-        
+        [self.calendar fs_setVariable:self.pendingAttributes.targetPage forKey:@"_currentPage"];
         [self prelayoutForWeekToMonthTransition];
-        
         self.collectionView.fs_top = -self.pendingAttributes.focusedRowNumber*self.calendar.collectionViewLayout.estimatedItemSize.height;
         
     }
@@ -165,34 +161,38 @@
     if (self.state != FSCalendarTransitionStateChanging) return;
     
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
+    
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
     switch (self.transition) {
         case FSCalendarTransitionMonthToWeek: {
-            CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MAX(minTranslation, translation);
-            translation = MIN(0, translation);
-            CGFloat progress = translation/minTranslation;
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
+            CGFloat progress = ({
+                CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+                translation = MAX(minTranslation, translation);
+                translation = MIN(0, translation);
+                CGFloat progress = translation/minTranslation;
+                progress;
+            });
             [self performAlphaAnimationWithProgress:progress];
             [self performPathAnimationWithProgress:progress];
-            [CATransaction commit];
             break;
         }
         case FSCalendarTransitionWeekToMonth: {
-            CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MIN(maxTranslation, translation);
-            translation = MAX(0, translation);
-            CGFloat progress = translation/maxTranslation;
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES];
+            CGFloat progress = ({
+                CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+                translation = MIN(maxTranslation, translation);
+                translation = MAX(0, translation);
+                CGFloat progress = translation/maxTranslation;
+                progress;
+            });
             [self performAlphaAnimationWithProgress:progress];
             [self performPathAnimationWithProgress:progress];
-            [CATransaction commit];
             break;
         }
         default:
             break;
     }
+    [CATransaction commit];
     self.lastTranslation = translation;
 }
 
@@ -201,42 +201,39 @@
     if (self.state != FSCalendarTransitionStateChanging) return;
     
     self.state = FSCalendarTransitionStateFinishing;
-    
+
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
     CGFloat velocity = [panGesture velocityInView:panGesture.view].y;
+    
     switch (self.transition) {
         case FSCalendarTransitionMonthToWeek: {
-            
-            CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MAX(minTranslation, translation);
-            translation = MIN(0, translation);
-            CGFloat progress = translation/minTranslation;
-            
+            CGFloat progress = ({
+                CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+                translation = MAX(minTranslation, translation);
+                translation = MIN(0, translation);
+                CGFloat progress = translation/minTranslation;
+                progress;
+            });
             if (velocity >= 0) {
                 [self performBackwardTransition:self.transition fromProgress:progress];
             } else {
-                [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeWeek forKey:@"_scope"];
                 [self performForwardTransition:self.transition fromProgress:progress];
-                
             }
             break;
         }
         case FSCalendarTransitionWeekToMonth: {
-            CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
-            translation = MAX(0, translation);
-            translation = MIN(maxTranslation, translation);
-            CGFloat progress = translation/maxTranslation;
-            
-            [self.calendar willChangeValueForKey:@"scope"];
+            CGFloat progress = ({
+                CGFloat maxTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+                translation = MAX(0, translation);
+                translation = MIN(maxTranslation, translation);
+                CGFloat progress = translation/maxTranslation;
+                progress;
+            });
             if (velocity >= 0) {
-                [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeMonth forKey:@"_scope"];
                 [self performForwardTransition:self.transition fromProgress:progress];
-                
             } else {
-                [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeWeek forKey:@"_scope"];
                 [self performBackwardTransition:self.transition fromProgress:progress];
             }
-            [self.calendar didChangeValueForKey:@"scope"];
             break;
         }
         default:
@@ -249,15 +246,17 @@
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated
 {
-    if (fromScope == toScope) {
-        self.transition = FSCalendarTransitionNone;
-        return;
-    }
-    if (fromScope == FSCalendarScopeMonth && toScope == FSCalendarScopeWeek) {
-        self.transition = FSCalendarTransitionMonthToWeek;
-    } else if (fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth) {
-        self.transition = FSCalendarTransitionWeekToMonth;
-    }
+    if (fromScope == toScope) return;
+    
+    self.transition = ({
+        FSCalendarTransition transition = FSCalendarTransitionNone;
+        if (fromScope == FSCalendarScopeMonth && toScope == FSCalendarScopeWeek) {
+            transition = FSCalendarTransitionMonthToWeek;
+        } else if (fromScope == FSCalendarScopeWeek && toScope == FSCalendarScopeMonth) {
+            transition = FSCalendarTransitionWeekToMonth;
+        }
+        transition;
+    });
     
     // Start transition
     self.state = FSCalendarTransitionStateFinishing;
@@ -268,7 +267,7 @@
             
         case FSCalendarTransitionMonthToWeek: {
             
-            self.calendarCurrentPage = attr.targetPage;
+            [self.calendar fs_setVariable:attr.targetPage forKey:@"_currentPage"];
             self.calendar.contentView.clipsToBounds = YES;
             
             if (animated) {
@@ -300,7 +299,7 @@
             
         case FSCalendarTransitionWeekToMonth: {
             
-            self.calendarCurrentPage = attr.targetPage;
+            [self.calendar fs_setVariable:attr.targetPage forKey:@"_currentPage"];
             
             [self prelayoutForWeekToMonthTransition];
             
@@ -417,7 +416,7 @@
 {
     FSCalendarTransitionAttributes *attributes = [[FSCalendarTransitionAttributes alloc] init];
     attributes.sourceBounds = self.calendar.bounds;
-    attributes.sourcePage = self.calendarCurrentPage;
+    attributes.sourcePage = self.calendar.currentPage;
     switch (self.transition) {
             
         case FSCalendarTransitionMonthToWeek: {
@@ -506,17 +505,6 @@
     }
 }
 
-- (void)setCalendarCurrentPage:(NSDate *)calendarCurrentPage
-{
-    Ivar currentPageIvar = class_getInstanceVariable(FSCalendar.class, "_currentPage");
-    object_setIvar(self.calendar, currentPageIvar, calendarCurrentPage);
-}
-
-- (NSDate *)calendarCurrentPage
-{
-    return self.calendar.currentPage;
-}
-
 #pragma mark - Private methods
 
 - (CGRect)boundingRectForScope:(FSCalendarScope)scope page:(NSDate *)page
@@ -562,7 +550,7 @@
             [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeWeek forKey:@"_scope"];
             [self.calendar didChangeValueForKey:@"scope"];
             
-            self.calendarCurrentPage = attr.targetPage;
+            [self.calendar fs_setVariable:attr.targetPage forKey:@"_currentPage"];
             
             self.calendar.contentView.clipsToBounds = YES;
             
@@ -650,9 +638,7 @@
             [self.calendar didChangeValueForKey:@"scope"];
             
             [self performAlphaAnimationFrom:progress to:0 duration:0.3 exception:self.pendingAttributes.focusedRowNumber completion:^{
-                
-                self.calendarCurrentPage = self.pendingAttributes.sourcePage;
-                
+                [self.calendar fs_setVariable:self.pendingAttributes.sourcePage forKey:@"_currentPage"];
                 [self performTransitionCompletion:FSCalendarTransitionMonthToWeek animated:YES];
             }];
             

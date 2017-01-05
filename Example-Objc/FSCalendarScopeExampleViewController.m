@@ -32,9 +32,10 @@ static void * __KVOContext;
     
     // While the scope gesture begin, the pan gesture of tableView should cancel.
     [self.tableView.panGestureRecognizer requireGestureRecognizerToFail:panGesture];
-    self.calendar.scope = FSCalendarScopeWeek;
     
     [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:__KVOContext];
+    
+    self.calendar.scope = FSCalendarScopeWeek;
 }
 
 - (void)dealloc
@@ -56,7 +57,7 @@ static void * __KVOContext;
     }
 }
 
-#pragma mark - UIGestureRecognizerDelegate
+#pragma mark - <UIGestureRecognizerDelegate>
 
 // Whether scope gesture should begin
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -74,8 +75,11 @@ static void * __KVOContext;
     return shouldBegin;
 }
 
+#pragma mark - <FSCalendarDelegate>
+
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
+//    NSLog(@"%@",(calendar.scope==FSCalendarScopeWeek?@"week":@"month"));
     _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
     [self.view layoutIfNeeded];
 }
