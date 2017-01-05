@@ -486,6 +486,9 @@
 
 - (void)didReceiveNotifications:(NSNotification *)notification
 {
+    if ([notification.name isEqualToString:UIDeviceOrientationDidChangeNotification]) {
+        [self invalidateLayout];
+    }
     if ([notification.name isEqualToString:UIApplicationDidReceiveMemoryWarningNotification]) {
         [self.itemAttributes removeAllObjects];
         [self.headerAttributes removeAllObjects];
