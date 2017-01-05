@@ -223,6 +223,26 @@
 
 @end
 
+@implementation NSMapTable (FSCalendarExtensions)
+
+- (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key
+{
+    if (!key) return;
+    
+    if (obj) {
+        [self setObject:obj forKey:key];
+    } else {
+        [self removeObjectForKey:key];
+    }
+}
+
+- (id)objectForKeyedSubscript:(id<NSCopying>)key
+{
+    return [self objectForKey:key];
+}
+
+@end
+
 @implementation NSCache (FSCalendarExtensions)
 
 - (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key

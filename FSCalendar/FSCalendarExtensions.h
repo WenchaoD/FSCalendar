@@ -48,6 +48,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface NSMapTable (FSCalendarExtensions)
+
+- (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key;
+- (id)objectForKeyedSubscript:(id<NSCopying>)key;
+
+@end
+
 @interface NSCache (FSCalendarExtensions)
 
 - (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key;

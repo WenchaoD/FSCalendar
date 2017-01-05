@@ -103,6 +103,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (strong, nonatomic) NSIndexPath *lastPressedIndexPath;
 @property (strong, nonatomic) NSPointerArray *weakPointers;
+@property (strong, nonatomic) NSMapTable *visibleSectionHeaders;
 
 - (void)orientationDidChange:(NSNotification *)notification;
 
@@ -202,6 +203,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _scrollDirection = FSCalendarScrollDirectionHorizontal;
     _scope = FSCalendarScopeMonth;
     _selectedDates = [NSMutableArray arrayWithCapacity:1];
+    _visibleSectionHeaders = [NSMapTable weakToWeakObjectsMapTable];
     
     _pagingEnabled = YES;
     _scrollEnabled = YES;
@@ -509,11 +511,21 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             FSCalendarStickyHeader *stickyHeader = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
             stickyHeader.calendar = self;
             stickyHeader.month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
+            self.visibleSectionHeaders[indexPath] = stickyHeader;
             [stickyHeader setNeedsLayout];
             return stickyHeader;
         }
     }
     return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"placeholderHeader" forIndexPath:indexPath];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.floatingMode) {
+        if ([elementKind isEqualToString:UICollectionElementKindSectionHeader]) {
+            self.visibleSectionHeaders[indexPath] = nil;
+        }
+    }
 }
 
 #pragma mark - <UICollectionViewDelegate>
@@ -1677,7 +1689,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSArray *)visibleStickyHeaders
 {
-    return [self.collectionView visibleSupplementaryViewsOfKind:UICollectionElementKindSectionHeader];
+    return [self.visibleSectionHeaders.dictionaryRepresentation allValues];
 }
 
 - (void)invalidateViewFrames
