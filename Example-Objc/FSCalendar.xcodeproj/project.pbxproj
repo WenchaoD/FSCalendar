@@ -266,9 +266,9 @@
 				30F4C90E1E07C12B00D2EC4D /* FSCalendarDelegationFactory.m */,
 				3055B1C01DA9323A002AFA13 /* FSCalendarExtensions.h */,
 				3055B1C11DA9323A002AFA13 /* FSCalendarExtensions.m */,
-				30B0BAC51B8D8E22004B9476 /* FSCalendarDynamicHeader.h */,
 				309225381B905C4300123031 /* FSCalendarConstants.h */,
 				309225391B905C4300123031 /* FSCalendarConstants.m */,
+				30B0BAC51B8D8E22004B9476 /* FSCalendarDynamicHeader.h */,
 				3065CAA61CD3506A006C218D /* FSCalendar+Deprecated.m */,
 				30B0BAF31B8D9A91004B9476 /* Supporting Files */,
 			);

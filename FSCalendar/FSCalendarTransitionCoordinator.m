@@ -212,17 +212,13 @@
             translation = MIN(0, translation);
             CGFloat progress = translation/minTranslation;
             
-            [self.calendar willChangeValueForKey:@"scope"];
             if (velocity >= 0) {
-                [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeMonth forKey:@"_scope"];
                 [self performBackwardTransition:self.transition fromProgress:progress];
-                
             } else {
                 [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeWeek forKey:@"_scope"];
                 [self performForwardTransition:self.transition fromProgress:progress];
                 
             }
-            [self.calendar didChangeValueForKey:@"scope"];
             break;
         }
         case FSCalendarTransitionWeekToMonth: {
@@ -562,6 +558,10 @@
     switch (transition) {
         case FSCalendarTransitionMonthToWeek: {
             
+            [self.calendar willChangeValueForKey:@"scope"];
+            [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeWeek forKey:@"_scope"];
+            [self.calendar didChangeValueForKey:@"scope"];
+            
             self.calendarCurrentPage = attr.targetPage;
             
             self.calendar.contentView.clipsToBounds = YES;
@@ -584,6 +584,10 @@
             break;
         }
         case FSCalendarTransitionWeekToMonth: {
+            
+            [self.calendar willChangeValueForKey:@"scope"];
+            [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeMonth forKey:@"_scope"];
+            [self.calendar didChangeValueForKey:@"scope"];
             
             [self performAlphaAnimationFrom:progress to:1 duration:0.4 exception:attr.focusedRowNumber completion:^{
                 [self performTransitionCompletionAnimated:YES];
@@ -614,6 +618,11 @@
 {
     switch (transition) {
         case FSCalendarTransitionMonthToWeek: {
+            
+            [self.calendar willChangeValueForKey:@"scope"];
+            [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeMonth forKey:@"_scope"];
+            [self.calendar didChangeValueForKey:@"scope"];
+            
             [self performAlphaAnimationFrom:MAX(1-progress*1.1,0) to:1 duration:0.3 exception:self.pendingAttributes.focusedRowNumber completion:^{
                 [self.calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof UICollectionViewCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     obj.contentView.layer.opacity = 1;
@@ -635,6 +644,11 @@
             break;
         }
         case FSCalendarTransitionWeekToMonth: {
+            
+            [self.calendar willChangeValueForKey:@"scope"];
+            [self.calendar fs_setUnsignedIntegerVariable:FSCalendarScopeWeek forKey:@"_scope"];
+            [self.calendar didChangeValueForKey:@"scope"];
+            
             [self performAlphaAnimationFrom:progress to:0 duration:0.3 exception:self.pendingAttributes.focusedRowNumber completion:^{
                 
                 self.calendarCurrentPage = self.pendingAttributes.sourcePage;

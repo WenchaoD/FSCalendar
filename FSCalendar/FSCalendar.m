@@ -1105,33 +1105,22 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
 {
-    if (_scope != scope) {
-        
-#define m_set_scope \
-        [self willChangeValueForKey:@"scope"]; \
-        _scope = scope; \
-        [self didChangeValueForKey:@"scope"]; \
-
-        if (self.floatingMode) {
-            m_set_scope
-            return;
-        }
-        
-        FSCalendarScope prevScope = _scope;
-        
-        if (!self.hasValidateVisibleLayout && prevScope == FSCalendarScopeMonth && scope == FSCalendarScopeWeek) {
-            m_set_scope
-            _needsLayoutForWeekMode = YES;
-            [self setNeedsLayout];
-            return;
-        }
-        
-        if (self.transitionCoordinator.state == FSCalendarTransitionStateIdle) {
-            m_set_scope
-            [self.transitionCoordinator performScopeTransitionFromScope:prevScope toScope:scope animated:animated];
-        }
-        
+    if (self.floatingMode) return;
+    if (self.scope == scope) return;
+    if (self.transitionCoordinator.state != FSCalendarTransitionStateIdle) return;
+    
+    FSCalendarScope prevScope = _scope;
+    [self willChangeValueForKey:@"scope"];
+    _scope = scope;
+    [self didChangeValueForKey:@"scope"];
+    if (!self.hasValidateVisibleLayout && prevScope == FSCalendarScopeMonth && scope == FSCalendarScopeWeek) {
+        _needsLayoutForWeekMode = YES;
+        [self setNeedsLayout];
+    } else if (self.transitionCoordinator.state == FSCalendarTransitionStateIdle) {
+        [self.transitionCoordinator performScopeTransitionFromScope:prevScope toScope:scope animated:animated];
     }
+    
+
 }
 
 - (void)setPlaceholderType:(FSCalendarPlaceholderType)placeholderType
