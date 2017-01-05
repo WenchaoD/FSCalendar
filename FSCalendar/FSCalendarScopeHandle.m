@@ -8,7 +8,7 @@
 
 #import "FSCalendarScopeHandle.h"
 #import "FSCalendar.h"
-#import "FSCalendarAnimator.h"
+#import "FSCalendarTransitionCoordinator.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarExtensions.h"
 
@@ -66,13 +66,13 @@
 
 - (void)handlePan:(id)sender
 {
-    [self.calendar.animator handleScopeGesture:sender];
+    [self.calendar.transitionCoordinator handleScopeGesture:sender];
 }
 
 - (void)setCalendar:(FSCalendar *)calendar
 {
     _calendar = calendar;
-    self.panGesture.delegate = self.calendar.animator;
+    self.panGesture.delegate = self.calendar.transitionCoordinator;
 }
 
 @end

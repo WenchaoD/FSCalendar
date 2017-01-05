@@ -112,7 +112,7 @@
         CGFloat height = ({
             CGFloat height = FSCalendarStandardRowHeight;
             if (!self.calendar.floatingMode) {
-                switch (self.calendar.scope) {
+                switch (self.calendar.transitionCoordinator.representingScope) {
                     case FSCalendarScopeMonth: {
                         height = (self.collectionView.fs_height-self.sectionInsets.top-self.sectionInsets.bottom)/6.0;
                         break;
@@ -162,7 +162,7 @@
     // Calculate item heights and tops
     free(self.heights);
     self.heights = ({
-        NSInteger rowCount = self.calendar.scope == FSCalendarScopeWeek ? 1 : 6;
+        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? 1 : 6;
         size_t rowSize = sizeof(CGFloat)*rowCount;
         CGFloat *heights = malloc(rowSize);
         if (!self.calendar.floatingMode) {
@@ -182,7 +182,7 @@
     });
     free(self.tops);
     self.tops = ({
-        NSInteger rowCount = self.calendar.scope == FSCalendarScopeWeek ? 1 : 6;
+        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? 1 : 6;
         size_t rowSize = sizeof(CGFloat)*rowCount;
         CGFloat *tops = malloc(rowSize);
         tops[0] = self.sectionInsets.top;
@@ -267,7 +267,7 @@
                 
                 NSInteger wholeSections = rect.size.width/self.collectionView.fs_width;
                 NSInteger numberOfColumns = wholeSections*7;
-                NSInteger numberOfRows = self.calendar.scope == FSCalendarScopeMonth ? 6 : 1;
+                NSInteger numberOfRows = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth ? 6 : 1;
                 
                 NSInteger startSection = rect.origin.x/self.collectionView.fs_width;
                 CGFloat widthDelta1 = FSCalendarMod(CGRectGetMinX(rect), self.collectionView.fs_width) - self.sectionInsets.left;

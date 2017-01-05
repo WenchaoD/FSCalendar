@@ -8,6 +8,8 @@
 
 #import "FSCalendarScopeExampleViewController.h"
 
+static void * __KVOContext;
+
 @implementation FSCalendarScopeExampleViewController
 
 #pragma mark - Life cycle
@@ -28,16 +30,30 @@
     [self.view addGestureRecognizer:panGesture];
     self.scopeGesture = panGesture;
     
-    // While the scope gesture begin, the tableView gesture cancel.
+    // While the scope gesture begin, the pan gesture of tableView should cancel.
     [self.tableView.panGestureRecognizer requireGestureRecognizerToFail:panGesture];
+    self.calendar.scope = FSCalendarScopeWeek;
     
-    // Uncomment this to perform an 'initial-week-scope'
-    _calendar.scope = FSCalendarScopeWeek;
+    [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:__KVOContext];
 }
 
 - (void)dealloc
 {
+    [self.calendar removeObserver:self forKeyPath:@"scope" context:__KVOContext];
     NSLog(@"%s",__FUNCTION__);
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if (context == __KVOContext) {
+        FSCalendarScope oldScope = [change[NSKeyValueChangeOldKey] unsignedIntegerValue];
+        FSCalendarScope newScope = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+        NSLog(@"From %@ to %@",(oldScope==FSCalendarScopeWeek?@"week":@"month"),(newScope==FSCalendarScopeWeek?@"week":@"month"));
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate

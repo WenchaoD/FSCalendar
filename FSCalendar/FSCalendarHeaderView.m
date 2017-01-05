@@ -97,7 +97,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    switch (self.calendar.scope) {
+    switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {
             switch (_scrollDirection) {
                 case UICollectionViewScrollDirectionVertical: {
@@ -138,7 +138,7 @@
     _calendar.formatter.dateFormat = _appearance.headerDateFormat;
     BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
     NSString *text = nil;
-    switch (self.calendar.scope) {
+    switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {
             if (_scrollDirection == UICollectionViewScrollDirectionHorizontal) {
                 // 多出的两项需要制空

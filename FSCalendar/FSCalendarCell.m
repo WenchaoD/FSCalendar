@@ -95,7 +95,7 @@
     if (self.placeholder) {
         if (self.calendar.placeholderType==FSCalendarPlaceholderTypeNone) {
             self.contentView.hidden = self.monthPosition != FSCalendarMonthPositionCurrent;
-        } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.scope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
+        } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
             
             NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
             

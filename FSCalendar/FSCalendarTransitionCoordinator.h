@@ -1,5 +1,5 @@
 //
-//  FSCalendarAnimator.h
+//  FSCalendarTransitionCoordinator.h
 //  FSCalendar
 //
 //  Created by dingwenchao on 3/13/16.
@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
     FSCalendarTransitionStateFinishing,
 };
 
-@interface FSCalendarAnimator : NSObject <UIGestureRecognizerDelegate>
+@interface FSCalendarTransitionCoordinator : NSObject <UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) FSCalendar *calendar;
 @property (weak, nonatomic) FSCalendarCollectionView *collectionView;
@@ -32,6 +32,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 @property (assign, nonatomic) FSCalendarTransitionState state;
 
 @property (assign, nonatomic) CGSize cachedMonthSize;
+
+@property (readonly, nonatomic) FSCalendarScope representingScope;
 
 - (instancetype)initWithCalendar:(FSCalendar *)calendar;
 

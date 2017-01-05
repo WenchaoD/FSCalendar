@@ -117,15 +117,12 @@
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
     if (!indexPath) return nil;
-    if (self.calendar.animator.transition == FSCalendarTransitionWeekToMonth && self.calendar.animator.state == FSCalendarTransitionStateChanging) {
-        return [self dateForIndexPath:indexPath scope:FSCalendarScopeMonth];
-    }
-    return [self dateForIndexPath:indexPath scope:self.calendar.scope];
+    return [self dateForIndexPath:indexPath scope:self.calendar.transitionCoordinator.representingScope];
 }
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
 {
-    return [self indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent scope:self.calendar.scope];
+    return [self indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent scope:self.calendar.transitionCoordinator.representingScope];
 }
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope
@@ -165,12 +162,12 @@
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
-    return [self indexPathForDate:date atMonthPosition:position scope:self.calendar.scope];
+    return [self indexPathForDate:date atMonthPosition:position scope:self.calendar.transitionCoordinator.representingScope];
 }
 
 - (NSDate *)pageForSection:(NSInteger)section
 {
-    switch (self.calendar.scope) {
+    switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeWeek:
             return [self.gregorian fs_middleDayOfWeek:[self weekForSection:section]];
         case FSCalendarScopeMonth:
@@ -221,10 +218,10 @@
 
 - (NSInteger)numberOfSections
 {
-    if (self.calendar.animator.transition == FSCalendarTransitionWeekToMonth) {
+    if (self.calendar.transitionCoordinator.transition == FSCalendarTransitionWeekToMonth) {
         return self.numberOfMonths;
     } else {
-        switch (self.calendar.scope) {
+        switch (self.calendar.transitionCoordinator.representingScope) {
             case FSCalendarScopeMonth: {
                 return self.numberOfMonths;
             }
@@ -263,7 +260,7 @@
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
 {
-    if (self.calendar.scope == FSCalendarScopeWeek) return 1;
+    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) return 1;
     NSDate *month = [self monthForSection:section];
     return [self numberOfRowsInMonth:month];
 }
