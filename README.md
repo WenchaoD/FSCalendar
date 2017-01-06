@@ -27,6 +27,8 @@
 
 ![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
 
+[![Join the chat at https://gitter.im/WenchaoD/FSCalendar](https://badges.gitter.im/WenchaoD/FSCalendar.svg)](https://gitter.im/WenchaoD/FSCalendar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## iPhone
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
 
