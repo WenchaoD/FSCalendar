@@ -33,6 +33,8 @@
 @property (assign, nonatomic) CGSize collectionViewSize;
 @property (assign, nonatomic) NSInteger numberOfSections;
 
+@property (assign, nonatomic) FSCalendarSeparators separators;
+
 @property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *itemAttributes;
 @property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *headerAttributes;
 @property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *rowSeparatorAttributes;
@@ -91,10 +93,12 @@
 
 - (void)prepareLayout
 {
-    if (CGSizeEqualToSize(self.collectionViewSize, self.collectionView.frame.size) && self.numberOfSections == self.collectionView.numberOfSections) {
+    if (CGSizeEqualToSize(self.collectionViewSize, self.collectionView.frame.size) && self.numberOfSections == self.collectionView.numberOfSections && self.separators == self.calendar.appearance.separators) {
         return;
     }
     self.collectionViewSize = self.collectionView.frame.size;
+    self.separators = self.calendar.appearance.separators;
+    
     [self.itemAttributes removeAllObjects];
     [self.headerAttributes removeAllObjects];
     [self.rowSeparatorAttributes removeAllObjects];
@@ -442,7 +446,7 @@
 // Separators
 - (UICollectionViewLayoutAttributes *)layoutAttributesForDecorationViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([elementKind isEqualToString:kFSCalendarSeparatorInterRows] && (self.calendar.appearance.separators & FSCalendarSeparatorInterRows)) {
+    if ([elementKind isEqualToString:kFSCalendarSeparatorInterRows] && (self.separators & FSCalendarSeparatorInterRows)) {
         UICollectionViewLayoutAttributes *attributes = self.rowSeparatorAttributes[indexPath];
         if (!attributes) {
             FSCalendarCoordinate coordinate = [self.calendar.calculator coordinateForIndexPath:indexPath];
@@ -451,11 +455,10 @@
             }
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:kFSCalendarSeparatorInterRows withIndexPath:indexPath];
             CGFloat x, y;
-            
             if (!self.calendar.floatingMode) {
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal: {
-                        x = self.lefts[coordinate.column];
+                        x = self.lefts[coordinate.column] + indexPath.section * self.collectionView.fs_width;
                         y = self.tops[coordinate.row]+self.heights[coordinate.row];
                         break;
                     }
