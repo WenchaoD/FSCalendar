@@ -11,11 +11,6 @@
 <br>
 [![Languages](https://img.shields.io/badge/language-objc%20|%20swift-FF69B4.svg?style=plastic)](#)
 
-# Updates
-
-* [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
-
-
 # Table of contents
 * [Screenshots](#screenshots)
 * [Installation](#installation)
@@ -23,40 +18,46 @@
 * [Support](#support)
 * [Contact](#contact)
 
-## <a id="screenshots"></a>Screenshots
+## <a id="screenshots"></a>Screenshots 
 
-![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
-
-## iPhone
+### iPhone
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
 
-## iPad
+### iPad
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
-## Safe Orientation
+### Safe Orientation
 ![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/20325758/ea125e1e-abc0-11e6-9e29-491acbcb0d07.gif)
 
-## Today Extension
+### Today Extension
 |    iOS8/9    |    iOS10    |
 |--------------|-------------|
 |![today1](https://cloud.githubusercontent.com/assets/5186464/20288375/ed3fba0e-ab0d-11e6-8b15-43d3dc656f22.gif)|![today2](https://cloud.githubusercontent.com/assets/5186464/20288378/f11e318c-ab0d-11e6-8d1d-9d89b563e9d7.gif)|
 
-## Interactive Scope Gesture
+### Interactive Scope Gesture
 | ![1](https://cloud.githubusercontent.com/assets/5186464/21559640/e92a9ccc-ce8a-11e6-8c60-e52204f33249.gif) |
 | ---- |
 
-## DIY support
+### DIY support
 |  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
 | -------------  |
 > To customize your own cell, view DIY Example in `Example-Swift` or `Example-Objc`
 
 
-## Swipe-To-Choose
+### Swipe-To-Choose
 
 |Single-Selection<br/>Swipe-To-Choose|Multiple-Selection<br/>Swipe-To-Choose|DIY<br/>Swipe-To-Choose|
 |----------|--------|--------|
 |![1](https://cloud.githubusercontent.com/assets/5186464/20257768/cb1905d4-aa86-11e6-9ef7-af76f9caa024.gif)|![2](https://cloud.githubusercontent.com/assets/5186464/20257826/254070ec-aa87-11e6-81b1-1815453fd464.gif)|![3](https://cloud.githubusercontent.com/assets/5186464/20257836/2ffa3252-aa87-11e6-8ff9-3b40f5b2307b.gif)|
 
+## Achievement of Users <a id="achievement"></a>
+
+|  ![1](https://cloud.githubusercontent.com/assets/5186464/21747193/3111e4ee-d59a-11e6-8e4d-ca695b53e421.png)    |  ![2](https://cloud.githubusercontent.com/assets/5186464/21747393/42a753fa-d5a0-11e6-9cb2-de7cc642e69e.png)  |  ![3](https://cloud.githubusercontent.com/assets/5186464/21747192/3111cacc-d59a-11e6-8626-44cd75ebd794.png)  |  ![4](https://cloud.githubusercontent.com/assets/5186464/21747190/3111a4ca-d59a-11e6-99d0-d10cefb17b0b.png)  |
+| ------------- | ------------- | ------------- | ------------- |
+
+#### [***More Achievements***](https://github.com/WenchaoD/FSCalendar/wiki/) are available in [***FSCalendar Gallery***](https://github.com/WenchaoD/FSCalendar/wiki/)  
+
+===
 
 # <a id="installation"></a>Installation
 
