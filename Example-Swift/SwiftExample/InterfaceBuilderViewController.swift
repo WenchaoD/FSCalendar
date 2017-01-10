@@ -26,9 +26,12 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if UIDevice.current.model.hasPrefix("iPad") {
+            self.calendarHeightConstraint.constant = 400
+        }
+        
         self.calendar.appearance.caseOptions = [.headerUsesUpperCase,.weekdayUsesUpperCase]
         self.calendar.select(self.formatter.date(from: "2015/10/10")!)
-//        self.calendar.scope = .week
         
         let scopeGesture = UIPanGestureRecognizer(target: self.calendar, action: #selector(self.calendar.handleScopeGesture(_:)))
         self.calendar.addGestureRecognizer(scopeGesture)

@@ -18,7 +18,8 @@ class LoadViewExampleViewController: UIViewController, FSCalendarDataSource, FSC
         view.backgroundColor = UIColor.groupTableViewBackground
         self.view = view
         
-        let calendar = FSCalendar(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.maxY, width: self.view.bounds.width, height: 300))
+        let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 400 : 300
+        let calendar = FSCalendar(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.maxY, width: self.view.bounds.width, height: height))
         calendar.dataSource = self
         calendar.delegate = self
         calendar.backgroundColor = UIColor.white

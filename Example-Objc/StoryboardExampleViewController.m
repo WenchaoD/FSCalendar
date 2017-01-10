@@ -32,6 +32,10 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
+    if ([[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
+        self.calendarHeightConstraint.constant = 400;
+    }
+    
     self.gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     
     NSLocale *chinese = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];

@@ -71,8 +71,7 @@
 		EE638CCE1B89DBD80006DD1A /* StoryboardExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CCD1B89DBD80006DD1A /* StoryboardExampleViewController.m */; };
 		EE638CD31B89DBE90006DD1A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CD01B89DBE90006DD1A /* AppDelegate.m */; };
 		EE638CD41B89DBE90006DD1A /* FSTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE638CD21B89DBE90006DD1A /* FSTableViewController.m */; };
-		EE638CD91B89DC0A0006DD1A /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE638CD51B89DC090006DD1A /* Main_iPad.storyboard */; };
-		EE638CDA1B89DC0A0006DD1A /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE638CD71B89DC090006DD1A /* Main_iPhone.storyboard */; };
+		EE638CDA1B89DC0A0006DD1A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE638CD71B89DC090006DD1A /* Main.storyboard */; };
 		EEC9C0391BDC9E7000383A07 /* FSCalendarCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC9C0371BDC9E7000383A07 /* FSCalendarCollectionView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
 		EEC9C03B1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
@@ -170,8 +169,7 @@
 		EE638CD01B89DBE90006DD1A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = SOURCE_ROOT; };
 		EE638CD11B89DBE90006DD1A /* FSTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTableViewController.h; sourceTree = SOURCE_ROOT; };
 		EE638CD21B89DBE90006DD1A /* FSTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FSTableViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		EE638CD61B89DC090006DD1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = SOURCE_ROOT; };
-		EE638CD81B89DC0A0006DD1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = SOURCE_ROOT; };
+		EE638CD81B89DC0A0006DD1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
 		EE638CE21B8A1F550006DD1A /* FSCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FSCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE638CF41B8A1F550006DD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE638CF51B8A1F550006DD1A /* FSCalendarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSCalendarTests.m; sourceTree = "<group>"; };
@@ -316,8 +314,7 @@
 		EE0D7FC91B89C5D3003C287B /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				EE638CD51B89DC090006DD1A /* Main_iPad.storyboard */,
-				EE638CD71B89DC090006DD1A /* Main_iPhone.storyboard */,
+				EE638CD71B89DC090006DD1A /* Main.storyboard */,
 				EE638CCF1B89DBE90006DD1A /* AppDelegate.h */,
 				EE638CD01B89DBE90006DD1A /* AppDelegate.m */,
 				EE638CD11B89DBE90006DD1A /* FSTableViewController.h */,
@@ -542,9 +539,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE638CDA1B89DC0A0006DD1A /* Main_iPhone.storyboard in Resources */,
+				EE638CDA1B89DC0A0006DD1A /* Main.storyboard in Resources */,
 				309A42011D992C4A004E86CB /* Images.xcassets in Resources */,
-				EE638CD91B89DC0A0006DD1A /* Main_iPad.storyboard in Resources */,
 				30B0BAD51B8D8E23004B9476 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -645,20 +641,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		EE638CD51B89DC090006DD1A /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EE638CD61B89DC090006DD1A /* Base */,
-			);
-			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		EE638CD71B89DC090006DD1A /* Main_iPhone.storyboard */ = {
+		EE638CD71B89DC090006DD1A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				EE638CD81B89DC0A0006DD1A /* Base */,
 			);
-			name = Main_iPhone.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

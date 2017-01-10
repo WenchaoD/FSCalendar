@@ -33,6 +33,10 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if UIDevice.current.model.hasPrefix("iPad") {
+            self.calendarHeightConstraint.constant = 400
+        }
+        
         self.calendar.select(Date())
         
         self.view.addGestureRecognizer(self.scopeGesture)

@@ -18,10 +18,14 @@ static void * __KVOContext;
 {
     [super viewDidLoad];
     
+    if ([[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
+        self.calendarHeightConstraint.constant = 400;
+    }
+    
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     
-    [_calendar selectDate:[NSDate date]];
+    [self.calendar selectDate:[NSDate date]];
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.calendar action:@selector(handleScopeGesture:)];
     panGesture.delegate = self;
@@ -36,6 +40,7 @@ static void * __KVOContext;
     [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:__KVOContext];
     
     self.calendar.scope = FSCalendarScopeWeek;
+    
 }
 
 - (void)dealloc
@@ -144,6 +149,8 @@ static void * __KVOContext;
 {
     return 20;
 }
+
+#pragma mark - Target actions
 
 - (IBAction)toggleClicked:(id)sender
 {
