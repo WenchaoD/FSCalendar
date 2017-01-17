@@ -82,7 +82,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;
 
-@property (assign, nonatomic) BOOL                       needsAdjustingMonthPosition;
 @property (assign, nonatomic) BOOL                       needsAdjustingViewFrame;
 @property (assign, nonatomic) BOOL                       needsConfigureAppearance;
 @property (assign, nonatomic) BOOL                       needsLayoutForWeekMode;
@@ -136,6 +135,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)reloadVisibleCells;
 
+- (void)adjustMonthPosition;
 - (void)requestBoundingDatesIfNecessary;
 
 @end
@@ -208,7 +208,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _pagingEnabled = YES;
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
-    _needsAdjustingMonthPosition = YES;;
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
@@ -392,6 +391,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _collectionView.frame = _daysContainer.bounds;
             
         }
+        [_collectionViewLayout invalidateLayout];
+
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
         _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
         _scopeHandle.fs_bottom = _bottomBorder.fs_top;
@@ -401,16 +402,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_needsLayoutForWeekMode) {
         _needsLayoutForWeekMode = NO;
         [self.transitionCoordinator performScopeTransitionFromScope:FSCalendarScopeMonth toScope:FSCalendarScopeWeek animated:NO];
-    } else {
-        if (_needsAdjustingMonthPosition) {
-            _needsAdjustingMonthPosition = NO;
-            [self requestBoundingDatesIfNecessary];
-            _supressEvent = NO;
-            NSDate *targetPage = self.pagingEnabled?self.currentPage:(self.currentPage?:self.selectedDate);
-            [self scrollToPageForDate:targetPage animated:NO];
-        }
     }
-    
     _supressEvent = NO;
     
 }
@@ -759,7 +751,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     [_collectionView reloadData];
                     [_calendarHeaderView reloadData];
                 }
-                _needsAdjustingMonthPosition = YES;
                 _needsAdjustingViewFrame = YES;
                 [self setNeedsLayout];
                 _supressEvent = NO;
@@ -963,10 +954,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _orientation = orientation;
         
         _needsAdjustingViewFrame = YES;
-        _needsAdjustingMonthPosition = YES;
         _preferredWeekdayHeight = FSCalendarAutomaticDimension;
         _preferredRowHeight = FSCalendarAutomaticDimension;
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
+        _calendarHeaderView.needsAdjustingMonthPosition = YES;
+        _calendarHeaderView.needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
     }
 }
@@ -1284,13 +1276,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             [_collectionView setContentOffset:targetOffset animated:animated];
         } else {
             _currentPage = date;
-            _needsAdjustingMonthPosition = YES;
             [self setNeedsLayout];
         }
         
     }
-    
-    [self.calendarHeaderView setScrollOffset:scrollOffset animated:animated];
+    if (!animated) {
+        self.calendarHeaderView.scrollOffset = scrollOffset;
+    }
     _supressEvent = NO;
 }
 
@@ -1711,6 +1703,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     CGSize sizeInPoints = [UIScreen mainScreen].bounds.size;
     FSCalendarOrientation orientation = scale * sizeInPoints.width == nativeSize.width ? FSCalendarOrientationPortrait : FSCalendarOrientationLandscape;
     return orientation;
+}
+
+- (void)adjustMonthPosition
+{
+    [self requestBoundingDatesIfNecessary];
+    _supressEvent = NO;
+    NSDate *targetPage = self.pagingEnabled?self.currentPage:(self.currentPage?:self.selectedDate);
+    [self scrollToPageForDate:targetPage animated:NO];
+    self.calendarHeaderView.needsAdjustingMonthPosition = YES;
 }
 
 - (void)requestBoundingDatesIfNecessary

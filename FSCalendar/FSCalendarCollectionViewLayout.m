@@ -22,6 +22,7 @@
 @property (assign, nonatomic) CGFloat *heights;
 @property (assign, nonatomic) CGFloat *lefts;
 @property (assign, nonatomic) CGFloat *tops;
+
 @property (assign, nonatomic) CGFloat *sectionHeights;
 @property (assign, nonatomic) CGFloat *sectionTops;
 @property (assign, nonatomic) CGFloat *sectionBottoms;
@@ -68,6 +69,7 @@
         self.rowSeparatorAttributes = [NSMutableDictionary dictionary];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIScreenDidConnectNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
         [self registerClass:[FSCalendarSeparator class] forDecorationViewOfKind:kFSCalendarSeparatorInterRows];
@@ -248,6 +250,7 @@
         contentSize;
     });
     
+    [self.calendar adjustMonthPosition];
 }
 
 - (CGSize)collectionViewContentSize

@@ -42,10 +42,10 @@
 @property (readonly, nonatomic) UIView *contentView;
 @property (readonly, nonatomic) UIView *daysContainer;
 
-@property (assign, nonatomic) BOOL needsAdjustingMonthPosition;
 @property (assign, nonatomic) BOOL needsAdjustingViewFrame;
 
 - (void)invalidateHeaders;
+- (void)adjustMonthPosition;
 
 - (BOOL)isPageInRange:(NSDate *)page;
 - (BOOL)isDateInRange:(NSDate *)date;

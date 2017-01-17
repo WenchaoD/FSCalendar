@@ -45,6 +45,7 @@
 - (void)initialize
 {
     _needsAdjustingViewFrame = YES;
+    _needsAdjustingMonthPosition = YES;
     _scrollDirection = UICollectionViewScrollDirectionHorizontal;
     _scrollEnabled = YES;
     
