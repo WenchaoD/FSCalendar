@@ -408,8 +408,7 @@
 {
     if (_headerMinimumDissolvedAlpha != headerMinimumDissolvedAlpha) {
         _headerMinimumDissolvedAlpha = headerMinimumDissolvedAlpha;
-        [_calendar.calendarHeaderView.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        [_calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [self.calendar setNeedsConfigureAppearance];
     }
 }
 

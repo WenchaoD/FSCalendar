@@ -38,20 +38,6 @@ static inline void FSCalendarAssertDateInBounds(NSDate *date, NSCalendar *calend
     }
 }
 
-
-static _Nullable CFRunLoopObserverRef FSCalendarRunLoopObserver;
-static void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
-    NSPointerArray *weakPointers = (__bridge NSPointerArray *)info;
-    FSCalendar *calendar = [weakPointers pointerAtIndex:0];
-    if ([calendar fs_boolVariableForKey:@"_needsConfigureAppearance"]) {
-        [calendar fs_setBoolVariable:NO forKey:@"_needsConfigureAppearance"];
-        [calendar.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
-        [calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(configureAppearance)];
-        [calendar.calendarHeaderView configureAppearance];
-        [calendar.calendarWeekdayView configureAppearance];
-    }
-}
-
 NS_ASSUME_NONNULL_END
 
 typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
@@ -101,8 +87,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (strong, nonatomic) FSCalendarDelegationProxy  *delegateProxy;
 
 @property (strong, nonatomic) NSIndexPath *lastPressedIndexPath;
-@property (strong, nonatomic) NSPointerArray *weakPointers;
 @property (strong, nonatomic) NSMapTable *visibleSectionHeaders;
+
+@property (assign, nonatomic) CFRunLoopObserverRef runLoopObserver;
 
 - (void)orientationDidChange:(NSNotification *)notification;
 
@@ -180,17 +167,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _firstWeekday = 1;
     [self invalidateDateTools];
     
-    
     _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:[NSDate date] options:0];
     _currentPage = [self.gregorian fs_firstDayOfMonth:_today];
     
-#if TARGET_INTERFACE_BUILDER
-    _minimumDate = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:-1 toDate:_today options:0];
-    _maximumDate = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:4 toDate:_today options:0];
-#else
     _minimumDate = [self.formatter dateFromString:@"1970-01-01"];
     _maximumDate = [self.formatter dateFromString:@"2099-12-31"];
-#endif
     
     _headerHeight     = FSCalendarAutomaticDimension;
     _weekdayHeight    = FSCalendarAutomaticDimension;
@@ -275,9 +256,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _collectionView.delegate = nil;
     _collectionView.dataSource = nil;
     
-    CFRunLoopRemoveObserver(CFRunLoopGetCurrent(), FSCalendarRunLoopObserver, kCFRunLoopCommonModes);
-    self.weakPointers = nil;
-    FSCalendarRunLoopObserver = NULL;
+    CFRunLoopRemoveObserver(CFRunLoopGetCurrent(), self.runLoopObserver, kCFRunLoopCommonModes);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
@@ -1385,27 +1364,36 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)registerMainRunloopObserver
 {
-    _weakPointers = [NSPointerArray weakObjectsPointerArray];
-    [_weakPointers addPointer:(__bridge void * _Nullable)(self)];
+    __weak __typeof__(self) weakSelf = self;
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
     CFOptionFlags activities = (kCFRunLoopAfterWaiting|kCFRunLoopEntry);
     CFRunLoopObserverContext context = {
-        0,           // version
-        (__bridge  void *)_weakPointers,
-        &CFRetain,   // retain
-        &CFRelease,  // release
-        NULL         // copyDescription
+        0,
+        (__bridge  void *)weakSelf,
+        NULL,
+        NULL,
+        NULL
     };
-    
-    FSCalendarRunLoopObserver = CFRunLoopObserverCreate(NULL,   // allocator
-                                       activities,  // activities
-                                       YES,         // repeats
-                                       INT_MAX,     // order after CA transaction commits
-                                       &FSCalendarRunLoopCallback,  // callback
-                                       &context);   // context
-    CFRunLoopAddObserver(runLoop, FSCalendarRunLoopObserver, kCFRunLoopCommonModes);
-    CFRelease(FSCalendarRunLoopObserver);
+    self.runLoopObserver = CFRunLoopObserverCreate(NULL,
+                                                   activities,
+                                                   YES,
+                                                   INT_MAX,
+                                                   &FSCalendarRunLoopCallback,
+                                                   &context);
+    CFRunLoopAddObserver(runLoop, self.runLoopObserver, kCFRunLoopCommonModes);
 }
+
+void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
+    FSCalendar *calendar = (__bridge FSCalendar *)(info);
+    if ([calendar fs_boolVariableForKey:@"_needsConfigureAppearance"]) {
+        [calendar fs_setBoolVariable:NO forKey:@"_needsConfigureAppearance"];
+        [calendar.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
+        [calendar.visibleStickyHeaders makeObjectsPerformSelector:@selector(configureAppearance)];
+        [calendar.calendarHeaderView configureAppearance];
+        [calendar.calendarWeekdayView configureAppearance];
+    }
+}
+
 
 - (void)invalidateDateTools
 {
