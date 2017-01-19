@@ -233,12 +233,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.backgroundColor = [UIColor clearColor];
-    collectionView.bounces = YES;
     collectionView.pagingEnabled = YES;
     collectionView.showsHorizontalScrollIndicator = NO;
     collectionView.showsVerticalScrollIndicator = NO;
-    collectionView.delaysContentTouches = NO;
-    collectionView.canCancelContentTouches = YES;
     collectionView.allowsMultipleSelection = NO;
     collectionView.clipsToBounds = YES;
     [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier];
@@ -1391,7 +1388,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _weakPointers = [NSPointerArray weakObjectsPointerArray];
     [_weakPointers addPointer:(__bridge void * _Nullable)(self)];
     CFRunLoopRef runLoop = CFRunLoopGetCurrent();
-    CFOptionFlags activities = (kCFRunLoopBeforeWaiting|kCFRunLoopExit);
+    CFOptionFlags activities = (kCFRunLoopAfterWaiting|kCFRunLoopEntry);
     CFRunLoopObserverContext context = {
         0,           // version
         (__bridge  void *)_weakPointers,
@@ -1584,9 +1581,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)reloadVisibleCells
 {
-    FSCalendarUseWeakSelf
     [self.collectionView.indexPathsForVisibleItems enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-        FSCalendarUseStrongSelf
         FSCalendarCell *cell = (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [self reloadDataForCell:cell atIndexPath:indexPath];
     }];

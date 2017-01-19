@@ -30,3 +30,16 @@ NSInteger const FSCalendarDefaultHourComponent = 0;
 
 NSString * const FSCalendarDefaultCellReuseIdentifier = @"_FSCalendarDefaultCellReuseIdentifier";
 NSString * const FSCalendarInvalidArgumentsExceptionName = @"Invalid argument exception";
+
+CGPoint const CGPointInfinity = {
+    .x =  CGFLOAT_MAX,
+    .y =  CGFLOAT_MAX
+};
+
+CGSize const CGSizeAutomatic = {
+    .width =  FSCalendarAutomaticDimension,
+    .height =  FSCalendarAutomaticDimension
+};
+
+
+

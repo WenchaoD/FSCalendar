@@ -13,29 +13,29 @@
 
 #pragma mark - Constants
 
-UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderHeight;
-UIKIT_EXTERN CGFloat const FSCalendarStandardWeekdayHeight;
-UIKIT_EXTERN CGFloat const FSCalendarStandardMonthlyPageHeight;
-UIKIT_EXTERN CGFloat const FSCalendarStandardWeeklyPageHeight;
-UIKIT_EXTERN CGFloat const FSCalendarStandardCellDiameter;
-UIKIT_EXTERN CGFloat const FSCalendarStandardSeparatorThickness;
-UIKIT_EXTERN CGFloat const FSCalendarAutomaticDimension;
-UIKIT_EXTERN CGFloat const FSCalendarDefaultBounceAnimationDuration;
-UIKIT_EXTERN CGFloat const FSCalendarStandardRowHeight;
-UIKIT_EXTERN CGFloat const FSCalendarStandardTitleTextSize;
-UIKIT_EXTERN CGFloat const FSCalendarStandardSubtitleTextSize;
-UIKIT_EXTERN CGFloat const FSCalendarStandardWeekdayTextSize;
-UIKIT_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
-UIKIT_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
-UIKIT_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
+CG_EXTERN CGFloat const FSCalendarStandardHeaderHeight;
+CG_EXTERN CGFloat const FSCalendarStandardWeekdayHeight;
+CG_EXTERN CGFloat const FSCalendarStandardMonthlyPageHeight;
+CG_EXTERN CGFloat const FSCalendarStandardWeeklyPageHeight;
+CG_EXTERN CGFloat const FSCalendarStandardCellDiameter;
+CG_EXTERN CGFloat const FSCalendarStandardSeparatorThickness;
+CG_EXTERN CGFloat const FSCalendarAutomaticDimension;
+CG_EXTERN CGFloat const FSCalendarDefaultBounceAnimationDuration;
+CG_EXTERN CGFloat const FSCalendarStandardRowHeight;
+CG_EXTERN CGFloat const FSCalendarStandardTitleTextSize;
+CG_EXTERN CGFloat const FSCalendarStandardSubtitleTextSize;
+CG_EXTERN CGFloat const FSCalendarStandardWeekdayTextSize;
+CG_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
+CG_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
+CG_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
 
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
 UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 
-#define CGPointInfinity CGPointMake(NSIntegerMax,NSIntegerMax)
-#define CGSizeAutomatic CGSizeMake(FSCalendarAutomaticDimension,FSCalendarAutomaticDimension)
+CG_EXTERN CGPoint const CGPointInfinity;
+CG_EXTERN CGSize const CGSizeAutomatic;
 
 #if TARGET_INTERFACE_BUILDER
 #define FSCalendarDeviceIsIPad NO
@@ -86,3 +86,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
     FSCalendarUnitWeekOfYear = NSCalendarUnitWeekOfYear,
     FSCalendarUnitDay = NSCalendarUnitDay
 };
+
+static inline void FSCalendarSliceCake(CGFloat cake, NSInteger count, CGFloat *pieces) {
+    CGFloat total = cake;
+    for (int i = 0; i < count; i++) {
+        NSInteger remains = count - i;
+        CGFloat piece = FSCalendarRound(total/remains*2)*0.5;
+        total -= piece;
+        pieces[i] = piece;
+    }
+}
+
+
+

@@ -144,12 +144,7 @@
         size_t columnSize = sizeof(CGFloat)*columnCount;
         CGFloat *widths = malloc(columnSize);
         CGFloat contentWidth = self.collectionView.fs_width - self.sectionInsets.left - self.sectionInsets.right;
-        for (int i = 0; i < columnCount; i++) {
-            NSInteger currentCount = columnCount-i;
-            CGFloat actualWidth = FSCalendarRound(contentWidth/currentCount*2)*0.5;
-            contentWidth -= actualWidth;
-            widths[i] = actualWidth;
-        }
+        FSCalendarSliceCake(contentWidth, columnCount, widths);
         widths;
     });
     
