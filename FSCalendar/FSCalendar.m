@@ -1254,10 +1254,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
     } else {
         if (self.hasValidateVisibleLayout) {
-            // Force layout to avoid crash on orientation changing
             [_collectionViewLayout layoutAttributesForElementsInRect:_collectionView.bounds];
             CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
-            CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,MAX(0,_collectionView.contentSize.height-_collectionView.fs_bottom)));
+            CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,MAX(0,_collectionViewLayout.collectionViewContentSize.height-_collectionView.fs_bottom)));
             [_collectionView setContentOffset:targetOffset animated:animated];
         } else {
             _currentPage = date;
@@ -1364,7 +1363,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 #if TARGET_INTERFACE_BUILDER
     return YES;
 #else
-    return self.superview  && !CGRectIsEmpty(_collectionView.frame) && !CGSizeEqualToSize(_collectionView.contentSize, CGSizeZero);
+    return self.superview  && !CGRectIsEmpty(_collectionView.frame) && !CGSizeEqualToSize(_collectionViewLayout.collectionViewContentSize, CGSizeZero);
 #endif
 }
 
