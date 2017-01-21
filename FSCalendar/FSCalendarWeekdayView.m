@@ -79,6 +79,19 @@
     
 }
 
+#if TARGET_INTERFACE_BUILDER
+- (void)setCalendar:(FSCalendar *)calendar
+{
+    _calendar = calendar;
+    [self configureAppearance];
+}
+#endif
+
+- (NSArray<UILabel *> *)weekdayLabels
+{
+    return self.weekdayPointers.allObjects;
+}
+
 - (void)configureAppearance
 {
     BOOL useVeryShortWeekdaySymbols = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
@@ -95,7 +108,5 @@
     }];
 
 }
-
-- (NSArray<UILabel *> *)weekdayLabels { return self.weekdayPointers.allObjects; }
 
 @end

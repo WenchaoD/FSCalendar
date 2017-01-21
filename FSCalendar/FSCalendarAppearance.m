@@ -492,6 +492,26 @@
     return self.borderRadius==1.0?FSCalendarCellShapeCircle:FSCalendarCellShapeRectangle;
 }
 
+- (void)setTitleTextSize:(CGFloat)titleTextSize
+{
+    self.titleFont = [UIFont fontWithName:self.titleFont.fontName size:titleTextSize];
+}
+
+- (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
+{
+    self.subtitleFont = [UIFont fontWithName:self.subtitleFont.fontName size:subtitleTextSize];
+}
+
+- (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
+{
+    self.weekdayFont = [UIFont fontWithName:self.weekdayFont.fontName size:weekdayTextSize];
+}
+
+- (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
+{
+    self.headerTitleFont = [UIFont fontWithName:self.headerTitleFont.fontName size:headerTitleTextSize];
+}
+
 - (void)invalidateAppearance
 {
     [self.calendar setNeedsConfigureAppearance];

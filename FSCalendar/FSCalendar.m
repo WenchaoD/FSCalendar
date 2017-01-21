@@ -1714,6 +1714,10 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
 - (void)setNeedsConfigureAppearance
 {
     _needsConfigureAppearance = YES;
+#if TARGET_INTERFACE_BUILDER
+    [self.calendarWeekdayView configureAppearance];
+    [self.calendarHeaderView configureAppearance];
+#endif
 }
 
 @end

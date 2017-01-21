@@ -149,14 +149,13 @@
 
 #pragma mark - Properties
 
-
+#if TARGET_INTERFACE_BUILDER
 - (void)setCalendar:(FSCalendar *)calendar
 {
-    if (![_calendar isEqual:calendar]) {
-        _calendar = calendar;
-        _appearance = calendar.appearance;
-    }
+    _calendar = calendar;
+    [self configureAppearance];
 }
+#endif
 
 - (void)setScrollOffset:(CGFloat)scrollOffset
 {
@@ -213,10 +212,11 @@
 
 - (void)configureCell:(FSCalendarHeaderCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.titleLabel.font = _appearance.headerTitleFont;
-    cell.titleLabel.textColor = _appearance.headerTitleColor;
-    _calendar.formatter.dateFormat = _appearance.headerDateFormat;
-    BOOL usesUpperCase = (_appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+    FSCalendarAppearance *appearance = self.calendar.appearance;
+    cell.titleLabel.font = appearance.headerTitleFont;
+    cell.titleLabel.textColor = appearance.headerTitleColor;
+    _calendar.formatter.dateFormat = appearance.headerDateFormat;
+    BOOL usesUpperCase = (appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
     NSString *text = nil;
     switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {
@@ -295,14 +295,14 @@
         CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].x;
         CGFloat center = CGRectGetMidX(self.header.bounds);
         if (self.header.scrollEnabled) {
-            self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_width;
+            self.contentView.alpha = 1.0 - (1.0-self.header.calendar.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_width;
         } else {
             self.contentView.alpha = (position > 0 && position < self.header.fs_width*0.75);
         }
     } else if (self.header.scrollDirection == UICollectionViewScrollDirectionVertical) {
         CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].y;
         CGFloat center = CGRectGetMidY(self.header.bounds);
-        self.contentView.alpha = 1.0 - (1.0-self.header.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
+        self.contentView.alpha = 1.0 - (1.0-self.header.calendar.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_height;
     }
     
 }

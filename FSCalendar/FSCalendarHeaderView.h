@@ -16,7 +16,6 @@
 @property (weak, nonatomic) FSCalendarCollectionView *collectionView;
 @property (weak, nonatomic) FSCalendarHeaderLayout *collectionViewLayout;
 @property (weak, nonatomic) FSCalendar *calendar;
-@property (weak, nonatomic) FSCalendarAppearance *appearance;
 
 @property (assign, nonatomic) CGFloat scrollOffset;
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
