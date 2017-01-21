@@ -189,8 +189,6 @@
     // Configure selection layer
     if (monthPosition == FSCalendarMonthPositionCurrent || self.calendar.scope == FSCalendarScopeWeek) {
         
-        diyCell.eventIndicator.hidden = NO;
-        
         SelectionType selectionType = SelectionTypeNone;
         if ([self.calendar.selectedDates containsObject:date]) {
             NSDate *previousDate = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-1 toDate:date options:0];
@@ -223,7 +221,6 @@
         
         diyCell.circleImageView.hidden = YES;
         diyCell.selectionLayer.hidden = YES;
-        diyCell.eventIndicator.hidden = YES; // Hide default event indicator
         if ([self.calendar.selectedDates containsObject:date]) {
             diyCell.titleLabel.textColor = self.calendar.appearance.titlePlaceholderColor; // Prevent placeholders from changing text color
         }

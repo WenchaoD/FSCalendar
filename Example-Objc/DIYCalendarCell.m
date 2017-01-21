@@ -62,6 +62,12 @@
     }
 }
 
+- (void)configureAppearance
+{
+    [super configureAppearance];
+    self.eventIndicator.hidden = self.placeholder; // Hide the event indicator for placeholder cells
+}
+
 - (void)setSelectionType:(SelectionType)selectionType
 {
     if (_selectionType != selectionType) {

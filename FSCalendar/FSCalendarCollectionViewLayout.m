@@ -168,12 +168,7 @@
         CGFloat *heights = malloc(rowSize);
         if (!self.calendar.floatingMode) {
             CGFloat contentHeight = self.collectionView.fs_height - self.sectionInsets.top - self.sectionInsets.bottom;
-            for (int i = 0; i < rowCount; i++) {
-                NSInteger currentCount = rowCount-i;
-                CGFloat actualHeight = FSCalendarRound(contentHeight/currentCount*2)*0.5;
-                contentHeight -= actualHeight;
-                heights[i] = actualHeight;
-            }
+            FSCalendarSliceCake(contentHeight, rowCount, heights);
         } else {
             for (int i = 0; i < rowCount; i++) {
                 heights[i] = self.estimatedItemSize.height;
@@ -181,6 +176,7 @@
         }
         heights;
     });
+    
     free(self.tops);
     self.tops = ({
         NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? 1 : 6;

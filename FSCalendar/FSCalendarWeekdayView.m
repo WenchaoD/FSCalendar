@@ -79,12 +79,6 @@
     
 }
 
-- (void)setCalendar:(FSCalendar *)calendar
-{
-    _calendar = calendar;
-    [self configureAppearance];
-}
-
 - (void)configureAppearance
 {
     BOOL useVeryShortWeekdaySymbols = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
