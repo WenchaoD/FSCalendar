@@ -32,6 +32,7 @@ CG_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
+UIKIT_EXTERN NSString * const FSCalendarBlankCellReuseIdentifier;
 UIKIT_EXTERN NSString * const FSCalendarInvalidArgumentsExceptionName;
 
 CG_EXTERN CGPoint const CGPointInfinity;

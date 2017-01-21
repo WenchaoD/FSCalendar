@@ -92,32 +92,6 @@
 {
     [super layoutSubviews];
     
-    if (self.placeholder) {
-        if (self.calendar.placeholderType==FSCalendarPlaceholderTypeNone) {
-            self.contentView.hidden = self.monthPosition != FSCalendarMonthPositionCurrent;
-        } else if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillHeadTail && self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth && !self.calendar.floatingMode) {
-            
-            NSIndexPath *indexPath = [self.calendar.collectionView indexPathForCell:self];
-            
-            NSInteger lineCount = [self.calendar.calculator numberOfRowsInSection:indexPath.section];
-            if (lineCount == 6) {
-                self.contentView.hidden = NO;
-            } else {
-                NSInteger currentLine = 0;
-                if (self.calendar.collectionViewLayout.scrollDirection == UICollectionViewScrollDirectionVertical) {
-                    currentLine = indexPath.item/7 + 1;
-                } else {
-                    currentLine = indexPath.item%6 + 1;
-                }
-                self.contentView.hidden = (currentLine>lineCount);
-            }
-        }
-    } else if (self.contentView.hidden) {
-        self.contentView.hidden = NO;
-    }
-    
-    if (self.contentView.hidden) return;
-    
     _titleLabel.text = self.title;
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
@@ -499,5 +473,13 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
 }
 
 @end
+
+
+@implementation FSCalendarBlankCell
+
+- (void)configureAppearance {}
+
+@end
+
 
 

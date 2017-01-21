@@ -219,6 +219,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     collectionView.allowsMultipleSelection = NO;
     collectionView.clipsToBounds = YES;
     [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier];
+    [collectionView registerClass:[FSCalendarBlankCell class] forCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier];
     [collectionView registerClass:[FSCalendarStickyHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"placeholderHeader"];
     [daysContainer addSubview:collectionView];
@@ -458,9 +459,30 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FSCalendarMonthPosition position = [self.calculator monthPositionForIndexPath:indexPath];
+    FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    
+    switch (self.placeholderType) {
+        case FSCalendarPlaceholderTypeNone: {
+            if (self.transitionCoordinator.representingScope == FSCalendarScopeMonth && monthPosition != FSCalendarMonthPositionCurrent) {
+                return [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+            }
+            break;
+        }
+        case FSCalendarPlaceholderTypeFillHeadTail: {
+            if (self.transitionCoordinator.representingScope == FSCalendarScopeMonth) {
+                if (indexPath.item >= 7 * [self.calculator numberOfRowsInSection:indexPath.section]) {
+                    return [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                }
+            }
+            break;
+        }
+        case FSCalendarPlaceholderTypeFillSixRows: {
+            break;
+        }
+    }
+    
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
-    FSCalendarCell *cell = [self.dataSourceProxy calendar:self cellForDate:date atMonthPosition:position];
+    FSCalendarCell *cell = [self.dataSourceProxy calendar:self cellForDate:date atMonthPosition:monthPosition];
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
     }
@@ -786,8 +808,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!identifier.length) {
         [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"This identifier must not be nil and must not be an empty string."];
     }
-    if ([identifier isEqualToString:FSCalendarDefaultCellReuseIdentifier]) {
-        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"Do not use %@ as the cell reuse identifier.", FSCalendarDefaultCellReuseIdentifier];
+    if ([@[FSCalendarDefaultCellReuseIdentifier,FSCalendarBlankCellReuseIdentifier] containsObject:identifier]) {
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"Do not use %@ as the cell reuse identifier.", identifier];
     }
     if (![cellClass isSubclassOfClass:[FSCalendarCell class]]) {
         [NSException raise:@"The cell class must be a subclass of FSCalendarCell." format:@""];

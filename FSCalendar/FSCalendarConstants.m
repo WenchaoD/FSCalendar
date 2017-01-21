@@ -29,6 +29,7 @@ CGFloat const FSCalendarStandardScopeHandleHeight = 26;
 NSInteger const FSCalendarDefaultHourComponent = 0;
 
 NSString * const FSCalendarDefaultCellReuseIdentifier = @"_FSCalendarDefaultCellReuseIdentifier";
+NSString * const FSCalendarBlankCellReuseIdentifier = @"_FSCalendarBlankCellReuseIdentifier";
 NSString * const FSCalendarInvalidArgumentsExceptionName = @"Invalid argument exception";
 
 CGPoint const CGPointInfinity = {

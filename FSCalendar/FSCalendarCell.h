@@ -64,11 +64,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 
 @end
 
-
 @interface FSCalendarEventIndicator : UIView
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (strong, nonatomic) id color;
+
+@end
+
+@interface FSCalendarBlankCell : UICollectionViewCell
+
+- (void)configureAppearance;
 
 @end
 
