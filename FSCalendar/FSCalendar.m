@@ -1077,8 +1077,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)reloadData
 {
     if (!self.hasValidateVisibleLayout) return;
-    _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self];
-    _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self];
+    _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self]?:[self.formatter dateFromString:@"1970-01-01"];
+    _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self]?:[self.formatter dateFromString:@"2099-12-31"];
     [_collectionView reloadData];
     [_calendarHeaderView.collectionView reloadData];
     [self setNeedsLayout];
