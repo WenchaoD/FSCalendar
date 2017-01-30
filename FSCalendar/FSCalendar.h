@@ -412,6 +412,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL showsScopeHandle FSCalendarDeprecated(handleScopeGesture:);
 
 /**
+ A Boolean value that determines whether the calendar should allow selection of days from previous and next months when showing week scope. Default is NO;
+ */
+@property (assign, nonatomic) IBInspectable BOOL allowsSelectionFromAllMonthsInWeekScope;
+
+/**
  The multiplier of line height while paging enabled is NO. Default is 1.0;
  */
 @property (assign, nonatomic) IBInspectable CGFloat lineHeightMultiplier;
