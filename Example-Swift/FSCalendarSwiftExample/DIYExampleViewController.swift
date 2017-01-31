@@ -1,6 +1,6 @@
 //
 //  DIYViewController.swift
-//  SwiftExample
+//  FSCalendarSwiftExample
 //
 //  Created by dingwenchao on 06/11/2016.
 //  Copyright © 2016 wenchao. All rights reserved.
@@ -10,15 +10,17 @@ import Foundation
 
 class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
     
-    private let gregorian = Calendar(identifier: .gregorian)
-    private let formatter: DateFormatter = {
+    fileprivate let gregorian = Calendar(identifier: .gregorian)
+    fileprivate let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
     
-    private weak var calendar: FSCalendar!
-    private weak var eventLabel: UILabel!
+    fileprivate weak var calendar: FSCalendar!
+    fileprivate weak var eventLabel: UILabel!
+    
+    // MARK:- Life cycle
     
     override func loadView() {
         
@@ -40,7 +42,7 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         calendar.appearance.eventOffset = CGPoint(x: 0, y: -7)
         calendar.today = nil // Hide the today circle
         calendar.register(DIYCalendarCell.self, forCellReuseIdentifier: "cell")
-        calendar.clipsToBounds = true // Remove top/bottom line
+//        calendar.clipsToBounds = true // Remove top/bottom line
         
         calendar.swipeToChooseGesture.isEnabled = true // Swipe-To-Choose
         
@@ -72,15 +74,20 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         // Uncomment this to perform an 'initial-week-scope'
         // self.calendar.scope = FSCalendarScopeWeek;
         
-        self.calendar.select(self.gregorian.date(byAdding: .day, value: -1, to: Date()), scrollToDate: false)
-        self.calendar.select(self.gregorian.date(byAdding: .day, value: 0, to: Date()), scrollToDate: false)
-        self.calendar.select(self.gregorian.date(byAdding: .day, value: 1, to: Date()), scrollToDate: false)
+        let dates = [
+            self.gregorian.date(byAdding: .day, value: -1, to: Date()),
+            Date(),
+            self.gregorian.date(byAdding: .day, value: 1, to: Date())
+        ]
+        dates.forEach { (date) in
+            self.calendar.select(date, scrollToDate: false)
+        }
+        // For UITest
+        self.calendar.accessibilityIdentifier = "calendar"
         
     }
     
-    deinit {
-        print("\(#function)")
-    }
+    // MARK:- FSCalendarDataSource
     
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
         let cell = calendar.dequeueReusableCell(withIdentifier: "cell", for: date, at: position)
@@ -88,21 +95,8 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
     }
     
     func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
-        configure(cell: cell, for: date, at: position)
+        self.configure(cell: cell, for: date, at: position)
     }
-    
-    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
-        return monthPosition == .current;
-    }
-    
-//    func minimumDate(for calendar: FSCalendar) -> Date {
-//        return Date()
-//    }
-//    
-//    func maximumDate(for calendar: FSCalendar) -> Date {
-//        let oneYearFromNow = self.gregorian.date(byAdding: .year, value: 1, to: Date(), wrappingComponents: true)
-//        return oneYearFromNow!
-//    }
     
     func calendar(_ calendar: FSCalendar, titleFor date: Date) -> String? {
         if self.gregorian.isDateInToday(date) {
@@ -115,12 +109,22 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         return 2
     }
     
+    // MARK:- FSCalendarDelegate
+    
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
         self.calendar.frame.size.height = bounds.height
         self.eventLabel.frame.origin.y = calendar.frame.maxY + 10
     }
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date) {
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition)   -> Bool {
+        return monthPosition == .current
+    }
+    
+    func calendar(_ calendar: FSCalendar, shouldDeselect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        return monthPosition == .current
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         print("did select date \(self.formatter.string(from: date))")
         self.configureVisibleCells()
     }
@@ -153,9 +157,7 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         // Custom today circle
         diyCell.circleImageView.isHidden = !self.gregorian.isDateInToday(date)
         // Configure selection layer
-        if position == .current || calendar.scope == .week {
-            
-            diyCell.eventIndicator.isHidden = false
+        if position == .current {
             
             var selectionType = SelectionType.none
             
@@ -184,20 +186,12 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
                 diyCell.selectionLayer.isHidden = true
                 return
             }
-            
             diyCell.selectionLayer.isHidden = false
             diyCell.selectionType = selectionType
             
-        }
-        else if position == .next || position == .previous {
+        } else {
             diyCell.circleImageView.isHidden = true
             diyCell.selectionLayer.isHidden = true
-            diyCell.eventIndicator.isHidden = true
-            // Hide default event indicator
-            if self.calendar.selectedDates.contains(date) {
-                diyCell.titleLabel!.textColor = self.calendar.appearance.titlePlaceholderColor
-                // Prevent placeholders from changing text color
-            }
         }
     }
     

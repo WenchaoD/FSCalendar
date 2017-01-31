@@ -268,17 +268,21 @@
                 NSInteger numberOfRows = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth ? 6 : 1;
                 
                 NSInteger startSection = rect.origin.x/self.collectionView.fs_width;
-                CGFloat widthDelta1 = FSCalendarMod(CGRectGetMinX(rect), self.collectionView.fs_width) - self.sectionInsets.left;
-                widthDelta1 = MAX(0, widthDelta1);
+                CGFloat widthDelta1 = FSCalendarMod(CGRectGetMinX(rect), self.collectionView.fs_width)-self.sectionInsets.left;
+                widthDelta1 = MIN(MAX(0, widthDelta1), self.collectionView.fs_width-self.sectionInsets.left);
                 NSInteger columnCountDelta1 = FSCalendarFloor(widthDelta1/self.estimatedItemSize.width);
-                numberOfColumns += (7-columnCountDelta1) % 7;
-                NSInteger startColumn = startSection*7 + columnCountDelta1%7;
+                numberOfColumns += (7-columnCountDelta1);
+                NSInteger startColumn = startSection*7 + columnCountDelta1;
                 
                 CGFloat widthDelta2 = FSCalendarMod(CGRectGetMaxX(rect), self.collectionView.fs_width - self.sectionInsets.left);
-                widthDelta2 = MAX(0, widthDelta2);
+                widthDelta2 = MIN(MAX(0, widthDelta2), self.collectionView.fs_width - self.sectionInsets.left);
                 
                 NSInteger columnCountDelta2 = FSCalendarCeil(widthDelta2/self.estimatedItemSize.width);
-                numberOfColumns += columnCountDelta2%7;
+                numberOfColumns += columnCountDelta2;
+                
+                if (columnCountDelta2 + (7-columnCountDelta1) > 7) {
+                    numberOfColumns -= 7;
+                }
                 
                 NSInteger endColumn = startColumn + numberOfColumns - 1;
                 
@@ -306,16 +310,20 @@
                 
                 NSInteger startSection = rect.origin.y/self.collectionView.fs_height;
                 CGFloat heightDelta1 = FSCalendarMod(CGRectGetMinY(rect), self.collectionView.fs_height)-self.sectionInsets.top;
-                heightDelta1 = MAX(0, heightDelta1);
+                heightDelta1 = MIN(MAX(0, heightDelta1), self.collectionView.fs_height-self.sectionInsets.top);
                 NSInteger rowCountDelta1 = FSCalendarFloor(heightDelta1/self.estimatedItemSize.height);
-                numberOfRows += (6-rowCountDelta1) % 6;
-                NSInteger startRow = startSection*6 + rowCountDelta1%6;
+                numberOfRows += (6-rowCountDelta1);
+                NSInteger startRow = startSection*6 + rowCountDelta1;
                 
-                CGFloat heightDelta2 = FSCalendarMod(CGRectGetMaxY(rect), self.collectionView.fs_height);
-                heightDelta2 = MAX(0, heightDelta2-self.sectionInsets.bottom);
+                CGFloat heightDelta2 = FSCalendarMod(CGRectGetMaxY(rect), self.collectionView.fs_height)-self.sectionInsets.top;
+                heightDelta2 = MIN(MAX(0, heightDelta2-self.sectionInsets.bottom), self.collectionView.fs_height-self.sectionInsets.top);
                 
                 NSInteger rowCountDelta2 = FSCalendarCeil(heightDelta2/self.estimatedItemSize.height);
                 numberOfRows += rowCountDelta2;
+                
+                if (rowCountDelta2 + (6-rowCountDelta1) > 6) {
+                    numberOfRows -= 6;
+                }
                 
                 NSInteger endRow = startRow + numberOfRows - 1;
                 

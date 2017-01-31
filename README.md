@@ -1,8 +1,8 @@
 
 ![logo](https://cloud.githubusercontent.com/assets/5186464/16540124/efc51f72-408b-11e6-934a-4e750b8b55bb.png)
 <br/><br/>
-[![Apps Using](https://img.shields.io/badge/Apps%20Using-%3E%206,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
-[![Total Downloads](https://img.shields.io/badge/Total%20Downloads-%3E%20310,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+[![Apps Using](https://img.shields.io/badge/Apps%20Using-%3E%207,200-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+[![Total Downloads](https://img.shields.io/badge/Total%20Downloads-%3E%20360,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
 <br>
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
@@ -78,12 +78,6 @@ pod 'FSCalendar'
 
 > [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
-* Alternatively to give it a test run, run the command:
-
-```ruby
-pod try FSCalendar
-```
-
 ## Carthage: 
 * For iOS8+
 
@@ -94,20 +88,21 @@ github "WenchaoD/FSCalendar"
 ## Manually:
 * Drag all files under `FSCalendar` folder into your project. 👍
 
-## Support IBInspectable / IBDesignable
-Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Have fun with Interface builder](#roll_with_interface_builder)
+> Alternatively to give it a test run, simply press `command+u` in `Example-Objc` or `Example-Swift` and launch the ***UITest Target***. <br>
+> Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Have fun with Interface builder](#roll_with_interface_builder)
+
 
 # Setup
 
 ## Use Interface Builder
 
-1. Drag an UIView object to ViewController Scene
-2. Change the `Custom Class` to `FSCalendar`<br/>
-3. Link `dataSource` and `delegate` to the ViewController <br/>
+1、 Drag an UIView object to ViewController Scene
+2、 Change the `Custom Class` to `FSCalendar`<br/>
+3、 Link `dataSource` and `delegate` to the ViewController <br/>
 
 ![fscalendar-ib](https://cloud.githubusercontent.com/assets/5186464/9488580/a360297e-4c0d-11e5-8548-ee9274e7c4af.jpg)
 
-4. Finally, you should implement `FSCalendarDataSource` and `FSCalendarDelegate` in ViewController.m
+4、 Finally, implement `FSCalendarDataSource` and `FSCalendarDelegate` in your `ViewController`
 
 ## Or use code
 
@@ -143,27 +138,53 @@ self.calendar = calendar
 
 > To use **FSCalendar** in Swift3, see `Example-Swift` for details.
 
-<br/>
 
 ## <a id='adjusts_frame_dynamicly' /></a>Warning 
-`FSCalendar` doesn't change frame by itself, Please implement
+`FSCalendar` ***doesn't*** update frame by itself, Please implement
 
-* For autoLayout
+* For ***AutoLayout***
 
 ```objc
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
-    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    self.calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    // Do other updates here
     [self.view layoutIfNeeded];
 }
 ```
 
-* For manual layout
+* For ***Manual Layout***
 
 ```objc
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+    // Do other updates here
+}
+```
+
+* If you are using ***Masonry***
+
+```objc
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    [calendar mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(bounds.size.height));
+        // Do other updates
+    }];
+    [self.view layoutIfNeeded];
+}
+```
+
+* If you are using ***SnapKit***
+
+```swift
+func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+    calendar.snp.updateConstraints { (make) in
+        make.height.equalTo(bounds.height)
+        // Do other updates
+    }
+    self.view.layoutIfNeeded()
 }
 ```
 
@@ -172,7 +193,7 @@ self.calendar = calendar
 
 # <a id="pre-knowledge"></a>Pre-knowledge
 
-> In `Swift3`, `NSDate` and `NSDateFormatter` have been renamed to ***Date*** and ***DateFormatter*** , see `SwiftExample` for details.
+> In `Swift3`, `NSDate` and `NSDateFormatter` have been renamed to ***Date*** and ***DateFormatter*** , see `Example-Swift` for details.
 
 ## How to create NSDate object
 
@@ -278,7 +299,7 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 ## <a id="support"></a>Support this repo
 * ***Star*** this repo <a href="#"><img style="margin-bottom:-12px" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"></a>
 <br/>
-* Support with &nbsp; <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=Lunch%20is%20on%20me%21&item_number=Support%20FSCalendar&amount=10%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted" target="_blank"><img src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg" width="100" height="40" style="margin-bottom:-15px;"></a>
+* Support with &nbsp; <a href="https://www.paypal.me/WenchaoD" target="_blank"><img src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg" width="100" height="40" style="margin-bottom:-15px;"></a>
 <br/>
 * Support with <a href="https://cloud.githubusercontent.com/assets/5186464/15096775/bacc0506-1539-11e6-91b7-b1a7a773622b.png" target="_blank"><img src="http://a1.mzstatic.com/us/r30/Purple49/v4/50/16/b3/5016b341-39c1-b47b-2994-d7e23823baed/icon175x175.png" width="40" height="40" style="margin-bottom:-15px;-webkit-border-radius:10px;border:1px solid rgba(30, 154, 236, 1);"></a> or
 <a href="https://cloud.githubusercontent.com/assets/5186464/15096872/b06f3a3a-153c-11e6-89f9-2e9c7b88ef42.png" target="_blank"><img src="http://a4.mzstatic.com/us/r30/Purple49/v4/23/31/14/233114f8-2e8d-7b63-8dc5-85d29893061e/icon175x175.jpeg" height="40" width="40" style="margin-bottom:-15px; -webkit-border-radius: 10px;border:1px solid rgba(43, 177, 0, 1)"></a>

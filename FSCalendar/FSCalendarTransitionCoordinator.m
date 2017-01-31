@@ -421,7 +421,16 @@
         case FSCalendarTransitionMonthToWeek: {
 
             NSDate *focusedDate = ({
-                NSArray<NSDate *> *candidates = [NSSet setWithArray:@[self.calendar.selectedDate?:self.calendar.currentPage, self.calendar.today ?: self.calendar.currentPage, self.calendar.currentPage]].allObjects;
+                NSArray<NSDate *> *candidates = ({
+                    NSMutableArray *dates = self.calendar.selectedDates.reverseObjectEnumerator.allObjects.mutableCopy;
+                    if (self.calendar.today) {
+                        [dates addObject:self.calendar.today];
+                    }
+                    if (self.calendar.currentPage) {
+                        [dates addObject:self.calendar.currentPage];
+                    }
+                    dates.copy;
+                });
                 NSArray<NSDate *> *visibleCandidates = [candidates filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDate *  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
                     NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:evaluatedObject scope:FSCalendarScopeMonth];
                     NSInteger currentSection = [self.calendar.calculator indexPathForDate:self.calendar.currentPage scope:FSCalendarScopeMonth].section;
@@ -451,7 +460,16 @@
             
             NSDate *focusedDate = ({
                 NSDate *date =  [self.calendar.gregorian fs_lastDayOfWeek:currentPage];
-                NSArray<NSDate *> *candidates = [NSSet setWithArray:@[self.calendar.selectedDate?:date, self.calendar.today ?: date, date]].allObjects;
+                NSArray<NSDate *> *candidates = ({
+                    NSMutableArray *dates = self.calendar.selectedDates.reverseObjectEnumerator.allObjects.mutableCopy;
+                    if (self.calendar.today) {
+                        [dates addObject:self.calendar.today];
+                    }
+                    if (self.calendar.currentPage) {
+                        [dates addObject:self.calendar.currentPage];
+                    }
+                    dates.copy;
+                });
                 NSArray<NSDate *> *visibleCandidates = [candidates filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSDate *  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
                     NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:evaluatedObject scope:FSCalendarScopeWeek];
                     NSInteger currentSection = [self.calendar.calculator indexPathForDate:self.calendar.currentPage scope:FSCalendarScopeWeek].section;

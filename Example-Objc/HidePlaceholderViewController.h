@@ -7,21 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FSCalendar.h"
 
-@interface HidePlaceholderViewController : UIViewController <FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+@interface HidePlaceholderViewController : UIViewController
 
-@property (weak, nonatomic) FSCalendar *calendar;
-
-@property (weak, nonatomic) UIView *bottomContainer;
-@property (weak, nonatomic) UILabel *eventLabel;
-@property (weak, nonatomic) UIButton *nextButton;
-@property (weak, nonatomic) UIButton *prevButton;
-
-@property (strong, nonatomic) NSCalendar *gregorian;
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
-
-- (void)nextClicked:(id)sender;
-- (void)prevClicked:(id)sender;
 
 @end

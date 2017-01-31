@@ -10,21 +10,71 @@
 
 #import "CalendarConfigViewController.h"
 
-@interface StoryboardExampleViewController ()
+@interface StoryboardExampleViewController()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+
+@property (weak  , nonatomic) IBOutlet FSCalendar *calendar;
+@property (weak  , nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
+
+@property (assign, nonatomic) NSInteger      theme;
+@property (assign, nonatomic) BOOL           lunar;
+
+@property (strong, nonatomic) NSArray<NSString *> *datesShouldNotBeSelected;
+@property (strong, nonatomic) NSArray<NSString *> *datesWithEvent;
 
 @property (strong, nonatomic) NSCalendar *gregorianCalendar;
 
 @property (strong, nonatomic) NSCalendar *lunarCalendar;
-@property (strong, nonatomic) NSArray *lunarChars;
+@property (strong, nonatomic) NSArray<NSString *> *lunarChars;
 
 @property (strong, nonatomic) NSDateFormatter *dateFormatter1;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter2;
+
+- (IBAction)unwind2StoryboardExample:(UIStoryboardSegue *)segue;
 
 @end
 
 @implementation StoryboardExampleViewController
 
 #pragma mark - Life Cycle
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        
+        self.gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        
+        NSLocale *chinese = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+        
+        self.dateFormatter1 = [[NSDateFormatter alloc] init];
+        self.dateFormatter1.locale = chinese;
+        self.dateFormatter1.dateFormat = @"yyyy/MM/dd";
+        
+        self.dateFormatter2 = [[NSDateFormatter alloc] init];
+        self.dateFormatter2.locale = chinese;
+        self.dateFormatter2.dateFormat = @"yyyy-MM-dd";
+        
+        self.lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
+        self.lunarCalendar.locale = chinese;
+        self.lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
+        
+        self.calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
+        
+        self.datesShouldNotBeSelected = @[@"2016/08/07",
+                                          @"2016/09/07",
+                                          @"2016/10/07",
+                                          @"2016/11/07",
+                                          @"2016/12/07",
+                                          @"2016/01/07",
+                                          @"2016/02/07"];
+        
+        self.datesWithEvent = @[@"2016-12-03",
+                                @"2016-12-07",
+                                @"2016-12-15",
+                                @"2016-12-25"];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -35,40 +85,9 @@
     if ([[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
         self.calendarHeightConstraint.constant = 400;
     }
+    [self.calendar selectDate:[self.dateFormatter1 dateFromString:@"2016/12/05"] scrollToDate:YES];
     
-    self.gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    
-    NSLocale *chinese = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
-    
-    self.dateFormatter1 = [[NSDateFormatter alloc] init];
-    self.dateFormatter1.locale = chinese;
-    self.dateFormatter1.dateFormat = @"yyyy/MM/dd";
-    
-    self.dateFormatter2 = [[NSDateFormatter alloc] init];
-    self.dateFormatter2.locale = chinese;
-    self.dateFormatter2.dateFormat = @"yyyy-MM-dd";
-    
-    self.lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
-    self.lunarCalendar.locale = chinese;
-    self.lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
-
-    _scrollDirection = _calendar.scrollDirection;
-    _calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase|FSCalendarCaseOptionsWeekdayUsesUpperCase;
-    
-    [_calendar selectDate:[self.dateFormatter1 dateFromString:@"2016/12/05"]];
-    
-    _datesShouldNotBeSelected = @[@"2016/08/07",
-                                  @"2016/09/07",
-                                  @"2016/10/07",
-                                  @"2016/11/07",
-                                  @"2016/12/07",
-                                  @"2016/01/07",
-                                  @"2016/02/07"];
-    
-    _datesWithEvent = @[@"2016-12-03",
-                        @"2016-12-07",
-                        @"2016-12-15",
-                        @"2016-12-25"];
+    self.calendar.accessibilityIdentifier = @"calendar";
     
 }
 
@@ -95,7 +114,10 @@
 
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
 {
-    return [_datesWithEvent containsObject:[self.dateFormatter2 stringFromDate:date]];
+    if ([self.datesWithEvent containsObject:[self.dateFormatter2 stringFromDate:date]]) {
+        return 1;
+    }
+    return 0;
 }
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
@@ -136,12 +158,6 @@
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar
 {
     NSLog(@"did change to page %@",[self.dateFormatter1 stringFromDate:calendar.currentPage]);
-}
-
-- (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated
-{
-    _calendarHeightConstraint.constant = [calendar sizeThatFits:CGSizeZero].height;
-    [self.view layoutIfNeeded];
 }
 
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
@@ -187,12 +203,37 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.destinationViewController isKindOfClass:[CalendarConfigViewController class]]) {
-        [segue.destinationViewController setValue:self forKey:@"viewController"];
+    CalendarConfigViewController *config = segue.destinationViewController;
+    config.lunar = self.lunar;
+    config.theme = self.theme;
+    config.selectedDate = self.calendar.selectedDate;
+    config.firstWeekday = self.calendar.firstWeekday;
+    config.scrollDirection = self.calendar.scrollDirection;
+}
+
+- (void)unwind2StoryboardExample:(UIStoryboardSegue *)segue
+{
+    CalendarConfigViewController *config = segue.sourceViewController;
+    self.lunar = config.lunar;
+    self.theme = config.theme;
+    [self.calendar selectDate:config.selectedDate scrollToDate:NO];
+    
+    if (self.calendar.firstWeekday != config.firstWeekday) {
+        self.calendar.firstWeekday = config.firstWeekday;
+    }
+    
+    if (self.calendar.scrollDirection != config.scrollDirection) {
+        self.calendar.scrollDirection = config.scrollDirection;
+        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
+                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][self.calendar.scrollDirection]]
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
     }
 }
 
-#pragma mark - Setter
+
+#pragma mark - Private properties
 
 - (void)setTheme:(NSInteger)theme
 {
@@ -219,7 +260,7 @@
                 _calendar.appearance.todayColor = [UIColor redColor];
                 _calendar.appearance.borderRadius = 1.0;
                 _calendar.appearance.headerMinimumDissolvedAlpha = 0.0;
-
+                
                 break;
             }
             case 2: {
@@ -236,7 +277,7 @@
             default:
                 break;
         }
-
+        
     }
 }
 
@@ -248,33 +289,5 @@
     }
 }
 
-- (void)setScrollDirection:(FSCalendarScrollDirection)scrollDirection
-{
-    if (_scrollDirection != scrollDirection) {
-        _scrollDirection = scrollDirection;
-        _calendar.scrollDirection = scrollDirection;
-        [[[UIAlertView alloc] initWithTitle:@"FSCalendar"
-                                    message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][_calendar.scrollDirection]]
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil, nil] show];
-    }
-}
-
-- (void)setSelectedDate:(NSDate *)selectedDate
-{
-    [_calendar selectDate:selectedDate];
-}
-
-- (void)setFirstWeekday:(NSUInteger)firstWeekday
-{
-    if (_firstWeekday != firstWeekday) {
-        _firstWeekday = firstWeekday;
-        _calendar.firstWeekday = firstWeekday;
-    }
-}
-
 @end
-
-
 

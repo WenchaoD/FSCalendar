@@ -76,6 +76,7 @@
 		EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
 		EEC9C03B1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */; };
 		EECA10F81BA9C0E400945B83 /* FullScreenExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */; };
+		F9384A651E3ACEFB001601E0 /* FSCalendarExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F9384A641E3ACEFB001601E0 /* FSCalendarExampleUITests.m */; };
 		F9564BF01E2DB8CA00FC9342 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9564BEF1E2DB8CA00FC9342 /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = EE638CE11B8A1F550006DD1A;
 			remoteInfo = FSCalendar;
+		};
+		F9384A671E3ACEFB001601E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EE0D7FBF1B89C5D3003C287B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EE0D7FC61B89C5D3003C287B;
+			remoteInfo = FSCalendarExample;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -178,6 +186,9 @@
 		EEC9C0381BDC9E7000383A07 /* FSCalendarCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarCollectionView.m; sourceTree = "<group>"; };
 		EECA10F61BA9C0E400945B83 /* FullScreenExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenExampleViewController.h; sourceTree = SOURCE_ROOT; };
 		EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenExampleViewController.m; sourceTree = SOURCE_ROOT; };
+		F9384A621E3ACEFB001601E0 /* FSCalendarExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FSCalendarExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9384A641E3ACEFB001601E0 /* FSCalendarExampleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSCalendarExampleUITests.m; sourceTree = "<group>"; };
+		F9384A661E3ACEFB001601E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9564BEF1E2DB8CA00FC9342 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -197,6 +208,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EE638CDE1B8A1F550006DD1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9384A5F1E3ACEFB001601E0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -299,6 +317,7 @@
 				30B0BABC1B8D8E22004B9476 /* FSCalendar */,
 				EE0D7FC91B89C5D3003C287B /* Example */,
 				EE638CF21B8A1F550006DD1A /* FSCalendarTests */,
+				F9384A631E3ACEFB001601E0 /* FSCalendarExampleUITests */,
 				EE0D7FC81B89C5D3003C287B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -309,6 +328,7 @@
 				EE0D7FC71B89C5D3003C287B /* FSCalendarExample.app */,
 				EE638CE21B8A1F550006DD1A /* FSCalendar.framework */,
 				30671DC71D6D574C00BCFC4E /* FSCalendarTests.xctest */,
+				F9384A621E3ACEFB001601E0 /* FSCalendarExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -401,6 +421,15 @@
 			name = "Fullscreen Example";
 			sourceTree = "<group>";
 		};
+		F9384A631E3ACEFB001601E0 /* FSCalendarExampleUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F9384A641E3ACEFB001601E0 /* FSCalendarExampleUITests.m */,
+				F9384A661E3ACEFB001601E0 /* Info.plist */,
+			);
+			path = FSCalendarExampleUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -485,6 +514,24 @@
 			productReference = EE638CE21B8A1F550006DD1A /* FSCalendar.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		F9384A611E3ACEFB001601E0 /* FSCalendarExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9384A6B1E3ACEFB001601E0 /* Build configuration list for PBXNativeTarget "FSCalendarExampleUITests" */;
+			buildPhases = (
+				F9384A5E1E3ACEFB001601E0 /* Sources */,
+				F9384A5F1E3ACEFB001601E0 /* Frameworks */,
+				F9384A601E3ACEFB001601E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F9384A681E3ACEFB001601E0 /* PBXTargetDependency */,
+			);
+			name = FSCalendarExampleUITests;
+			productName = FSCalendarExampleUITests;
+			productReference = F9384A621E3ACEFB001601E0 /* FSCalendarExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -504,6 +551,12 @@
 					};
 					EE638CE11B8A1F550006DD1A = {
 						CreatedOnToolsVersion = 6.4;
+					};
+					F9384A611E3ACEFB001601E0 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = HZF422TY46;
+						ProvisioningStyle = Automatic;
+						TestTargetID = EE0D7FC61B89C5D3003C287B;
 					};
 				};
 			};
@@ -526,6 +579,7 @@
 				EE0D7FC61B89C5D3003C287B /* FSCalendarExample */,
 				EE638CE11B8A1F550006DD1A /* FSCalendar */,
 				30671DC61D6D574C00BCFC4E /* FSCalendarTests */,
+				F9384A611E3ACEFB001601E0 /* FSCalendarExampleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -550,6 +604,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EE638CE01B8A1F550006DD1A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9384A601E3ACEFB001601E0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -629,6 +690,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F9384A5E1E3ACEFB001601E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9384A651E3ACEFB001601E0 /* FSCalendarExampleUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -641,6 +710,11 @@
 			isa = PBXTargetDependency;
 			target = EE638CE11B8A1F550006DD1A /* FSCalendar */;
 			targetProxy = 30B0BA961B8D8B02004B9476 /* PBXContainerItemProxy */;
+		};
+		F9384A681E3ACEFB001601E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EE0D7FC61B89C5D3003C287B /* FSCalendarExample */;
+			targetProxy = F9384A671E3ACEFB001601E0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -848,6 +922,41 @@
 			};
 			name = Release;
 		};
+		F9384A691E3ACEFB001601E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = HZF422TY46;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = FSCalendarExampleUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchaod.FSCalendarExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = FSCalendarExample;
+			};
+			name = Debug;
+		};
+		F9384A6A1E3ACEFB001601E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = HZF422TY46;
+				INFOPLIST_FILE = FSCalendarExampleUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wenchaod.FSCalendarExampleUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = FSCalendarExample;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -883,6 +992,15 @@
 			buildConfigurations = (
 				EE638CFC1B8A1F550006DD1A /* Debug */,
 				EE638CFD1B8A1F550006DD1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F9384A6B1E3ACEFB001601E0 /* Build configuration list for PBXNativeTarget "FSCalendarExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9384A691E3ACEFB001601E0 /* Debug */,
+				F9384A6A1E3ACEFB001601E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

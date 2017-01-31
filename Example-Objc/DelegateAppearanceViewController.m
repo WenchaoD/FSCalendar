@@ -10,6 +10,28 @@
 
 #define kViolet [UIColor colorWithRed:170/255.0 green:114/255.0 blue:219/255.0 alpha:1.0]
 
+NS_ASSUME_NONNULL_BEGIN
+
+@interface DelegateAppearanceViewController()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+
+@property (weak, nonatomic) FSCalendar *calendar;
+
+@property (strong, nonatomic) NSCalendar *gregorian;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter1;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter2;
+
+@property (strong, nonatomic) NSDictionary *fillSelectionColors;
+@property (strong, nonatomic) NSDictionary *fillDefaultColors;
+@property (strong, nonatomic) NSDictionary *borderDefaultColors;
+@property (strong, nonatomic) NSDictionary *borderSelectionColors;
+
+@property (strong, nonatomic) NSArray *datesWithEvent;
+@property (strong, nonatomic) NSArray *datesWithMultipleEvents;
+
+@end
+
+NS_ASSUME_NONNULL_END
+
 @implementation DelegateAppearanceViewController
 
 #pragma mark - Life cycle
@@ -112,11 +134,18 @@
     [self.view addSubview:calendar];
     self.calendar = calendar;
     
-    [calendar selectDate:[self.dateFormatter1 dateFromString:@"2015/10/03"]];
+    [calendar setCurrentPage:[self.dateFormatter1 dateFromString:@"2015/10/03"] animated:NO];
     
     UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStylePlain target:self action:@selector(todayItemClicked:)];
     self.navigationItem.rightBarButtonItem = todayItem;
     
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // For UITest
+    self.calendar.accessibilityIdentifier = @"calendar";
 }
 
 - (void)dealloc

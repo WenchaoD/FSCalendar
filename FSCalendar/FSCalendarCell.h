@@ -14,15 +14,45 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 
 @interface FSCalendarCell : UICollectionViewCell
 
-@property (weak, nonatomic) FSCalendar *calendar;
-@property (weak, nonatomic) FSCalendarAppearance *appearance;
+#pragma mark - Public properties
 
+/**
+ The day text label of the cell
+ */
 @property (weak, nonatomic) UILabel  *titleLabel;
+
+
+/**
+ The subtitle label of the cell
+ */
 @property (weak, nonatomic) UILabel  *subtitleLabel;
+
+
+/**
+ The shape layer of the cell
+ */
+@property (weak, nonatomic) CAShapeLayer *shapeLayer;
+
+/**
+ The imageView below shape layer of the cell
+ */
 @property (weak, nonatomic) UIImageView *imageView;
 
-@property (weak, nonatomic) CAShapeLayer *shapeLayer;
+
+/**
+ The collection of event dots of the cell
+ */
 @property (weak, nonatomic) FSCalendarEventIndicator *eventIndicator;
+
+/**
+ A boolean value indicates that whether the cell is "placeholder". Default is NO.
+ */
+@property (assign, nonatomic, getter=isPlaceholder) BOOL placeholder;
+
+#pragma mark - Private properties
+
+@property (weak, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) FSCalendarAppearance *appearance;
 
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *subtitle;
@@ -32,7 +62,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (assign, nonatomic) BOOL dateIsToday;
 @property (assign, nonatomic) BOOL weekend;
-@property (assign, nonatomic) BOOL placeholder;
 
 @property (strong, nonatomic) UIColor *preferredFillDefaultColor;
 @property (strong, nonatomic) UIColor *preferredFillSelectionColor;

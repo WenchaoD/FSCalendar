@@ -65,7 +65,11 @@
 - (void)configureAppearance
 {
     [super configureAppearance];
-    self.eventIndicator.hidden = self.placeholder; // Hide the event indicator for placeholder cells
+    // Override the build-in appearance configuration
+    if (self.isPlaceholder) {
+        self.titleLabel.textColor = [UIColor lightGrayColor];
+        self.eventIndicator.hidden = YES;
+    }
 }
 
 - (void)setSelectionType:(SelectionType)selectionType

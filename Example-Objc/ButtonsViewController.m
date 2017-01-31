@@ -7,8 +7,18 @@
 //
 
 #import "ButtonsViewController.h"
+#import "FSCalendar.h"
 
-@interface ButtonsViewController ()
+@interface ButtonsViewController()<FSCalendarDataSource,FSCalendarDelegate>
+
+@property (weak, nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) UIButton *previousButton;
+@property (weak, nonatomic) UIButton *nextButton;
+
+@property (strong, nonatomic) NSCalendar *gregorian;
+
+- (void)previousClicked:(id)sender;
+- (void)nextClicked:(id)sender;
 
 @end
 
@@ -19,6 +29,7 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
+        self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     }
     return self;
 }
@@ -58,12 +69,6 @@
     [self.view addSubview:nextButton];
     self.nextButton = nextButton;
     
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 }
 
 - (void)previousClicked:(id)sender

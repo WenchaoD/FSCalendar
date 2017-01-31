@@ -3,10 +3,24 @@
 //  FSCalendar
 //
 //  Created by DingWenchao on 6/25/15.
-//  Copyright (c) 2016 =. All rights reserved.
+//  Copyright (c) 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "LoadViewExampleViewController.h"
+#import "FSCalendar.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface LoadViewExampleViewController()<FSCalendarDataSource,FSCalendarDelegate>
+
+@property (weak, nonatomic) FSCalendar *calendar;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSDictionary<NSString *, UIImage *> *images;
+
+@end
+
+NS_ASSUME_NONNULL_END
 
 @implementation LoadViewExampleViewController
 

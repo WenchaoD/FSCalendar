@@ -1,6 +1,6 @@
 //
 //  DIYCalendarCell.swift
-//  SwiftExample
+//  FSCalendarSwiftExample
 //
 //  Created by dingwenchao on 06/11/2016.
 //  Copyright © 2016 wenchao. All rights reserved.
@@ -17,7 +17,6 @@ enum SelectionType : Int {
     case middle
     case rightBorder
 }
-
 
 
 class DIYCalendarCell: FSCalendarCell {
@@ -75,7 +74,15 @@ class DIYCalendarCell: FSCalendarCell {
             let diameter: CGFloat = min(self.selectionLayer.frame.height, self.selectionLayer.frame.width)
             self.selectionLayer.path = UIBezierPath(ovalIn: CGRect(x: self.contentView.frame.width / 2 - diameter / 2, y: self.contentView.frame.height / 2 - diameter / 2, width: diameter, height: diameter)).cgPath
         }
-        
+    }
+    
+    override func configureAppearance() {
+        super.configureAppearance()
+        // Override the build-in appearance configuration
+        if self.isPlaceholder {
+            self.eventIndicator.isHidden = true
+            self.titleLabel.textColor = UIColor.lightGray
+        }
     }
     
 }

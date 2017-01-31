@@ -152,7 +152,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 }
 
 - (void)initialize
-{
+{   
     _appearance = [[FSCalendarAppearance alloc] init];
     _appearance.calendar = self;
     
@@ -1077,8 +1077,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)reloadData
 {
     if (!self.hasValidateVisibleLayout) return;
-    _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self];
-    _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self];
+    _needsRequestingBoundingDates = YES;
     [_collectionView reloadData];
     [_calendarHeaderView.collectionView reloadData];
     [self setNeedsLayout];
@@ -1570,6 +1569,7 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
         [_collectionView deselectItemAtIndexPath:indexPath animated:NO];
     }
     [cell configureAppearance];
+    
 }
 
 - (void)reloadVisibleCells

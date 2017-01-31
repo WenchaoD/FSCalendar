@@ -7,17 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FSCalendar.h"
 
-@interface ButtonsViewController : UIViewController <FSCalendarDataSource, FSCalendarDelegate>
+@interface ButtonsViewController : UIViewController
 
-@property (weak, nonatomic) FSCalendar *calendar;
-@property (weak, nonatomic) UIButton *previousButton;
-@property (weak, nonatomic) UIButton *nextButton;
-
-@property (strong, nonatomic) NSCalendar *gregorian;
-
-- (void)previousClicked:(id)sender;
-- (void)nextClicked:(id)sender;
 
 @end

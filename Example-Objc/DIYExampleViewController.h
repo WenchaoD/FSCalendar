@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FSCalendar.h"
 
 @interface DIYExampleViewController : UIViewController
 

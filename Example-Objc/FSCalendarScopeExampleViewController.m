@@ -8,11 +8,39 @@
 
 #import "FSCalendarScopeExampleViewController.h"
 
-static void * __KVOContext;
+NS_ASSUME_NONNULL_BEGIN
+
+@interface FSCalendarScopeExampleViewController()<UITableViewDataSource,UITableViewDelegate,FSCalendarDataSource,FSCalendarDelegate,UIGestureRecognizerDelegate>
+{
+    void * _KVOContext;
+}
+@property (weak, nonatomic) IBOutlet FSCalendar *calendar;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISwitch *animationSwitch;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) UIPanGestureRecognizer *scopeGesture;
+
+- (IBAction)toggleClicked:(id)sender;
+
+@end
+
+NS_ASSUME_NONNULL_END
 
 @implementation FSCalendarScopeExampleViewController
 
 #pragma mark - Life cycle
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        self.dateFormatter = [[NSDateFormatter alloc] init];
+        self.dateFormatter.dateFormat = @"yyyy/MM/dd";
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -22,10 +50,7 @@ static void * __KVOContext;
         self.calendarHeightConstraint.constant = 400;
     }
     
-    self.dateFormatter = [[NSDateFormatter alloc] init];
-    self.dateFormatter.dateFormat = @"yyyy/MM/dd";
-    
-    [self.calendar selectDate:[NSDate date]];
+    [self.calendar selectDate:[NSDate date] scrollToDate:YES];
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.calendar action:@selector(handleScopeGesture:)];
     panGesture.delegate = self;
@@ -37,15 +62,18 @@ static void * __KVOContext;
     // While the scope gesture begin, the pan gesture of tableView should cancel.
     [self.tableView.panGestureRecognizer requireGestureRecognizerToFail:panGesture];
     
-    [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:__KVOContext];
+    [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:_KVOContext];
     
     self.calendar.scope = FSCalendarScopeWeek;
+    
+    // For UITest
+    self.calendar.accessibilityIdentifier = @"calendar";
     
 }
 
 - (void)dealloc
 {
-    [self.calendar removeObserver:self forKeyPath:@"scope" context:__KVOContext];
+    [self.calendar removeObserver:self forKeyPath:@"scope" context:_KVOContext];
     NSLog(@"%s",__FUNCTION__);
 }
 
@@ -53,7 +81,7 @@ static void * __KVOContext;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
 {
-    if (context == __KVOContext) {
+    if (context == _KVOContext) {
         FSCalendarScope oldScope = [change[NSKeyValueChangeOldKey] unsignedIntegerValue];
         FSCalendarScope newScope = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
         NSLog(@"From %@ to %@",(oldScope==FSCalendarScopeWeek?@"week":@"month"),(newScope==FSCalendarScopeWeek?@"week":@"month"));

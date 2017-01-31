@@ -1,6 +1,6 @@
 //
 //  FSCalendarScopeViewController.swift
-//  SwiftExample
+//  FSCalendarSwiftExample
 //
 //  Created by dingwenchao on 30/12/2016.
 //  Copyright © 2016 wenchao. All rights reserved.
@@ -43,11 +43,16 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         self.tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
         self.calendar.scope = .week
         
+        // For UITest
+        self.calendar.accessibilityIdentifier = "calendar"
+        
     }
     
     deinit {
         print("\(#function)")
     }
+    
+    // MARK:- UIGestureRecognizerDelegate
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         let shouldBegin = self.tableView.contentOffset.y <= -self.tableView.contentInset.top
@@ -81,6 +86,8 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
     
+    // MARK:- UITableViewDataSource
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -100,17 +107,22 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         }
     }
     
+    
+    // MARK:- UITableViewDelegate
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
-            let selectedScope = (indexPath.row == 0) ? FSCalendarScope.month : .week
-            self.calendar.setScope(selectedScope, animated: self.animationSwitch.isOn)
+            let scope: FSCalendarScope = (indexPath.row == 0) ? .month : .week
+            self.calendar.setScope(scope, animated: self.animationSwitch.isOn)
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return 10
     }
+    
+    // MARK:- Target actions
     
     @IBAction func toggleClicked(sender: AnyObject) {
         if self.calendar.scope == .month {

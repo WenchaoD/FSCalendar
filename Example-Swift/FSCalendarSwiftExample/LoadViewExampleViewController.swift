@@ -1,6 +1,6 @@
 //
 //  LoadViewExampleViewController.swift
-//  SwiftExample
+//  FSCalendarSwiftExample
 //
 //  Created by dingwenchao on 10/17/16.
 //  Copyright © 2016 wenchao. All rights reserved.

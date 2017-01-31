@@ -11,6 +11,8 @@
 
 #import "FSCalendar.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FullScreenExampleViewController()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -38,6 +40,8 @@
 - (NSArray<EKEvent *> *)eventsForDate:(NSDate *)date;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 @implementation FullScreenExampleViewController
 
@@ -115,6 +119,8 @@
     self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-03"];
     self.maximumDate = [self.dateFormatter dateFromString:@"2018-04-10"];
 
+    self.calendar.accessibilityIdentifier = @"calendar";
+    
     [self loadCalendarEvents];
     
     /*

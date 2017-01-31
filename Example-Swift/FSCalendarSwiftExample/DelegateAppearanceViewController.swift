@@ -1,6 +1,6 @@
 //
 //  DelegateAppearanceViewController.swift
-//  SwiftExample
+//  FSCalendarSwiftExample
 //
 //  Created by dingwenchao on 30/12/2016.
 //  Copyright © 2016 wenchao. All rights reserved.
@@ -55,6 +55,9 @@ class DelegateAppearanceViewController: UIViewController, FSCalendarDataSource, 
         calendar.select(self.dateFormatter1.date(from: "2015/10/03"))
         let todayItem = UIBarButtonItem(title: "TODAY", style: .plain, target: self, action: #selector(self.todayItemClicked(sender:)))
         self.navigationItem.rightBarButtonItem = todayItem
+        
+        // For UITest
+        self.calendar.accessibilityIdentifier = "calendar"
     }
     
     deinit {
@@ -95,7 +98,7 @@ class DelegateAppearanceViewController: UIViewController, FSCalendarDataSource, 
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
         let key = self.dateFormatter1.string(from: date)
-        if let color = self.fillDefaultColors[key] {
+        if let color = self.fillSelectionColors[key] {
             return color
         }
         return appearance.selectionColor
