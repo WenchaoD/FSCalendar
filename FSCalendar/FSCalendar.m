@@ -188,6 +188,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
     _needsConfigureAppearance = YES;
+    _needsRequestingBoundingDates = YES;
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
@@ -1701,8 +1702,8 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
 
 - (void)requestBoundingDatesIfNecessary
 {
-    if (!_needsRequestingBoundingDates) {
-        _needsRequestingBoundingDates = YES;
+    if (_needsRequestingBoundingDates) {
+        _needsRequestingBoundingDates = NO;
         self.formatter.dateFormat = @"yyyy-MM-dd";
         _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self]?:[self.formatter dateFromString:@"1970-01-01"];
         _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self]?:[self.formatter dateFromString:@"2099-12-31"];
