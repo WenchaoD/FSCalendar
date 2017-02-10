@@ -51,39 +51,35 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if (_needsAdjustingViewFrame) {
-        CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height), _preferredEventDotDiameter);
-        if (_appearance.eventDotDiameter > 0) {
-            diameter = _appearance.eventDotDiameter;
-            self.contentView.fs_width = diameter;
-            self.contentView.fs_height = diameter;
-            self.fs_height = diameter;
-        } else {
-            self.contentView.fs_width = (self.numberOfEvents*2-1)*diameter;
-            self.contentView.fs_height = self.fs_height;
-        }
-        self.contentView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height), _preferredEventDotDiameter);
+    if (_appearance.eventDotDiameter > 0) {
+        diameter = _appearance.eventDotDiameter;
+        self.contentView.fs_width = diameter;
+        self.contentView.fs_height = diameter;
+        self.fs_height = diameter;
+    } else {
+        self.contentView.fs_width = (self.numberOfEvents*2-1)*diameter;
+        self.contentView.fs_height = self.fs_height;
     }
+    self.contentView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer
 {
     [super layoutSublayersOfLayer:layer];
     if (layer == self.layer) {
-        if (_needsAdjustingViewFrame) {
-            _needsAdjustingViewFrame = NO;
-            CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height), _preferredEventDotDiameter);
-            if (_appearance.eventDotDiameter > 0) {
-                diameter = _appearance.eventDotDiameter;
-            }
-            for (int i = 0; i < self.eventLayers.count; i++) {
-                CALayer *eventLayer = self.eventLayers[i];
-                eventLayer.hidden = i >= self.numberOfEvents;
-                if (!eventLayer.hidden) {
-                    eventLayer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
-                    if (eventLayer.cornerRadius != diameter/2) {
-                        eventLayer.cornerRadius = diameter/2;
-                    }
+        _needsAdjustingViewFrame = NO;
+        CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height), _preferredEventDotDiameter);
+        if (_appearance.eventDotDiameter > 0) {
+            diameter = _appearance.eventDotDiameter;
+        }
+        for (int i = 0; i < self.eventLayers.count; i++) {
+            CALayer *eventLayer = self.eventLayers[i];
+            eventLayer.hidden = i >= self.numberOfEvents;
+            if (!eventLayer.hidden) {
+                eventLayer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
+                if (eventLayer.cornerRadius != diameter/2) {
+                    eventLayer.cornerRadius = diameter/2;
                 }
             }
         }

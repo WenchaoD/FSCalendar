@@ -122,7 +122,6 @@
     [CATransaction setDisableActions:YES];
     _shapeLayer.hidden = YES;
     [self.contentView.layer removeAnimationForKey:@"opacity"];
-    [self resetCustomDayNumberDiameter];
 }
 
 #pragma mark - Public
@@ -251,6 +250,8 @@
                                            floor(self.contentView.fs_height*5.0/6.0)
                                           );
         }
+        
+        [self resetCustomDayNumberDiameter];
         
         _imageView.center = CGPointMake(
                                         self.contentView.fs_width/2.0 + self.preferredImageOffset.x,

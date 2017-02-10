@@ -70,6 +70,5 @@
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary;
 - (void)performSelecting;
-- (void)resetDayNumberDiameter;
 
 @end
