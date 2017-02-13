@@ -459,14 +459,13 @@
             NSDate *currentPage = self.calendar.currentPage;
             
             NSDate *focusedDate = ({
-                NSDate *date =  [self.calendar.gregorian fs_lastDayOfWeek:currentPage];
                 NSArray<NSDate *> *candidates = ({
                     NSMutableArray *dates = self.calendar.selectedDates.reverseObjectEnumerator.allObjects.mutableCopy;
                     if (self.calendar.today) {
                         [dates addObject:self.calendar.today];
                     }
                     if (self.calendar.currentPage) {
-                        [dates addObject:self.calendar.currentPage];
+                        [dates addObject:[self.calendar.gregorian fs_lastDayOfWeek:currentPage]];
                     }
                     dates.copy;
                 });
@@ -475,7 +474,7 @@
                     NSInteger currentSection = [self.calendar.calculator indexPathForDate:self.calendar.currentPage scope:FSCalendarScopeWeek].section;
                     return indexPath.section == currentSection;
                 }]];
-                date = visibleCandidates.firstObject;
+                NSDate *date = visibleCandidates.firstObject;
                 date;
             });
             
