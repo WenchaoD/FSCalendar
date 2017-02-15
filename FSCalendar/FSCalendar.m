@@ -1708,7 +1708,9 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
         _needsRequestingBoundingDates = NO;
         self.formatter.dateFormat = @"yyyy-MM-dd";
         _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self]?:[self.formatter dateFromString:@"1970-01-01"];
+        _minimumDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:_minimumDate options:0];
         _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self]?:[self.formatter dateFromString:@"2099-12-31"];
+        _maximumDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:_maximumDate options:0];
         NSAssert([self.gregorian compareDate:self.minimumDate toDate:self.maximumDate toUnitGranularity:NSCalendarUnitDay] != NSOrderedDescending, @"The minimum date of calendar should be earlier than the maximum.");
         [self.calculator reloadSections];
     }
