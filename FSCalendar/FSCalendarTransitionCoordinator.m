@@ -379,7 +379,7 @@
 {
     switch (transition) {
         case FSCalendarTransitionMonthToWeek: {
-            [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *obj, NSUInteger idx, BOOL * stop) {
+            [self.calendar.visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *obj, NSUInteger idx, BOOL * stop) {
                 obj.contentView.layer.opacity = 1;
             }];
             self.collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -391,7 +391,7 @@
         }
         case FSCalendarTransitionWeekToMonth: {
             self.calendar.needsAdjustingViewFrame = YES;
-            [self.calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *obj, NSUInteger idx, BOOL * stop) {
+            [self.calendar.visibleCells enumerateObjectsUsingBlock:^(UICollectionViewCell *obj, NSUInteger idx, BOOL * stop) {
                 [CATransaction begin];
                 [CATransaction setDisableActions:YES];
                 obj.contentView.layer.opacity = 1;
@@ -628,7 +628,7 @@
             [self.calendar didChangeValueForKey:@"scope"];
             
             [self performAlphaAnimationFrom:MAX(1-progress*1.1,0) to:1 duration:0.3 exception:self.pendingAttributes.focusedRowNumber completion:^{
-                [self.calendar.collectionView.visibleCells enumerateObjectsUsingBlock:^(__kindof UICollectionViewCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [self.calendar.visibleCells enumerateObjectsUsingBlock:^(__kindof UICollectionViewCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     obj.contentView.layer.opacity = 1;
                     [obj.contentView.layer removeAnimationForKey:@"opacity"];
                 }];
@@ -676,7 +676,7 @@
 
 - (void)performAlphaAnimationFrom:(CGFloat)fromAlpha to:(CGFloat)toAlpha duration:(CGFloat)duration exception:(NSInteger)exception completion:(void(^)())completion;
 {
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+    [self.calendar.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
         if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
             BOOL shouldPerformAlpha = NO;
             NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
@@ -703,7 +703,7 @@
 - (void)performAlphaAnimationWithProgress:(CGFloat)progress
 {
     CGFloat opacity = self.transition == FSCalendarTransitionMonthToWeek ? MAX((1-progress*1.1),0) : progress;
-    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
+    [self.calendar.visibleCells enumerateObjectsUsingBlock:^(FSCalendarCell *cell, NSUInteger idx, BOOL *stop) {
         if (CGRectContainsPoint(self.collectionView.bounds, cell.center)) {
             BOOL shouldPerformAlpha = NO;
             NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];

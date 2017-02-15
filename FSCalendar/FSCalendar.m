@@ -782,9 +782,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:today options:0];
     }
     if (self.hasValidateVisibleLayout) {
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
+        [self.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
         if (today) [[_collectionView cellForItemAtIndexPath:[self.calculator indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
+        [self.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
     }
 }
 
@@ -851,7 +851,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSArray<FSCalendarCell *> *)visibleCells
 {
-    return self.collectionView.visibleCells;
+    return [self.collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject isKindOfClass:[FSCalendarCell class]];
+    }]];
 }
 
 - (CGRect)frameForDate:(NSDate *)date
