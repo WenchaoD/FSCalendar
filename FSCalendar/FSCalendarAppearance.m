@@ -117,7 +117,7 @@
 {
     if (!CGPointEqualToPoint(_titleOffset, titleOffset)) {
         _titleOffset = titleOffset;
-        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -125,7 +125,7 @@
 {
     if (!CGPointEqualToPoint(_subtitleOffset, subtitleOffset)) {
         _subtitleOffset = subtitleOffset;
-        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -133,7 +133,7 @@
 {
     if (!CGPointEqualToPoint(_imageOffset, imageOffset)) {
         _imageOffset = imageOffset;
-        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 
@@ -141,7 +141,7 @@
 {
     if (!CGPointEqualToPoint(_eventOffset, eventOffset)) {
         _eventOffset = eventOffset;
-        [_calendar.collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [_calendar.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
     }
 }
 

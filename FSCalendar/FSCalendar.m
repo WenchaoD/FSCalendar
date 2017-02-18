@@ -188,6 +188,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _scrollEnabled = YES;
     _needsAdjustingViewFrame = YES;
     _needsConfigureAppearance = YES;
+    _needsRequestingBoundingDates = YES;
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
@@ -781,9 +782,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:today options:0];
     }
     if (self.hasValidateVisibleLayout) {
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
+        [self.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
         if (today) [[_collectionView cellForItemAtIndexPath:[self.calculator indexPathForDate:today]] setValue:@YES forKey:@"dateIsToday"];
-        [_collectionView.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
+        [self.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
     }
 }
 
@@ -850,7 +851,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSArray<FSCalendarCell *> *)visibleCells
 {
-    return self.collectionView.visibleCells;
+    return [self.collectionView.visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [evaluatedObject isKindOfClass:[FSCalendarCell class]];
+    }]];
 }
 
 - (CGRect)frameForDate:(NSDate *)date
@@ -1701,11 +1704,13 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
 
 - (void)requestBoundingDatesIfNecessary
 {
-    if (!_needsRequestingBoundingDates) {
-        _needsRequestingBoundingDates = YES;
+    if (_needsRequestingBoundingDates) {
+        _needsRequestingBoundingDates = NO;
         self.formatter.dateFormat = @"yyyy-MM-dd";
         _minimumDate = [self.dataSourceProxy minimumDateForCalendar:self]?:[self.formatter dateFromString:@"1970-01-01"];
+        _minimumDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:_minimumDate options:0];
         _maximumDate = [self.dataSourceProxy maximumDateForCalendar:self]?:[self.formatter dateFromString:@"2099-12-31"];
+        _maximumDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:_maximumDate options:0];
         NSAssert([self.gregorian compareDate:self.minimumDate toDate:self.maximumDate toUnitGranularity:NSCalendarUnitDay] != NSOrderedDescending, @"The minimum date of calendar should be earlier than the maximum.");
         [self.calculator reloadSections];
     }
