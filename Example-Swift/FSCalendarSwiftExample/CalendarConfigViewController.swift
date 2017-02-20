@@ -14,7 +14,7 @@ class CalendarConfigViewController: UITableViewController {
     var lunar: Bool = false
     var firstWeekday: UInt = 1
     var scrollDirection: FSCalendarScrollDirection = .horizontal
-    var selectedDate: Date = Date()
+    var selectedDate: Date?
     
     @IBOutlet
     weak var datePicker: UIDatePicker!
