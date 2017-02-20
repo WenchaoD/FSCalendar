@@ -432,7 +432,7 @@ IB_DESIGNABLE
 /**
  A date object identifying the section of the selected date. (read-only)
  */
-@property (readonly, nonatomic) NSDate *selectedDate;
+@property (nullable, readonly, nonatomic) NSDate *selectedDate;
 
 /**
  The dates representing the selected dates. (read-only)
