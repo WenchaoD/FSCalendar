@@ -500,6 +500,13 @@ IB_DESIGNABLE
  */
 - (UILabel *)cellTitleLabelForDate:(NSDate *)date;
 
+/**
+ * Set's today's date.
+ *
+ * @param today A date in the calendar.
+ */
+- (void)setToday:(NSDate *)today;
+
 @end
 
 
