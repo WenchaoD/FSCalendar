@@ -305,6 +305,15 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 
 /**
+ * Validate date in bounds.
+ *
+ * e.g. False to select a date before than minimum
+ *
+ *    calendar.validateDateInBounds = BOOL;
+ */
+@property (assign, nonatomic) BOOL validateDateInBounds;
+
+/**
  * The scope of calendar, change scope will trigger an inner frame change, make sure the frame has been correctly adjusted in 
  *
  *    - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated;
