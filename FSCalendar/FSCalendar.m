@@ -895,6 +895,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)setTimeZone:(NSTimeZone *)timeZone
+{
+    if (![_timeZone isEqual:timeZone]) {
+        _timeZone = timeZone;
+        [self invalidateDateTools];
+        [self setNeedsConfigureAppearance];
+        if (self.hasValidateVisibleLayout) {
+            [self invalidateHeaders];
+        }
+    }
+}
+
 - (void)setAllowsMultipleSelection:(BOOL)allowsMultipleSelection
 {
     _collectionView.allowsMultipleSelection = allowsMultipleSelection;
