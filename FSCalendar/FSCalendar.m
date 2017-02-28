@@ -871,9 +871,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!today) {
         _today = nil;
     } else {
-        FSCalendarAssertDateInBounds(today,self.gregorian,self.minimumDate,self.maximumDate);
-        _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:today options:0];
-        [self setNeedsLayout];
+        if (![self.gregorian isDateInToday:today]) {
+            _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:today options:0];
+            [self setNeedsLayout];
+        }
     }
     
     [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
@@ -1355,6 +1356,22 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSIndexPath *indexPath = [self indexPathForDate:date];
     FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:indexPath];
     return cell.titleLabel;
+}
+
+- (void)updateToday:(NSDate *)date
+{
+    if (!date) {
+        _today = nil;
+    } else {
+        if ([self.gregorian isDateInToday:date]) {
+            _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
+            [self setNeedsLayout];
+        }
+    }
+    
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
+    [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:date]] setValue:@YES forKey:@"dateIsToday"];
+    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
 
 #pragma mark - Private methods

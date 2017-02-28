@@ -500,6 +500,13 @@ IB_DESIGNABLE
  */
 - (UILabel *)cellTitleLabelForDate:(NSDate *)date;
 
+/**
+ * Updates the date for today. This should be called if the system / device date is changed while the calendar is in the background.
+ *
+ * @param date A date in the calendar.
+ */
+- (void)updateToday:(NSDate *)date;
+
 @end
 
 
