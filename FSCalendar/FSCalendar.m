@@ -1360,6 +1360,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)updateToday:(NSDate *)date
 {
+    NSDate *previousToday = _today;
+
     if (!date) {
         _today = nil;
     } else {
@@ -1369,7 +1371,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
     }
     
-    [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:@NO];
+    [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:previousToday]] setValue:@NO forKey:@"dateIsToday"];
     [[_collectionView cellForItemAtIndexPath:[self indexPathForDate:date]] setValue:@YES forKey:@"dateIsToday"];
     [_collectionView.visibleCells makeObjectsPerformSelector:@selector(setNeedsLayout)];
 }
