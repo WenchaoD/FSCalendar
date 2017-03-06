@@ -153,7 +153,7 @@
             break;
         }
     }
-    if (item < 0) {
+    if (item < 0 || section < 0) {
         return nil;
     }
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
