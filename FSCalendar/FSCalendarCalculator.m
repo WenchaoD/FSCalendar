@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 30/10/2016.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendar.h"
@@ -11,61 +11,64 @@
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarExtensions.h"
 
-@interface FSCalendarCalculator () <NSCacheDelegate>
+@interface FSCalendarCalculator ()
 
 @property (assign, nonatomic) NSInteger numberOfMonths;
-@property (strong, nonatomic) NSCache<NSNumber *, NSDate *> *months;
-@property (strong, nonatomic) NSCache<NSNumber *, NSDate *> *monthHeads;
+@property (strong, nonatomic) NSMutableDictionary<NSNumber *, NSDate *> *months;
+@property (strong, nonatomic) NSMutableDictionary<NSNumber *, NSDate *> *monthHeads;
 
 @property (assign, nonatomic) NSInteger numberOfWeeks;
-@property (strong, nonatomic) NSCache<NSNumber *, NSDate *> *weeks;
-
-@property (strong, nonatomic) NSCache<NSDate *, NSNumber *> *rowNumbers;
+@property (strong, nonatomic) NSMutableDictionary<NSNumber *, NSDate *> *weeks;
+@property (strong, nonatomic) NSMutableDictionary<NSDate *, NSNumber *> *rowCounts;
 
 @property (readonly, nonatomic) NSCalendar *gregorian;
 @property (readonly, nonatomic) NSDate *minimumDate;
 @property (readonly, nonatomic) NSDate *maximumDate;
 
+- (void)didReceiveNotifications:(NSNotification *)notification;
+
 @end
 
 @implementation FSCalendarCalculator
+
+@dynamic gregorian,minimumDate,maximumDate;
 
 - (instancetype)initWithCalendar:(FSCalendar *)calendar
 {
     self = [super init];
     if (self) {
         self.calendar = calendar;
-        self.monthHeight = -1;
-        self.titleHeight = -1;
-        self.subtitleHeight = -1;
+        self.titleHeight = FSCalendarAutomaticDimension;
+        self.subtitleHeight = FSCalendarAutomaticDimension;
         
-        self.months = [[NSCache alloc] init];
-        self.months.countLimit = 40;
-        self.months.delegate = self;
-        self.monthHeads = [[NSCache alloc] init];
-        self.monthHeads.countLimit = 40;
-        self.monthHeads.delegate = self;
+        self.months = [NSMutableDictionary dictionary];
+        self.monthHeads = [NSMutableDictionary dictionary];
+        self.weeks = [NSMutableDictionary dictionary];
+        self.rowCounts = [NSMutableDictionary dictionary];
         
-        self.weeks = [[NSCache alloc] init];
-        self.weeks.countLimit = 30;
-        self.weeks.delegate = self;
-        
-        self.rowNumbers = [[NSCache alloc] init];
-        self.rowNumbers.countLimit = 40;
-        self.rowNumbers.delegate = self;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
 }
 
-#pragma mark - <NSCacheDelegate>
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+}
 
-- (void)cache:(NSCache *)cache willEvictObject:(id)obj { }
+- (id)forwardingTargetForSelector:(SEL)selector
+{
+    if ([self.calendar respondsToSelector:selector]) {
+        return self.calendar;
+    }
+    return [super forwardingTargetForSelector:selector];
+}
 
-#pragma mark - Public methods
+#pragma mark - Public properties
 
 - (CGFloat)titleHeight
 {
-    if (_titleHeight == -1) {
+    if (_titleHeight == FSCalendarAutomaticDimension) {
         _titleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:self.calendar.appearance.titleFont}].height;
     }
     return _titleHeight;
@@ -73,11 +76,13 @@
 
 - (CGFloat)subtitleHeight
 {
-    if (_subtitleHeight == -1) {
+    if (_subtitleHeight == FSCalendarAutomaticDimension) {
         _subtitleHeight = [@"1" sizeWithAttributes:@{NSFontAttributeName:self.calendar.appearance.subtitleFont}].height;
     }
     return _subtitleHeight;
 }
+
+#pragma mark - Public functions
 
 - (NSDate *)safeDateForDate:(NSDate *)date
 {
@@ -95,20 +100,9 @@
     switch (scope) {
         case FSCalendarScopeMonth: {
             NSDate *head = [self monthHeadForSection:indexPath.section];
-            switch (self.calendar.collectionViewLayout.scrollDirection) {
-                case UICollectionViewScrollDirectionHorizontal: {
-                    NSUInteger rows = indexPath.item % 6;
-                    NSUInteger columns = indexPath.item / 6;
-                    NSUInteger daysOffset = 7*rows + columns;
-                    NSDate *date = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:daysOffset toDate:head options:0];
-                    return date;
-                }
-                case UICollectionViewScrollDirectionVertical: {
-                    NSUInteger daysOffset = indexPath.item;
-                    NSDate *date = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:daysOffset toDate:head options:0];
-                    return date;
-                }
-            }
+            NSUInteger daysOffset = indexPath.item;
+            NSDate *date = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:daysOffset toDate:head options:0];
+            return date;
             break;
         }
         case FSCalendarScopeWeek: {
@@ -123,15 +117,12 @@
 - (NSDate *)dateForIndexPath:(NSIndexPath *)indexPath
 {
     if (!indexPath) return nil;
-    if (self.calendar.animator.transition == FSCalendarTransitionWeekToMonth && self.calendar.animator.state == FSCalendarTransitionStateInProgress) {
-        return [self dateForIndexPath:indexPath scope:FSCalendarScopeMonth];
-    }
-    return [self dateForIndexPath:indexPath scope:self.calendar.scope];
+    return [self dateForIndexPath:indexPath scope:self.calendar.transitionCoordinator.representingScope];
 }
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date
 {
-    return [self indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent scope:self.calendar.scope];
+    return [self indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent scope:self.calendar.transitionCoordinator.representingScope];
 }
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date scope:(FSCalendarScope)scope
@@ -153,19 +144,7 @@
                 section--;
             }
             NSDate *head = [self monthHeadForSection:section];
-            switch (self.calendar.collectionViewLayout.scrollDirection) {
-                case UICollectionViewScrollDirectionHorizontal: {
-                    NSInteger vItem = [self.gregorian components:NSCalendarUnitDay fromDate:head toDate:date options:0].day;
-                    NSInteger rows = vItem/7;
-                    NSInteger columns = vItem%7;
-                    item = columns*6 + rows;
-                    break;
-                }
-                case UICollectionViewScrollDirectionVertical: {
-                    item = [self.gregorian components:NSCalendarUnitDay fromDate:head toDate:date options:0].day;
-                    break;
-                }
-            }
+            item = [self.gregorian components:NSCalendarUnitDay fromDate:head toDate:date options:0].day;
             break;
         }
         case FSCalendarScopeWeek: {
@@ -183,24 +162,12 @@
 
 - (NSIndexPath *)indexPathForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
 {
-    return [self indexPathForDate:date atMonthPosition:position scope:self.calendar.scope];
-}
-
-- (void)reloadSections
-{
-    self.numberOfMonths = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month+1;
-    self.numberOfWeeks = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:self.maximumDate options:0].weekOfYear+1;
-    
-    [self.months removeAllObjects];
-    [self.monthHeads removeAllObjects];
-    [self.weeks removeAllObjects];
-    
-    [self.rowNumbers removeAllObjects];
+    return [self indexPathForDate:date atMonthPosition:position scope:self.calendar.transitionCoordinator.representingScope];
 }
 
 - (NSDate *)pageForSection:(NSInteger)section
 {
-    switch (self.calendar.scope) {
+    switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeWeek:
             return [self.gregorian fs_middleDayOfWeek:[self weekForSection:section]];
         case FSCalendarScopeMonth:
@@ -251,10 +218,10 @@
 
 - (NSInteger)numberOfSections
 {
-    if (self.calendar.animator.transition == FSCalendarTransitionWeekToMonth) {
+    if (self.calendar.transitionCoordinator.transition == FSCalendarTransitionWeekToMonth) {
         return self.numberOfMonths;
     } else {
-        switch (self.calendar.scope) {
+        switch (self.calendar.transitionCoordinator.representingScope) {
             case FSCalendarScopeMonth: {
                 return self.numberOfMonths;
             }
@@ -277,23 +244,23 @@
     if (!month) return 0;
     if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillSixRows) return 6;
     
-    NSNumber *rowNumber = self.rowNumbers[month];
-    if (!rowNumber) {
+    NSNumber *rowCount = self.rowCounts[month];
+    if (!rowCount) {
         NSDate *firstDayOfMonth = [self.gregorian fs_firstDayOfMonth:month];
         NSInteger weekdayOfFirstDay = [self.gregorian component:NSCalendarUnitWeekday fromDate:firstDayOfMonth];
         NSInteger numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month];
         NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.gregorian.firstWeekday) + 7) % 7;
         NSInteger headDayCount = numberOfDaysInMonth + numberOfPlaceholdersForPrev;
         NSInteger numberOfRows = (headDayCount/7) + (headDayCount%7>0);
-        rowNumber = @(numberOfRows);
-        self.rowNumbers[month] = rowNumber;
+        rowCount = @(numberOfRows);
+        self.rowCounts[month] = rowCount;
     }
-    return rowNumber.integerValue;
+    return rowCount.integerValue;
 }
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
 {
-    if (self.calendar.scope == FSCalendarScopeWeek) return 1;
+    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) return 1;
     NSDate *month = [self monthForSection:section];
     return [self numberOfRowsInMonth:month];
 }
@@ -301,8 +268,10 @@
 - (FSCalendarMonthPosition)monthPositionForIndexPath:(NSIndexPath *)indexPath
 {
     if (!indexPath) return FSCalendarMonthPositionNotFound;
+    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) {
+        return FSCalendarMonthPositionCurrent;
+    }
     NSDate *date = [self dateForIndexPath:indexPath];
-    
     NSDate *page = [self pageForSection:indexPath.section];
     NSComparisonResult comparison = [self.gregorian compareDate:date toDate:page toUnitGranularity:NSCalendarUnitMonth];
     switch (comparison) {
@@ -315,10 +284,36 @@
     }
 }
 
-#pragma mark - Private methods
+- (FSCalendarCoordinate)coordinateForIndexPath:(NSIndexPath *)indexPath
+{
+    FSCalendarCoordinate coordinate;
+    coordinate.row = indexPath.item / 7;
+    coordinate.column = indexPath.item % 7;
+    return coordinate;
+}
 
-- (NSCalendar *)gregorian { return self.calendar.gregorian; }
-- (NSDate *)minimumDate { return self.calendar.minimumDate; }
-- (NSDate *)maximumDate { return self.calendar.maximumDate; }
+- (void)reloadSections
+{
+    self.numberOfMonths = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month+1;
+    self.numberOfWeeks = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:self.maximumDate options:0].weekOfYear+1;
+    [self clearCaches];
+}
+
+- (void)clearCaches
+{
+    [self.months removeAllObjects];
+    [self.monthHeads removeAllObjects];
+    [self.weeks removeAllObjects];
+    [self.rowCounts removeAllObjects];
+}
+
+#pragma mark - Private functinos
+
+- (void)didReceiveNotifications:(NSNotification *)notification
+{
+    if ([notification.name isEqualToString:UIApplicationDidReceiveMemoryWarningNotification]) {
+        [self clearCaches];
+    }
+}
 
 @end

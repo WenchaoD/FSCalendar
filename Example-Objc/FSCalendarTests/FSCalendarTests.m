@@ -3,7 +3,7 @@
 //  FSCalendarTests
 //
 //  Created by dingwenchao on 8/24/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
@@ -75,30 +75,6 @@
         [self.indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [self.calendar.calculator dateForIndexPath:obj];
         }];
-    }];
-}
-
-
-- (void)testFilter {
-    NSMutableArray<NSNumber *> *array = [NSMutableArray arrayWithCapacity:50];
-    for (int i = 0; i < 50; i++) {
-        [array addObject:@(i)];
-    }
-    [self measureBlock:^{
-        [array filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-            return [evaluatedObject compare:@25]==NSOrderedSame;
-        }]];
-    }];
-    
-}
-
-- (void)testCache {
-    NSCache *c = [[NSCache alloc] init];
-    for (int i = 0; i < 50; i++) {
-        [c setObject:@(i) forKey:@(i)];
-    }
-    [self measureBlock:^{
-        [c objectForKey:@25];
     }];
 }
 

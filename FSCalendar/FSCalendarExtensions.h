@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 10/8/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -48,6 +48,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface NSMapTable (FSCalendarExtensions)
+
+- (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key;
+- (id)objectForKeyedSubscript:(id<NSCopying>)key;
+
+@end
+
 @interface NSCache (FSCalendarExtensions)
 
 - (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key;
@@ -58,13 +65,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (FSCalendarExtensions)
 
+#define IVAR_DEF(SET,GET,TYPE) \
+- (void)fs_set##SET##Variable:(TYPE)value forKey:(NSString *)key; \
+- (TYPE)fs_##GET##VariableForKey:(NSString *)key;
+IVAR_DEF(Bool, bool, BOOL)
+IVAR_DEF(Float, float, CGFloat)
+IVAR_DEF(Integer, integer, NSInteger)
+IVAR_DEF(UnsignedInteger, unsignedInteger, NSUInteger)
+#undef IVAR_DEF
+
 - (void)fs_setVariable:(id)variable forKey:(NSString *)key;
 - (id)fs_variableForKey:(NSString *)key;
 
-- (void)fs_setUnsignedIntegerVariable:(NSUInteger)value forKey:(NSString *)key;
-- (NSUInteger)fs_unsignedIntegerVariableForKey:(NSString *)key;
-
-- (id)fs_performSelector:(SEL)selector withObjects:(nullable id)firstObject, ... NS_REQUIRES_NIL_TERMINATION;
+- (nullable id)fs_performSelector:(SEL)selector withObjects:(nullable id)firstObject, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
 

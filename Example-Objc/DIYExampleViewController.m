@@ -3,10 +3,11 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 5/8/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "DIYExampleViewController.h"
+#import "FSCalendar.h"
 #import "DIYCalendarCell.h"
 #import "FSCalendarExtensions.h"
 
@@ -15,7 +16,6 @@
 @property (weak, nonatomic) FSCalendar *calendar;
 
 @property (weak, nonatomic) UILabel *eventLabel;
-
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
@@ -44,7 +44,6 @@
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0,  CGRectGetMaxY(self.navigationController.navigationBar.frame), view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
-    calendar.scopeGesture.enabled = YES;
     calendar.swipeToChooseGesture.enabled = YES;
     calendar.allowsMultipleSelection = YES;
     [view addSubview:calendar];
@@ -56,6 +55,9 @@
     calendar.appearance.eventOffset = CGPointMake(0, -7);
     calendar.today = nil; // Hide the today circle
     [calendar registerClass:[DIYCalendarCell class] forCellReuseIdentifier:@"cell"];
+    
+    UIPanGestureRecognizer *scopeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:calendar action:@selector(handleScopeGesture:)];
+    [calendar addGestureRecognizer:scopeGesture];
     
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(calendar.frame)+10, self.view.frame.size.width, 50)];
@@ -89,12 +91,17 @@
     
     // Uncomment this to perform an 'initial-week-scope'
     // self.calendar.scope = FSCalendarScopeWeek;
+    
+    // For UITest
+    self.calendar.accessibilityIdentifier = @"calendar";
 }
 
 - (void)dealloc
 {
     NSLog(@"%s",__FUNCTION__);
 }
+
+#pragma mark - FSCalendarDataSource
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
@@ -125,11 +132,12 @@
     [self configureCell:cell forDate:date atMonthPosition:monthPosition];
 }
 
-
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date
 {
     return 2;
 }
+
+#pragma mark - FSCalendarDelegate
 
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
@@ -140,6 +148,11 @@
 }
 
 - (BOOL)calendar:(FSCalendar *)calendar shouldSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
+{
+    return monthPosition == FSCalendarMonthPositionCurrent;
+}
+
+- (BOOL)calendar:(FSCalendar *)calendar shouldDeselectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     return monthPosition == FSCalendarMonthPositionCurrent;
 }
@@ -183,11 +196,8 @@
     // Custom today circle
     diyCell.circleImageView.hidden = ![self.gregorian isDateInToday:date];
     
-    
     // Configure selection layer
-    if (monthPosition == FSCalendarMonthPositionCurrent || self.calendar.scope == FSCalendarScopeWeek) {
-        
-        diyCell.eventIndicator.hidden = NO;
+    if (monthPosition == FSCalendarMonthPositionCurrent) {
         
         SelectionType selectionType = SelectionTypeNone;
         if ([self.calendar.selectedDates containsObject:date]) {
@@ -215,16 +225,12 @@
         
         diyCell.selectionLayer.hidden = NO;
         diyCell.selectionType = selectionType;
-
         
-    } else if (monthPosition == FSCalendarMonthPositionNext || monthPosition == FSCalendarMonthPositionPrevious) {
+    } else {
         
         diyCell.circleImageView.hidden = YES;
         diyCell.selectionLayer.hidden = YES;
-        diyCell.eventIndicator.hidden = YES; // Hide default event indicator
-        if ([self.calendar.selectedDates containsObject:date]) {
-            diyCell.titleLabel.textColor = self.calendar.appearance.titlePlaceholderColor; // Prevent placeholders from changing text color
-        }
+        
     }
 }
 

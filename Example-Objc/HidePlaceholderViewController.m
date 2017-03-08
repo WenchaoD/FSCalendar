@@ -3,12 +3,34 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 3/9/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "HidePlaceholderViewController.h"
+#import "FSCalendar.h"
 
 #define kContainerFrame (CGRectMake(0, CGRectGetMaxY(calendar.frame), CGRectGetWidth(self.view.frame), 50))
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface HidePlaceholderViewController()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+
+@property (weak, nonatomic) FSCalendar *calendar;
+
+@property (weak, nonatomic) UIView *bottomContainer;
+@property (weak, nonatomic) UILabel *eventLabel;
+@property (weak, nonatomic) UIButton *nextButton;
+@property (weak, nonatomic) UIButton *prevButton;
+
+@property (strong, nonatomic) NSCalendar *gregorian;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+
+- (void)nextClicked:(id)sender;
+- (void)prevClicked:(id)sender;
+
+@end
+
+NS_ASSUME_NONNULL_END
 
 @implementation HidePlaceholderViewController
 
@@ -19,6 +41,8 @@
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
+        self.dateFormatter = [[NSDateFormatter alloc] init];
+        self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     }
     return self;
 }
@@ -32,12 +56,8 @@
     view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.view = view;
     
-    
-    self.dateFormatter = [[NSDateFormatter alloc] init];
-    self.dateFormatter.dateFormat = @"yyyy-MM-dd";
-    
-    // 450 for iPad and 300 for iPhone
-    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
+    // 400 for iPad and 300 for iPhone
+    CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 400 : 300;
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), CGRectGetWidth(self.view.frame), height)];
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.dataSource = self;
@@ -98,6 +118,9 @@
     
     self.calendar.appearance.separators = FSCalendarSeparatorInterRows;
     self.calendar.swipeToChooseGesture.enabled = YES;
+    
+    // For UITest
+    self.calendar.accessibilityIdentifier = @"calendar";
     
 }
 

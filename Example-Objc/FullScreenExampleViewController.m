@@ -3,13 +3,15 @@
 //  FSCalendar
 //
 //  Created by Wenchao Ding on 9/16/15.
-//  Copyright (c) 2015 wenchaoios. All rights reserved.
+//  Copyright (c) 2015 Wenchao Ding. All rights reserved.
 //
 
 #import "FullScreenExampleViewController.h"
 #import <EventKit/EventKit.h>
 
 #import "FSCalendar.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface FullScreenExampleViewController()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 
@@ -38,6 +40,8 @@
 - (NSArray<EKEvent *> *)eventsForDate:(NSDate *)date;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 @implementation FullScreenExampleViewController
 
@@ -115,6 +119,8 @@
     self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-03"];
     self.maximumDate = [self.dateFormatter dateFromString:@"2018-04-10"];
 
+    self.calendar.accessibilityIdentifier = @"calendar";
+    
     [self loadCalendarEvents];
     
     /*
@@ -128,6 +134,7 @@
 
 - (void)didReceiveMemoryWarning
 {
+    [super didReceiveMemoryWarning];
     [self.cache removeAllObjects];
 }
 

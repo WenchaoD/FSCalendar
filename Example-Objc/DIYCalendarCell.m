@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 02/11/2016.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "DIYCalendarCell.h"
@@ -38,10 +38,9 @@
 {
     [super layoutSubviews];
     
-    self.backgroundView.frame = CGRectInset(self.bounds, 1, 0.5);
+    self.backgroundView.frame = CGRectInset(self.bounds, 1, 1);
     self.circleImageView.frame = self.backgroundView.frame;
-    
-    self.selectionLayer.frame = CGRectInset(self.bounds, -1, 0);
+    self.selectionLayer.frame = self.bounds;
     
     if (self.selectionType == SelectionTypeMiddle) {
         
@@ -60,6 +59,16 @@
         CGFloat diameter = MIN(self.selectionLayer.fs_height, self.selectionLayer.fs_width);
         self.selectionLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(self.contentView.fs_width/2-diameter/2, self.contentView.fs_height/2-diameter/2, diameter, diameter)].CGPath;
         
+    }
+}
+
+- (void)configureAppearance
+{
+    [super configureAppearance];
+    // Override the build-in appearance configuration
+    if (self.isPlaceholder) {
+        self.titleLabel.textColor = [UIColor lightGrayColor];
+        self.eventIndicator.hidden = YES;
     }
 }
 

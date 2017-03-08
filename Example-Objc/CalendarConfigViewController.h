@@ -3,16 +3,22 @@
 //  FSCalendar
 //
 //  Created by Wenchao Ding on 2/15/15.
-//  Copyright (c) 2015 =. All rights reserved.
+//  Copyright (c) 2015 Wenchao Ding. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "StoryboardExampleViewController.h"
+#import "FSCalendar.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface CalendarConfigViewController : UITableViewController
 
-@property (weak, nonatomic) StoryboardExampleViewController *viewController;
-
-@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (assign, nonatomic) NSInteger      theme;
+@property (assign, nonatomic) BOOL           lunar;
+@property (assign, nonatomic) NSUInteger     firstWeekday;
+@property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
+@property (strong, nonatomic) NSDate         *selectedDate;
 
 @end
+
+NS_ASSUME_NONNULL_END

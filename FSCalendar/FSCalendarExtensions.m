@@ -3,7 +3,7 @@
 //  FSCalendar
 //
 //  Created by dingwenchao on 10/8/16.
-//  Copyright © 2016 wenchaoios. All rights reserved.
+//  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
 #import "FSCalendarExtensions.h"
@@ -223,6 +223,26 @@
 
 @end
 
+@implementation NSMapTable (FSCalendarExtensions)
+
+- (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key
+{
+    if (!key) return;
+    
+    if (obj) {
+        [self setObject:obj forKey:key];
+    } else {
+        [self removeObjectForKey:key];
+    }
+}
+
+- (id)objectForKeyedSubscript:(id<NSCopying>)key
+{
+    return [self objectForKey:key];
+}
+
+@end
+
 @implementation NSCache (FSCalendarExtensions)
 
 - (void)setObject:(nullable id)obj forKeyedSubscript:(id<NSCopying>)key
@@ -245,6 +265,26 @@
 
 @implementation NSObject (FSCalendarExtensions)
 
+#define IVAR_IMP(SET,GET,TYPE) \
+- (void)fs_set##SET##Variable:(TYPE)value forKey:(NSString *)key \
+{ \
+    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String); \
+    ((void (*)(id, Ivar, TYPE))object_setIvar)(self, ivar, value); \
+} \
+- (TYPE)fs_##GET##VariableForKey:(NSString *)key \
+{ \
+    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String); \
+    ptrdiff_t offset = ivar_getOffset(ivar); \
+    unsigned char *bytes = (unsigned char *)(__bridge void *)self; \
+    TYPE value = *((TYPE *)(bytes+offset)); \
+    return value; \
+}
+IVAR_IMP(Bool,bool,BOOL)
+IVAR_IMP(Float,float,CGFloat)
+IVAR_IMP(Integer,integer,NSInteger)
+IVAR_IMP(UnsignedInteger,unsignedInteger,NSUInteger)
+#undef IVAR_IMP
+
 - (void)fs_setVariable:(id)variable forKey:(NSString *)key
 {
     Ivar ivar = class_getInstanceVariable(self.class, key.UTF8String);
@@ -256,21 +296,6 @@
     Ivar ivar = class_getInstanceVariable(self.class, key.UTF8String);
     id variable = object_getIvar(self, ivar);
     return variable;
-}
-
-- (void)fs_setUnsignedIntegerVariable:(NSUInteger)value forKey:(NSString *)key
-{
-    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String);
-    ((void (*)(id, Ivar, NSUInteger))object_setIvar)(self, ivar, value);
-}
-
-- (NSUInteger)fs_unsignedIntegerVariableForKey:(NSString *)key
-{
-    Ivar ivar = class_getInstanceVariable([self class], key.UTF8String);
-    ptrdiff_t offset = ivar_getOffset(ivar);
-    unsigned char *bytes = (unsigned char *)(__bridge void*)self;
-    NSUInteger value = *((NSUInteger *)(bytes+offset));
-    return value;
 }
 
 - (id)fs_performSelector:(SEL)selector withObjects:(nullable id)firstObject, ...
@@ -404,6 +429,7 @@ if (!strcmp(returnType, @encode(_type))) { \
             RETURN_BASIC_TYPES(double)
             
 #undef RETURN_BASIC_TYPES
+            free(buffer);
         }
     }
     return returnValue;

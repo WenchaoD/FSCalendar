@@ -1,17 +1,15 @@
 
 ![logo](https://cloud.githubusercontent.com/assets/5186464/16540124/efc51f72-408b-11e6-934a-4e750b8b55bb.png)
 <br/><br/>
+[![Apps Using](https://img.shields.io/badge/Apps%20Using-%3E%207,200-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+[![Total Downloads](https://img.shields.io/badge/Total%20Downloads-%3E%20360,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+<br>
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/badge/platform-iOS%207%2B-blue.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
-[![Swift2 compatible](https://img.shields.io/badge/swift-compatible-4BC51D.svg?style=flat)](https://developer.apple.com/swift/)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-
-
-# Updates
-
-* [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
-
+<br>
+[![Languages](https://img.shields.io/badge/language-objc%20|%20swift-FF69B4.svg?style=plastic)](#)
 
 # Table of contents
 * [Screenshots](#screenshots)
@@ -20,37 +18,46 @@
 * [Support](#support)
 * [Contact](#contact)
 
-## <a id="screenshots"></a>Screenshots
+## <a id="screenshots"></a>Screenshots 
 
-![fscalendar-users](https://cloud.githubusercontent.com/assets/5186464/19956154/dd0f6bb4-a1c3-11e6-8fed-6aabbf999161.jpg)
-
-## iPhone
+### iPhone
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
 
-## iPad
+### iPad
 ![fscalendar-ipad](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
 
-## Safe Orientation
+### Safe Orientation
 ![fscalendar-scope-orientation-autolayout](https://cloud.githubusercontent.com/assets/5186464/20325758/ea125e1e-abc0-11e6-9e29-491acbcb0d07.gif)
 
-## Today Extension
+### Today Extension
 |    iOS8/9    |    iOS10    |
 |--------------|-------------|
 |![today1](https://cloud.githubusercontent.com/assets/5186464/20288375/ed3fba0e-ab0d-11e6-8b15-43d3dc656f22.gif)|![today2](https://cloud.githubusercontent.com/assets/5186464/20288378/f11e318c-ab0d-11e6-8d1d-9d89b563e9d7.gif)|
 
+### Interactive Scope Gesture
+| ![1](https://cloud.githubusercontent.com/assets/5186464/21559640/e92a9ccc-ce8a-11e6-8c60-e52204f33249.gif) |
+| ---- |
 
-## DIY support
+### DIY support
 |  ![1](https://cloud.githubusercontent.com/assets/5186464/20026983/22354a0e-a342-11e6-8ae6-0614ea7f35ae.gif)    |
 | -------------  |
 > To customize your own cell, view DIY Example in `Example-Swift` or `Example-Objc`
 
 
-## Swipe-To-Choose
+### Swipe-To-Choose
 
 |Single-Selection<br/>Swipe-To-Choose|Multiple-Selection<br/>Swipe-To-Choose|DIY<br/>Swipe-To-Choose|
 |----------|--------|--------|
 |![1](https://cloud.githubusercontent.com/assets/5186464/20257768/cb1905d4-aa86-11e6-9ef7-af76f9caa024.gif)|![2](https://cloud.githubusercontent.com/assets/5186464/20257826/254070ec-aa87-11e6-81b1-1815453fd464.gif)|![3](https://cloud.githubusercontent.com/assets/5186464/20257836/2ffa3252-aa87-11e6-8ff9-3b40f5b2307b.gif)|
 
+## Achievement of Users <a id="achievement"></a>
+
+|  ![1](https://cloud.githubusercontent.com/assets/5186464/21747193/3111e4ee-d59a-11e6-8e4d-ca695b53e421.png)    |  ![2](https://cloud.githubusercontent.com/assets/5186464/21747393/42a753fa-d5a0-11e6-9cb2-de7cc642e69e.png)  |  ![3](https://cloud.githubusercontent.com/assets/5186464/21897255/ff78fcdc-d923-11e6-9d59-62119bc4343f.png)  |  ![4](https://cloud.githubusercontent.com/assets/5186464/21747192/3111cacc-d59a-11e6-8626-44cd75ebd794.png)  |
+| ------------- | ------------- | ------------- | ------------- |
+
+#### [***More Achievements***](https://github.com/WenchaoD/FSCalendar/wiki/) are available in [***FSCalendar Gallery***](https://github.com/WenchaoD/FSCalendar/wiki/)  
+
+===
 
 # <a id="installation"></a>Installation
 
@@ -71,12 +78,6 @@ pod 'FSCalendar'
 
 > [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
 
-* Alternatively to give it a test run, run the command:
-
-```ruby
-pod try FSCalendar
-```
-
 ## Carthage: 
 * For iOS8+
 
@@ -87,20 +88,21 @@ github "WenchaoD/FSCalendar"
 ## Manually:
 * Drag all files under `FSCalendar` folder into your project. 👍
 
-## Support IBInspectable / IBDesignable
-Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Have fun with Interface builder](#roll_with_interface_builder)
+> Alternatively to give it a test run, simply press `command+u` in `Example-Objc` or `Example-Swift` and launch the ***UITest Target***. <br>
+> Only the methods marked "👍" support IBInspectable / IBDesignable feature. [Have fun with Interface builder](#roll_with_interface_builder)
+
 
 # Setup
 
 ## Use Interface Builder
 
-1. Drag an UIView object to ViewController Scene
-2. Change the `Custom Class` to `FSCalendar`<br/>
-3. Link `dataSource` and `delegate` to the ViewController <br/>
+1、 Drag an UIView object to ViewController Scene
+2、 Change the `Custom Class` to `FSCalendar`<br/>
+3、 Link `dataSource` and `delegate` to the ViewController <br/>
 
 ![fscalendar-ib](https://cloud.githubusercontent.com/assets/5186464/9488580/a360297e-4c0d-11e5-8548-ee9274e7c4af.jpg)
 
-4. Finally, you should implement `FSCalendarDataSource` and `FSCalendarDelegate` in ViewController.m
+4、 Finally, implement `FSCalendarDataSource` and `FSCalendarDelegate` in your `ViewController`
 
 ## Or use code
 
@@ -123,7 +125,7 @@ self.calendar = calendar;
 
 
 ```swift
-private weak var calendar: FSCalendar!
+fileprivate weak var calendar: FSCalendar!
 ```
 ```swift
 // In loadView or viewDidLoad
@@ -136,27 +138,53 @@ self.calendar = calendar
 
 > To use **FSCalendar** in Swift3, see `Example-Swift` for details.
 
-<br/>
 
 ## <a id='adjusts_frame_dynamicly' /></a>Warning 
-`FSCalendar` doesn't change frame by itself, Please implement
+`FSCalendar` ***doesn't*** update frame by itself, Please implement
 
-* For autoLayout
+* For ***AutoLayout***
 
 ```objc
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
-    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    self.calendarHeightConstraint.constant = CGRectGetHeight(bounds);
+    // Do other updates here
     [self.view layoutIfNeeded];
 }
 ```
 
-* For manual layout
+* For ***Manual Layout***
 
 ```objc
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     calendar.frame = (CGRect){calendar.frame.origin,bounds.size};
+    // Do other updates here
+}
+```
+
+* If you are using ***Masonry***
+
+```objc
+- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
+{
+    [calendar mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(bounds.size.height));
+        // Do other updates
+    }];
+    [self.view layoutIfNeeded];
+}
+```
+
+* If you are using ***SnapKit***
+
+```swift
+func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+    calendar.snp.updateConstraints { (make) in
+        make.height.equalTo(bounds.height)
+        // Do other updates
+    }
+    self.view.layoutIfNeeded()
 }
 ```
 
@@ -165,7 +193,7 @@ self.calendar = calendar
 
 # <a id="pre-knowledge"></a>Pre-knowledge
 
-> In `Swift3`, `NSDate` and `NSDateFormatter` have been renamed to ***Date*** and ***DateFormatter*** , see `SwiftExample` for details.
+> In `Swift3`, `NSDate` and `NSDateFormatter` have been renamed to ***Date*** and ***DateFormatter*** , see `Example-Swift` for details.
 
 ## How to create NSDate object
 
@@ -271,7 +299,7 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 ## <a id="support"></a>Support this repo
 * ***Star*** this repo <a href="#"><img style="margin-bottom:-12px" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"></a>
 <br/>
-* Support with &nbsp; <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=Z84P82H3V4Q26&lc=C2&item_name=Lunch%20is%20on%20me%21&item_number=Support%20FSCalendar&amount=10%2e00&currency_code=USD&button_subtype=services&bn=PP%2dBuyNowBF%3abtn_buynowCC_LG%2egif%3aNonHosted" target="_blank"><img src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg" width="100" height="40" style="margin-bottom:-15px;"></a>
+* Support with &nbsp; <a href="https://www.paypal.me/WenchaoD" target="_blank"><img src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg" width="100" height="40" style="margin-bottom:-15px;"></a>
 <br/>
 * Support with <a href="https://cloud.githubusercontent.com/assets/5186464/15096775/bacc0506-1539-11e6-91b7-b1a7a773622b.png" target="_blank"><img src="http://a1.mzstatic.com/us/r30/Purple49/v4/50/16/b3/5016b341-39c1-b47b-2994-d7e23823baed/icon175x175.png" width="40" height="40" style="margin-bottom:-15px;-webkit-border-radius:10px;border:1px solid rgba(30, 154, 236, 1);"></a> or
 <a href="https://cloud.githubusercontent.com/assets/5186464/15096872/b06f3a3a-153c-11e6-89f9-2e9c7b88ef42.png" target="_blank"><img src="http://a4.mzstatic.com/us/r30/Purple49/v4/23/31/14/233114f8-2e8d-7b63-8dc5-85d29893061e/icon175x175.jpeg" height="40" width="40" style="margin-bottom:-15px; -webkit-border-radius: 10px;border:1px solid rgba(43, 177, 0, 1)"></a>
@@ -288,7 +316,7 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 ![fscalendar](https://cloud.githubusercontent.com/assets/5186464/18407011/8e4b6e48-7738-11e6-9fad-0e23cc881516.JPG)
 
 > If your made a beautiful calendar with this library in your app, please take a screen shot and [@me](https://twitter.com/WenchaoD) in twitter. Your help really means a lot to me! <br/>
-> 如果你用这个库完成了一个外观漂亮的日历，希望你能将这个漂亮的日历截图在微博中[@我](http://weibo.com/WenchaoD)，十分感谢！
+
 
 # License
 FSCalendar is available under the MIT license. See the LICENSE file for more info.

@@ -103,19 +103,11 @@
     return _lunarChars[day-1];
 }
 
-- (IBAction)prevClicked:(id)sender
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
-    NSCalendarUnit unit = (self.calendar.scope==FSCalendarScopeMonth) ? NSCalendarUnitMonth : NSCalendarUnitWeekOfYear;
-    NSDate *prevPage = [self.gregorian dateByAddingUnit:unit value:-1 toDate:self.calendar.currentPage options:0];
-    [self.calendar setCurrentPage:prevPage animated:YES];
-    
-}
-
-- (IBAction)nextClicked:(id)sender
-{
-    NSCalendarUnit unit = (self.calendar.scope==FSCalendarScopeMonth) ? NSCalendarUnitMonth : NSCalendarUnitWeekOfYear;
-    NSDate *nextPage = [self.gregorian dateByAddingUnit:unit value:1 toDate:self.calendar.currentPage options:0];
-    [self.calendar setCurrentPage:nextPage animated:YES];
+    if (monthPosition != FSCalendarMonthPositionCurrent) {
+        [calendar setCurrentPage:date animated:YES];
+    }
 }
 
 @end
