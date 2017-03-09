@@ -366,7 +366,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _collectionView.frame = _daysContainer.bounds;
             
         }
-        [_collectionViewLayout invalidateLayout];
 
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
         _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
@@ -1257,17 +1256,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
         }
         
-    } else {
-        if (self.hasValidateVisibleLayout) {
-            [_collectionViewLayout layoutAttributesForElementsInRect:_collectionView.bounds];
-            CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
-            CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,MAX(0,_collectionViewLayout.collectionViewContentSize.height-_collectionView.fs_bottom)));
-            [_collectionView setContentOffset:targetOffset animated:animated];
-        } else {
-            _currentPage = date;
-            [self setNeedsLayout];
-        }
-        
+    } else if (self.hasValidateVisibleLayout) {
+        [_collectionViewLayout layoutAttributesForElementsInRect:_collectionView.bounds];
+        CGRect headerFrame = [_collectionViewLayout layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:scrollOffset]].frame;
+        CGPoint targetOffset = CGPointMake(0, MIN(headerFrame.origin.y,MAX(0,_collectionViewLayout.collectionViewContentSize.height-_collectionView.fs_bottom)));
+        [_collectionView setContentOffset:targetOffset animated:animated];
     }
     if (!animated) {
         self.calendarHeaderView.scrollOffset = scrollOffset;
@@ -1636,7 +1629,6 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
         }
     }
     [cell configureAppearance];
-    
 }
 
 - (void)deselectCounterpartDate:(NSDate *)date
