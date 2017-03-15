@@ -1003,7 +1003,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)setTimeZone:(NSTimeZone *)timeZone
 {
     if (![_timeZone isEqual:timeZone]) {
-        _timeZone = timeZone
+        _timeZone = timeZone;
         [self invalidateDateTools];
         [self invalidateWeekdaySymbols];
         if (self.hasValidateVisibleLayout) {
