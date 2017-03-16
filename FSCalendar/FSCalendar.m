@@ -1002,8 +1002,24 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setTimeZone:(NSTimeZone *)timeZone
 {
-    _timeZone = timeZone.copy;
-    [self invalidateDateTools];
+    if (_selectedDates.count > 0) {
+        NSMutableArray *components = [[NSMutableArray alloc] init];
+        for (NSDate *date in _selectedDates) {
+            NSDateComponents *component = [self.gregorian components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:date];
+            [components addObject:component];
+        }
+        [_selectedDates removeAllObjects];
+        _timeZone = timeZone.copy;
+        [self invalidateDateTools];
+        for (NSDateComponents *component in components) {
+            [_selectedDates addObject:[self.gregorian dateFromComponents:component]];
+        }
+        [components removeAllObjects];
+        components = nil;
+    } else {
+        _timeZone = timeZone.copy;
+        [self invalidateDateTools];
+    }
     [self invalidateWeekdaySymbols];
     if (self.hasValidateVisibleLayout) {
         [self invalidateHeaders];
@@ -2375,7 +2391,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSDate *)beginingOfMonth:(NSDate *)month
 {
     if (!month) return nil;
-    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
+    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:month];
     components.day = 1;
     return [self.gregorian dateFromComponents:components];
 }
@@ -2383,7 +2399,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSDate *)endOfMonth:(NSDate *)month
 {
     if (!month) return nil;
-    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
+    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:month];
     components.month++;
     components.day = 0;
     return [self.gregorian dateFromComponents:components];
@@ -2422,7 +2438,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSDateComponents *componentsToSubtract = self.components;
     componentsToSubtract.day = - (weekdayComponents.weekday - self.gregorian.firstWeekday) + 3;
     NSDate *middleOfWeek = [self.gregorian dateByAddingComponents:componentsToSubtract toDate:week options:0];
-    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:middleOfWeek];
+    NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:middleOfWeek];
     middleOfWeek = [self.gregorian dateFromComponents:components];
     componentsToSubtract.day = NSIntegerMax;
     return middleOfWeek;
