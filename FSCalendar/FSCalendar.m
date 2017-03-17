@@ -1002,6 +1002,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setTimeZone:(NSTimeZone *)timeZone
 {
+    NSDateComponents *todayComponents = [self.gregorian components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:_today];
+    NSDateComponents *currentPageComponents = [self.gregorian components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:_currentPage];
     if (_selectedDates.count > 0) {
         NSMutableArray *components = [[NSMutableArray alloc] init];
         for (NSDate *date in _selectedDates) {
@@ -1020,6 +1022,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _timeZone = timeZone.copy;
         [self invalidateDateTools];
     }
+    _today = [self.gregorian dateFromComponents:todayComponents];
+    _currentPage = [self.gregorian dateFromComponents:currentPageComponents];
     [self invalidateWeekdaySymbols];
     if (self.hasValidateVisibleLayout) {
         [self invalidateHeaders];
