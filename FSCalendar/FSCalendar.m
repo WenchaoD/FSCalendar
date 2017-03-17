@@ -1002,28 +1002,35 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setTimeZone:(NSTimeZone *)timeZone
 {
+    // Backup Today and Current Page date in the old timezone.
     NSDateComponents *todayComponents = [self.gregorian components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:_today];
     NSDateComponents *currentPageComponents = [self.gregorian components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:_currentPage];
     if (_selectedDates.count > 0) {
+        // Backup the selected date in the old timezone.
         NSMutableArray *components = [[NSMutableArray alloc] init];
         for (NSDate *date in _selectedDates) {
             NSDateComponents *component = [self.gregorian components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:date];
             [components addObject:component];
         }
         [_selectedDates removeAllObjects];
+        // Update the timezone
         _timeZone = timeZone.copy;
         [self invalidateDateTools];
+        // Restore the selected date in the new timezone.
         for (NSDateComponents *component in components) {
             [_selectedDates addObject:[self.gregorian dateFromComponents:component]];
         }
         [components removeAllObjects];
         components = nil;
     } else {
+        // Update the timezone
         _timeZone = timeZone.copy;
         [self invalidateDateTools];
     }
+    // Restore Today and Current Page date in the new timezone.
     _today = [self.gregorian dateFromComponents:todayComponents];
     _currentPage = [self.gregorian dateFromComponents:currentPageComponents];
+    
     [self invalidateWeekdaySymbols];
     if (self.hasValidateVisibleLayout) {
         [self invalidateHeaders];
