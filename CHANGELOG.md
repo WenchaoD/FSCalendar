@@ -1,18 +1,175 @@
 # Change Log
 
-## [Unreleased](https://github.com/WenchaoD/FSCalendar/tree/HEAD)
-
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.4.0...HEAD)
-
-**Implemented enhancements:**
-
-- How to put line on row of week ? [\#185](https://github.com/WenchaoD/FSCalendar/issues/185)
-- Support DIV headers and cells
-- Increate fps by caching date-calculation results.
-- Add CHAGELOG.md. Thanks to [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)
+## [2.7.4](https://github.com/WenchaoD/FSCalendar/tree/2.7.4) (2017-03-15)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.7.3...2.7.4)
 
 **Closed issues:**
 
+- 自定义cell，快速滚动页面时候，可能出现崩溃 [\#621](https://github.com/WenchaoD/FSCalendar/issues/621)
+- Incorrect NSDate returned [\#613](https://github.com/WenchaoD/FSCalendar/issues/613)
+- Pan Gesture causing crashing [\#612](https://github.com/WenchaoD/FSCalendar/issues/612)
+- 未检查代理是否实现了协议方法就调用，导致找不到方法 [\#611](https://github.com/WenchaoD/FSCalendar/issues/611)
+- Is it possible to deselect the date in FScalendar other  than user's deselection? [\#610](https://github.com/WenchaoD/FSCalendar/issues/610)
+- is it possible to select dates in the range in recent version of fscalender? [\#609](https://github.com/WenchaoD/FSCalendar/issues/609)
+- CFBundleExecutable key [\#607](https://github.com/WenchaoD/FSCalendar/issues/607)
+- FSCalendar crash most of the time when minimumDate & maximumDate is set Today and selectDate is also Today [\#604](https://github.com/WenchaoD/FSCalendar/issues/604)
+- a [\#603](https://github.com/WenchaoD/FSCalendar/issues/603)
+- Today date does not update after changing device date [\#600](https://github.com/WenchaoD/FSCalendar/issues/600)
+- 外观修改 [\#599](https://github.com/WenchaoD/FSCalendar/issues/599)
+- Reloading of calendar view crashing app. [\#597](https://github.com/WenchaoD/FSCalendar/issues/597)
+
+## [2.7.3](https://github.com/WenchaoD/FSCalendar/tree/2.7.3) (2017-03-03)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.7.2...2.7.3)
+
+**Closed issues:**
+
+- is there a faster way if i want to go to a specific year [\#591](https://github.com/WenchaoD/FSCalendar/issues/591)
+- Reload issue in FSCalendar [\#587](https://github.com/WenchaoD/FSCalendar/issues/587)
+- Calendar crashes when minimumDate & maximumDate is set [\#575](https://github.com/WenchaoD/FSCalendar/issues/575)
+- disable some date [\#561](https://github.com/WenchaoD/FSCalendar/issues/561)
+- SwiftExample app: First row of days starts with the last week of the last month in some cases [\#548](https://github.com/WenchaoD/FSCalendar/issues/548)
+- 预给了日期范围后，重值日期范围有问题 [\#545](https://github.com/WenchaoD/FSCalendar/issues/545)
+- 您好大神，问您一下关于headerTitle的问题 [\#536](https://github.com/WenchaoD/FSCalendar/issues/536)
+- Accessibility / VoiceOver reading order should be left to right \(or numeric order\), not top to bottom [\#466](https://github.com/WenchaoD/FSCalendar/issues/466)
+
+**Merged pull requests:**
+
+- Make selectedDate nullable [\#581](https://github.com/WenchaoD/FSCalendar/pull/581) ([roark31337](https://github.com/roark31337))
+
+## [2.7.2](https://github.com/WenchaoD/FSCalendar/tree/2.7.2) (2017-02-16)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.7.1...2.7.2)
+
+**Closed issues:**
+
+- App crashing when implement delegate methods [\#590](https://github.com/WenchaoD/FSCalendar/issues/590)
+- Calendar only showing Sundays [\#589](https://github.com/WenchaoD/FSCalendar/issues/589)
+- 你好,请问下如何自定义Header? [\#588](https://github.com/WenchaoD/FSCalendar/issues/588)
+- Calendar not reloading min/max dates when calling reload data.  [\#585](https://github.com/WenchaoD/FSCalendar/issues/585)
+- Incorrect date gets selected on using the default select method [\#580](https://github.com/WenchaoD/FSCalendar/issues/580)
+- 日历底部线条怎么隐藏？ [\#579](https://github.com/WenchaoD/FSCalendar/issues/579)
+- Weird crash [\#574](https://github.com/WenchaoD/FSCalendar/issues/574)
+- Scroll direction changes from horizontal to vertical when changing from week view to month view using gestures [\#573](https://github.com/WenchaoD/FSCalendar/issues/573)
+- Use of undeclared type 'FSCalendarMonthPosition'  [\#568](https://github.com/WenchaoD/FSCalendar/issues/568)
+- 重用性  [\#562](https://github.com/WenchaoD/FSCalendar/issues/562)
+- 你好！我怎么修改头部的日期显示的格式呢？另外我怎么修改底部线条的隐藏与否呢？ [\#556](https://github.com/WenchaoD/FSCalendar/issues/556)
+- Version 2.7.0 is bugged [\#549](https://github.com/WenchaoD/FSCalendar/issues/549)
+- Interface BuilderDesignables build failed [\#543](https://github.com/WenchaoD/FSCalendar/issues/543)
+- error: IB Designables: Failed to update auto layout status: The agent crashed [\#538](https://github.com/WenchaoD/FSCalendar/issues/538)
+- Any way to increase the size of event indicator? [\#525](https://github.com/WenchaoD/FSCalendar/issues/525)
+- The week scope is not reset when returning to week view from a partial drag [\#473](https://github.com/WenchaoD/FSCalendar/issues/473)
+
+## [2.7.1](https://github.com/WenchaoD/FSCalendar/tree/2.7.1) (2017-02-02)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.7.0...2.7.1)
+
+**Closed issues:**
+
+- Calendar showing previous month for current page, but current page in stack has the correct month. [\#566](https://github.com/WenchaoD/FSCalendar/issues/566)
+- Storyboard not update interface when change Attributes Inspector [\#564](https://github.com/WenchaoD/FSCalendar/issues/564)
+- hello , first thing  this project is awesome ,, but i have on issue . [\#560](https://github.com/WenchaoD/FSCalendar/issues/560)
+- Vertical Line [\#557](https://github.com/WenchaoD/FSCalendar/issues/557)
+- 你好 我想请问有没有办法把日期和星期显示强制设置成英文 [\#552](https://github.com/WenchaoD/FSCalendar/issues/552)
+- h bomb [\#550](https://github.com/WenchaoD/FSCalendar/issues/550)
+- 展示bug，31天的日期只展示到28号 [\#547](https://github.com/WenchaoD/FSCalendar/issues/547)
+- SwiftExample app does not support multitasking [\#546](https://github.com/WenchaoD/FSCalendar/issues/546)
+- Calendar disrupts on orientation change [\#468](https://github.com/WenchaoD/FSCalendar/issues/468)
+
+**Merged pull requests:**
+
+- default values in reloadData method [\#570](https://github.com/WenchaoD/FSCalendar/pull/570) ([mastohhh](https://github.com/mastohhh))
+
+## [2.7.0](https://github.com/WenchaoD/FSCalendar/tree/2.7.0) (2017-01-17)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.6.0...2.7.0)
+
+**Implemented enhancements:**
+
+- 使用指导 [\#496](https://github.com/WenchaoD/FSCalendar/issues/496)
+
+**Closed issues:**
+
+- Pod version \(2.6.0\) crashes on handleScopeGesture [\#540](https://github.com/WenchaoD/FSCalendar/issues/540)
+- 大神你好想请教下关于点击灰色区域日期的问题 [\#535](https://github.com/WenchaoD/FSCalendar/issues/535)
+- 您好，我用您这个框架  用pod管理导入的库为什么和下的demo，版本不一样呢，用pod管理的版本是1.7.2，有好多属性是你的demo中有，但是我导入的里面就没有那些属性呢 [\#534](https://github.com/WenchaoD/FSCalendar/issues/534)
+- 在 Xcode8.2 运行，用 xib 拖进去 view 设置类为FSCalendar看不到 [\#533](https://github.com/WenchaoD/FSCalendar/issues/533)
+- Getting previous date in method didSelect date [\#531](https://github.com/WenchaoD/FSCalendar/issues/531)
+- -minimumDateForCalendar: bug [\#529](https://github.com/WenchaoD/FSCalendar/issues/529)
+- 使用问题 [\#527](https://github.com/WenchaoD/FSCalendar/issues/527)
+- When I select a day the event indicator disappear, why? How to solve? [\#526](https://github.com/WenchaoD/FSCalendar/issues/526)
+- Next and previous button on header title  [\#523](https://github.com/WenchaoD/FSCalendar/issues/523)
+- Feature Request: event on consecutive days [\#522](https://github.com/WenchaoD/FSCalendar/issues/522)
+- Delegate / DataSource || Race Condition ? [\#518](https://github.com/WenchaoD/FSCalendar/issues/518)
+- Request: A way to add more than one subtitleFor [\#517](https://github.com/WenchaoD/FSCalendar/issues/517)
+- Can't change calendar today date [\#514](https://github.com/WenchaoD/FSCalendar/issues/514)
+- 如何获知是向左还是向右滑动？ [\#513](https://github.com/WenchaoD/FSCalendar/issues/513)
+- centerForDate [\#512](https://github.com/WenchaoD/FSCalendar/issues/512)
+- Interface builder - FSCalendar - Designables - Build Failed [\#511](https://github.com/WenchaoD/FSCalendar/issues/511)
+- Different color for event dots [\#509](https://github.com/WenchaoD/FSCalendar/issues/509)
+- How to get Current year, current month & number of days in a month ? [\#508](https://github.com/WenchaoD/FSCalendar/issues/508)
+- How to change header background color? [\#507](https://github.com/WenchaoD/FSCalendar/issues/507)
+- Is there a way to set color of disabled day [\#504](https://github.com/WenchaoD/FSCalendar/issues/504)
+- How do you get the visible date range in calendar [\#503](https://github.com/WenchaoD/FSCalendar/issues/503)
+- Change firstWeekday shows wrong day [\#502](https://github.com/WenchaoD/FSCalendar/issues/502)
+- Custom cell can't be casted when using maximumDate [\#497](https://github.com/WenchaoD/FSCalendar/issues/497)
+- minimumDateForCalendar not working [\#495](https://github.com/WenchaoD/FSCalendar/issues/495)
+- 3D Touch Peek and Pop [\#493](https://github.com/WenchaoD/FSCalendar/issues/493)
+- Date number height is shortened [\#486](https://github.com/WenchaoD/FSCalendar/issues/486)
+- cell和cell之间会有一个间隔 [\#483](https://github.com/WenchaoD/FSCalendar/issues/483)
+
+**Merged pull requests:**
+
+- Removing if-clause that makes impossible to change today date. [\#515](https://github.com/WenchaoD/FSCalendar/pull/515) ([kallahir](https://github.com/kallahir))
+
+## [2.6.0](https://github.com/WenchaoD/FSCalendar/tree/2.6.0) (2016-11-29)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.5.1...2.6.0)
+
+**Closed issues:**
+
+- How to make Next and previous months Button visible ? [\#500](https://github.com/WenchaoD/FSCalendar/issues/500)
+- How to hide the column and row separator in FSCalendar   [\#499](https://github.com/WenchaoD/FSCalendar/issues/499)
+
+## [2.5.1](https://github.com/WenchaoD/FSCalendar/tree/2.5.1) (2016-11-23)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.5.0...2.5.1)
+
+**Implemented enhancements:**
+
+- Create A 3D Touch when date pressed in calender [\#449](https://github.com/WenchaoD/FSCalendar/issues/449)
+- 期望新增手势拖拽进行选择时间段功能。。。 [\#435](https://github.com/WenchaoD/FSCalendar/issues/435)
+
+**Closed issues:**
+
+- minimumDateForCalendar [\#494](https://github.com/WenchaoD/FSCalendar/issues/494)
+- Monster warlord [\#491](https://github.com/WenchaoD/FSCalendar/issues/491)
+- Monster warlord [\#490](https://github.com/WenchaoD/FSCalendar/issues/490)
+- Monster warlord [\#489](https://github.com/WenchaoD/FSCalendar/issues/489)
+- In week view some dates are missing [\#488](https://github.com/WenchaoD/FSCalendar/issues/488)
+- Space between month tag and days, after touching the calendar the days move up to it's right place [\#485](https://github.com/WenchaoD/FSCalendar/issues/485)
+- Custom cell can't be casted when using minimumDate/maximumDate [\#484](https://github.com/WenchaoD/FSCalendar/issues/484)
+- Update library issue [\#482](https://github.com/WenchaoD/FSCalendar/issues/482)
+- Set minimumDate and maximumDate dynamic [\#481](https://github.com/WenchaoD/FSCalendar/issues/481)
+- Today is already selected.How to disable today showing selected. [\#480](https://github.com/WenchaoD/FSCalendar/issues/480)
+- charthage build error: no shared framework schemes [\#479](https://github.com/WenchaoD/FSCalendar/issues/479)
+- Set Week Days Label IN Upper Case [\#478](https://github.com/WenchaoD/FSCalendar/issues/478)
+- Change Month causes select two dates at same view. [\#477](https://github.com/WenchaoD/FSCalendar/issues/477)
+- Crashed on iphone 5 and ios 10 [\#476](https://github.com/WenchaoD/FSCalendar/issues/476)
+- Calling `reloadData\(\)` in `didSelectDate\(\)` causes circle image to flicker. [\#475](https://github.com/WenchaoD/FSCalendar/issues/475)
+- Is it possible to display 2 weeks instead of 1 week? [\#470](https://github.com/WenchaoD/FSCalendar/issues/470)
+- Calendar orientation is not working properly in some projects [\#464](https://github.com/WenchaoD/FSCalendar/issues/464)
+
+## [2.5.0](https://github.com/WenchaoD/FSCalendar/tree/2.5.0) (2016-11-09)
+[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.4.0...2.5.0)
+
+**Implemented enhancements:**
+
+- text color of Sat and Sun  [\#437](https://github.com/WenchaoD/FSCalendar/issues/437)
+- Is it possible create Calendar View like Activity app [\#366](https://github.com/WenchaoD/FSCalendar/issues/366)
+- Disable placeholders selection backgoundColor in date range between months [\#351](https://github.com/WenchaoD/FSCalendar/issues/351)
+- How to remove events of next month showing in current month calender [\#328](https://github.com/WenchaoD/FSCalendar/issues/328)
+- Different font for selected and current date [\#281](https://github.com/WenchaoD/FSCalendar/issues/281)
+- How to put line on row of week ? [\#185](https://github.com/WenchaoD/FSCalendar/issues/185)
+
+**Closed issues:**
+
+- White Color Border Showing In Top and Bottom Of View In Which FSCalender Attached [\#471](https://github.com/WenchaoD/FSCalendar/issues/471)
+- how to add image in multiple date when view load? [\#469](https://github.com/WenchaoD/FSCalendar/issues/469)
 - seletectDate does not call didSelectDate [\#467](https://github.com/WenchaoD/FSCalendar/issues/467)
 - minimumDateForCalendar crash @ 2.4.0 [\#465](https://github.com/WenchaoD/FSCalendar/issues/465)
 - Two days can be selected after first or second Saturday is first selected [\#463](https://github.com/WenchaoD/FSCalendar/issues/463)
@@ -25,6 +182,7 @@
 - How to prevent calendar to switch from month view to week view? [\#454](https://github.com/WenchaoD/FSCalendar/issues/454)
 - Appearance Delegate not called [\#452](https://github.com/WenchaoD/FSCalendar/issues/452)
 - Have a migration project to swift3 plan? [\#451](https://github.com/WenchaoD/FSCalendar/issues/451)
+- Fatal Exception: FSCalendar date out of bounds exception. [\#450](https://github.com/WenchaoD/FSCalendar/issues/450)
 - Rename FSCalendarConstance to FSCalendarConstants [\#448](https://github.com/WenchaoD/FSCalendar/issues/448)
 - Header disappearing when max month is reached [\#447](https://github.com/WenchaoD/FSCalendar/issues/447)
 - Is "Imageoffset" property has some problem? [\#445](https://github.com/WenchaoD/FSCalendar/issues/445)
@@ -33,6 +191,7 @@
 - minimumDate iOS10 [\#432](https://github.com/WenchaoD/FSCalendar/issues/432)
 - "Invisible sticky header" problem on calendar with vertical scrolling [\#431](https://github.com/WenchaoD/FSCalendar/issues/431)
 - Delegate method calendar eventColorForDate not called. [\#423](https://github.com/WenchaoD/FSCalendar/issues/423)
+- force reload calendar [\#326](https://github.com/WenchaoD/FSCalendar/issues/326)
 
 ## [2.4.0](https://github.com/WenchaoD/FSCalendar/tree/2.4.0) (2016-10-12)
 [Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.3.3...2.4.0)
@@ -165,6 +324,7 @@
 - Is there a way of minimizing the distance between the event indicator and the day of the month? [\#309](https://github.com/WenchaoD/FSCalendar/issues/309)
 - Disable previous dates in same month with today [\#302](https://github.com/WenchaoD/FSCalendar/issues/302)
 - hides placeholder [\#229](https://github.com/WenchaoD/FSCalendar/issues/229)
+- Post appearance image/itunes address here [\#2](https://github.com/WenchaoD/FSCalendar/issues/2)
 
 ## [2.2.0](https://github.com/WenchaoD/FSCalendar/tree/2.2.0) (2016-06-29)
 [Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.1.1...2.2.0)
@@ -228,6 +388,7 @@
 **Merged pull requests:**
 
 - Fixes local variable shadow warnings when warning -Wshadow is enabled. [\#337](https://github.com/WenchaoD/FSCalendar/pull/337) ([schaechtele](https://github.com/schaechtele))
+- Removing unnecessary import [\#306](https://github.com/WenchaoD/FSCalendar/pull/306) ([yas375](https://github.com/yas375))
 
 ## [2.1.1](https://github.com/WenchaoD/FSCalendar/tree/2.1.1) (2016-04-26)
 [Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.1.0...2.1.1)
@@ -275,6 +436,11 @@
 - is there a way to indicate days, which can't be selected, with regular selector shape of different color? [\#239](https://github.com/WenchaoD/FSCalendar/issues/239)
 - calendarCurrentMonthDidChange doesn't work [\#238](https://github.com/WenchaoD/FSCalendar/issues/238)
 
+**Merged pull requests:**
+
+- Fix for fillColor when dateIsToday [\#261](https://github.com/WenchaoD/FSCalendar/pull/261) ([sochalewski](https://github.com/sochalewski))
+- fillColor delegate method for unselected dates \(cells\) [\#258](https://github.com/WenchaoD/FSCalendar/pull/258) ([sochalewski](https://github.com/sochalewski))
+
 ## [2.0.1](https://github.com/WenchaoD/FSCalendar/tree/2.0.1) (2016-03-26)
 [Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/2.0.0...2.0.1)
 
@@ -290,223 +456,6 @@
 - Is it possible to make event indicators have different colors each? [\#217](https://github.com/WenchaoD/FSCalendar/issues/217)
 - Lunar date issue when scroll page then go to previous page [\#161](https://github.com/WenchaoD/FSCalendar/issues/161)
 
-## [2.0.0](https://github.com/WenchaoD/FSCalendar/tree/2.0.0) (2016-03-19)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.8.2...2.0.0)
 
-**Closed issues:**
 
-- Add events async \(after network request\) [\#228](https://github.com/WenchaoD/FSCalendar/issues/228)
-- How to make the event date contain a hollow circle just like the today/selected date contain a filled circle?  [\#225](https://github.com/WenchaoD/FSCalendar/issues/225)
-- Longpress on the day [\#224](https://github.com/WenchaoD/FSCalendar/issues/224)
-- Date from Monday to Saturday not appeared in first week [\#223](https://github.com/WenchaoD/FSCalendar/issues/223)
-- 当日历设置为某些特定的高度后日期发生混乱 [\#222](https://github.com/WenchaoD/FSCalendar/issues/222)
-- 怎么能在不点击的情况下知道每个cell对应的是什么日期？ [\#221](https://github.com/WenchaoD/FSCalendar/issues/221)
-- Number of rows for current month? [\#220](https://github.com/WenchaoD/FSCalendar/issues/220)
-- It's that possible to make it infinity scroll [\#191](https://github.com/WenchaoD/FSCalendar/issues/191)
-- How to hide days not in current month? [\#168](https://github.com/WenchaoD/FSCalendar/issues/168)
-- Current Date not changing [\#153](https://github.com/WenchaoD/FSCalendar/issues/153)
-
-## [1.8.2](https://github.com/WenchaoD/FSCalendar/tree/1.8.2) (2016-02-27)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.8.1...1.8.2)
-
-**Closed issues:**
-
-- Placeholder Issue [\#219](https://github.com/WenchaoD/FSCalendar/issues/219)
-- \[Bug\] Changing Scope [\#218](https://github.com/WenchaoD/FSCalendar/issues/218)
-- Ho change number of rows for current month? Now I see extra row at the bottom for next month [\#216](https://github.com/WenchaoD/FSCalendar/issues/216)
-- How change diameter of blue circle on selected day? [\#215](https://github.com/WenchaoD/FSCalendar/issues/215)
-- Not possible to hide top and bottom border / change color of it [\#214](https://github.com/WenchaoD/FSCalendar/issues/214)
-- Calendar is broken on iOS9.0+ if iPhone language is right-to-left [\#211](https://github.com/WenchaoD/FSCalendar/issues/211)
-- I want to change to the five row, how to do? [\#210](https://github.com/WenchaoD/FSCalendar/issues/210)
-- Event color cannot be changed  [\#209](https://github.com/WenchaoD/FSCalendar/issues/209)
-- How can I switch calendar to Week mode from Month mode with pagingEnabled = NO [\#208](https://github.com/WenchaoD/FSCalendar/issues/208)
-- Finding Current Month gives insane results!!! [\#207](https://github.com/WenchaoD/FSCalendar/issues/207)
-- FSCalendar has problem with rotating to landscape [\#182](https://github.com/WenchaoD/FSCalendar/issues/182)
-- Deselection of unique date is not possible [\#181](https://github.com/WenchaoD/FSCalendar/issues/181)
-- How to set default color for specific days? [\#179](https://github.com/WenchaoD/FSCalendar/issues/179)
-
-## [1.8.1](https://github.com/WenchaoD/FSCalendar/tree/1.8.1) (2016-02-16)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.8.0...1.8.1)
-
-**Closed issues:**
-
-- Is there any delegate method to move to any particular date based upon user choice? [\#206](https://github.com/WenchaoD/FSCalendar/issues/206)
-- setting delegate and datasource in is swift [\#205](https://github.com/WenchaoD/FSCalendar/issues/205)
-- Don't understand why you would not include titleForDate datasource method.  [\#204](https://github.com/WenchaoD/FSCalendar/issues/204)
-- how to add event [\#202](https://github.com/WenchaoD/FSCalendar/issues/202)
-- headerHeight and weekdayHeight not being reflected [\#201](https://github.com/WenchaoD/FSCalendar/issues/201)
-- Need Help [\#199](https://github.com/WenchaoD/FSCalendar/issues/199)
-- Event color for date mis-rendered when reloading cell data [\#198](https://github.com/WenchaoD/FSCalendar/issues/198)
-- how to get event stop scroll on calendar ?  [\#197](https://github.com/WenchaoD/FSCalendar/issues/197)
-- Possible to change the highlight color of todays date [\#196](https://github.com/WenchaoD/FSCalendar/issues/196)
-- Possible to change the timeZone used by the calendar [\#195](https://github.com/WenchaoD/FSCalendar/issues/195)
-- Possible to set subtitle when date is selected? [\#193](https://github.com/WenchaoD/FSCalendar/issues/193)
-- Arrows to change moth  [\#192](https://github.com/WenchaoD/FSCalendar/issues/192)
-- How to custom background of FSCalendar? [\#190](https://github.com/WenchaoD/FSCalendar/issues/190)
-- Subtitle for specific date [\#188](https://github.com/WenchaoD/FSCalendar/issues/188)
-- How to put Image on specific dates like array [\#184](https://github.com/WenchaoD/FSCalendar/issues/184)
-- Change height of View Circle Current Date [\#172](https://github.com/WenchaoD/FSCalendar/issues/172)
-- Lunar Date [\#160](https://github.com/WenchaoD/FSCalendar/issues/160)
-- How to deal with time zones [\#159](https://github.com/WenchaoD/FSCalendar/issues/159)
-
-**Merged pull requests:**
-
-- Correct the spelling of CocoaPods in README [\#203](https://github.com/WenchaoD/FSCalendar/pull/203) ([ReadmeCritic](https://github.com/ReadmeCritic))
-
-## [1.8.0](https://github.com/WenchaoD/FSCalendar/tree/1.8.0) (2016-01-25)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.7.2...1.8.0)
-
-**Closed issues:**
-
-- Method selectDate\(\) does not take into account week start date when changing page. [\#186](https://github.com/WenchaoD/FSCalendar/issues/186)
-- Calendar height not updating when setting week mode. [\#183](https://github.com/WenchaoD/FSCalendar/issues/183)
-- Dates not showing [\#178](https://github.com/WenchaoD/FSCalendar/issues/178)
-- How to deselect all selected dates at once? [\#177](https://github.com/WenchaoD/FSCalendar/issues/177)
-- weekdayFont not working [\#176](https://github.com/WenchaoD/FSCalendar/issues/176)
-- how to show the selected date in Scope example! [\#175](https://github.com/WenchaoD/FSCalendar/issues/175)
-- crashed when clicked to select a date in storyboard example！ [\#174](https://github.com/WenchaoD/FSCalendar/issues/174)
-- Display yearly Calendar [\#173](https://github.com/WenchaoD/FSCalendar/issues/173)
-- How to set an event from date to date  [\#171](https://github.com/WenchaoD/FSCalendar/issues/171)
-- Can we set the first day of the month in the first line of collectionview ? [\#170](https://github.com/WenchaoD/FSCalendar/issues/170)
-- add colour in event date number on lunar [\#169](https://github.com/WenchaoD/FSCalendar/issues/169)
-- how to change weekday text format [\#167](https://github.com/WenchaoD/FSCalendar/issues/167)
-- setting minimumDateForCalendar to tomorrow [\#165](https://github.com/WenchaoD/FSCalendar/issues/165)
-- How to add multiple colours for event [\#164](https://github.com/WenchaoD/FSCalendar/issues/164)
-- Change scope and scroll to selected date [\#79](https://github.com/WenchaoD/FSCalendar/issues/79)
-
-## [1.7.2](https://github.com/WenchaoD/FSCalendar/tree/1.7.2) (2015-12-20)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.7.1...1.7.2)
-
-**Closed issues:**
-
-- get cell form didSelectDate [\#166](https://github.com/WenchaoD/FSCalendar/issues/166)
-- is it possible to select maximum two days?? [\#163](https://github.com/WenchaoD/FSCalendar/issues/163)
-- Not compatible with Today Extension [\#162](https://github.com/WenchaoD/FSCalendar/issues/162)
-- 我想用switch组件实现FSCalendar的农历显示与否的即时调控，请教？ [\#158](https://github.com/WenchaoD/FSCalendar/issues/158)
-
-## [1.7.1](https://github.com/WenchaoD/FSCalendar/tree/1.7.1) (2015-12-05)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.7.0...1.7.1)
-
-**Implemented enhancements:**
-
-- Customizing Font [\#70](https://github.com/WenchaoD/FSCalendar/issues/70)
-
-**Closed issues:**
-
-- change current date on sunset time [\#157](https://github.com/WenchaoD/FSCalendar/issues/157)
-- weekdays are not correct [\#156](https://github.com/WenchaoD/FSCalendar/issues/156)
-- calendarCurrentPageDidChange: 有时不会触发 [\#155](https://github.com/WenchaoD/FSCalendar/issues/155)
-- m\_calculateTitleHeight崩溃 [\#154](https://github.com/WenchaoD/FSCalendar/issues/154)
-- How to use custom background for selection and change the frame of FSCalendar [\#150](https://github.com/WenchaoD/FSCalendar/issues/150)
-- headerTitleTextSize not skinnable [\#146](https://github.com/WenchaoD/FSCalendar/issues/146)
-
-## [1.7.0](https://github.com/WenchaoD/FSCalendar/tree/1.7.0) (2015-11-18)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.6.3...1.7.0)
-
-**Implemented enhancements:**
-
-- 如何让日历仅显示当前月份的号数，上个月和下个月的号数隐藏？ [\#142](https://github.com/WenchaoD/FSCalendar/issues/142)
-
-**Closed issues:**
-
-- calendar header [\#149](https://github.com/WenchaoD/FSCalendar/issues/149)
-- 标题如何更改成中文？ [\#148](https://github.com/WenchaoD/FSCalendar/issues/148)
-- Using monday as first week day breaks calendar rendring [\#145](https://github.com/WenchaoD/FSCalendar/issues/145)
-- current date problem after change locale [\#144](https://github.com/WenchaoD/FSCalendar/issues/144)
-- Application crashes when you pull notification tray [\#143](https://github.com/WenchaoD/FSCalendar/issues/143)
-- calendarCurrentPageDidChange and  fast double click other month problem [\#141](https://github.com/WenchaoD/FSCalendar/issues/141)
-
-## [1.6.3](https://github.com/WenchaoD/FSCalendar/tree/1.6.3) (2015-11-08)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.6.2...1.6.3)
-
-**Closed issues:**
-
-- xcode7.1 运行不了OC版的程序 [\#139](https://github.com/WenchaoD/FSCalendar/issues/139)
-- Translate weekdays [\#138](https://github.com/WenchaoD/FSCalendar/issues/138)
-- cells loads multiple times while it's visible if you scroll fast many times. [\#137](https://github.com/WenchaoD/FSCalendar/issues/137)
-- Fatal Exception: NSInternalInconsistencyException [\#130](https://github.com/WenchaoD/FSCalendar/issues/130)
-- How to know when the calendar stop scrolling? [\#126](https://github.com/WenchaoD/FSCalendar/issues/126)
-- RTL support [\#105](https://github.com/WenchaoD/FSCalendar/issues/105)
-
-## [1.6.2](https://github.com/WenchaoD/FSCalendar/tree/1.6.2) (2015-11-02)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.6.1...1.6.2)
-
-**Closed issues:**
-
-- How can I limit the date to 3 months? [\#135](https://github.com/WenchaoD/FSCalendar/issues/135)
-- 怎么让2015和十二月对其下面日历的号数？ [\#134](https://github.com/WenchaoD/FSCalendar/issues/134)
-- calendar exceed the bottom border line [\#129](https://github.com/WenchaoD/FSCalendar/issues/129)
-
-## [1.6.1](https://github.com/WenchaoD/FSCalendar/tree/1.6.1) (2015-10-29)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.6.0...1.6.1)
-
-**Closed issues:**
-
-- Not deselecting item after scroll to different month [\#132](https://github.com/WenchaoD/FSCalendar/issues/132)
-- Personal calendarCurrentPageDidChange and selectDate Problem [\#131](https://github.com/WenchaoD/FSCalendar/issues/131)
-- How to change date? [\#127](https://github.com/WenchaoD/FSCalendar/issues/127)
-- Customize text and background on date\(s\) [\#125](https://github.com/WenchaoD/FSCalendar/issues/125)
-- Selecting date programatically while it is a placeholder selects both the placeholder and the real cell in the next/ prev month. [\#124](https://github.com/WenchaoD/FSCalendar/issues/124)
-- leak [\#121](https://github.com/WenchaoD/FSCalendar/issues/121)
-- Today Date [\#119](https://github.com/WenchaoD/FSCalendar/issues/119)
-- Has this been tested with ios9? [\#118](https://github.com/WenchaoD/FSCalendar/issues/118)
-- Cell Border with Color. [\#116](https://github.com/WenchaoD/FSCalendar/issues/116)
-- DesSelectDate manually [\#115](https://github.com/WenchaoD/FSCalendar/issues/115)
-
-## [1.6.0](https://github.com/WenchaoD/FSCalendar/tree/1.6.0) (2015-10-18)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.5.2...1.6.0)
-
-**Closed issues:**
-
-- Feature request: A boolean to enable / disable of scrolling, completely. [\#108](https://github.com/WenchaoD/FSCalendar/issues/108)
-
-## [1.5.2](https://github.com/WenchaoD/FSCalendar/tree/1.5.2) (2015-10-09)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.5.1...1.5.2)
-
-**Closed issues:**
-
-- scrollToPageForDate in FSCalendarScopeWeek not scrolling unless different month [\#114](https://github.com/WenchaoD/FSCalendar/issues/114)
-- Selected cell doesn't get deselected after calling reloadData [\#111](https://github.com/WenchaoD/FSCalendar/issues/111)
-- Selecting a date does not deselect the current selected one if it was selected programatically. [\#110](https://github.com/WenchaoD/FSCalendar/issues/110)
-
-## [1.5.1](https://github.com/WenchaoD/FSCalendar/tree/1.5.1) (2015-10-07)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.5.0...1.5.1)
-
-**Closed issues:**
-
-- Disable all dates except [\#107](https://github.com/WenchaoD/FSCalendar/issues/107)
-- FSCalendarScopeWeek - deselect last cell of collection view doesn't work [\#106](https://github.com/WenchaoD/FSCalendar/issues/106)
-- Change background color of each date [\#103](https://github.com/WenchaoD/FSCalendar/issues/103)
-- Crash inside an internal collection [\#101](https://github.com/WenchaoD/FSCalendar/issues/101)
-
-## [1.5.0](https://github.com/WenchaoD/FSCalendar/tree/1.5.0) (2015-10-04)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.4.1...1.5.0)
-
-## [1.4.1](https://github.com/WenchaoD/FSCalendar/tree/1.4.1) (2015-10-02)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.4.0...1.4.1)
-
-**Closed issues:**
-
-- selectDate not respecting allowsMultipleSelection = NO [\#102](https://github.com/WenchaoD/FSCalendar/issues/102)
-- selectDate function is not calling delegate methods [\#99](https://github.com/WenchaoD/FSCalendar/issues/99)
-- Locale not working properly [\#97](https://github.com/WenchaoD/FSCalendar/issues/97)
-- Programmatically select a date [\#95](https://github.com/WenchaoD/FSCalendar/issues/95)
-- Crash on selectDate: and the same date selection [\#88](https://github.com/WenchaoD/FSCalendar/issues/88)
-
-## [1.4.0](https://github.com/WenchaoD/FSCalendar/tree/1.4.0) (2015-09-28)
-[Full Changelog](https://github.com/WenchaoD/FSCalendar/compare/1.3.1...1.4.0)
-
-**Closed issues:**
-
-- selectDate: doesn't work on Swift [\#92](https://github.com/WenchaoD/FSCalendar/issues/92)
-- scrollToPageForDate:animated not work [\#90](https://github.com/WenchaoD/FSCalendar/issues/90)
-- Hi. How to show festival day in the subtitle? [\#89](https://github.com/WenchaoD/FSCalendar/issues/89)
-- Expand Calendar to fill up screen [\#85](https://github.com/WenchaoD/FSCalendar/issues/85)
-
-## [1.3.1](https://github.com/WenchaoD/FSCalendar/tree/1.3.1) (2015-09-16)
-## [1.2.2](https://github.com/WenchaoD/FSCalendar/tree/1.2.2) (2015-09-11)
-## [1.2.0](https://github.com/WenchaoD/FSCalendar/tree/1.2.0) (2015-09-09)
-## [1.1.4](https://github.com/WenchaoD/FSCalendar/tree/1.1.4) (2015-09-04)
-## [1.1.2](https://github.com/WenchaoD/FSCalendar/tree/1.1.2) (2015-09-02)
-## [1.0.2](https://github.com/WenchaoD/FSCalendar/tree/1.0.2) (2015-08-31)
-## [1.0.1](https://github.com/WenchaoD/FSCalendar/tree/1.0.1) (2015-08-29)
+\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
