@@ -1,8 +1,8 @@
 
 ![logo](https://cloud.githubusercontent.com/assets/5186464/16540124/efc51f72-408b-11e6-934a-4e750b8b55bb.png)
 <br/><br/>
-[![Apps Using](https://img.shields.io/badge/Apps%20Using-%3E%207,200-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
-[![Total Downloads](https://img.shields.io/badge/Total%20Downloads-%3E%20360,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+[![Apps Using](https://img.shields.io/badge/Apps%20Using-%3E%2010,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
+[![Total Downloads](https://img.shields.io/badge/Total%20Downloads-%3E%20500,000-00BFFF.svg?style=plastic)](https://cocoapods.org/pods/FSCalendar)
 <br>
 [![Travis](https://travis-ci.org/WenchaoD/FSCalendar.svg?branch=master)](https://travis-ci.org/WenchaoD/FSCalendar)
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
@@ -67,13 +67,17 @@
 
 ```ruby
 use_frameworks!
-pod 'FSCalendar'
+target '<Your Target Name>' do
+    pod 'FSCalendar'
+end
 ```
 
 * For iOS7+:
 
 ```ruby
-pod 'FSCalendar'
+target '<Your Target Name>' do
+	pod 'FSCalendar'
+end
 ```
 
 > [NSCalendarExtension](https://github.com/WenchaoD/NSCalendarExtension) is required to get iOS7 compatibility.
@@ -297,7 +301,7 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 
 
 ## <a id="support"></a>Support this repo
-* ***Star*** this repo <a href="#"><img style="margin-bottom:-12px" width="72" alt="star" src="https://cloud.githubusercontent.com/assets/5186464/15383105/fcf9cdf0-1dc2-11e6-88db-bf221042a584.png"></a>
+* [**★Star**](#) this repo 
 <br/>
 * Support with &nbsp; <a href="https://www.paypal.me/WenchaoD" target="_blank"><img src="https://www.paypalobjects.com/webstatic/i/logo/rebrand/ppcom.svg" width="100" height="40" style="margin-bottom:-15px;"></a>
 <br/>
