@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSArray<EKEvent *> *events;
 
 - (void)loadCalendarEvents;
-- (NSArray<EKEvent *> *)eventsForDate:(NSDate *)date;
+- (nullable NSArray<EKEvent *> *)eventsForDate:(NSDate *)date;
 
 @end
 
