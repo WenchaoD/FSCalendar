@@ -103,11 +103,6 @@
     self.titleLabel.text = text;
 }
 
-- (void)reloadData
-{
-    self.month = self.month;
-}
-
 @end
 
 
