@@ -297,7 +297,7 @@
         if (self.header.scrollEnabled) {
             self.contentView.alpha = 1.0 - (1.0-self.header.calendar.appearance.headerMinimumDissolvedAlpha)*ABS(center-position)/self.fs_width;
         } else {
-            self.contentView.alpha = (position > 0 && position < self.header.fs_width*0.75);
+            self.contentView.alpha = (position > self.header.fs_width*0.25 && position < self.header.fs_width*0.75);
         }
     } else if (self.header.scrollDirection == UICollectionViewScrollDirectionVertical) {
         CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].y;
