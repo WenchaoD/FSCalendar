@@ -97,36 +97,11 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    switch (self.calendar.transitionCoordinator.representingScope) {
-        case FSCalendarScopeMonth: {
-            switch (_scrollDirection) {
-                case UICollectionViewScrollDirectionVertical: {
-                    NSDate *minimumPage = [_calendar.gregorian fs_firstDayOfMonth:_calendar.minimumDate];
-                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month + 1;
-                    return months;
-                }
-                case UICollectionViewScrollDirectionHorizontal: {
-                    // 2 more pages to prevent scrollView from auto bouncing while push/present to other UIViewController
-                    NSDate *minimumPage = [_calendar.gregorian fs_firstDayOfMonth:_calendar.minimumDate];
-                    NSInteger months = [self.calendar.gregorian components:NSCalendarUnitMonth fromDate:minimumPage toDate:self.calendar.maximumDate options:0].month + 1;
-                    return months + 2;
-                }
-                default: {
-                    break;
-                }
-            }
-            break;
-        }
-        case FSCalendarScopeWeek: {
-            NSDate *minimumPage = [self.calendar.gregorian fs_firstDayOfMonth:_calendar.minimumDate];
-            NSInteger weeks = [self.calendar.gregorian components:NSCalendarUnitWeekOfYear fromDate:minimumPage toDate:self.calendar.maximumDate options:0].weekOfYear + 1;
-            return weeks + 2;
-        }
-        default: {
-            break;
-        }
+    NSInteger numberOfSections = self.calendar.collectionView.numberOfSections;
+    if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
+        return numberOfSections;
     }
-    return 0;
+    return numberOfSections + 2;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
