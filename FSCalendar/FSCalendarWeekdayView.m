@@ -65,8 +65,8 @@
     // Position Calculation
     NSInteger count = self.weekdayPointers.count;
     size_t size = sizeof(CGFloat)*count;
-    CGFloat *widths = malloc(size);
-    CGFloat contentWidth = self.contentView.fs_width;
+    CGFloat *widths = calloc(size, sizeof(CGFloat));
+	CGFloat contentWidth = self.contentView.fs_width;
     FSCalendarSliceCake(contentWidth, count, widths);
     
     __block CGFloat x = 0;
