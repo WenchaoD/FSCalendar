@@ -9,12 +9,12 @@
 import XCTest
 
 class FSCalendarSwiftExampleUITests: XCTestCase {
-	
-	// MARK: - Setup / Tear Down
-	
+    
+    // MARK: - Setup / Tear Down
+    
     override func setUp() {
         super.setUp()
-		
+        
         continueAfterFailure = false
         XCUIApplication().launch()
     }
@@ -22,10 +22,10 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
     override func tearDown() {
         super.tearDown()
     }
-	
-	
-	// MARK: - Tests
-	
+    
+    
+    // MARK: - Tests
+    
     func testDIY() {
         let application = XCUIApplication()
         application.tables.element(boundBy: 0).staticTexts["DIY"].tap()
@@ -65,7 +65,7 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
             CGVector(dx:4.5*columnWidth, dy:cellStart+rowHeight*3.5),
             CGVector(dx:0.5*columnWidth, dy:cellStart+rowHeight*4.5),
             CGVector(dx:5.5*columnWidth, dy:cellStart+rowHeight*5.5),
-        ]
+            ]
         vectors.forEach { (vector) in
             calendar.coordinate(withNormalizedOffset: vector).tap()
         }
@@ -104,7 +104,7 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 1.5)
         application.buttons.element(boundBy: 0).tap()
     }
-
+    
     func testInterfaceBuilder() {
         let application = XCUIApplication()
         application.tables.element(boundBy: 0).staticTexts["Interface Builder"].tap()
@@ -113,7 +113,7 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         let cellStart: CGFloat = (FSCalendarStandardHeaderHeight+FSCalendarStandardWeekdayHeight)/calendarHeight
         let rowHeight: CGFloat = (1.0-cellStart)/6.0
         let columnWidth: CGFloat = 1.0/7
-    
+        
         let nextVector = CGVector(dx: columnWidth.multiplied(by: 5.5), dy: cellStart+rowHeight.multiplied(by: 5.5))
         let prevVector = CGVector(dx: columnWidth.multiplied(by: 1.5), dy: cellStart+rowHeight.multiplied(by: 0.5))
         calendar.coordinate(withNormalizedOffset: nextVector).tap()
@@ -167,29 +167,29 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 0.5)
         
         configButton.tap()
-		let table = application.tables.element(boundBy: 0)
-		let monday = application.tables.staticTexts["Monday"]
-		swipeUpUntilElementIsVisible(table: table, element: monday)
-		monday.tap()
-		
+        let table = application.tables.element(boundBy: 0)
+        let monday = application.tables.staticTexts["Monday"]
+        swipeUpUntilElementIsVisible(table: table, element: monday)
+        monday.tap()
+        
         calendar.swipeUp()
         calendar.swipeDown()
         Thread.sleep(forTimeInterval: 0.5)
         
         configButton.tap()
-		let tuesday = application.tables.staticTexts["Tuesday"]
+        let tuesday = application.tables.staticTexts["Tuesday"]
         swipeUpUntilElementIsVisible(table: table, element: tuesday)
         tuesday.tap()
-		
+        
         calendar.swipeUp()
         calendar.swipeDown()
         Thread.sleep(forTimeInterval: 0.5)
         
         configButton.tap()
-		let sunday = application.tables.staticTexts["Sunday"]
-		swipeUpUntilElementIsVisible(table: table, element: sunday)
-		sunday.tap()
-
+        let sunday = application.tables.staticTexts["Sunday"]
+        swipeUpUntilElementIsVisible(table: table, element: sunday)
+        sunday.tap()
+        
         calendar.swipeUp()
         calendar.swipeDown()
         Thread.sleep(forTimeInterval: 1.5)
@@ -207,17 +207,17 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 1.0)
         application.buttons.element(boundBy: 0).tap()
     }
-	
-	
-	// MARK: - Helper Methods
-	
-	private let maxSwipes = 5
-	
-	private func swipeUpUntilElementIsVisible(table: XCUIElement, element: XCUIElement) {
-		var swipes = 0
-		while !element.exists && swipes < maxSwipes {
-			table.swipeUp()
-			swipes += 1
-		}
-	}
+    
+    
+    // MARK: - Helper Methods
+    
+    private let maxSwipes = 5
+    
+    private func swipeUpUntilElementIsVisible(table: XCUIElement, element: XCUIElement) {
+        var swipes = 0
+        while !element.exists && swipes < maxSwipes {
+            table.swipeUp()
+            swipes += 1
+        }
+    }
 }
