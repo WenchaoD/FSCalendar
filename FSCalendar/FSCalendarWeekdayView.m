@@ -63,14 +63,14 @@
     self.contentView.frame = self.bounds;
     
     // Position Calculation
-    NSInteger count = self.weekdayPointers.count;
+    NSInteger count = self.weekdayPointers.allObjects.count;
     size_t size = sizeof(CGFloat)*count;
     CGFloat *widths = malloc(size);
     CGFloat contentWidth = self.contentView.fs_width;
     FSCalendarSliceCake(contentWidth, count, widths);
     
     __block CGFloat x = 0;
-    for (NSInteger i = 0; i < self.weekdayPointers.count; i++) {
+    for (NSInteger i = 0; i < count; i++) {
         CGFloat width = widths[i];
         UILabel *label = [self.weekdayPointers pointerAtIndex:i];
         label.frame = CGRectMake(x, 0, width, self.contentView.fs_height);
