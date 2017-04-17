@@ -14,8 +14,8 @@
 @interface FSCalendarWeekdayView()
 
 @property (strong, nonatomic) NSPointerArray *weekdayPointers;
-@property (weak  , nonatomic) UIView *contentView;
-@property (weak  , nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) UIView *contentView;
+@property (weak, nonatomic) FSCalendar *calendar;
 
 - (void)commonInit;
 
