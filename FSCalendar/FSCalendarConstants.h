@@ -1,5 +1,5 @@
 //
-//  FSCalendarConstane.h
+//  FSCalendarConstants.h
 //  FSCalendar
 //
 //  Created by dingwenchao on 8/28/15.
@@ -29,6 +29,7 @@ CG_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 CG_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
 CG_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
 
+UIKIT_EXTERN NSInteger const FSCalendarNumberOfDaysInWeek;
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
@@ -97,6 +98,8 @@ static inline void FSCalendarSliceCake(CGFloat cake, NSInteger count, CGFloat *p
         pieces[i] = piece;
     }
 }
+
+
 
 
 

@@ -444,17 +444,17 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (self.floatingMode) {
         NSInteger numberOfRows = [self.calculator numberOfRowsInSection:section];
-        return numberOfRows * 7;
+        return numberOfRows * FSCalendarNumberOfDaysInWeek;
     }
     switch (self.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {
             return 42;
         }
         case FSCalendarScopeWeek: {
-            return 7;
+            return FSCalendarNumberOfDaysInWeek;
         }
     }
-    return 7;
+    return FSCalendarNumberOfDaysInWeek;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -470,7 +470,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         case FSCalendarPlaceholderTypeFillHeadTail: {
             if (self.transitionCoordinator.representingScope == FSCalendarScopeMonth) {
-                if (indexPath.item >= 7 * [self.calculator numberOfRowsInSection:indexPath.section]) {
+                if (indexPath.item >= FSCalendarNumberOfDaysInWeek * [self.calculator numberOfRowsInSection:indexPath.section]) {
                     return [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
                 }
             }

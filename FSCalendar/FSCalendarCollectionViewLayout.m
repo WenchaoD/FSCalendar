@@ -140,7 +140,7 @@
     // Calculate item widths and lefts
     free(self.widths);
     self.widths = ({
-        NSInteger columnCount = 7;
+        NSInteger columnCount = FSCalendarNumberOfDaysInWeek;
         size_t columnSize = sizeof(CGFloat)*columnCount;
         CGFloat *widths = malloc(columnSize);
         CGFloat contentWidth = self.collectionView.fs_width - self.sectionInsets.left - self.sectionInsets.right;
@@ -150,7 +150,7 @@
     
     free(self.lefts);
     self.lefts = ({
-        NSInteger columnCount = 7;
+        NSInteger columnCount = FSCalendarNumberOfDaysInWeek;
         size_t columnSize = sizeof(CGFloat)*columnCount;
         CGFloat *lefts = malloc(columnSize);
         lefts[0] = self.sectionInsets.left;
@@ -290,8 +290,8 @@
                 
                 for (NSInteger column = startColumn; column <= endColumn; column++) {
                     for (NSInteger row = 0; row < numberOfRows; row++) {
-                        NSInteger section = column / 7;
-                        NSInteger item = column % 7 + row * 7;
+                        NSInteger section = column / FSCalendarNumberOfDaysInWeek;
+                        NSInteger item = column % FSCalendarNumberOfDaysInWeek + row * FSCalendarNumberOfDaysInWeek;
                         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
                         UICollectionViewLayoutAttributes *itemAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
                         [layoutAttributes addObject:itemAttributes];
@@ -331,9 +331,9 @@
                 });
                 
                 for (NSInteger row = startRow; row <= endRow; row++) {
-                    for (NSInteger column = 0; column < 7; column++) {
+                    for (NSInteger column = 0; column < FSCalendarNumberOfDaysInWeek; column++) {
                         NSInteger section = row / 6;
-                        NSInteger item = column + (row % 6) * 7;
+                        NSInteger item = column + (row % 6) * FSCalendarNumberOfDaysInWeek;
                         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
                         UICollectionViewLayoutAttributes *itemAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
                         [layoutAttributes addObject:itemAttributes];
@@ -375,8 +375,8 @@
             UICollectionViewLayoutAttributes *headerAttributes = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
             [layoutAttributes addObject:headerAttributes];
             for (NSInteger row = startRow; row <= endRow; row++) {
-                for (NSInteger column = 0; column < 7; column++) {
-                    NSInteger item = row * 7 + column;
+                for (NSInteger column = 0; column < FSCalendarNumberOfDaysInWeek; column++) {
+                    NSInteger item = row * FSCalendarNumberOfDaysInWeek + column;
                     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
                     UICollectionViewLayoutAttributes *itemAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
                     [layoutAttributes addObject:itemAttributes];

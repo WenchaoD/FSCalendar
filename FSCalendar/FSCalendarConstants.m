@@ -1,5 +1,5 @@
 //
-//  FSCalendarConstane.m
+//  FSCalendarConstants.m
 //  FSCalendar
 //
 //  Created by dingwenchao on 8/28/15.
@@ -26,6 +26,7 @@ CGFloat const FSCalendarStandardHeaderTextSize = 16.5;
 CGFloat const FSCalendarMaximumEventDotDiameter = 4.8;
 CGFloat const FSCalendarStandardScopeHandleHeight = 26;
 
+NSInteger const FSCalendarNumberOfDaysInWeek = 7;
 NSInteger const FSCalendarDefaultHourComponent = 0;
 
 NSString * const FSCalendarDefaultCellReuseIdentifier = @"_FSCalendarDefaultCellReuseIdentifier";
