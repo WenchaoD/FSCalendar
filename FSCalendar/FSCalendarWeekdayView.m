@@ -69,7 +69,7 @@
     CGFloat contentWidth = self.contentView.fs_width;
     FSCalendarSliceCake(contentWidth, count, widths);
     
-    __block CGFloat x = 0;
+    CGFloat x = 0;
     for (NSInteger i = 0; i < count; i++) {
         CGFloat width = widths[i];
         UILabel *label = [self.weekdayPointers pointerAtIndex:i];
