@@ -70,7 +70,7 @@
     FSCalendarSliceCake(contentWidth, count, widths);
     
     __block CGFloat x = 0;
-    for (NSInteger i = 0; i < self.weekdayPointers.count; i++) {
+    for (NSInteger i = 0; i < count; i++) {
         CGFloat width = widths[i];
         UILabel *label = [self.weekdayPointers pointerAtIndex:i];
         label.frame = CGRectMake(x, 0, width, self.contentView.fs_height);
