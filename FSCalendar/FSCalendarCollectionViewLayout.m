@@ -130,6 +130,8 @@
                     default:
                         break;
                 }
+            } else {
+                height *= self.calendar.lineHeightMultiplier;
             }
             height;
         });
