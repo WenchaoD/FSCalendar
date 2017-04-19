@@ -519,7 +519,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-    if (self.placeholderType == FSCalendarPlaceholderTypeNone && monthPosition != FSCalendarMonthPositionCurrent) {
+    if ((self.placeholderType == FSCalendarPlaceholderTypeNone && monthPosition != FSCalendarMonthPositionCurrent) && !self.allowsSelectionFromAllMonthsInWeekScope) {
         return NO;
     }
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
