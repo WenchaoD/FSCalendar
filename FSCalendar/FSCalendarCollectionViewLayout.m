@@ -131,7 +131,7 @@
                         break;
                 }
             } else {
-                height *= self.calendar.lineHeightMultiplier;
+                height = self.calendar.rowHeight;
             }
             height;
         });

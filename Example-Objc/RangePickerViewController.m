@@ -20,9 +20,9 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 // The start date of the range
-@property (strong, nonatomic) NSDate *startDate;
+@property (strong, nonatomic) NSDate *date1;
 // The end date of the range
-@property (strong, nonatomic) NSDate *endDate;
+@property (strong, nonatomic) NSDate *date2;
 
 - (void)configureCell:(__kindof FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
@@ -45,12 +45,12 @@
     view.backgroundColor = [UIColor whiteColor];
     self.view = view;
     
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0,  CGRectGetMaxY(self.navigationController.navigationBar.frame), view.frame.size.width, view.frame.size.height)];
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), view.frame.size.width, view.frame.size.height - CGRectGetMaxY(self.navigationController.navigationBar.frame))];
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.pagingEnabled = NO;
     calendar.allowsMultipleSelection = YES;
-    calendar.lineHeightMultiplier = 1.5;
+    calendar.rowHeight = 60;
     calendar.placeholderType = FSCalendarPlaceholderTypeNone;
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -58,6 +58,8 @@
     calendar.appearance.titleDefaultColor = [UIColor blackColor];
     calendar.appearance.headerTitleColor = [UIColor blackColor];
     calendar.weekdayHeight = 0;
+    
+    calendar.swipeToChooseGesture.enabled = YES;
     
     calendar.today = nil; // Hide the today circle
     [calendar registerClass:[RangePickerCell class] forCellReuseIdentifier:@"cell"];
@@ -129,25 +131,30 @@
 
 - (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
-    if (self.endDate) {
-        // If there is already a range in the calendar
-        [calendar deselectDate:self.startDate];
-        [calendar deselectDate:self.endDate];
-        self.endDate = nil;
-        self.startDate = date;
-    } else if (self.startDate) {
-        // If there is only a start date in the calendar
-        self.endDate = date;
-        if ([self.startDate compare:self.endDate] == NSOrderedDescending) {
-            // If the end date is earlier, swap start & end.
-            NSDate *temp = self.startDate;
-            self.startDate = self.endDate;
-            self.endDate = temp;
+    
+    if (calendar.swipeToChooseGesture.state == UIGestureRecognizerStateChanged) {
+        // If the selection is caused by swipe gestures
+        if (!self.date1) {
+            self.date1 = date;
+        } else {
+            if (self.date2) {
+                [calendar deselectDate:self.date2];
+            }
+            self.date2 = date;
         }
     } else {
-        // If there is no start/end in the calendar
-        self.startDate = date;
+        if (self.date2) {
+            [calendar deselectDate:self.date1];
+            [calendar deselectDate:self.date2];
+            self.date1 = date;
+            self.date2 = nil;
+        } else if (!self.date1) {
+            self.date1 = date;
+        } else {
+            self.date2 = date;
+        }
     }
+    
     [self configureVisibleCells];
 }
 
@@ -184,17 +191,17 @@
         rangeCell.selectionLayer.hidden = YES;
         return;
     }
-    if (self.startDate && self.endDate) {
-        // The date is inside the range
-        BOOL isMiddle = ( [date compare:self.startDate] == NSOrderedDescending && [date compare:self.endDate] == NSOrderedAscending );
+    if (self.date1 && self.date2) {
+        // The date is in the middle of the range
+        BOOL isMiddle = [date compare:self.date1] != [date compare:self.date2];
         rangeCell.middleLayer.hidden = !isMiddle;
     } else {
         rangeCell.middleLayer.hidden = YES;
     }
-    BOOL isStart = self.startDate && [self.gregorian isDate:date inSameDayAsDate:self.startDate];
-    BOOL isEnd = self.endDate && [self.gregorian isDate:date inSameDayAsDate:self.endDate];
-    rangeCell.selectionLayer.hidden = !isStart && !isEnd;
+    BOOL isSelected = NO;
+    isSelected |= self.date1 && [self.gregorian isDate:date inSameDayAsDate:self.date1];
+    isSelected |= self.date2 && [self.gregorian isDate:date inSameDayAsDate:self.date2];
+    rangeCell.selectionLayer.hidden = !isSelected;
 }
-
 
 @end
