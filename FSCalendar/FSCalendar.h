@@ -410,9 +410,9 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL showsScopeHandle FSCalendarDeprecated(handleScopeGesture:);
 
 /**
- The multiplier of line height while paging enabled is NO. Default is 1.0;
+ The row height of the calendar if paging enabled is NO.;
  */
-@property (assign, nonatomic) IBInspectable CGFloat lineHeightMultiplier;
+@property (assign, nonatomic) IBInspectable CGFloat rowHeight;
 
 /**
  The calendar appearance used to control the global fonts、colors .etc
@@ -608,6 +608,7 @@ IB_DESIGNABLE
 #pragma mark - Deprecate
 
 @interface FSCalendar (Deprecated)
+@property (assign, nonatomic) CGFloat lineHeightMultiplier FSCalendarDeprecated(rowHeight);
 @property (assign, nonatomic) IBInspectable BOOL showsPlaceholders FSCalendarDeprecated('placeholderType');
 @property (strong, nonatomic) NSString *identifier DEPRECATED_MSG_ATTRIBUTE("Changing calendar identifier is NOT RECOMMENDED. ");
 

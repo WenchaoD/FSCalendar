@@ -14,7 +14,7 @@
 
 @implementation FSCalendar (Deprecated)
 
-@dynamic identifier;
+@dynamic identifier, lineHeightMultiplier;
 
 - (void)setShowsPlaceholders:(BOOL)showsPlaceholders
 {
@@ -237,6 +237,11 @@
 - (NSString *)identifier
 {
     return self.gregorian.calendarIdentifier;
+}
+
+- (void)setLineHeightMultiplier:(CGFloat)lineHeightMultiplier
+{
+    self.rowHeight = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
 }
 
 @end
