@@ -13,6 +13,7 @@
 #import "HidePlaceholderViewController.h"
 #import "ButtonsViewController.h"
 #import "DIYExampleViewController.h"
+#import "RangePickerViewController.h"
 
 @implementation FSTableViewController
 
@@ -23,6 +24,7 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     
     self.viewControllers = @[
+                             [RangePickerViewController class],
                              [DIYExampleViewController class],
                              [ButtonsViewController class],
                              [HidePlaceholderViewController class],

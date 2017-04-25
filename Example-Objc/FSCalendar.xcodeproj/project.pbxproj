@@ -78,6 +78,8 @@
 		EECA10F81BA9C0E400945B83 /* FullScreenExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */; };
 		F9384A651E3ACEFB001601E0 /* FSCalendarExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F9384A641E3ACEFB001601E0 /* FSCalendarExampleUITests.m */; };
 		F9564BF01E2DB8CA00FC9342 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9564BEF1E2DB8CA00FC9342 /* LaunchScreen.xib */; };
+		F988B1C81EA6046700609E59 /* RangePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F988B1C71EA6046700609E59 /* RangePickerViewController.m */; };
+		F988B1CB1EA6054400609E59 /* RangePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F988B1CA1EA6054400609E59 /* RangePickerCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +192,10 @@
 		F9384A641E3ACEFB001601E0 /* FSCalendarExampleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSCalendarExampleUITests.m; sourceTree = "<group>"; };
 		F9384A661E3ACEFB001601E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9564BEF1E2DB8CA00FC9342 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = SOURCE_ROOT; };
+		F988B1C61EA6046700609E59 /* RangePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RangePickerViewController.h; sourceTree = SOURCE_ROOT; };
+		F988B1C71EA6046700609E59 /* RangePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RangePickerViewController.m; sourceTree = SOURCE_ROOT; };
+		F988B1C91EA6054400609E59 /* RangePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RangePickerCell.h; sourceTree = SOURCE_ROOT; };
+		F988B1CA1EA6054400609E59 /* RangePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RangePickerCell.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -341,6 +347,7 @@
 				EE638CD01B89DBE90006DD1A /* AppDelegate.m */,
 				EE638CD11B89DBE90006DD1A /* FSTableViewController.h */,
 				EE638CD21B89DBE90006DD1A /* FSTableViewController.m */,
+				F94A976E1EA6036E004F8F4D /* Range Picker */,
 				3031F3EC1CDEDFA700C174D7 /* DIY */,
 				308B58D51CC08FA4004E812D /* Prev-Next-Buttons */,
 				30D55B0D1C9023E400BB43D5 /* Hide Placeholders */,
@@ -428,6 +435,17 @@
 				F9384A661E3ACEFB001601E0 /* Info.plist */,
 			);
 			path = FSCalendarExampleUITests;
+			sourceTree = "<group>";
+		};
+		F94A976E1EA6036E004F8F4D /* Range Picker */ = {
+			isa = PBXGroup;
+			children = (
+				F988B1C61EA6046700609E59 /* RangePickerViewController.h */,
+				F988B1C71EA6046700609E59 /* RangePickerViewController.m */,
+				F988B1C91EA6054400609E59 /* RangePickerCell.h */,
+				F988B1CA1EA6054400609E59 /* RangePickerCell.m */,
+			);
+			name = "Range Picker";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -657,6 +675,7 @@
 				30CEF9011C950C1F008EAFB1 /* FSCalendarTransitionCoordinator.m in Sources */,
 				EEC9C03A1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */,
 				301F79CC1DFD39E700D8631E /* FSCalendarDelegationProxy.m in Sources */,
+				F988B1C81EA6046700609E59 /* RangePickerViewController.m in Sources */,
 				30D55B101C90240000BB43D5 /* HidePlaceholderViewController.m in Sources */,
 				3055B1C31DA9323A002AFA13 /* FSCalendarExtensions.m in Sources */,
 				3031F3EF1CDEDFC500C174D7 /* DIYExampleViewController.m in Sources */,
@@ -664,6 +683,7 @@
 				30024F951BD1015300B1C04C /* DelegateAppearanceViewController.m in Sources */,
 				EE638CC31B89DB6E0006DD1A /* LoadViewExampleViewController.m in Sources */,
 				30B0BAD31B8D8E23004B9476 /* FSCalendarHeaderView.m in Sources */,
+				F988B1CB1EA6054400609E59 /* RangePickerCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

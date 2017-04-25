@@ -37,18 +37,7 @@
     
 }
 
-- (void)testExamples
-{
-    [self doTestDIY];
-    [self doTestPrevNextButtons];
-    [self doTestHidePlaceholders];
-    [self doTestDelegateAppearance];
-    [self doTestFullScreen];
-    [self doTestScope];
-    [self doTestStoryboard];
-}
-
-- (void)doTestDIY
+- (void)testDIY
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"DIY Example, Feature!"] tap];
@@ -71,7 +60,7 @@
     [[application.buttons elementBoundByIndex:0] tap]; // Pop
 }
 
-- (void)doTestPrevNextButtons
+- (void)testPrevNextButtons
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"Prev-Next Buttons"] tap];
@@ -89,7 +78,7 @@
     [[application.buttons elementBoundByIndex:0] tap]; // Pop
 }
 
-- (void)doTestHidePlaceholders
+- (void)testHidePlaceholders
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"Hides Placeholder"] tap];
@@ -106,7 +95,7 @@
     [[application.buttons elementBoundByIndex:0] tap];
 }
 
-- (void)doTestDelegateAppearance
+- (void)testDelegateAppearance
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"Delegate Appearance"] tap];
@@ -143,7 +132,7 @@
     [[application.buttons elementBoundByIndex:0] tap];
 }
 
-- (void)doTestFullScreen
+- (void)testFullScreen
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"Full Screen Example"] tap];
@@ -160,7 +149,7 @@
     [[application.buttons elementBoundByIndex:0] tap];
 }
 
-- (void)doTestScope
+- (void)testScope
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"FSCalendarScope Example"] tap];
@@ -190,7 +179,7 @@
     [[application.buttons elementBoundByIndex:0] tap];
 }
 
-- (void)doTestStoryboard
+- (void)testStoryboard
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"Storyboard Example"] tap];
@@ -252,25 +241,30 @@
     [calendar swipeDown];
     [calendar swipeDown];
     
+    
+    XCUIElement *table = [application.tables elementBoundByIndex:0];
     [NSThread sleepForTimeInterval:0.5];
     [configureButton tap];
-    [[application.tables elementBoundByIndex:0] swipeUp];
-    [application.tables.staticTexts[@"Monday"] tap];
+    XCUIElement *monday = application.tables.staticTexts[@"Monday"];
+    [self swipeUpTable:table toElement:monday];
+    [monday tap];
     [calendar swipeUp];
     [calendar swipeDown];
     [NSThread sleepForTimeInterval:1];
     
     [NSThread sleepForTimeInterval:0.5];
     [configureButton tap];
-    [[application.tables elementBoundByIndex:0] swipeUp];
-    [application.tables.staticTexts[@"Tuesday"] tap];
+    XCUIElement *tuesday = application.tables.staticTexts[@"Tuesday"];
+    [self swipeUpTable:table toElement:monday];
+    [tuesday tap];
     [calendar swipeDown];
     [calendar swipeUp];
     
     [NSThread sleepForTimeInterval:0.5];
     [configureButton tap];
-    [[application.tables elementBoundByIndex:0] swipeUp];
-    [application.tables.staticTexts[@"Sunday"] tap];
+    XCUIElement *sunday = application.tables.staticTexts[@"Sunday"];
+    [self swipeUpTable:table toElement:monday];
+    [sunday tap];
     [calendar swipeUp];
     [calendar swipeDown];
     [NSThread sleepForTimeInterval:1];
@@ -289,5 +283,14 @@
     [[application.buttons elementBoundByIndex:0] tap];
 }
 
+- (void)swipeUpTable:(XCUIElement *)table toElement:(XCUIElement *)row
+{
+    NSInteger maxSwipe = 5;
+    NSInteger currentSwipe = 0;
+    while (currentSwipe < maxSwipe && !row.exists) {
+        currentSwipe++;
+        [table swipeUp];
+    }
+}
 
 @end
