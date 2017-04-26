@@ -194,6 +194,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleSelectionColorForDate:(NSDate *)date;
 
 /**
+ * Asks the delegate for title font for the specific date.
+ */
+- (nullable UIFont *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleFontForDate:(NSDate *)date;
+
+/**
  * Asks the delegate for subtitle text color in unselected state for the specific date.
  */
 - (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance subtitleDefaultColorForDate:(NSDate *)date;

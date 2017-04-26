@@ -1514,6 +1514,7 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
     FSCalendarInvalidateCellAppearance(preferredFillSelectionColor,fillSelectionColorForDate);
     FSCalendarInvalidateCellAppearance(preferredTitleDefaultColor,titleDefaultColorForDate);
     FSCalendarInvalidateCellAppearance(preferredTitleSelectionColor,titleSelectionColorForDate);
+    FSCalendarInvalidateCellAppearance(preferredTitleFont,titleFontForDate);
 
     FSCalendarInvalidateCellAppearanceWithDefault(preferredTitleOffset,titleOffsetForDate,CGPointInfinity);
     if (cell.subtitle) {

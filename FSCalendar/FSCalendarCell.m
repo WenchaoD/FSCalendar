@@ -201,7 +201,7 @@
     if (![textColor isEqual:_titleLabel.textColor]) {
         _titleLabel.textColor = textColor;
     }
-    UIFont *titleFont = self.calendar.appearance.titleFont;
+    UIFont *titleFont = self.fontForTitleLabel;
     if (![titleFont isEqual:_titleLabel.font]) {
         _titleLabel.font = titleFont;
     }
@@ -324,6 +324,11 @@
 - (CGFloat)borderRadius
 {
     return _preferredBorderRadius >= 0 ? _preferredBorderRadius : _appearance.borderRadius;
+}
+
+- (UIFont*)fontForTitleLabel
+{
+    return _preferredTitleFont ?: self.calendar.appearance.titleFont;
 }
 
 #define OFFSET_PROPERTY(NAME,CAPITAL,ALTERNATIVE) \
