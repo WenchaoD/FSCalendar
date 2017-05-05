@@ -1550,6 +1550,12 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
             break;
         }
     }
+    // Synchronize selecion state to the collection view, otherwise delegate methods would not be triggered.
+    if (cell.selected) {
+        [self.collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:NO];
+    } else {
+        [self.collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    }
     [self invalidateAppearanceForCell:cell forDate:date];
     [cell configureAppearance];
     
