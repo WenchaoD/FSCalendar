@@ -54,7 +54,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (weak, nonatomic) FSCalendar *calendar;
 @property (weak, nonatomic) FSCalendarAppearance *appearance;
 
-@property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *subtitle;
 @property (strong, nonatomic) UIImage  *image;
 @property (assign, nonatomic) FSCalendarMonthPosition monthPosition;

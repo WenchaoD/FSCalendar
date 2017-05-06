@@ -92,7 +92,6 @@
 {
     [super layoutSubviews];
     
-    _titleLabel.text = self.title;
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
         if (_subtitleLabel.hidden) {
