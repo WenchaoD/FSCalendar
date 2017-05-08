@@ -1563,9 +1563,9 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
 
 - (void)reloadVisibleCells
 {
-    [self.collectionView.indexPathsForVisibleItems enumerateObjectsUsingBlock:^(NSIndexPath *indexPath, NSUInteger idx, BOOL *stop) {
-        FSCalendarCell *cell = (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-        [self reloadDataForCell:cell atIndexPath:indexPath];
+    [self.visibleCells enumerateObjectsUsingBlock:^(__kindof FSCalendarCell * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:obj];
+        [self reloadDataForCell:obj atIndexPath:indexPath];
     }];
 }
 
