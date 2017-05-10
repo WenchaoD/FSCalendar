@@ -1478,7 +1478,7 @@ void FSCalendarRunLoopCallback(CFRunLoopObserverRef observer, CFRunLoopActivity 
 - (void)invalidateHeaders
 {
     [self.calendarHeaderView.collectionView reloadData];
-    [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(reloadData)];
+    [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(configureAppearance)];
 }
 
 - (void)invalidateAppearanceForCell:(FSCalendarCell *)cell forDate:(NSDate *)date
