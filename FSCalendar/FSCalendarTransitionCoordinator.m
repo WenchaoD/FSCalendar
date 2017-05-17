@@ -531,11 +531,12 @@
             if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillSixRows) {
                 contentSize = self.cachedMonthSize;
             } else {
+                CGFloat padding = self.calendar.collectionViewLayout.sectionInsets.top + self.calendar.collectionViewLayout.sectionInsets.bottom;
                 contentSize = CGSizeMake(self.calendar.fs_width,
                                          self.calendar.preferredHeaderHeight+
                                          self.calendar.preferredWeekdayHeight+
                                          ([self.calendar.calculator numberOfRowsInMonth:page]*self.calendar.collectionViewLayout.estimatedItemSize.height)+
-                                         self.calendar.scopeHandle.fs_height);
+                                         self.calendar.scopeHandle.fs_height+padding);
             }
             break;
         }
