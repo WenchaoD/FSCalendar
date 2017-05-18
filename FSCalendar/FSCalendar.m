@@ -152,6 +152,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)initialize
 {   
+    _validateDateInBounds = YES;
+    
     _appearance = [[FSCalendarAppearance alloc] init];
     _appearance.calendar = self;
     
@@ -744,6 +746,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)setValidateDateInBounds:(BOOL)validate
+{
+    if (_validateDateInBounds != validate) {
+        _validateDateInBounds = validate;
+    }
+}
+
 + (BOOL)automaticallyNotifiesObserversOfScope
 {
     return NO;
@@ -771,7 +780,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!today) {
         _today = nil;
     } else {
-        FSCalendarAssertDateInBounds(today,self.gregorian,self.minimumDate,self.maximumDate);
+        if (_validateDateInBounds) {
+            FSCalendarAssertDateInBounds(today,self.gregorian,self.minimumDate,self.maximumDate);
+        }
         _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:today options:0];
     }
     if (self.hasValidateVisibleLayout) {
@@ -1150,8 +1161,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         
     [self requestBoundingDatesIfNecessary];
     
-    FSCalendarAssertDateInBounds(date,self.gregorian,self.minimumDate,self.maximumDate);
     
+    if (_validateDateInBounds) {
+        FSCalendarAssertDateInBounds(date,self.gregorian,self.minimumDate,self.maximumDate);
+    }
     NSDate *targetDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
     NSIndexPath *targetIndexPath = [self.calculator indexPathForDate:targetDate];
     
