@@ -386,7 +386,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSDateComponents *components = [self.gregorian components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
     components.day = _appearance.fakedSelectedDay?:1;
     [_selectedDates addObject:[self.gregorian dateFromComponents:components]];
-    [self reloadVisibleCells];
+    [self.collectionView reloadData];
 }
 #endif
 
@@ -808,7 +808,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if ([identifier isEqualToString:FSCalendarBlankCellReuseIdentifier]) {
         [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"Do not use %@ as the cell reuse identifier.", identifier];
     }
-    [self.collectionView registerClass:nil forCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier];
     [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
 
 }
@@ -1075,7 +1074,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)reloadData
 {
     _needsRequestingBoundingDates = YES;
-    if ([self requestBoundingDatesIfNecessary]) {
+    if ([self requestBoundingDatesIfNecessary] || !self.collectionView.indexPathsForVisibleItems.count) {
         [self invalidateHeaders];
         [self.collectionView reloadData];
     } else {
