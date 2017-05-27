@@ -1106,6 +1106,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (NSDate *)selectedDate
 {
+    // In the event we don't have a selected or last date, return today's date.
+    if (_selectedDates == nil || _selectedDates.count == 0 || _selectedDates.lastObject == nil) {
+        return _today ? _today : [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:[NSDate date] options:0];
+    }
     return _selectedDates.lastObject;
 }
 
