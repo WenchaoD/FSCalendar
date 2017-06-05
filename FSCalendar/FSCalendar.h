@@ -515,7 +515,7 @@ IB_DESIGNABLE
  @param cell The cell object whose date you want.
  @return The date of the cell or nil if the specified cell is not in the calendar.
  */
-- (NSDate *)dateForCell:(FSCalendarCell *)cell;
+- (nullable NSDate *)dateForCell:(FSCalendarCell *)cell;
 
 /**
  Returns the month position of the specified cell.
