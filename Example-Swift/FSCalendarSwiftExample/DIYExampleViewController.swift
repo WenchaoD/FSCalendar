@@ -147,7 +147,7 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         calendar.visibleCells().forEach { (cell) in
             let date = calendar.date(for: cell)
             let position = calendar.monthPosition(for: cell)
-            self.configure(cell: cell, for: date, at: position)
+            self.configure(cell: cell, for: date!, at: position)
         }
     }
     
