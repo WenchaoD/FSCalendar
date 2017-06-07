@@ -65,7 +65,7 @@
     // Position Calculation
     NSInteger count = self.weekdayPointers.count;
     size_t size = sizeof(CGFloat)*count;
-    CGFloat *widths = malloc(size);
+    CGFloat *widths = calloc(size, sizeof(CGFloat));
     CGFloat contentWidth = self.contentView.fs_width;
     FSCalendarSliceCake(contentWidth, count, widths);
     
@@ -105,7 +105,7 @@
         label.textColor = self.calendar.appearance.weekdayTextColor;
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
     }
-
+    
 }
 
 @end

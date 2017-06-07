@@ -78,7 +78,8 @@ class DIYCalendarCell: FSCalendarCell {
     
     override func configureAppearance() {
         super.configureAppearance()
-        // Override the build-in appearance configuration
+		
+        // Override the built-in appearance configuration
         if self.isPlaceholder {
             self.eventIndicator.isHidden = true
             self.titleLabel.textColor = UIColor.lightGray
