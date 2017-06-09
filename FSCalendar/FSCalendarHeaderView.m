@@ -124,13 +124,11 @@
 
 #pragma mark - Properties
 
-#if TARGET_INTERFACE_BUILDER
 - (void)setCalendar:(FSCalendar *)calendar
 {
     _calendar = calendar;
     [self configureAppearance];
 }
-#endif
 
 - (void)setScrollOffset:(CGFloat)scrollOffset
 {

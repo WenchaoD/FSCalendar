@@ -541,11 +541,6 @@ IB_DESIGNABLE
 - (CGRect)frameForDate:(NSDate *)date;
 
 /**
- Invalidates the current appearance of the calendar and triggers an update during the next update cycle.
- */
-- (void)setNeedsConfigureAppearance;
-
-/**
  An action selector for UIPanGestureRecognizer instance to control the scope transition
  
  @param sender A UIPanGestureRecognizer instance which controls the scope of the calendar

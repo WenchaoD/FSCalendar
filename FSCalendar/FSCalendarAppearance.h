@@ -22,6 +22,11 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
     FSCalendarCellStateTodaySelected = FSCalendarCellStateToday|FSCalendarCellStateSelected
 };
 
+typedef NS_ENUM(NSUInteger, FSCalendarSeparators) {
+    FSCalendarSeparatorNone          = 0,
+    FSCalendarSeparatorInterRows     = 1
+};
+
 typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsHeaderUsesDefaultCase      = 0,
     FSCalendarCaseOptionsHeaderUsesUpperCase        = 1,
@@ -29,13 +34,6 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsWeekdayUsesDefaultCase     = 0 << 4,
     FSCalendarCaseOptionsWeekdayUsesUpperCase       = 1 << 4,
     FSCalendarCaseOptionsWeekdayUsesSingleUpperCase = 2 << 4,
-};
-
-typedef NS_OPTIONS(NSUInteger, FSCalendarSeparators) {
-    FSCalendarSeparatorNone          = 0,
-    FSCalendarSeparatorInterRows     = 1 << 0,
-    FSCalendarSeparatorInterColumns  = 1 << 1,   // Will implement soon
-    FSCalendarSeparatorBelowWeekdays = 1 << 2    // Will implement soon
 };
 
 /**
