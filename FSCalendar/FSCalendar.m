@@ -610,7 +610,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     FSCalendarCell *cell = (FSCalendarCell *)[collectionView cellForItemAtIndexPath:indexPath];
     cell.dateIsSelected = YES;
-    cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell;
+    cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell | _preferredAccessibilityTraitForCell;
     [cell performSelecting];
     NSDate *selectedDate = [self dateForIndexPath:indexPath];
     if (!_supressEvent) {
@@ -1372,7 +1372,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         [_collectionView selectItemAtIndexPath:targetIndexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         FSCalendarCell *cell = (FSCalendarCell *)[_collectionView cellForItemAtIndexPath:targetIndexPath];
-        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell;
+        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell | _preferredAccessibilityTraitForCell;
         [cell performSelecting];
         [self enqueueSelectedDate:targetDate];
         [self selectCounterpartDate:targetDate];
@@ -1849,7 +1849,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSString *accessibilityIdentifierForDate = [self accessibilityIdentifierForDate:cell.date];
     
     if (cell.dateIsSelected) {
-        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell;
+        cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForSelectedCell | _preferredAccessibilityTraitForCell;
         [self updateWeekViewHeader:cell.date];
     } else {
         cell.titleLabel.accessibilityTraits = _preferredAccessibilityTraitForCell;
