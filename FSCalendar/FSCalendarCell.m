@@ -104,8 +104,8 @@
     }
     
     if (_subtitle) {
-        CGFloat titleHeight = self.calendar.calculator.titleHeight;
-        CGFloat subtitleHeight = self.calendar.calculator.subtitleHeight;
+        CGFloat titleHeight = self.titleLabel.font.lineHeight;
+        CGFloat subtitleHeight = self.subtitleLabel.font.lineHeight;
         
         CGFloat height = titleHeight + subtitleHeight;
         _titleLabel.frame = CGRectMake(
@@ -130,8 +130,6 @@
     }
     
     _imageView.frame = CGRectMake(self.preferredImageOffset.x, self.preferredImageOffset.y, self.contentView.fs_width, self.contentView.fs_height);
-    
-    
     
     CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
     CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);

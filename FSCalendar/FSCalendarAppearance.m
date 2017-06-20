@@ -83,7 +83,6 @@
 {
     if (![_titleFont isEqual:titleFont]) {
         _titleFont = titleFont;
-        self.calendar.calculator.titleHeight = -1;
         [self.calendar configureAppearance];
     }
 }
@@ -92,7 +91,6 @@
 {
     if (![_subtitleFont isEqual:subtitleFont]) {
         _subtitleFont = subtitleFont;
-        self.calendar.calculator.subtitleHeight = -1;
         [self.calendar configureAppearance];
     }
 }
