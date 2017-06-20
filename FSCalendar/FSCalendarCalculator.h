@@ -9,10 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-@class FSCalendar;
-
-typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
-
 struct FSCalendarCoordinate {
     NSInteger row;
     NSInteger column;
