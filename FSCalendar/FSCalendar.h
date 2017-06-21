@@ -555,7 +555,6 @@ IB_DESIGNABLE
 
 #if TARGET_INTERFACE_BUILDER
 
-@property (assign, nonatomic) IBInspectable BOOL     adjustsFontSizeToFitContentSize;
 @property (assign, nonatomic) IBInspectable CGFloat  titleTextSize;
 @property (assign, nonatomic) IBInspectable CGFloat  subtitleTextSize;
 @property (assign, nonatomic) IBInspectable CGFloat  weekdayTextSize;
