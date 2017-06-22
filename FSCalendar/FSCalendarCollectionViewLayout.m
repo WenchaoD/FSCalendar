@@ -276,18 +276,20 @@
                 
                 NSInteger endColumn = ({
                     NSInteger endColumn;
-                    NSInteger section = CGRectGetMaxX(rect)/self.collectionView.fs_width;
-                    if (FSCalendarMod(CGRectGetMaxX(rect), self.collectionView.fs_width) == 0) {
-                        endColumn = section*7 - 1;
+                    CGFloat section = CGRectGetMaxX(rect)/self.collectionView.fs_width;
+                    CGFloat remainder = FSCalendarMod(section, 1);
+                    // https://stackoverflow.com/a/10335601/2398107
+                    if (remainder <= MAX(100*FLT_EPSILON*ABS(remainder), FLT_MIN)) {
+                        endColumn = FSCalendarFloor(section)*7 - 1;
                     } else {
                         CGFloat widthDelta = FSCalendarMod(CGRectGetMaxX(rect), self.collectionView.fs_width)-self.sectionInsets.left;
                         widthDelta = MIN(MAX(0, widthDelta), self.collectionView.fs_width - self.sectionInsets.left);
                         NSInteger countDelta = FSCalendarCeil(widthDelta/self.estimatedItemSize.width);
-                        endColumn = section*7 + countDelta - 1;
+                        endColumn = FSCalendarFloor(section)*7 + countDelta - 1;
                     }
                     endColumn;
                 });
-
+                
                 NSInteger numberOfRows = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth ? 6 : 1;
                 
                 for (NSInteger column = startColumn; column <= endColumn; column++) {
@@ -320,14 +322,16 @@
                 
                 NSInteger endRow = ({
                     NSInteger endRow;
-                    NSInteger section = CGRectGetMaxY(rect)/self.collectionView.fs_height;
-                    if (FSCalendarMod(CGRectGetMaxY(rect), self.collectionView.fs_height) == 0) {
-                        endRow = section*6 - 1;
+                    CGFloat section = CGRectGetMaxY(rect)/self.collectionView.fs_height;
+                    CGFloat remainder = FSCalendarMod(section, 1);
+                    // https://stackoverflow.com/a/10335601/2398107
+                    if (remainder <= MAX(100*FLT_EPSILON*ABS(remainder), FLT_MIN)) {
+                        endRow = FSCalendarFloor(section)*6 - 1;
                     } else {
                         CGFloat heightDelta = FSCalendarMod(CGRectGetMaxY(rect), self.collectionView.fs_height)-self.sectionInsets.top;
                         heightDelta = MIN(MAX(0, heightDelta), self.collectionView.fs_height-self.sectionInsets.top);
                         NSInteger countDelta = FSCalendarCeil(heightDelta/self.estimatedItemSize.height);
-                        endRow = section*6 + countDelta-1;
+                        endRow = FSCalendarFloor(section)*6 + countDelta-1;
                     }
                     endRow;
                 });
