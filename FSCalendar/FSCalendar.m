@@ -361,7 +361,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             _collectionView.frame = _daysContainer.bounds;
             
         }
-
+        _collectionView.fs_height = FSCalendarHalfFloor(_collectionView.fs_height);
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
         _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
         _scopeHandle.fs_bottom = _bottomBorder.fs_top;

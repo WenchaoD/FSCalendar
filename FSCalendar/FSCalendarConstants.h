@@ -68,6 +68,10 @@ CG_EXTERN CGSize const CGSizeAutomatic;
 #define FSCalendarMod(c1,c2) fmodf(c1,c2)
 #endif
 
+#define FSCalendarHalfRound(c) (FSCalendarRound(c*2)*0.5)
+#define FSCalendarHalfFloor(c) (FSCalendarFloor(c*2)*0.5)
+#define FSCalendarHalfCeil(c) (FSCalendarCeil(c*2)*0.5)
+
 #define FSCalendarUseWeakSelf __weak __typeof__(self) FSCalendarWeakSelf = self;
 #define FSCalendarUseStrongSelf __strong __typeof__(self) self = FSCalendarWeakSelf;
 
