@@ -951,6 +951,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return _selectedDates.lastObject;
 }
 
+// 新增代码.
+- (void)setSelectedDates:(NSArray<NSDate *> *)selectedDates {
+	[_selectedDates addObjectsFromArray:selectedDates];
+}
+
 - (NSArray *)selectedDates
 {
     return [NSArray arrayWithArray:_selectedDates];

@@ -10,6 +10,17 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+#define FORMAT(str, ...) [NSString stringWithFormat: str, __VA_ARGS__]
+#define SCREEN_HEIGHT  [[UIScreen mainScreen] bounds].size.height
+#define SCREEN_WIDTH   [[UIScreen mainScreen] bounds].size.width
+#define FONT_XXL [UIFont systemFontOfSize:18.0]
+#define FONT_XL [UIFont systemFontOfSize:17.0]
+#define FONT_L [UIFont systemFontOfSize:16.0]
+#define FONT_M [UIFont systemFontOfSize:15.0]
+#define FONT_LS [UIFont systemFontOfSize:14.0]
+#define FONT_S [UIFont systemFontOfSize:13.0]
+#define FONT_MS [UIFont systemFontOfSize:12.0]
+#define FONT_XS [UIFont systemFontOfSize:11.0]
 
 @interface UIView (FSCalendarExtensions)
 
@@ -20,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) CGFloat fs_left;
 @property (nonatomic) CGFloat fs_bottom;
 @property (nonatomic) CGFloat fs_right;
+
+@property(nonatomic) CGFloat fs_x;
+@property(nonatomic) CGFloat fs_y;
+@property(nonatomic) CGPoint fs_origin;
 
 @end
 

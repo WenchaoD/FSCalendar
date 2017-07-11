@@ -4,7 +4,7 @@
 //
 //  Created by Wenchao Ding on 29/1/15.
 //  Copyright © 2016 Wenchao Ding. All rights reserved.
-// 
+//
 //  https://github.com/WenchaoD
 //
 //  FSCalendar is a superior awesome calendar control with high performance, high customizablility and very simple usage.
@@ -29,27 +29,27 @@ FOUNDATION_EXPORT double FSCalendarVersionNumber;
 FOUNDATION_EXPORT const unsigned char FSCalendarVersionString[];
 
 typedef NS_ENUM(NSUInteger, FSCalendarScope) {
-    FSCalendarScopeMonth,
-    FSCalendarScopeWeek
+	FSCalendarScopeMonth,
+	FSCalendarScopeWeek
 };
 
 typedef NS_ENUM(NSUInteger, FSCalendarScrollDirection) {
-    FSCalendarScrollDirectionVertical,
-    FSCalendarScrollDirectionHorizontal
+	FSCalendarScrollDirectionVertical,
+	FSCalendarScrollDirectionHorizontal
 };
 
 typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
-    FSCalendarPlaceholderTypeNone          = 0,
-    FSCalendarPlaceholderTypeFillHeadTail  = 1,
-    FSCalendarPlaceholderTypeFillSixRows   = 2
+	FSCalendarPlaceholderTypeNone          = 0,
+	FSCalendarPlaceholderTypeFillHeadTail  = 1,
+	FSCalendarPlaceholderTypeFillSixRows   = 2
 };
 
 typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition) {
-    FSCalendarMonthPositionPrevious,
-    FSCalendarMonthPositionCurrent,
-    FSCalendarMonthPositionNext,
-    
-    FSCalendarMonthPositionNotFound = NSNotFound
+	FSCalendarMonthPositionPrevious,
+	FSCalendarMonthPositionCurrent,
+	FSCalendarMonthPositionNext,
+	
+	FSCalendarMonthPositionNotFound = NSNotFound
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -366,12 +366,12 @@ IB_DESIGNABLE
 /**
  The weekday view of the calendar
  */
-@property (strong, nonatomic) FSCalendarWeekdayView *calendarWeekdayView;
+@property (weak, nonatomic) FSCalendarWeekdayView *calendarWeekdayView;
 
 /**
  The header view of the calendar
  */
-@property (strong, nonatomic) FSCalendarHeaderView *calendarHeaderView;
+@property (weak, nonatomic) FSCalendarHeaderView *calendarHeaderView;
 
 /**
  A Boolean value that determines whether users can select a date.
@@ -437,7 +437,7 @@ IB_DESIGNABLE
 /**
  The dates representing the selected dates. (read-only)
  */
-@property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
+@property (strong, nonatomic) NSArray<NSDate *> *selectedDates;
 
 /**
  Reload the dates and appearance of the calendar.
