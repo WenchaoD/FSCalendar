@@ -56,17 +56,10 @@ CG_EXTERN CGSize const CGSizeAutomatic;
 #define FSColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define FSCalendarInAppExtension [[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"]
 
-#if CGFLOAT_IS_DOUBLE
-#define FSCalendarFloor(c) floor(c)
-#define FSCalendarRound(c) round(c)
-#define FSCalendarCeil(c) ceil(c)
-#define FSCalendarMod(c1,c2) fmod(c1,c2)
-#else
 #define FSCalendarFloor(c) floorf(c)
 #define FSCalendarRound(c) roundf(c)
 #define FSCalendarCeil(c) ceilf(c)
 #define FSCalendarMod(c1,c2) fmodf(c1,c2)
-#endif
 
 #define FSCalendarHalfRound(c) (FSCalendarRound(c*2)*0.5)
 #define FSCalendarHalfFloor(c) (FSCalendarFloor(c*2)*0.5)
