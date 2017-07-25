@@ -21,6 +21,7 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
             self.calendar.reloadData()
         }
     }
+    fileprivate let lunarFormatter = LunarFormatter()
     fileprivate var theme: Int = 0 {
         didSet {
             switch (theme) {
@@ -68,8 +69,6 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
     fileprivate let datesWithCat = ["2015/05/05","2015/06/05","2015/07/05","2015/08/05","2015/09/05","2015/10/05","2015/11/05","2015/12/05","2016/01/06",
     "2016/02/06","2016/03/06","2016/04/06","2016/05/06","2016/06/06","2016/07/06"]
     
-    let lunarCalendar = NSCalendar(calendarIdentifier: .chinese)!
-    let lunarChars = ["初一","初二","初三","初四","初五","初六","初七","初八","初九","初十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二一","二二","二三","二四","二五","二六","二七","二八","二九","三十"]
     
     // MARK:- Life cycle
     
@@ -101,8 +100,7 @@ class InterfaceBuilderViewController: UIViewController, FSCalendarDataSource, FS
         guard self.lunar else {
             return nil
         }
-        let day = self.lunarCalendar.component(.day, from: date)
-        return self.lunarChars[day-1]
+        return self.lunarFormatter.string(from: date)
     }
     
     func maximumDate(for calendar: FSCalendar) -> Date {

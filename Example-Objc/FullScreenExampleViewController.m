@@ -8,6 +8,7 @@
 
 #import "FullScreenExampleViewController.h"
 #import <EventKit/EventKit.h>
+#import "LunarFormatter.h"
 
 #import "FSCalendar.h"
 
@@ -26,14 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)lunarItemClicked:(id)sender;
 - (void)eventItemClicked:(id)sender;
 
-@property (strong, nonatomic) NSCalendar *lunarCalendar;
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @property (strong, nonatomic) NSDate *minimumDate;
 @property (strong, nonatomic) NSDate *maximumDate;
 
-@property (strong, nonatomic) NSArray<NSString *> *lunarChars;
+@property (strong, nonatomic) LunarFormatter *lunarFormatter;
 @property (strong, nonatomic) NSArray<EKEvent *> *events;
 
 - (void)loadCalendarEvents;
@@ -52,9 +52,7 @@ NS_ASSUME_NONNULL_END
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
-        _lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
-        _lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
-        _lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
+        _lunarFormatter = [[LunarFormatter alloc] init];
     }
     return self;
 }
@@ -117,7 +115,7 @@ NS_ASSUME_NONNULL_END
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     
     self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-03"];
-    self.maximumDate = [self.dateFormatter dateFromString:@"2018-04-10"];
+    self.maximumDate = [self.dateFormatter dateFromString:@"2021-04-10"];
 
     self.calendar.accessibilityIdentifier = @"calendar";
     
@@ -187,15 +185,14 @@ NS_ASSUME_NONNULL_END
 
 - (NSString *)calendar:(FSCalendar *)calendar subtitleForDate:(NSDate *)date
 {
-    if (_showsEvents) {
+    if (self.showsEvents) {
         EKEvent *event = [self eventsForDate:date].firstObject;
         if (event) {
             return event.title;
         }
     }
-    if (_showsLunar) {
-        NSInteger day = [_lunarCalendar component:NSCalendarUnitDay fromDate:date];
-        return _lunarChars[day-1];
+    if (self.showsLunar) {
+        return [self.lunarFormatter stringFromDate:date];
     }
     return nil;
 }

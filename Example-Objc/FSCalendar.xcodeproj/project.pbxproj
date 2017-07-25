@@ -78,6 +78,7 @@
 		EECA10F81BA9C0E400945B83 /* FullScreenExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EECA10F71BA9C0E400945B83 /* FullScreenExampleViewController.m */; };
 		F9384A651E3ACEFB001601E0 /* FSCalendarExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F9384A641E3ACEFB001601E0 /* FSCalendarExampleUITests.m */; };
 		F9564BF01E2DB8CA00FC9342 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F9564BEF1E2DB8CA00FC9342 /* LaunchScreen.xib */; };
+		F971A0C41F2651A7000369FD /* LunarFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F971A0C31F2651A7000369FD /* LunarFormatter.m */; };
 		F988B1C81EA6046700609E59 /* RangePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F988B1C71EA6046700609E59 /* RangePickerViewController.m */; };
 		F988B1CB1EA6054400609E59 /* RangePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F988B1CA1EA6054400609E59 /* RangePickerCell.m */; };
 /* End PBXBuildFile section */
@@ -192,6 +193,8 @@
 		F9384A641E3ACEFB001601E0 /* FSCalendarExampleUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSCalendarExampleUITests.m; sourceTree = "<group>"; };
 		F9384A661E3ACEFB001601E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9564BEF1E2DB8CA00FC9342 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = SOURCE_ROOT; };
+		F971A0C21F2651A7000369FD /* LunarFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LunarFormatter.h; sourceTree = SOURCE_ROOT; };
+		F971A0C31F2651A7000369FD /* LunarFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LunarFormatter.m; sourceTree = SOURCE_ROOT; };
 		F988B1C61EA6046700609E59 /* RangePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RangePickerViewController.h; sourceTree = SOURCE_ROOT; };
 		F988B1C71EA6046700609E59 /* RangePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RangePickerViewController.m; sourceTree = SOURCE_ROOT; };
 		F988B1C91EA6054400609E59 /* RangePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RangePickerCell.h; sourceTree = SOURCE_ROOT; };
@@ -347,6 +350,7 @@
 				EE638CD01B89DBE90006DD1A /* AppDelegate.m */,
 				EE638CD11B89DBE90006DD1A /* FSTableViewController.h */,
 				EE638CD21B89DBE90006DD1A /* FSTableViewController.m */,
+				F971A0C11F265166000369FD /* LunarFormatter */,
 				F94A976E1EA6036E004F8F4D /* Range Picker */,
 				3031F3EC1CDEDFA700C174D7 /* DIY */,
 				308B58D51CC08FA4004E812D /* Prev-Next-Buttons */,
@@ -446,6 +450,15 @@
 				F988B1CA1EA6054400609E59 /* RangePickerCell.m */,
 			);
 			name = "Range Picker";
+			sourceTree = "<group>";
+		};
+		F971A0C11F265166000369FD /* LunarFormatter */ = {
+			isa = PBXGroup;
+			children = (
+				F971A0C21F2651A7000369FD /* LunarFormatter.h */,
+				F971A0C31F2651A7000369FD /* LunarFormatter.m */,
+			);
+			name = LunarFormatter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -654,6 +667,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE638CCB1B89DBAC0006DD1A /* main.m in Sources */,
+				F971A0C41F2651A7000369FD /* LunarFormatter.m in Sources */,
 				EE638CCE1B89DBD80006DD1A /* StoryboardExampleViewController.m in Sources */,
 				EECA10F81BA9C0E400945B83 /* FullScreenExampleViewController.m in Sources */,
 				30DBE3C51DC641AD005A22B7 /* FSCalendarCalculator.m in Sources */,
