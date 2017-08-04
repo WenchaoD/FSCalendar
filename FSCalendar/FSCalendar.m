@@ -303,7 +303,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (_needsAdjustingViewFrame) {
         _needsAdjustingViewFrame = NO;
         
-        if (CGSizeEqualToSize(_transitionCoordinator.cachedMonthSize, CGSizeZero)) {
+        if (!CGSizeEqualToSize(_transitionCoordinator.cachedMonthSize, self.frame.size)) {
             _transitionCoordinator.cachedMonthSize = self.frame.size;
         }
         
