@@ -221,6 +221,50 @@
     return components;
 }
 
+
+- (NSString *)replaceMonthNameWithStandaloneInText:(NSString *)text withFormat:(NSString *)format {
+    if ([format containsString:@"d"]) {
+        return text; // Format contains day, so replacement to standalone month name does not needed
+    }
+    if ([format containsString:@"MMMM"]) { // full month name replacement
+        for (uint i = 0; i < 12; i++) {
+            NSString *monthName = [self monthSymbols][i];
+            if ([text containsString:monthName]) {
+                NSString *standaloneMonthName = [self standaloneMonthSymbols][i];
+                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
+            }
+        }
+    }
+    if ([format containsString:@"MMMMM"]) { // very short month name replacement
+        for (uint i = 0; i < 12; i++) {
+            NSString *monthName = [self veryShortMonthSymbols][i];
+            if ([text containsString:monthName]) {
+                NSString *standaloneMonthName = [self veryShortStandaloneMonthSymbols][i];
+                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
+            }
+        }
+    }
+    else if ([format containsString:@"MMMM"]) { // full month name replacement
+        for (uint i = 0; i < 12; i++) {
+            NSString *monthName = [self monthSymbols][i];
+            if ([text containsString:monthName]) {
+                NSString *standaloneMonthName = [self standaloneMonthSymbols][i];
+                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
+            }
+        }
+    }
+    else if ([format containsString:@"MMM"]) { // short month name replacement
+        for (uint i = 0; i < 12; i++) {
+            NSString *monthName = [self shortMonthSymbols][i];
+            if ([text containsString:monthName]) {
+                NSString *standaloneMonthName = [self shortStandaloneMonthSymbols][i];
+                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
+            }
+        }
+    }
+    return text;
+}
+
 @end
 
 @implementation NSMapTable (FSCalendarExtensions)

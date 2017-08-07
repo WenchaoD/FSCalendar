@@ -46,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDate *)fs_middleDayOfWeek:(NSDate *)week;
 - (NSInteger)fs_numberOfDaysInMonth:(NSDate *)month;
 
+- (NSString *)replaceMonthNameWithStandaloneInText:(NSString *)text withFormat:(NSString *)format;
+
 @end
 
 @interface NSMapTable (FSCalendarExtensions)
