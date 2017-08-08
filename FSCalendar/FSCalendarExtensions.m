@@ -226,39 +226,28 @@
     if ([format containsString:@"d"]) {
         return text; // Format contains day, so replacement to standalone month name does not needed
     }
-    if ([format containsString:@"MMMM"]) { // full month name replacement
-        for (uint i = 0; i < 12; i++) {
-            NSString *monthName = [self monthSymbols][i];
-            if ([text containsString:monthName]) {
-                NSString *standaloneMonthName = [self standaloneMonthSymbols][i];
-                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
-            }
-        }
-    }
+    NSArray<NSString *> *monthNames = nil;
+    NSArray<NSString *> *standaloneMonthNames = nil;
     if ([format containsString:@"MMMMM"]) { // very short month name replacement
-        for (uint i = 0; i < 12; i++) {
-            NSString *monthName = [self veryShortMonthSymbols][i];
-            if ([text containsString:monthName]) {
-                NSString *standaloneMonthName = [self veryShortStandaloneMonthSymbols][i];
-                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
-            }
-        }
+        monthNames = [self veryShortMonthSymbols];
+        standaloneMonthNames = [self veryShortStandaloneMonthSymbols];
     }
     else if ([format containsString:@"MMMM"]) { // full month name replacement
-        for (uint i = 0; i < 12; i++) {
-            NSString *monthName = [self monthSymbols][i];
-            if ([text containsString:monthName]) {
-                NSString *standaloneMonthName = [self standaloneMonthSymbols][i];
-                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
-            }
-        }
+        monthNames = [self monthSymbols];
+        standaloneMonthNames = [self standaloneMonthSymbols];
     }
     else if ([format containsString:@"MMM"]) { // short month name replacement
+        monthNames = [self shortMonthSymbols];
+        standaloneMonthNames = [self shortStandaloneMonthSymbols];
+    }
+    if (monthNames != nil && standaloneMonthNames != nil) {
         for (uint i = 0; i < 12; i++) {
-            NSString *monthName = [self shortMonthSymbols][i];
-            if ([text containsString:monthName]) {
-                NSString *standaloneMonthName = [self shortStandaloneMonthSymbols][i];
-                text = [text stringByReplacingOccurrencesOfString:monthName withString:standaloneMonthName];
+            NSString *monthName = monthNames[i];
+            NSRange range = [text.uppercaseString rangeOfString:monthName.uppercaseString];
+            if (range.location != NSNotFound) {
+                NSString *standaloneMonthName = standaloneMonthNames[i];
+                text = [text stringByReplacingCharactersInRange:range withString:standaloneMonthName.capitalizedString];
+                break;
             }
         }
     }
