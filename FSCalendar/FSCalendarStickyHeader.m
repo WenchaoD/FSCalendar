@@ -70,7 +70,6 @@
     
     _bottomBorder.frame = CGRectMake(0, _contentView.fs_height-weekdayHeight-weekdayMargin*2, _contentView.fs_width, 1.0);
     _titleLabel.frame = CGRectMake(0, _bottomBorder.fs_bottom-titleHeight-weekdayMargin, titleWidth,titleHeight);
-    
 }
 
 #pragma mark - Properties
@@ -90,6 +89,9 @@
 {
     _titleLabel.font = self.calendar.appearance.headerTitleFont;
     _titleLabel.textColor = self.calendar.appearance.headerTitleColor;
+    _titleLabel.textAlignment = _calendar.appearance.headerTitleTextAlignment;
+    _bottomBorder.backgroundColor = _calendar.appearance.bottomBorderLineColor;
+
     [self.weekdayView configureAppearance];
 }
 
@@ -97,8 +99,12 @@
 {
     _month = month;
     _calendar.formatter.dateFormat = self.calendar.appearance.headerDateFormat;
+    
+    NSInteger monthNumber = [_calendar.formatter.calendar component:NSCalendarUnitMonth fromDate:month];
+    _calendar.formatter.formattingContext = NSFormattingContextBeginningOfSentence;
+    NSString *text = _calendar.formatter.standaloneMonthSymbols[monthNumber-1];
+    
     BOOL usesUpperCase = (self.calendar.appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
-    NSString *text = [_calendar.formatter stringFromDate:_month];
     text = usesUpperCase ? text.uppercaseString : text;
     self.titleLabel.text = text;
 }
