@@ -62,15 +62,9 @@
             [self scopeTransitionDidUpdate:sender];
             break;
         }
-        case UIGestureRecognizerStateEnded: {
-            [self scopeTransitionDidEnd:sender];
-            break;
-        }
-        case UIGestureRecognizerStateCancelled: {
-            [self scopeTransitionDidEnd:sender];
-            break;
-        }
-        case UIGestureRecognizerStateFailed: {
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:{
             [self scopeTransitionDidEnd:sender];
             break;
         }
