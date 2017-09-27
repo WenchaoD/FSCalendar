@@ -93,13 +93,13 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         tableView.swipeDown()
         // Orientation Test
         Thread.sleep(forTimeInterval: 0.5)
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .landscapeLeft
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         // Exit
         Thread.sleep(forTimeInterval: 1.5)
         application.buttons.element(boundBy: 0).tap()
@@ -195,13 +195,13 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 1.5)
         
         // Orientation Test
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .landscapeLeft
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         
         // Exit
         Thread.sleep(forTimeInterval: 1.0)

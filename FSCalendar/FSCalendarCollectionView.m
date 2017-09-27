@@ -57,6 +57,9 @@
         [self fs_performSelector:selector withObjects:@NO, nil];
     }
 #endif
+    if (@available(iOS 11.0, *)) {
+        self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
 }
 
 - (void)setContentInset:(UIEdgeInsets)contentInset
