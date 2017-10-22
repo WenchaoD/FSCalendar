@@ -53,7 +53,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *formatter;
 @property (strong, nonatomic) NSDateComponents *components;
-@property (strong, nonatomic) NSTimeZone *timeZone;
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
@@ -226,13 +225,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!FSCalendarInAppExtension) {
         
         UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardLineColor;
+        view.backgroundColor = _appearance.topBorderLineColor;
         view.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin; // Stick to top
         [self addSubview:view];
         self.topBorder = view;
         
         view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardLineColor;
+        view.backgroundColor = _appearance.bottomBorderLineColor;
         view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin; // Stick to bottom
         [self addSubview:view];
         self.bottomBorder = view;
@@ -363,7 +362,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         _collectionView.fs_height = FSCalendarHalfFloor(_collectionView.fs_height);
         _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
+        _topBorder.backgroundColor = _appearance.topBorderLineColor;
         _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
+        _bottomBorder.backgroundColor = _appearance.bottomBorderLineColor;
         _scopeHandle.fs_bottom = _bottomBorder.fs_top;
         
     }
@@ -878,6 +879,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (![_locale isEqual:locale]) {
         _locale = locale.copy;
+        [self invalidateDateTools];
+        [self configureAppearance];
+        if (self.hasValidateVisibleLayout) {
+            [self invalidateHeaders];
+        }
+    }
+}
+
+- (void)setTimeZone:(NSTimeZone *)timeZone
+{
+    if (![_timeZone isEqual:timeZone]) {
+        _timeZone = timeZone;
         [self invalidateDateTools];
         [self configureAppearance];
         if (self.hasValidateVisibleLayout) {

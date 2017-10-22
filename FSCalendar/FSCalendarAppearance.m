@@ -71,6 +71,10 @@
         
         _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
+        _headerTitleTextAlignment = NSTextAlignmentCenter;
+        _topBorderLineColor = FSCalendarStandardLineColor;
+        _bottomBorderLineColor = FSCalendarStandardLineColor;
+        
 #if TARGET_INTERFACE_BUILDER
         _fakeEventDots = YES;
 #endif
