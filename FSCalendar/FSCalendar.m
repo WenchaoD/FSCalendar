@@ -339,19 +339,23 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     CGFloat currentHeight = rowHeight*[self.calculator numberOfRowsInMonth:self.currentPage] + padding*2;
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, currentHeight);
                     _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight);
+                   
                     if (needsAdjustingBoundingRect) {
                         self.transitionCoordinator.state = FSCalendarTransitionStateChanging;
                         CGRect boundingRect = (CGRect){CGPointZero,[self sizeThatFits:self.frame.size]};
                         [self.delegateProxy calendar:self boundingRectWillChange:boundingRect animated:NO];
                         self.transitionCoordinator.state = FSCalendarTransitionStateIdle;
                     }
+                    
                     break;
                 }
                 case FSCalendarScopeWeek: {
-                    CGFloat contentHeight = rowHeight + padding*2;
+                    
+                    //Update content Collection View
+                    CGFloat contentHeight = rowHeight * self.numbersWeekOfMonth + padding*2;
+                    
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, contentHeight);
-                    _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight);
-                    break;
+                    _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight );
                 }
             }
         } else {
@@ -416,7 +420,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 return CGSizeMake(size.width, height);
             }
             case FSCalendarScopeWeek: {
-                CGFloat height = weekdayHeight + headerHeight + rowHeight + paddings;
+                CGFloat rowsHeight = rowHeight * self.numbersWeekOfMonth;
+                CGFloat height = weekdayHeight + headerHeight + rowsHeight  + paddings;
                 height += _scopeHandle.fs_height;
                 return CGSizeMake(size.width, height);
             }
@@ -446,7 +451,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             return 42;
         }
         case FSCalendarScopeWeek: {
-            return 7;
+            //Update number of items
+            return 7 * self.numbersWeekOfMonth;
         }
     }
     return 7;
@@ -1507,7 +1513,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             break;
         }
         case FSCalendarScopeWeek: {
-            cell.placeholder = ![self isDateInRange:date];
+            cell.placeholder = (cell.monthPosition == FSCalendarMonthPositionPrevious || cell.monthPosition == FSCalendarMonthPositionNext) || ![self isDateInRange:date];
+            if (cell.placeholder) {
+                cell.selected &= _pagingEnabled;
+                cell.dateIsToday &= _pagingEnabled;
+            }
             break;
         }
     }

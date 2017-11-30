@@ -42,6 +42,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         self.view.addGestureRecognizer(self.scopeGesture)
         self.tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
         self.calendar.scope = .week
+        self.calendar.numbersWeekOfMonth = 1
         
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
@@ -64,6 +65,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
             case .week:
                 return velocity.y > 0
             }
+            
         }
         return shouldBegin
     }

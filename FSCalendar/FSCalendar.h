@@ -312,6 +312,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScope scope;
 
 /**
+ * Change number week in month user want display when change week to month or month to week
+ *
+ */
+@property (nonatomic) NSInteger numbersWeekOfMonth;
+/**
  A UIPanGestureRecognizer instance which enables the control of scope on the whole day-area. Not available if the scrollDirection is vertical.
  
  @deprecated Use -handleScopeGesture: instead

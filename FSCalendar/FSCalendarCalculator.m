@@ -240,7 +240,7 @@
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
 {
-    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) return 1;
+    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) return self.calendar.numbersWeekOfMonth;
     NSDate *month = [self monthForSection:section];
     return [self numberOfRowsInMonth:month];
 }
@@ -248,7 +248,7 @@
 - (FSCalendarMonthPosition)monthPositionForIndexPath:(NSIndexPath *)indexPath
 {
     if (!indexPath) return FSCalendarMonthPositionNotFound;
-    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) {
+    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek && self.calendar.numbersWeekOfMonth <= 1) {
         return FSCalendarMonthPositionCurrent;
     }
     NSDate *date = [self dateForIndexPath:indexPath];
