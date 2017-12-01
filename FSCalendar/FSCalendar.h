@@ -420,6 +420,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat rowHeight;
 
 /**
+ * Change ratio cell with contents, default is 5/6
+ *
+ */
+@property  (assign, nonatomic) IBInspectable CGFloat ratioContentInCell;
+/**
  The calendar appearance used to control the global fonts、colors .etc
  */
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
