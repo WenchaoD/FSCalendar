@@ -190,6 +190,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     _numbersWeekOfMonth = 1;
     _ratioContentInCell = 5.0/6.0;
+    _preferPaddingRow = 5.0;
     
     _dataSourceProxy = [FSCalendarDelegationFactory dataSourceProxy];
     _delegateProxy = [FSCalendarDelegationFactory delegateProxy];
@@ -325,7 +326,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat headerHeight = self.preferredHeaderHeight;
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat rowHeight = self.preferredRowHeight;
-        CGFloat padding = 5;
+        CGFloat padding = self.preferPaddingRow;
         if (self.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
             rowHeight = FSCalendarFloor(rowHeight*2)*0.5; // Round to nearest multiple of 0.5. e.g. (16.8->16.5),(16.2->16.0)
         }
@@ -355,7 +356,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 case FSCalendarScopeWeek: {
                     
                     //Update content Collection View
-                    CGFloat contentHeight = rowHeight * self.numbersWeekOfMonth + padding*2;
+                    CGFloat contentHeight = rowHeight * self.numbersWeekOfMonth + padding * 2;
                     
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, contentHeight);
                     _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight );
@@ -1002,7 +1003,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat headerHeight = self.preferredHeaderHeight;
         CGFloat weekdayHeight = self.preferredWeekdayHeight;
         CGFloat contentHeight = self.transitionCoordinator.cachedMonthSize.height-headerHeight-weekdayHeight-_scopeHandle.fs_height;
-        CGFloat padding = 5;
+        CGFloat padding = self.preferPaddingRow;
         if (!self.floatingMode) {
             _preferredRowHeight = (contentHeight-padding*2)/6.0;
         } else {
@@ -1108,6 +1109,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self.transitionCoordinator performScopeTransitionFromScope:prevScope toScope:scope animated:animated];
     }
 
+}
+
+- (void)setSectionInsetCollectionView:(UIEdgeInsets)edgeInset {
+    self.collectionViewLayout.sectionInsets = edgeInset;
 }
 
 - (void)setPlaceholderType:(FSCalendarPlaceholderType)placeholderType

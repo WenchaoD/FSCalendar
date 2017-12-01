@@ -45,7 +45,10 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         self.calendar.numbersWeekOfMonth = 2
         self.calendar.appearance.separators = .interRows
         self.calendar.appearance.borderRadius = 0
+        self.calendar.rowHeight = 56
         self.calendar.ratioContentInCell = 1
+        self.calendar.setSectionInsetCollectionView(.zero)
+        self.calendar.preferPaddingRow = 0
         
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"

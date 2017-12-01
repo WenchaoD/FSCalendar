@@ -316,6 +316,7 @@ IB_DESIGNABLE
  *
  */
 @property (nonatomic) NSInteger numbersWeekOfMonth;
+
 /**
  A UIPanGestureRecognizer instance which enables the control of scope on the whole day-area. Not available if the scrollDirection is vertical.
  
@@ -420,10 +421,17 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat rowHeight;
 
 /**
+ * Padding each rows, default is 5
+ *
+ */
+@property  (assign, nonatomic) IBInspectable CGFloat preferPaddingRow;
+
+/**
  * Change ratio cell with contents, default is 5/6
  *
  */
 @property  (assign, nonatomic) IBInspectable CGFloat ratioContentInCell;
+
 /**
  The calendar appearance used to control the global fonts、colors .etc
  */
@@ -462,6 +470,11 @@ IB_DESIGNABLE
  */
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated;
 
+/**
+ * Change content inset of collection calendar. Default is top 5, bottom 5
+ *
+ */
+- (void)setSectionInsetCollectionView:(UIEdgeInsets)edgeInset;
 /**
  Selects a given date in the calendar.
  
