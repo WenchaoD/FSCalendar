@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Tells the delegate that the specified cell is about to be displayed in the calendar.
  */
-- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition;
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition atIndexPath:(NSIndexPath *)indexPath;
 
 /**
  Tells the delegate the calendar is about to change the current page.
