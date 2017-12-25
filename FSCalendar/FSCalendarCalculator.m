@@ -128,8 +128,29 @@
             break;
         }
         case FSCalendarScopeWeek: {
-            section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:[self.gregorian fs_firstDayOfWeek:date] options:0].weekOfYear;
-            item = (([self.gregorian component:NSCalendarUnitWeekday fromDate:date] - self.gregorian.firstWeekday) + 7) % 7;
+            NSDate *dateMiniumDate = self.minimumDate;
+            NSDate *firstDayByMidiumDate = [self.gregorian fs_firstDayOfWeek:dateMiniumDate];
+            NSDate *firstDayByDate = [self.gregorian fs_firstDayOfWeek:date];
+//            NSInteger numbersWeekOfMonth = self.calendar.numbersWeekOfMonth;
+            section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:firstDayByMidiumDate toDate:firstDayByDate options:0].weekOfYear;
+            
+            NSInteger offsetDate = 0;
+            NSDate *currentPage = self.calendar.currentPage;
+            NSDateComponents *component = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay|NSCalendarUnitMonth) fromDate:currentPage  toDate:date options:0];
+            if (component.day < 0) {
+                section = section - 1;
+                item = 14;
+            } else if (component.day > 14) {
+                section = section + 1;
+                item = component.day - 14;
+            } else {
+                if (component.day > 6) {
+                    offsetDate = 7;
+                }
+                item = component.day;
+            }
+            
+            
             break;
         }
     }
@@ -248,8 +269,10 @@
 - (FSCalendarMonthPosition)monthPositionForIndexPath:(NSIndexPath *)indexPath
 {
     if (!indexPath) return FSCalendarMonthPositionNotFound;
-    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek && self.calendar.numbersWeekOfMonth <= 1) {
-        return FSCalendarMonthPositionCurrent;
+    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) {
+        if ( self.calendar.numbersWeekOfMonth <= 1) {
+            return FSCalendarMonthPositionCurrent;
+        }
     }
     NSDate *date = [self dateForIndexPath:indexPath];
     NSDate *page = [self pageForSection:indexPath.section];

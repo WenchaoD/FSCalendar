@@ -85,8 +85,10 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         print("did select date \(self.dateFormatter.string(from: date))")
         let selectedDates = calendar.selectedDates.map({self.dateFormatter.string(from: $0)})
         print("selected dates is \(selectedDates)")
-        if monthPosition == .next || monthPosition == .previous {
-            calendar.setCurrentPage(date, animated: true)
+        if calendar.scope == .month {
+            if monthPosition == .next || monthPosition == .previous {
+                calendar.setCurrentPage(date, animated: true)
+            }
         }
     }
 
@@ -101,7 +103,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return [2,20][section]
+        return [2,80][section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -111,6 +113,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+           
             return cell
         }
     }
@@ -140,4 +143,20 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var component = DateComponents()
+        component.day = Int(scrollView.contentOffset.y) / 44
+        let newDate = Calendar.current.date(byAdding: component, to: Date())!
+//        
+//        let timeCurrentDate = calendar.currentPage.timeIntervalSince1970
+//        let timeNewDate = newDate.timeIntervalSince1970
+//        if timeCurrentDate > timeNewDate {
+//            component.day = -14
+//            let oldDate = Calendar.current.date(byAdding: component, to: Date())!
+//            calendar.setCurrentPage(oldDate, animated: false)
+//        } else if timeNewDate - timeCurrentDate >= 1209600 {
+//            calendar.setCurrentPage(newDate, animated: false)
+//        }
+        calendar.select(newDate, scrollToDate: true)
+    }
 }

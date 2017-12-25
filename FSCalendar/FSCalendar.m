@@ -1352,7 +1352,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case FSCalendarScopeMonth:
             return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitMonth];
         case FSCalendarScopeWeek:
-            return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitWeekOfYear];
+            if (self.numbersWeekOfMonth <= 1) {
+                return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitWeekOfYear];
+            } else {
+                NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:self.currentPage toDate:date options:0];
+                BOOL isDateInPage = false;
+                if (components.day > 10) {
+                    isDateInPage = true;
+                } else if (components.day < -3) {
+                    isDateInPage = true;
+                }
+                return isDateInPage;
+            }
     }
 }
 
