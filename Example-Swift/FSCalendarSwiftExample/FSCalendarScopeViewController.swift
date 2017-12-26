@@ -52,7 +52,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
-        
+        self.calendar.reloadData()
     }
     
     deinit {
@@ -147,16 +147,16 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         var component = DateComponents()
         component.day = Int(scrollView.contentOffset.y) / 44
         let newDate = Calendar.current.date(byAdding: component, to: Date())!
-//        
-//        let timeCurrentDate = calendar.currentPage.timeIntervalSince1970
-//        let timeNewDate = newDate.timeIntervalSince1970
-//        if timeCurrentDate > timeNewDate {
-//            component.day = -14
-//            let oldDate = Calendar.current.date(byAdding: component, to: Date())!
-//            calendar.setCurrentPage(oldDate, animated: false)
-//        } else if timeNewDate - timeCurrentDate >= 1209600 {
-//            calendar.setCurrentPage(newDate, animated: false)
-//        }
-        calendar.select(newDate, scrollToDate: true)
+        
+        let timeCurrentDate = calendar.currentPage.timeIntervalSince1970
+        let timeNewDate = newDate.timeIntervalSince1970
+//                    if timeCurrentDate > timeNewDate {
+//                        component.day = -14
+//                        let oldDate = Calendar.current.date(byAdding: component, to: Date())!
+//                        calendar.setCurrentPage(oldDate, animated: false)
+//                    } else if timeNewDate - timeCurrentDate >= 1209600 {
+//                        calendar.setCurrentPage(newDate, animated: false)
+//                    }
+            calendar.select(newDate, scrollToDate: true)
     }
 }

@@ -128,27 +128,29 @@
             break;
         }
         case FSCalendarScopeWeek: {
+            NSDate *currentPage = self.calendar.currentPage;
             NSDate *dateMiniumDate = self.minimumDate;
             NSDate *firstDayByMidiumDate = [self.gregorian fs_firstDayOfWeek:dateMiniumDate];
-            NSDate *firstDayByDate = [self.gregorian fs_firstDayOfWeek:date];
-//            NSInteger numbersWeekOfMonth = self.calendar.numbersWeekOfMonth;
-            section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:firstDayByMidiumDate toDate:firstDayByDate options:0].weekOfYear;
+            NSDate *firstDayByPage = [self.gregorian fs_firstDayOfWeek:currentPage];
+            section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:firstDayByMidiumDate toDate:firstDayByPage options:0].weekOfYear;
+
             
             NSInteger offsetDate = 0;
-            NSDate *currentPage = self.calendar.currentPage;
-            NSDateComponents *component = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay|NSCalendarUnitMonth) fromDate:currentPage  toDate:date options:0];
+            NSDateComponents *component = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:currentPage  toDate:date options:0];
+            NSDateComponents *componentCurrentPage = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:currentPage];
+            NSDateComponents *componentDate = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:date];
+            
+            
             if (component.day < 0) {
-                section = section - 1;
-                item = 14;
-            } else if (component.day > 14) {
-                section = section + 1;
-                item = component.day - 14;
+                section = section - 2;
+                item = 13;
+            } else if (component.day > 15) {
+                section = section + 2;
+                item = 0;
             } else {
-                if (component.day > 6) {
-                    offsetDate = 7;
-                }
                 item = component.day;
             }
+            
             
             
             break;
@@ -158,6 +160,8 @@
         return nil;
     }
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+    
+    NSLog(@"indexPathForDate indexPath %@",indexPath);
     return indexPath;
 }
 
@@ -208,12 +212,15 @@
 
 - (NSDate *)weekForSection:(NSInteger)section
 {
+    
     NSNumber *key = @(section);
     NSDate *week = self.weeks[key];
     if (!week) {
         week = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:section toDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] options:0];
         self.weeks[key] = week;
     }
+    
+//    NSLog(@"week : %@",week);
     return week;
 }
 
@@ -298,7 +305,10 @@
 - (void)reloadSections
 {
     self.numberOfMonths = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month+1;
-    self.numberOfWeeks = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:self.maximumDate options:0].weekOfYear+1;
+    
+    NSInteger weeksFromMiniumToMaximum = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:self.maximumDate options:0].weekOfYear+1;
+    
+    self.numberOfWeeks = weeksFromMiniumToMaximum;
     [self clearCaches];
 }
 

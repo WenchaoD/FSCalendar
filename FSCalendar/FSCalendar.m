@@ -491,6 +491,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
     }
+    NSLog(@"indexPath %@",indexPath);
     [self reloadDataForCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -1285,7 +1286,23 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     break;
                 }
                 case FSCalendarScopeWeek: {
-                    _currentPage = [self.gregorian fs_firstDayOfWeek:date];
+                    NSDateComponents *componentCurrentPage = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:(lastPage)];
+                    NSDateComponents *componentDate = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:(date)];
+                    if (componentCurrentPage.month == componentDate.month) {
+                        NSDateComponents *component = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:lastPage toDate:date options:0];
+                        if (component.day < 0) {
+                            //future
+                            NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
+                            tempComponent.day = -14;
+                            _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
+                        } else if (component.day > 14) {
+                            NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
+                            tempComponent.day = 14;
+                            _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
+                        }
+                    } else {
+                        _currentPage = [self.gregorian fs_firstDayOfWeek:date];
+                    }
                     break;
                 }
             }
@@ -1357,9 +1374,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             } else {
                 NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:self.currentPage toDate:date options:0];
                 BOOL isDateInPage = false;
-                if (components.day > 10) {
+                if (components.day > 13) {
                     isDateInPage = true;
-                } else if (components.day < -3) {
+                } else if (components.day < 0) {
                     isDateInPage = true;
                 }
                 return isDateInPage;
