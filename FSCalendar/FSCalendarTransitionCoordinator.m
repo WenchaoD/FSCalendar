@@ -430,7 +430,11 @@
                     NSInteger currentSection = [self.calendar.calculator indexPathForDate:self.calendar.currentPage scope:FSCalendarScopeMonth].section;
                     return indexPath.section == currentSection;
                 }]];
-                NSDate *date = visibleCandidates.firstObject;
+                //Should return the earliest date in the array
+                NSArray<NSDate *> *sortedDates = [visibleCandidates sortedArrayUsingComparator:^NSComparisonResult(NSDate*  _Nonnull obj1, NSDate*  _Nonnull obj2) {
+                    return [obj1 compare:obj2];
+                }];
+                NSDate *date = [sortedDates firstObject];
                 date;
             });
             NSInteger focusedRow = [self.calendar.calculator coordinateForIndexPath:[self.calendar.calculator indexPathForDate:focusedDate scope:FSCalendarScopeMonth]].row;
