@@ -135,16 +135,15 @@
             section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:firstDayByMidiumDate toDate:firstDayByPage options:0].weekOfYear;
 
             
-            NSInteger offsetDate = 0;
             NSDateComponents *component = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:currentPage  toDate:date options:0];
-            NSDateComponents *componentCurrentPage = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:currentPage];
-            NSDateComponents *componentDate = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:date];
+//            NSDateComponents *componentCurrentPage = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:currentPage];
+//            NSDateComponents *componentDate = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:date];
             
-            
+            NSInteger maxDay = 7 * self.calendar.numbersWeekOfMonth;
             if (component.day < 0) {
                 section = section - 2;
-                item = 13;
-            } else if (component.day > 15) {
+                item = maxDay - 1;
+            } else if (component.day > maxDay) {
                 section = section + 2;
                 item = 0;
             } else {
@@ -161,7 +160,6 @@
     }
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
     
-    NSLog(@"indexPathForDate indexPath %@",indexPath);
     return indexPath;
 }
 
