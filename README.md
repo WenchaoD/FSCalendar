@@ -57,8 +57,6 @@
 
 #### [***More Achievements***](https://github.com/WenchaoD/FSCalendar/wiki/) are available in [***FSCalendar Gallery***](https://github.com/WenchaoD/FSCalendar/wiki/)  
 
-===
-
 # <a id="installation"></a>Installation
 
 ## CocoaPods:
