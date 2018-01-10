@@ -1372,12 +1372,21 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitWeekOfYear];
             } else {
                 NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:self.currentPage toDate:date options:0];
+                NSDateComponents *componentCurrentPage = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:_currentPage];
+                NSDateComponents *componentDate = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:date];
+                
+                NSInteger maxDay = 7 * self.numbersWeekOfMonth - 1;
                 BOOL isDateInPage = false;
-                if (components.day > 13) {
-                    isDateInPage = true;
-                } else if (components.day < 0) {
+                if (componentCurrentPage.month == componentDate.month) {
+                    if (components.day > maxDay) {
+                        isDateInPage = true;
+                    } else if (components.day < 0) {
+                        isDateInPage = true;
+                    }
+                } else {
                     isDateInPage = true;
                 }
+                
                 return isDateInPage;
             }
     }
