@@ -95,6 +95,10 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
+
+    func calendarCurrentPageFinished(_ calendar: FSCalendar) {
+        print("calendarCurrentPageFinished \(self.dateFormatter.string(from: calendar.currentPage))")
+    }
     
     // MARK:- UITableViewDataSource
     

@@ -706,6 +706,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             obj.enabled = YES;
         }
     }];
+    [self.delegateProxy calendarCurrentPageFinished:self];
 }
 
 #pragma mark - <UIGestureRecognizerDelegate>

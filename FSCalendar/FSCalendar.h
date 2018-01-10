@@ -153,6 +153,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 
+
+/**
+ Tells the delegate the calendar is about to finish change current page
+ */
+- (void)calendarCurrentPageFinished:(FSCalendar *)calendar;
+
 /**
  These functions are deprecated
  */
