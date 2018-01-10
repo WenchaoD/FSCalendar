@@ -160,8 +160,7 @@
         return nil;
     }
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-    
-    NSLog(@"indexPathForDate indexPath %@",indexPath);
+
     return indexPath;
 }
 
@@ -277,9 +276,7 @@
 {
     if (!indexPath) return FSCalendarMonthPositionNotFound;
     if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) {
-        if ( self.calendar.numbersWeekOfMonth <= 1) {
-            return FSCalendarMonthPositionCurrent;
-        }
+         return FSCalendarMonthPositionCurrent;
     }
     NSDate *date = [self dateForIndexPath:indexPath];
     NSDate *page = [self pageForSection:indexPath.section];

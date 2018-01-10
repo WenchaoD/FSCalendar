@@ -491,7 +491,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
     }
-    NSLog(@"indexPath %@",indexPath);
     [self reloadDataForCell:cell atIndexPath:indexPath];
     return cell;
 }
