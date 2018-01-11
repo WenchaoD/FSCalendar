@@ -87,6 +87,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (strong, nonatomic) NSIndexPath *lastPressedIndexPath;
 @property (strong, nonatomic) NSMapTable *visibleSectionHeaders;
 
+@property (nonatomic) NSInteger sectionTarget;
+
 - (void)orientationDidChange:(NSNotification *)notification;
 
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
@@ -122,6 +124,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)configureAppearance;
 
 @end
+
+#define SECTION_TARGET_NOT_VALID        -99999
 
 @implementation FSCalendar
 
@@ -194,6 +198,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     _dataSourceProxy = [FSCalendarDelegationFactory dataSourceProxy];
     _delegateProxy = [FSCalendarDelegationFactory delegateProxy];
+
+    _sectionTarget = SECTION_TARGET_NOT_VALID;
     
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
     contentView.backgroundColor = [UIColor clearColor];
@@ -607,6 +613,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (_collectionView.contentOffset.y < 0 || _collectionView.contentOffset.y > _collectionView.contentSize.height-_collectionView.fs_height) {
             return;
         }
+        if (_sectionTarget != SECTION_TARGET_NOT_VALID ) {
+            return;
+        }
         NSDate *currentPage = _currentPage;
         CGPoint significantPoint = CGPointMake(_collectionView.fs_width*0.5,MIN(self.collectionViewLayout.estimatedItemSize.height*2.75, _collectionView.fs_height*0.5)+_collectionView.contentOffset.y);
         NSIndexPath *significantIndexPath = [_collectionView indexPathForItemAtPoint:significantPoint];
@@ -649,6 +658,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!_pagingEnabled || !_scrollEnabled) {
         return;
     }
+
+    if (_sectionTarget != SECTION_TARGET_NOT_VALID) {
+        return;
+    }
+
     CGFloat targetOffset = 0, contentSize = 0;
     switch (_collectionViewLayout.scrollDirection) {
         case UICollectionViewScrollDirectionHorizontal: {
@@ -673,20 +687,38 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         case FSCalendarScopeWeek: {
             NSDate *minimumPage = [self.gregorian fs_firstDayOfWeek:_minimumDate];
+            if (velocity.x > 0) {
+                sections = sections + self.numbersWeekOfMonth - 1;
+            } else {
+                sections = sections - self.numbersWeekOfMonth + 1;
+            }
             targetPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:sections toDate:minimumPage options:0];
+
             break;
         }
     }
     BOOL shouldTriggerPageChange = [self isDateInDifferentPage:targetPage];
+
+//    NSLog(@"targetPage :%@",targetPage);
+//    NSLog(@"shouldTriggerPageChange :%ld",shouldTriggerPageChange);
     if (shouldTriggerPageChange) {
         NSDate *lastPage = _currentPage;
         [self willChangeValueForKey:@"currentPage"];
+        if (_scope == FSCalendarScopeWeek && _numbersWeekOfMonth > 1) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)( 0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self scrollToPageForDate:targetPage animated:true];
+
+            });
+        }
         _currentPage = targetPage;
+
         [self.delegateProxy calendarCurrentPageDidChange:self];
         if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows) {
             [self.transitionCoordinator performBoundingRectTransitionFromMonth:lastPage toMonth:_currentPage duration:0.25];
         }
+
         [self didChangeValueForKey:@"currentPage"];
+
     }
     
     // Disable all inner gestures to avoid missing event
@@ -1286,23 +1318,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     break;
                 }
                 case FSCalendarScopeWeek: {
-                    NSDateComponents *componentCurrentPage = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:(lastPage)];
-                    NSDateComponents *componentDate = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:(date)];
-                    if (componentCurrentPage.month == componentDate.month) {
-                        NSDateComponents *component = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:lastPage toDate:date options:0];
-                        if (component.day < 0) {
-                            //future
-                            NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
-                            tempComponent.day = -14;
-                            _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
-                        } else if (component.day > 13) {
-                            NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
-                            tempComponent.day = 14;
-                            _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
-                        }
-                    } else {
-                        _currentPage = [self.gregorian fs_firstDayOfWeek:date];
+                    NSDateComponents *component = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:lastPage toDate:date options:0];
+                    if (component.day < 0) {
+                        //future
+                        NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
+                        tempComponent.day = -14;
+                        _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
+                    } else if (component.day > 13) {
+                        NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
+                        tempComponent.day = 14;
+                        _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
                     }
+
                     break;
                 }
             }
@@ -1372,25 +1399,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             if (self.numbersWeekOfMonth <= 1) {
                 return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitWeekOfYear];
             } else {
-                NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:self.currentPage toDate:date options:0];
-                NSDateComponents *componentCurrentPage = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:_currentPage];
-                NSDateComponents *componentDate = [[NSCalendar currentCalendar] components:(NSCalendarUnitMonth) fromDate:date];
+                NSDateComponents *components = [[NSCalendar currentCalendar] components:(NSCalendarUnitDay) fromDate:_currentPage toDate:date options:0];
                 
                 NSInteger maxDay = 7 * self.numbersWeekOfMonth - 1;
                 BOOL isDateInPage = false;
-                if (componentCurrentPage.month == componentDate.month) {
-                    if (components.day > maxDay) {
-                        isDateInPage = true;
-                    } else if (components.day < 0) {
-                        isDateInPage = true;
-                    }
-                } else {
+                if (components.day > maxDay) {
+                    isDateInPage = true;
+                } else if (components.day < 0) {
                     isDateInPage = true;
                 }
-                
                 return isDateInPage;
             }
     }
+    return NO;
 }
 
 - (BOOL)hasValidateVisibleLayout
