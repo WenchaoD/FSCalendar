@@ -160,6 +160,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)calendarCurrentPageFinished:(FSCalendar *)calendar;
 
 /**
+ Tells the delegate the cell began long press at cell
+ */
+- (void)calendar:(FSCalendar *)calendar beganLongPressforCell:(FSCalendarCell *)cell date:(NSDate *)date at:(NSIndexPath *)indexPath ;
+/**
+  Tells the delegate the cell ended long press at cell
+ */
+- (void)calendar:(FSCalendar *)calendar endLongPressforCell:(FSCalendarCell *)cell date:(NSDate *)date at:(NSIndexPath *)indexPath ;
+
+/**
  These functions are deprecated
  */
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated FSCalendarDeprecated(-calendar:boundingRectWillChange:animated:);

@@ -86,7 +86,9 @@
     
     self.clipsToBounds = NO;
     self.contentView.clipsToBounds = NO;
-    
+
+    UILongPressGestureRecognizer *longTap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longGesuture:)];
+    [self.contentView addGestureRecognizer:longTap];
 }
 
 - (void)layoutSubviews
@@ -192,6 +194,20 @@
     
 #undef kAnimationDuration
     
+}
+
+-(void)longGesuture:(id) sender {
+    UILongPressGestureRecognizer *longGesture = (UILongPressGestureRecognizer *)sender;
+    if (longGesture.state == UIGestureRecognizerStateEnded) {
+        if (self.delegateCell && [self.delegateCell respondsToSelector:@selector(calendarCell:endedLongPressCell:atIndexPath:)]) {
+            [self.delegateCell calendarCell:self endedLongPressCell:_date atIndexPath:_indexPath];
+        }
+    }
+    else if (longGesture.state == UIGestureRecognizerStateBegan){
+        if (self.delegateCell && [self.delegateCell respondsToSelector:@selector(calendarCell:beganLongPressCell:atIndexPath:)]) {
+            [self.delegateCell calendarCell:self beganLongPressCell:_date atIndexPath:_indexPath];
+        }
+    }
 }
 
 #pragma mark - Private

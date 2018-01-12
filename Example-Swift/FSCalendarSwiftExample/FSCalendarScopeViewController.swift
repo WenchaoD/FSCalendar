@@ -45,6 +45,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         self.calendar.numbersWeekOfMonth = 2
         self.calendar.appearance.separators = .interRows
         self.calendar.appearance.borderRadius = 0
+        self.calendar.appearance.eventOffset = CGPoint(x: 0, y: -40)
         self.calendar.rowHeight = 56
         self.calendar.ratioContentInCell = 1
         self.calendar.setSectionInsetCollectionView(.zero)
@@ -99,7 +100,19 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     func calendarCurrentPageFinished(_ calendar: FSCalendar) {
         print("calendarCurrentPageFinished \(self.dateFormatter.string(from: calendar.currentPage))")
     }
-    
+
+    func calendar(_ calendar: FSCalendar, beganLongPressforCell cell: FSCalendarCell, date: Date, at indexPath: IndexPath) {
+
+        print("beganLongPressforell \(self.dateFormatter.string(from: date))")
+    }
+
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        if date.compare(Date()) == .orderedAscending {
+            return 0
+        }
+        return 1
+    }
+
     // MARK:- UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {

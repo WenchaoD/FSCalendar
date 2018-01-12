@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarOrientationPortrait
 };
 
-@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate>
+@interface FSCalendar ()<UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, FSCalendarCellDelegate>
 {
     NSMutableArray  *_selectedDates;
 }
@@ -496,6 +496,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarCell *cell = [self.dataSourceProxy calendar:self cellForDate:date atMonthPosition:monthPosition];
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
+        cell.delegateCell = self;
     }
     [self reloadDataForCell:cell atIndexPath:indexPath];
     return cell;
@@ -601,6 +602,15 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
     FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
     [self.delegateProxy calendar:self willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:monthPosition];
+}
+
+#pragma mark - <FSCalendarCellDelegate>
+- (void)calendarCell:(FSCalendarCell *)cell endedLongPressCell:(NSDate *)date atIndexPath:(NSIndexPath *)indexPath {
+    [self.delegateProxy calendar:self endLongPressforCell:cell date:date at:indexPath];
+}
+
+- (void)calendarCell:(FSCalendarCell *)cell beganLongPressCell:(NSDate *)date atIndexPath:(NSIndexPath *)indexPath {
+    [self.delegateProxy calendar:self beganLongPressforCell:cell date:date at:indexPath];
 }
 
 #pragma mark - <UIScrollViewDelegate>
@@ -1575,6 +1585,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     cell.calendar = self;
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
+    cell.date = date;
     cell.image = [self.dataSourceProxy calendar:self imageForDate:date];
     cell.numberOfEvents = [self.dataSourceProxy calendar:self numberOfEventsForDate:date];
     cell.titleLabel.text = [self.dataSourceProxy calendar:self titleForDate:date] ?: @([self.gregorian component:NSCalendarUnitDay fromDate:date]).stringValue;
