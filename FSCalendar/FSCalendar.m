@@ -836,6 +836,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)registerNib:(NSString *)nibName forCellReuseIdentifier:(NSString *)identifier {
+    if (!identifier.length) {
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"This identifier must not be nil and must not be an empty string."];
+    }
+    if (!nibName.length) {
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"This nibName must not be nil and must not be an empty string."];
+    }
+    UINib *nibCell = [UINib nibWithNibName:nibName bundle:nil];
+    if (!nibCell) {
+        [NSException raise:FSCalendarInvalidArgumentsExceptionName format:@"This content of nib must not be nil and valid."];
+    }
+    [self.collectionView registerNib:nibCell forCellWithReuseIdentifier:identifier];
+}
+
 - (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier
 {
     if (!identifier.length) {

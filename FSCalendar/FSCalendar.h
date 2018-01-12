@@ -514,6 +514,14 @@ IB_DESIGNABLE
 /**
  Register a class for use in creating new calendar cells.
 
+ @param name nib of a cell that you want to use in the calendar.
+ @param identifier The reuse identifier to associate with the specified class. This parameter must not be nil and must not be an empty string.
+ */
+- (void)registerNib:(NSString *)nibName forCellReuseIdentifier:(NSString *)identifier;
+
+/**
+ Register a class for use in creating new calendar cells.
+
  @param cellClass The class of a cell that you want to use in the calendar.
  @param identifier The reuse identifier to associate with the specified class. This parameter must not be nil and must not be an empty string.
  */
