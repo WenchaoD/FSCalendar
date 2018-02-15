@@ -93,13 +93,13 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         tableView.swipeDown()
         // Orientation Test
         Thread.sleep(forTimeInterval: 0.5)
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .landscapeLeft
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         // Exit
         Thread.sleep(forTimeInterval: 1.5)
         application.buttons.element(boundBy: 0).tap()
@@ -114,17 +114,17 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         let rowHeight: CGFloat = (1.0-cellStart)/6.0
         let columnWidth: CGFloat = 1.0/7
         
-        let nextVector = CGVector(dx: columnWidth.multiplied(by: 5.5), dy: cellStart+rowHeight.multiplied(by: 5.5))
-        let prevVector = CGVector(dx: columnWidth.multiplied(by: 1.5), dy: cellStart+rowHeight.multiplied(by: 0.5))
+        let nextVector = CGVector(dx: columnWidth*5.5, dy: cellStart+rowHeight*5.5)
+        let prevVector = CGVector(dx: columnWidth*1.5, dy: cellStart+rowHeight*0.5)
         calendar.coordinate(withNormalizedOffset: nextVector).tap()
         calendar.coordinate(withNormalizedOffset: nextVector).tap()
         calendar.coordinate(withNormalizedOffset: prevVector).tap()
         calendar.coordinate(withNormalizedOffset: prevVector).tap()
         Thread.sleep(forTimeInterval: 1.0)
         
-        let vector1 = CGVector(dx: columnWidth.multiplied(by: 3.5), dy: cellStart+rowHeight.multiplied(by: 2.5))
-        let vector2 = CGVector(dx: columnWidth.multiplied(by: 4.5), dy: cellStart+rowHeight.multiplied(by: 2.5))
-        let configButton = application.buttons.element(boundBy: 2)
+        let vector1 = CGVector(dx: columnWidth*3.5, dy: cellStart+rowHeight*2.5)
+        let vector2 = CGVector(dx: columnWidth*4.5, dy: cellStart+rowHeight*2.5)
+        let configButton = application.buttons.element(boundBy: 1)
         
         configButton.tap()
         application.staticTexts["Theme2"].tap()
@@ -195,13 +195,13 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 1.5)
         
         // Orientation Test
-        XCUIDevice.shared().orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .landscapeLeft
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         Thread.sleep(forTimeInterval: 1.5)
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         
         // Exit
         Thread.sleep(forTimeInterval: 1.0)

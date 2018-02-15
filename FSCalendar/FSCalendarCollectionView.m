@@ -44,19 +44,9 @@
 {
     self.scrollsToTop = NO;
     self.contentInset = UIEdgeInsetsZero;
-    
-#ifdef __IPHONE_9_0
-    if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
-        self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
-    }
-#endif
-    
-#ifdef __IPHONE_10_0
-    SEL selector = NSSelectorFromString(@"setPrefetchingEnabled:");
-    if (selector && [self respondsToSelector:selector]) {
-        [self fs_performSelector:selector withObjects:@NO, nil];
-    }
-#endif
+    if (@available(iOS 9.0, *)) self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    if (@available(iOS 10.0, *)) self.prefetchingEnabled = NO;
+    if (@available(iOS 11.0, *)) self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 }
 
 - (void)setContentInset:(UIEdgeInsets)contentInset
