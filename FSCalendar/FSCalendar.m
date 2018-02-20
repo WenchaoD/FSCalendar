@@ -995,7 +995,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         CGFloat contentHeight = self.transitionCoordinator.cachedMonthSize.height-headerHeight-weekdayHeight-_scopeHandle.fs_height;
         CGFloat padding = 5;
         if (!self.floatingMode) {
-            _preferredRowHeight = (contentHeight-padding*2)/6.0;
+            switch (_scope) {
+                case FSCalendarScopeWeek:
+                    _preferredRowHeight = (contentHeight-padding*2);
+                    break;
+                case FSCalendarScopeMonth:
+                    _preferredRowHeight = (contentHeight-padding*2)/6.0;
+                    break;
+            }
         } else {
             _preferredRowHeight = _rowHeight;
         }
