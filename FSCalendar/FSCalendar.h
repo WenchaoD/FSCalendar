@@ -483,6 +483,12 @@ IB_DESIGNABLE
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated;
 
 /**
+Updates the bounding rect of the calendar. 
+Calling this function ensures that there is no blank space at the bottom of the calendar when the selected month only has 5 rows. 
+*/
+- (BOOL)updateBoundingRect;
+
+/**
  Register a class for use in creating new calendar cells.
 
  @param cellClass The class of a cell that you want to use in the calendar.
