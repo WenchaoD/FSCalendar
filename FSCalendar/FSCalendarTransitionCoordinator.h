@@ -40,7 +40,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
 - (void)performBoundingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
 
-- (void)boundingRectWillChange:(CGRect)targetBounds animated:(BOOL)animated
+- (void)boundingRectWillChange:(CGRect)targetBounds animated:(BOOL)animated;
 
 - (void)handleScopeGesture:(id)sender;
 
