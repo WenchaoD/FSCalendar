@@ -459,14 +459,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     switch (self.placeholderType) {
         case FSCalendarPlaceholderTypeNone: {
             if (self.transitionCoordinator.representingScope == FSCalendarScopeMonth && monthPosition != FSCalendarMonthPositionCurrent) {
-                return [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                [cell setTransform:CGAffineTransformMakeScale(-1,1)];
+                return cell;
             }
             break;
         }
         case FSCalendarPlaceholderTypeFillHeadTail: {
             if (self.transitionCoordinator.representingScope == FSCalendarScopeMonth) {
                 if (indexPath.item >= 7 * [self.calculator numberOfRowsInSection:indexPath.section]) {
-                    return [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                    [cell setTransform:CGAffineTransformMakeScale(-1,1)];
+                    return cell;
                 }
             }
             break;
@@ -480,12 +484,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarCell *cell = [self.dataSourceProxy calendar:self cellForDate:date atMonthPosition:monthPosition];
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
-        if ([self isPersianCalender]) {
-            [cell setTransform:CGAffineTransformMakeScale(-1, 1)];
-        }
     }
     [self reloadDataForCell:cell atIndexPath:indexPath];
     if ([self isPersianCalender]) {
+        [cell setTransform:CGAffineTransformMakeScale(-1, 1)];
         cell.titleLabel.text = [self convertEnNumberToFarsi:cell.titleLabel.text];
     }
     return cell;
@@ -496,6 +498,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (self.floatingMode) {
         if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
             FSCalendarStickyHeader *stickyHeader = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
+            if ([self isPersianCalender]) {
+                [stickyHeader setTransform:CGAffineTransformMakeScale(-1, 1)];
+            }
             stickyHeader.calendar = self;
             stickyHeader.month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
             self.visibleSectionHeaders[indexPath] = stickyHeader;
@@ -758,7 +763,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setFirstWeekday:(NSUInteger)firstWeekday
 {
-    if ([self isPersianCalender]) {
+    if ([self isPersianCalender] && self.pagingEnabled) {
         [self.calendarHeaderView setTransform:CGAffineTransformMakeScale(-1, 1)];
     }
     if (_firstWeekday != firstWeekday) {
