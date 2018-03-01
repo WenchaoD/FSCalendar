@@ -480,8 +480,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarCell *cell = [self.dataSourceProxy calendar:self cellForDate:date atMonthPosition:monthPosition];
     if (!cell) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
+        if ([self isPersianCalender]) {
+            [cell setTransform:CGAffineTransformMakeScale(-1, 1)];
+        }
     }
     [self reloadDataForCell:cell atIndexPath:indexPath];
+    if ([self isPersianCalender]) {
+        cell.titleLabel.text = [self convertEnNumberToFarsi:cell.titleLabel.text];
+    }
     return cell;
 }
 
@@ -752,6 +758,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setFirstWeekday:(NSUInteger)firstWeekday
 {
+    if ([self isPersianCalender]) {
+        [self.calendarHeaderView setTransform:CGAffineTransformMakeScale(-1, 1)];
+    }
     if (_firstWeekday != firstWeekday) {
         _firstWeekday = firstWeekday;
         _needsRequestingBoundingDates = YES;
@@ -1678,6 +1687,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     text = [formatter stringFromNumber:someNumber];
     return text;
 }
+
+-(BOOL) isPersianCalender{
+    return [self.identifier isEqualToString:NSCalendarIdentifierPersian];
+}
+
 @end
 
 
