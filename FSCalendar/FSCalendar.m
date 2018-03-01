@@ -763,9 +763,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setFirstWeekday:(NSUInteger)firstWeekday
 {
-    if ([self isPersianCalender] && self.pagingEnabled) {
-        [self.calendarHeaderView setTransform:CGAffineTransformMakeScale(-1, 1)];
-    }
     if (_firstWeekday != firstWeekday) {
         _firstWeekday = firstWeekday;
         _needsRequestingBoundingDates = YES;
@@ -773,6 +770,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self invalidateHeaders];
         [self.collectionView reloadData];
         [self configureAppearance];
+        
+        [self invalidateLayout];
     }
 }
 
@@ -1384,12 +1383,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (!_calendarHeaderView) {
             
             FSCalendarHeaderView *headerView = [[FSCalendarHeaderView alloc] initWithFrame:CGRectZero];
-            headerView.calendar = self;
             headerView.scrollEnabled = _scrollEnabled;
             [_contentView addSubview:headerView];
             self.calendarHeaderView = headerView;
-            
         }
+        self.calendarHeaderView.calendar = self;
         
         if (!_calendarWeekdayView) {
             FSCalendarWeekdayView *calendarWeekdayView = [[FSCalendarWeekdayView alloc] initWithFrame:CGRectZero];
