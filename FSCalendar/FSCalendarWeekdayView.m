@@ -102,6 +102,9 @@
         label.font = self.calendar.appearance.weekdayFont;
         label.textColor = self.calendar.appearance.weekdayTextColor;
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
+        if ([_calendar.identifier isEqualToString:NSCalendarIdentifierPersian]) {
+            [label setTransform:CGAffineTransformMakeScale(-1,1)];
+        }
     }
 
 }
