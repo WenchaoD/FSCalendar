@@ -1670,6 +1670,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.calendarWeekdayView configureAppearance];
 }
 
+-(NSString *)convertEnNumberToFarsi:(NSString *) number{
+    NSString *text;
+    NSDecimalNumber *someNumber = [NSDecimalNumber decimalNumberWithString:number];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setLocale:self.locale];
+    text = [formatter stringFromNumber:someNumber];
+    return text;
+}
 @end
 
 
