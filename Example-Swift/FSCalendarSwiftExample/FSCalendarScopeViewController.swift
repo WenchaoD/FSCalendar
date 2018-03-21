@@ -54,6 +54,8 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
         self.calendar.reloadData()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecome), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     deinit {
@@ -175,5 +177,12 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
 //                        calendar.setCurrentPage(newDate, animated: false)
 //                    }
             calendar.select(newDate, scrollToDate: true)
+    }
+    @objc func didBecome() {
+        print("Time : \(String(describing: self.calendar.today))")
+
+        self.calendar.today = Date()
+        print("New time : \(String(describing: self.calendar.today))")
+
     }
 }
