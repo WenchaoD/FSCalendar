@@ -593,6 +593,10 @@ IB_DESIGNABLE
  */
 - (void)handleScopeGesture:(UIPanGestureRecognizer *)sender;
 
+- (void)setGregorian:(NSCalendar *) gregorian;
+
+- (void)setTimeZone:(NSTimeZone *)timeZone;
+
 @end
 
 

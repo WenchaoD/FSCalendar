@@ -1771,6 +1771,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.calendarWeekdayView configureAppearance];
 }
 
+
+- (void)setGregorian:(NSCalendar *) gregorian {
+    _gregorian = gregorian;
+}
+
+- (void)setTimeZone:(NSTimeZone *)timeZone {
+    _timeZone = timeZone;
+}
+
+
 @end
 
 
