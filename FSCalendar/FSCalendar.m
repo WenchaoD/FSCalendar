@@ -1790,16 +1790,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSTimeInterval offsetNewLocal = (NSTimeInterval)newTimeZone.secondsFromGMT;
     
     
-    NSLog(@"timezone offsetNewLocal :%ld", offsetNewLocal);
-    NSLog(@"timezone offsetOldLocal :%ld", offsetOldLocal);
+//    NSLog(@"timezone offsetNewLocal :%ld", offsetNewLocal);
+//    NSLog(@"timezone offsetOldLocal :%ld", offsetOldLocal);
     
     for (NSDate* date in _selectedDates) {
-        NSLog(@"timezone date :%@", date);
+//        NSLog(@"timezone date :%@", date);
         NSTimeInterval timeInterval = date.timeIntervalSince1970;
         timeInterval = timeInterval + offsetOldLocal - offsetNewLocal;
         NSDate *newDate = [[NSDate alloc] initWithTimeIntervalSince1970:timeInterval];
         [convertSelectedDate addObject:newDate];
-        NSLog(@"timezone newDate :%@", newDate);
+//        NSLog(@"timezone newDate :%@", newDate);
     }
     _selectedDates = [NSMutableArray arrayWithArray:convertSelectedDate];
     
@@ -1809,7 +1809,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     NSTimeInterval timeInterval = self.currentPage.timeIntervalSince1970;
     timeInterval = timeInterval + offsetOldLocal - offsetNewLocal;
     _currentPage = [[NSDate alloc] initWithTimeIntervalSince1970:timeInterval];
-    NSLog(@"timezone _currentPage :%@", _currentPage);
+//    NSLog(@"timezone _currentPage :%@", _currentPage);
 
     _offsetPreviousTimeZone = offsetNewLocal;
 
