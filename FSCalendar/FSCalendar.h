@@ -595,7 +595,7 @@ IB_DESIGNABLE
 
 - (void)setGregorian:(NSCalendar *) gregorian;
 
-- (void)setTimeZone:(NSTimeZone *)timeZone;
+- (void)updateTimeZone:(NSTimeZone *)newTimeZone;
 
 @end
 

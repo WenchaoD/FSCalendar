@@ -54,6 +54,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (strong, nonatomic) NSDateFormatter *formatter;
 @property (strong, nonatomic) NSDateComponents *components;
 @property (strong, nonatomic) NSTimeZone *timeZone;
+@property (nonatomic) NSTimeInterval offsetPreviousTimeZone;
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
@@ -163,6 +164,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _formatter.dateFormat = @"yyyy-MM-dd";
     _locale = [NSLocale currentLocale];
     _timeZone = [NSTimeZone localTimeZone];
+    _offsetPreviousTimeZone = (NSTimeInterval)_timeZone.secondsFromGMT;
     _firstWeekday = 1;
     [self invalidateDateTools];
     
@@ -1779,10 +1781,37 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _gregorian = gregorian;
 }
 
-- (void)setTimeZone:(NSTimeZone *)timeZone {
-    _timeZone = timeZone;
-    _gregorian.timeZone = timeZone;
+- (void)updateTimeZone:(NSTimeZone *)newTimeZone {
     
+//    _currentPage = [self.gregorian fs_firstDayOfMonth:_today];
+    
+    NSMutableArray* convertSelectedDate = [[NSMutableArray alloc] init];
+    NSTimeInterval offsetOldLocal = _offsetPreviousTimeZone;
+    NSTimeInterval offsetNewLocal = (NSTimeInterval)newTimeZone.secondsFromGMT;
+    
+    
+    NSLog(@"timezone offsetNewLocal :%ld", offsetNewLocal);
+    NSLog(@"timezone offsetOldLocal :%ld", offsetOldLocal);
+    
+    for (NSDate* date in _selectedDates) {
+        NSLog(@"timezone date :%@", date);
+        NSTimeInterval timeInterval = date.timeIntervalSince1970;
+        timeInterval = timeInterval + offsetOldLocal - offsetNewLocal;
+        NSDate *newDate = [[NSDate alloc] initWithTimeIntervalSince1970:timeInterval];
+        [convertSelectedDate addObject:newDate];
+        NSLog(@"timezone newDate :%@", newDate);
+    }
+    _selectedDates = [NSMutableArray arrayWithArray:convertSelectedDate];
+    
+    _firstWeekday = 1;
+    [self invalidateDateTools];
+    _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:[NSDate date] options:0];
+    NSTimeInterval timeInterval = self.currentPage.timeIntervalSince1970;
+    timeInterval = timeInterval + offsetOldLocal - offsetNewLocal;
+    _currentPage = [[NSDate alloc] initWithTimeIntervalSince1970:timeInterval];
+    NSLog(@"timezone _currentPage :%@", _currentPage);
+
+    _offsetPreviousTimeZone = offsetNewLocal;
 
 }
 
