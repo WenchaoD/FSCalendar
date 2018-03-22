@@ -1334,6 +1334,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     if (!self.floatingMode) {
         if ([self isDateInDifferentPage:date]) {
+//            NSLog(@"Date selected : %@",date);
             [self willChangeValueForKey:@"currentPage"];
             NSDate *lastPage = _currentPage;
             switch (self.transitionCoordinator.representingScope) {
@@ -1352,6 +1353,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                         NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
                         tempComponent.day = 14;
                         _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
+                    } else {
+                        _currentPage = date;
                     }
 
                     break;
@@ -1778,6 +1781,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)setTimeZone:(NSTimeZone *)timeZone {
     _timeZone = timeZone;
+    _gregorian.timeZone = timeZone;
+    
+
 }
 
 
