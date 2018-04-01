@@ -309,15 +309,6 @@
 
 @implementation FSCalendarHeaderTouchDeliver
 
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    UIView *hitView = [super hitTest:point withEvent:event];
-    if (hitView == self) {
-        return _calendar.collectionView ?: hitView;
-    }
-    return hitView;
-}
-
 @end
 
 
