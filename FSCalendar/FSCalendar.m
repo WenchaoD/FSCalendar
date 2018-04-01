@@ -1387,8 +1387,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (_scrollEnabled) {
             if (!_deliver) {
                 FSCalendarHeaderTouchDeliver *deliver = [[FSCalendarHeaderTouchDeliver alloc] initWithFrame:CGRectZero];
-                deliver.header = _calendarHeaderView;
-                deliver.calendar = self;
                 [_contentView addSubview:deliver];
                 self.deliver = deliver;
             }
