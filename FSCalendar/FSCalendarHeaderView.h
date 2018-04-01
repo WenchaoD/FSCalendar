@@ -43,7 +43,4 @@
 
 @interface FSCalendarHeaderTouchDeliver : UIView
 
-@property (weak, nonatomic) FSCalendar *calendar;
-@property (weak, nonatomic) FSCalendarHeaderView *header;
-
 @end
