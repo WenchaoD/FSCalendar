@@ -24,6 +24,7 @@
 
 @interface FSCalendar (Dynamic)
 
+@property (readonly, nonatomic) FSCalendarHeaderTouchDeliver *deliver;
 @property (readonly, nonatomic) FSCalendarCollectionView *collectionView;
 @property (readonly, nonatomic) FSCalendarScopeHandle *scopeHandle;
 @property (readonly, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
