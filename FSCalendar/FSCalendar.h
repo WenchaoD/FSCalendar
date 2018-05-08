@@ -598,6 +598,7 @@ IB_DESIGNABLE
 
 - (void)updateTimeZone:(NSTimeZone *)newTimeZone;
 
+- (void)orientationDidChange ;
 @end
 
 
