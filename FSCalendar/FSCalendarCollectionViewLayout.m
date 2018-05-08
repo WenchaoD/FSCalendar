@@ -1,4 +1,4 @@
-//
+
 //  FSCalendarAnimationLayout.m
 //  FSCalendar
 //
@@ -68,7 +68,7 @@
         self.headerAttributes = [NSMutableDictionary dictionary];
         self.rowSeparatorAttributes = [NSMutableDictionary dictionary];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
         [self registerClass:[FSCalendarSeparator class] forDecorationViewOfKind:kFSCalendarSeparatorInterRows];
@@ -79,7 +79,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     free(self.widths);
     free(self.heights);
@@ -107,13 +107,13 @@
     self.headerReferenceSize = ({
         CGSize headerSize = CGSizeZero;
         if (self.calendar.floatingMode) {
-            CGFloat headerHeight = self.calendar.preferredWeekdayHeight*1.5+self.calendar.preferredHeaderHeight;
+            CGFloat headerHeight = self.calendar.preferredWeekdayHeight * 1.5 + self.calendar.preferredHeaderHeight;
             headerSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
         }
         headerSize;
     });
     self.estimatedItemSize = ({
-        CGFloat width = (self.collectionView.fs_width-self.sectionInsets.left-self.sectionInsets.right)/7.0;
+        CGFloat width = (self.collectionView.fs_width - self.sectionInsets.left - self.sectionInsets.right)/7.0;
         CGFloat height = ({
             CGFloat height = FSCalendarStandardRowHeight;
             if (!self.calendar.floatingMode) {

@@ -90,7 +90,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (nonatomic) NSInteger sectionTarget;
 
-- (void)orientationDidChange:(NSNotification *)notification;
 
 - (CGSize)sizeThatFits:(CGSize)size scope:(FSCalendarScope)scope;
 
@@ -257,7 +256,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.transitionCoordinator = [[FSCalendarTransitionCoordinator alloc] initWithCalendar:self];
     self.calculator = [[FSCalendarCalculator alloc] initWithCalendar:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange) name:UIDeviceOrientationDidChangeNotification object:nil];
     
 }
 
@@ -762,9 +761,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 #pragma mark - Notification
 
-- (void)orientationDidChange:(NSNotification *)notification
+- (void)orientationDidChange
 {
     self.orientation = self.currentCalendarOrientation;
+    FSCalendarCollectionViewLayout* layout = (FSCalendarCollectionViewLayout *)self.collectionView.collectionViewLayout;
+    NSNotification* noti = [[NSNotification alloc] initWithName:UIDeviceOrientationDidChangeNotification object:NULL userInfo:NULL];
+    if (layout != NULL) {
+        [layout didReceiveNotifications:noti];
+    }
 }
 
 #pragma mark - Properties

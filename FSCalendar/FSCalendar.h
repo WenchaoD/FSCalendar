@@ -168,6 +168,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)calendar:(FSCalendar *)calendar endLongPressforCell:(FSCalendarCell *)cell date:(NSDate *)date at:(NSIndexPath *)indexPath ;
 
+
 /**
  These functions are deprecated
  */
@@ -597,6 +598,7 @@ IB_DESIGNABLE
 
 - (void)updateTimeZone:(NSTimeZone *)newTimeZone;
 
+- (void)orientationDidChange ;
 @end
 
 

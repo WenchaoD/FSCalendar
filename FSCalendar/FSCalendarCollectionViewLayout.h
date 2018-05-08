@@ -19,4 +19,6 @@
 @property (assign, nonatomic) UICollectionViewScrollDirection scrollDirection;
 @property (assign, nonatomic) CGSize headerReferenceSize;
 
+-(void)didReceiveNotifications:(NSNotification *)notification;
+
 @end
