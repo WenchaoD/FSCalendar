@@ -131,7 +131,7 @@
             NSDate *currentPage = self.calendar.currentPage;
             NSDate *dateMiniumDate = self.minimumDate;
             NSDate *firstDayByMidiumDate = [self.gregorian fs_firstDayOfWeek:dateMiniumDate];
-            NSDate *firstDayByPage = [self.gregorian fs_firstDayOfWeek:currentPage];
+            NSDate *firstDayByPage = [self.gregorian fs_firstDayOfWeek:currentPage];//currentPage
             section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:firstDayByMidiumDate toDate:firstDayByPage options:0].weekOfYear;
 
 
@@ -149,9 +149,7 @@
             } else {
                 item = component.day;
             }
-            
-            
-            
+
             break;
         }
     }

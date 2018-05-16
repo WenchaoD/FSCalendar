@@ -1354,11 +1354,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                         //future
                         NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
                         tempComponent.day = -14;
-                        _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
+                        _currentPage = date;//[[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
                     } else if (component.day > 13) {
                         NSDateComponents *tempComponent = [[NSDateComponents alloc] init];
                         tempComponent.day = 14;
-                        _currentPage = [[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
+                        _currentPage = date;//[[NSCalendar currentCalendar] dateByAddingComponents:tempComponent toDate:lastPage options:0];
                     } else {
                         _currentPage = date;
                     }
