@@ -599,6 +599,8 @@ IB_DESIGNABLE
 - (void)updateTimeZone:(NSTimeZone *)newTimeZone;
 
 - (void)orientationDidChange ;
+
+- (BOOL)isDateInDifferentPage:(NSDate *)date;
 @end
 
 
