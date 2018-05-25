@@ -84,6 +84,13 @@
     }
 }
 
+- (void) setSeparatorLineColor:(UIColor *)separatorLineColor
+{
+    if(self.bottomBorder) {
+        self.bottomBorder.backgroundColor = separatorLineColor;
+    }
+}
+
 #pragma mark - Private methods
 
 - (void)configureAppearance

@@ -18,6 +18,8 @@
 
 @property (strong, nonatomic) NSDate *month;
 
+@property (strong, nonatomic) UIColor *separatorLineColor;
+
 - (void)configureAppearance;
 
 @end

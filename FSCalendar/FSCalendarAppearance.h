@@ -206,6 +206,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @property (assign, nonatomic) FSCalendarSeparators separators;
 
+/**
+ * The  color of separator for steaky header.
+ */
+@property (strong, nonatomic) UIColor *stickyHeaderSeparatorColor;
+
 #if TARGET_INTERFACE_BUILDER
 
 // For preview only

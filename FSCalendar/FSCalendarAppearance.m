@@ -71,6 +71,8 @@
         
         _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
         
+        _stickyHeaderSeparatorColor = FSCalendarStandardLineColor;
+        
 #if TARGET_INTERFACE_BUILDER
         _fakeEventDots = YES;
 #endif
@@ -430,6 +432,14 @@
 {
     if (_separators != separators) {
         _separators = separators;
+        [_calendar.collectionView.collectionViewLayout invalidateLayout];
+    }
+}
+
+- (void)setStickyHeaderSeparatorColor:(UIColor *)stickyHeaderSeparatorColor
+{
+    if (_stickyHeaderSeparatorColor != stickyHeaderSeparatorColor) {
+        _stickyHeaderSeparatorColor = stickyHeaderSeparatorColor;
         [_calendar.collectionView.collectionViewLayout invalidateLayout];
     }
 }
