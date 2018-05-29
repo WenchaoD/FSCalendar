@@ -114,6 +114,16 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) CGFloat  headerMinimumDissolvedAlpha;
 
 /**
+ * Allow header custom title text.
+ */
+@property (assign, nonatomic) BOOL isHeaderCustomTitle;
+
+/**
+ * Array of custom header titles.
+ */
+@property (strong, nonatomic) NSArray *headerTitles;
+
+/**
  * The day text color for unselected state.
  */
 @property (strong, nonatomic) UIColor  *titleDefaultColor;
