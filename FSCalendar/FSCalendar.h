@@ -279,6 +279,7 @@ IB_DESIGNABLE
  */
 @property (nullable, strong, nonatomic) NSDate *today;
 
+
 /**
  * The current page of calendar
  *
@@ -295,6 +296,11 @@ IB_DESIGNABLE
  */
 @property (copy, nonatomic) NSLocale *locale;
 
+
+/**
+ * Show border
+ */
+@property (nonatomic,assign) IBInspectable BOOL showBorder;
 /**
  * The scroll direction of FSCalendar. 
  *
