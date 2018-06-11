@@ -160,6 +160,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _locale = [NSLocale currentLocale];
     _timeZone = [NSTimeZone localTimeZone];
     _firstWeekday = 1;
+    _showBorder = YES;
     [self invalidateDateTools];
     
     _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:[NSDate date] options:0];
@@ -776,6 +777,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self.visibleCells makeObjectsPerformSelector:@selector(configureAppearance)];
     }
 }
+-(void)setShowBorder:(BOOL)showBorder{
+    if (_showBorder != showBorder) {
+        _showBorder = showBorder;
+        _topBorder.hidden = !showBorder;
+        _bottomBorder.hidden = !showBorder;
+    }
+}
 
 - (void)setCurrentPage:(NSDate *)currentPage
 {
@@ -1015,6 +1023,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self invalidateLayout];
     }
 }
+
 
 - (UIPanGestureRecognizer *)scopeGesture
 {
