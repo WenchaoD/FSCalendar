@@ -445,7 +445,11 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
             NSArray<UIColor *> *colors = (NSArray *)_color;
             for (int i = 0; i < self.eventLayers.count; i++) {
                 CALayer *eventLayer = [self.eventLayers pointerAtIndex:i];
-                eventLayer.backgroundColor = colors[MIN(i,colors.count-1)].CGColor;
+                if (colors.count > 0) {
+                    eventLayer.backgroundColor = colors[MIN(i,colors.count-1)].CGColor;
+                } else {
+                    eventLayer.backgroundColor = [UIColor clearColor].CGColor;
+                }
             }
         }
         
