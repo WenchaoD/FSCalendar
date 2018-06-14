@@ -47,12 +47,19 @@
         self.selectionLayer.path = [UIBezierPath bezierPathWithRect:self.selectionLayer.bounds].CGPath;
         
     } else if (self.selectionType == SelectionTypeLeftBorder) {
+        UIRectCorner corner = UIRectCornerTopLeft|UIRectCornerBottomLeft;
+        if ([self.calendar.identifier isEqualToString:NSCalendarIdentifierPersian]) {
+            corner = UIRectCornerTopRight|UIRectCornerBottomRight;
+        }
         
-        self.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.selectionLayer.bounds byRoundingCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft cornerRadii:CGSizeMake(self.selectionLayer.fs_width/2, self.selectionLayer.fs_width/2)].CGPath;
+        self.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.selectionLayer.bounds byRoundingCorners:corner cornerRadii:CGSizeMake(self.selectionLayer.fs_width/2, self.selectionLayer.fs_width/2)].CGPath;
         
     } else if (self.selectionType == SelectionTypeRightBorder) {
-        
-        self.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.selectionLayer.bounds byRoundingCorners:UIRectCornerTopRight|UIRectCornerBottomRight cornerRadii:CGSizeMake(self.selectionLayer.fs_width/2, self.selectionLayer.fs_width/2)].CGPath;
+        UIRectCorner corner = UIRectCornerTopRight|UIRectCornerBottomRight;
+        if ([self.calendar.identifier isEqualToString:NSCalendarIdentifierPersian]) {
+            corner = UIRectCornerTopLeft|UIRectCornerBottomLeft;
+        }
+        self.selectionLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.selectionLayer.bounds byRoundingCorners:corner cornerRadii:CGSizeMake(self.selectionLayer.fs_width/2, self.selectionLayer.fs_width/2)].CGPath;
         
     } else if (self.selectionType == SelectionTypeSingle) {
         

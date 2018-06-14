@@ -459,14 +459,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     switch (self.placeholderType) {
         case FSCalendarPlaceholderTypeNone: {
             if (self.transitionCoordinator.representingScope == FSCalendarScopeMonth && monthPosition != FSCalendarMonthPositionCurrent) {
-                return [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                [cell setTransform:CGAffineTransformMakeScale(-1,1)];
+                return cell;
             }
             break;
         }
         case FSCalendarPlaceholderTypeFillHeadTail: {
             if (self.transitionCoordinator.representingScope == FSCalendarScopeMonth) {
                 if (indexPath.item >= 7 * [self.calculator numberOfRowsInSection:indexPath.section]) {
-                    return [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier forIndexPath:indexPath];
+                    [cell setTransform:CGAffineTransformMakeScale(-1,1)];
+                    return cell;
                 }
             }
             break;
@@ -482,6 +486,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         cell = [self.collectionView dequeueReusableCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier forIndexPath:indexPath];
     }
     [self reloadDataForCell:cell atIndexPath:indexPath];
+    if ([self isPersianCalender]) {
+        [cell setTransform:CGAffineTransformMakeScale(-1, 1)];
+        cell.titleLabel.text = [self convertEnNumberToFarsi:cell.titleLabel.text];
+    }
     return cell;
 }
 
@@ -490,6 +498,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (self.floatingMode) {
         if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
             FSCalendarStickyHeader *stickyHeader = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
+            if ([self isPersianCalender]) {
+                [stickyHeader setTransform:CGAffineTransformMakeScale(-1, 1)];
+            }
             stickyHeader.calendar = self;
             stickyHeader.month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.section toDate:[self.gregorian fs_firstDayOfMonth:_minimumDate] options:0];
             self.visibleSectionHeaders[indexPath] = stickyHeader;
@@ -759,6 +770,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self invalidateHeaders];
         [self.collectionView reloadData];
         [self configureAppearance];
+        
+        [self invalidateLayout];
     }
 }
 
@@ -1366,12 +1379,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (!_calendarHeaderView) {
             
             FSCalendarHeaderView *headerView = [[FSCalendarHeaderView alloc] initWithFrame:CGRectZero];
-            headerView.calendar = self;
             headerView.scrollEnabled = _scrollEnabled;
             [_contentView addSubview:headerView];
             self.calendarHeaderView = headerView;
-            
         }
+        self.calendarHeaderView.calendar = self;
         
         if (!_calendarWeekdayView) {
             FSCalendarWeekdayView *calendarWeekdayView = [[FSCalendarWeekdayView alloc] initWithFrame:CGRectZero];
@@ -1664,6 +1676,19 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.visibleStickyHeaders makeObjectsPerformSelector:@selector(configureAppearance)];
     [self.calendarHeaderView configureAppearance];
     [self.calendarWeekdayView configureAppearance];
+}
+
+-(NSString *)convertEnNumberToFarsi:(NSString *) number{
+    NSString *text;
+    NSDecimalNumber *someNumber = [NSDecimalNumber decimalNumberWithString:number];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setLocale:self.locale];
+    text = [formatter stringFromNumber:someNumber];
+    return text;
+}
+
+-(BOOL) isPersianCalender{
+    return [self.identifier isEqualToString:NSCalendarIdentifierPersian];
 }
 
 @end

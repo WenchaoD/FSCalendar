@@ -108,6 +108,9 @@
 {
     FSCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.header = self;
+    if ([self.calendar.identifier isEqualToString:NSCalendarIdentifierPersian]) {
+        [cell setTransform:CGAffineTransformMakeScale(-1, 1)];
+    }
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
