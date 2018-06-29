@@ -1072,12 +1072,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _needsRequestingBoundingDates = YES;
     if ([self requestBoundingDatesIfNecessary] || !self.collectionView.indexPathsForVisibleItems.count) {
         [self invalidateHeaders];
-        [self.collectionView reloadData];
-    } else {
-        [UIView performWithoutAnimation:^{
-            [self.collectionView reloadItemsAtIndexPaths:self.collectionView.indexPathsForVisibleItems];
-        }];
     }
+    [self.collectionView reloadData];
 }
 
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated

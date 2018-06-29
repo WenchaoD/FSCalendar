@@ -176,15 +176,6 @@ NS_ASSUME_NONNULL_END
 
 #pragma mark - <FSCalendarDelegateAppearance>
 
-- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventColorForDate:(NSDate *)date
-{
-    NSString *dateString = [self.dateFormatter2 stringFromDate:date];
-    if ([_datesWithEvent containsObject:dateString]) {
-        return [UIColor purpleColor];
-    }
-    return nil;
-}
-
 - (NSArray *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance eventDefaultColorsForDate:(NSDate *)date
 {
     NSString *dateString = [self.dateFormatter2 stringFromDate:date];
