@@ -296,6 +296,15 @@ IB_DESIGNABLE
 @property (copy, nonatomic) NSLocale *locale;
 
 /**
+ * The timeZone of FSCalender, default is [NSTimeZone localTimeZone]
+ *
+ * e.g. To display date in Paris timezone:
+ *
+ *  calender.timezone = TimeZone(identifier: "Europe/Paris")
+ */
+@property (strong, nonatomic) NSTimeZone *timeZone;
+
+/**
  * The scroll direction of FSCalendar. 
  *
  * e.g. To make the calendar scroll vertically
