@@ -374,9 +374,7 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
 
 @interface FSCalendarEventIndicator ()
 
-@property (weak, nonatomic) UIView *contentView;
-
-@property (strong, nonatomic) NSPointerArray *eventLayers;
+@property (weak, nonatomic) UIStackView *contentView;
 
 @end
 
@@ -387,48 +385,40 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
     self = [super initWithFrame:frame];
     if (self) {
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-        [self addSubview:view];
-        self.contentView = view;
+        CGFloat diameter = FSCalendarMaximumEventDotDiameter;
         
-        self.eventLayers = [NSPointerArray weakObjectsPointerArray];
+        UIStackView *stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
+        stackView.translatesAutoresizingMaskIntoConstraints = NO;
+        stackView.spacing = 1.0;
+        stackView.axis = UILayoutConstraintAxisHorizontal;
+        stackView.distribution = UIStackViewDistributionFill;
+        stackView.alignment = UIStackViewAlignmentFill;
+        
+        [self addSubview:stackView];
+        
+        [[stackView.topAnchor constraintEqualToAnchor: self.topAnchor] setActive: YES];
+        [[stackView.bottomAnchor constraintEqualToAnchor: self.bottomAnchor] setActive: YES];
+        [[stackView.centerXAnchor constraintEqualToAnchor: self.centerXAnchor] setActive: YES];
+        
         for (int i = 0; i < 3; i++) {
-            CALayer *layer = [CALayer layer];
-            layer.backgroundColor = [UIColor clearColor].CGColor;
-            [self.contentView.layer addSublayer:layer];
-            [self.eventLayers addPointer:(__bridge void * _Nullable)(layer)];
+            UIView *view = [[UIView alloc] initWithFrame: CGRectZero];
+            view.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            NSLayoutConstraint *aspectRatio = [view.widthAnchor constraintEqualToAnchor:view.heightAnchor multiplier:1];
+            aspectRatio.priority = UILayoutPriorityDefaultHigh;
+            
+            [aspectRatio setActive: YES];
+            
+            view.hidden = NO;
+            view.layer.cornerRadius = diameter / 2;
+            view.layer.masksToBounds = YES;
+            
+            [stackView addArrangedSubview: view];
         }
         
+        self.contentView = stackView;
     }
     return self;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
-    self.contentView.fs_height = self.fs_height;
-    self.contentView.fs_width = (self.numberOfEvents*2-1)*diameter;
-    self.contentView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-}
-
-- (void)layoutSublayersOfLayer:(CALayer *)layer
-{
-    [super layoutSublayersOfLayer:layer];
-    if (layer == self.layer) {
-        
-        CGFloat diameter = MIN(MIN(self.fs_width, self.fs_height),FSCalendarMaximumEventDotDiameter);
-        for (int i = 0; i < self.eventLayers.count; i++) {
-            CALayer *eventLayer = [self.eventLayers pointerAtIndex:i];
-            eventLayer.hidden = i >= self.numberOfEvents;
-            if (!eventLayer.hidden) {
-                eventLayer.frame = CGRectMake(2*i*diameter, (self.fs_height-diameter)*0.5, diameter, diameter);
-                if (eventLayer.cornerRadius != diameter/2) {
-                    eventLayer.cornerRadius = diameter/2;
-                }
-            }
-        }
-    }
 }
 
 - (void)setColor:(id)color
@@ -437,18 +427,17 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
         _color = color;
         
         if ([_color isKindOfClass:[UIColor class]]) {
-            for (NSInteger i = 0; i < self.eventLayers.count; i++) {
-                CALayer *layer = [self.eventLayers pointerAtIndex:i];
-                layer.backgroundColor = [_color CGColor];
+            for (UIView *view in self.contentView.arrangedSubviews) {
+                view.backgroundColor = _color;
             }
         } else if ([_color isKindOfClass:[NSArray class]]) {
             NSArray<UIColor *> *colors = (NSArray *)_color;
-            for (int i = 0; i < self.eventLayers.count; i++) {
-                CALayer *eventLayer = [self.eventLayers pointerAtIndex:i];
-                eventLayer.backgroundColor = colors[MIN(i,colors.count-1)].CGColor;
+            
+            for (int i = 0; i < self.contentView.arrangedSubviews.count; i++) {
+                UIView *view = self.contentView.arrangedSubviews[i];
+                view.backgroundColor = colors[MIN(i,colors.count-1)];
             }
         }
-        
     }
 }
 
@@ -456,6 +445,12 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
 {
     if (_numberOfEvents != numberOfEvents) {
         _numberOfEvents = MIN(MAX(numberOfEvents,0),3);
+        
+        for (int i = 0; i < self.contentView.arrangedSubviews.count; i++) {
+            UIView *view = self.contentView.arrangedSubviews[i];
+            view.hidden = i >= self.numberOfEvents;
+        }
+        
         [self setNeedsLayout];
     }
 }
