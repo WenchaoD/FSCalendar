@@ -563,6 +563,7 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor  *eventDefaultColor;
 @property (strong, nonatomic) IBInspectable UIColor  *eventSelectionColor;
 @property (strong, nonatomic) IBInspectable UIColor  *weekdayTextColor;
+@property (strong, nonatomic) IBInspectable UIColor  *weekdayWeekendTextColor;
 
 @property (strong, nonatomic) IBInspectable UIColor  *headerTitleColor;
 @property (strong, nonatomic) IBInspectable NSString *headerDateFormat;

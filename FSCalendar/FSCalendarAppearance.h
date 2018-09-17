@@ -94,9 +94,14 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *eventSelectionColor;
 
 /**
- * The color of weekday text.
+ * The color of weekday text for weekend.
  */
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
+
+/**
+ * The color of weekday text.
+ */
+@property (strong, nonatomic) UIColor  *weekdayWeekendTextColor;
 
 /**
  * The color of month header text.
