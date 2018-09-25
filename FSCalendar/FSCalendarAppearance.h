@@ -34,6 +34,7 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsWeekdayUsesDefaultCase     = 0 << 4,
     FSCalendarCaseOptionsWeekdayUsesUpperCase       = 1 << 4,
     FSCalendarCaseOptionsWeekdayUsesSingleUpperCase = 2 << 4,
+	FSCalendarCaseOptionsWeekdayUsesNotStandalone = 3 << 4,
 };
 
 /**

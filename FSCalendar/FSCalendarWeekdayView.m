@@ -93,7 +93,13 @@
 - (void)configureAppearance
 {
     BOOL useVeryShortWeekdaySymbols = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-    NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.gregorian.veryShortStandaloneWeekdaySymbols : self.calendar.gregorian.shortStandaloneWeekdaySymbols;
+	BOOL usesNotStandaloneWeekdaySymbols = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesNotStandalone;
+	NSArray *weekdaySymbols;
+	if (usesNotStandaloneWeekdaySymbols) {
+		weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.gregorian.veryShortWeekdaySymbols : self.calendar.gregorian.shortWeekdaySymbols;
+	} else {
+		weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.gregorian.veryShortStandaloneWeekdaySymbols : self.calendar.gregorian.shortStandaloneWeekdaySymbols;
+	}
     BOOL useDefaultWeekdayCase = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
     
     for (NSInteger i = 0; i < self.weekdayPointers.count; i++) {
