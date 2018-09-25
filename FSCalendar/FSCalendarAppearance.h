@@ -134,6 +134,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *titleTodayColor;
 
 /**
+ * The day text color for today selected in the calendar.
+ */
+@property (strong, nonatomic) UIColor  *titleTodaySelectedColor;
+
+/**
  * The day text color for days out of current month.
  */
 @property (strong, nonatomic) UIColor  *titlePlaceholderColor;
