@@ -40,7 +40,6 @@
 		30B0BAD11B8D8E23004B9476 /* FSCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC21B8D8E22004B9476 /* FSCalendarAppearance.m */; };
 		30B0BAD21B8D8E23004B9476 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC41B8D8E22004B9476 /* FSCalendarCell.m */; };
 		30B0BAD31B8D8E23004B9476 /* FSCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC71B8D8E22004B9476 /* FSCalendarHeaderView.m */; };
-		30B0BAD51B8D8E23004B9476 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30B0BACA1B8D8E22004B9476 /* Info.plist */; };
 		30B0BAF61B8D9AC1004B9476 /* FSCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC21B8D8E22004B9476 /* FSCalendarAppearance.m */; };
 		30B0BAF71B8D9AC1004B9476 /* FSCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC41B8D8E22004B9476 /* FSCalendarCell.m */; };
 		30B0BAF81B8D9AC1004B9476 /* FSCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30B0BAC71B8D8E22004B9476 /* FSCalendarHeaderView.m */; };
@@ -630,7 +629,6 @@
 				F9564BF01E2DB8CA00FC9342 /* LaunchScreen.xib in Resources */,
 				EE638CDA1B89DC0A0006DD1A /* Main.storyboard in Resources */,
 				309A42011D992C4A004E86CB /* Images.xcassets in Resources */,
-				30B0BAD51B8D8E23004B9476 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
