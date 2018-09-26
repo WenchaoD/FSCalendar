@@ -19,8 +19,6 @@
 		3055B1C31DA9323A002AFA13 /* FSCalendarExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3055B1C11DA9323A002AFA13 /* FSCalendarExtensions.m */; };
 		3055B1C41DA9323A002AFA13 /* FSCalendarExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3055B1C11DA9323A002AFA13 /* FSCalendarExtensions.m */; };
 		3055B1C51DA9323A002AFA13 /* FSCalendarExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3055B1C11DA9323A002AFA13 /* FSCalendarExtensions.m */; };
-		3065CAA81CD3506A006C218D /* FSCalendar+Deprecated.m in Sources */ = {isa = PBXBuildFile; fileRef = 3065CAA61CD3506A006C218D /* FSCalendar+Deprecated.m */; };
-		3065CAA91CD3506A006C218D /* FSCalendar+Deprecated.m in Sources */ = {isa = PBXBuildFile; fileRef = 3065CAA61CD3506A006C218D /* FSCalendar+Deprecated.m */; };
 		308B58D81CC08FFA004E812D /* ButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 308B58D71CC08FFA004E812D /* ButtonsViewController.m */; };
 		3092253A1B905C4300123031 /* FSCalendarConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 309225381B905C4300123031 /* FSCalendarConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3092253B1B905C4300123031 /* FSCalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 309225391B905C4300123031 /* FSCalendarConstants.m */; };
@@ -129,7 +127,6 @@
 		3031F3EE1CDEDFC500C174D7 /* DIYExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DIYExampleViewController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		3055B1C01DA9323A002AFA13 /* FSCalendarExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarExtensions.h; sourceTree = "<group>"; };
 		3055B1C11DA9323A002AFA13 /* FSCalendarExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarExtensions.m; sourceTree = "<group>"; };
-		3065CAA61CD3506A006C218D /* FSCalendar+Deprecated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FSCalendar+Deprecated.m"; sourceTree = "<group>"; };
 		30671DC71D6D574C00BCFC4E /* FSCalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FSCalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		308B58D61CC08FFA004E812D /* ButtonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonsViewController.h; sourceTree = SOURCE_ROOT; };
 		308B58D71CC08FFA004E812D /* ButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonsViewController.m; sourceTree = SOURCE_ROOT; };
@@ -288,7 +285,6 @@
 				309225381B905C4300123031 /* FSCalendarConstants.h */,
 				309225391B905C4300123031 /* FSCalendarConstants.m */,
 				30B0BAC51B8D8E22004B9476 /* FSCalendarDynamicHeader.h */,
-				3065CAA61CD3506A006C218D /* FSCalendar+Deprecated.m */,
 				30B0BAF31B8D9A91004B9476 /* Supporting Files */,
 			);
 			name = FSCalendar;
@@ -663,7 +659,6 @@
 				30DBE3C51DC641AD005A22B7 /* FSCalendarCalculator.m in Sources */,
 				EE638CC91B89DB940006DD1A /* CalendarConfigViewController.m in Sources */,
 				30B0BAD01B8D8E23004B9476 /* FSCalendar.m in Sources */,
-				3065CAA81CD3506A006C218D /* FSCalendar+Deprecated.m in Sources */,
 				EE638CD31B89DBE90006DD1A /* AppDelegate.m in Sources */,
 				30A495551DCAD9E6000B2F31 /* FSCalendarWeekdayView.m in Sources */,
 				3092253B1B905C4300123031 /* FSCalendarConstants.m in Sources */,
@@ -698,7 +693,6 @@
 				30F5D8561B9FC33400C1C201 /* FSCalendar.m in Sources */,
 				30B0BAF61B8D9AC1004B9476 /* FSCalendarAppearance.m in Sources */,
 				EEC9C03B1BDC9E7000383A07 /* FSCalendarCollectionView.m in Sources */,
-				3065CAA91CD3506A006C218D /* FSCalendar+Deprecated.m in Sources */,
 				30B0BAF71B8D9AC1004B9476 /* FSCalendarCell.m in Sources */,
 				30DBE3C61DC641AD005A22B7 /* FSCalendarCalculator.m in Sources */,
 				30A495561DCAD9E6000B2F31 /* FSCalendarWeekdayView.m in Sources */,
