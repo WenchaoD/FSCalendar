@@ -9,7 +9,6 @@
 #import "FSCalendar.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarCollectionViewLayout.h"
-#import "FSCalendarScopeHandle.h"
 
 typedef NS_ENUM(NSUInteger, FSCalendarTransition) {
     FSCalendarTransitionNone,

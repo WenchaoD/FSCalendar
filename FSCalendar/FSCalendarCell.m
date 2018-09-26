@@ -91,7 +91,6 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
         if (_subtitleLabel.hidden) {
@@ -170,25 +169,21 @@
 - (void)performSelecting
 {
     _shapeLayer.opacity = 1;
-    
-#define kAnimationDuration FSCalendarDefaultBounceAnimationDuration
-    
+        
     CAAnimationGroup *group = [CAAnimationGroup animation];
     CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     zoomOut.fromValue = @0.3;
     zoomOut.toValue = @1.2;
-    zoomOut.duration = kAnimationDuration/4*3;
+    zoomOut.duration = FSCalendarDefaultBounceAnimationDuration/4*3;
     CABasicAnimation *zoomIn = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     zoomIn.fromValue = @1.2;
     zoomIn.toValue = @1.0;
-    zoomIn.beginTime = kAnimationDuration/4*3;
-    zoomIn.duration = kAnimationDuration/4;
-    group.duration = kAnimationDuration;
+    zoomIn.beginTime = FSCalendarDefaultBounceAnimationDuration/4*3;
+    zoomIn.duration = FSCalendarDefaultBounceAnimationDuration/4;
+    group.duration = FSCalendarDefaultBounceAnimationDuration;
     group.animations = @[zoomOut, zoomIn];
     [_shapeLayer addAnimation:group forKey:@"bounce"];
     [self configureAppearance];
-    
-#undef kAnimationDuration
     
 }
 
