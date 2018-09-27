@@ -265,6 +265,11 @@ IB_DESIGNABLE
 @interface FSCalendar : UIView
 
 /**
+ * The timezone of the calendar. `localTimeZone` by default.
+ */
+@property (strong, nonatomic) NSTimeZone *timeZone;
+
+/**
  * The object that acts as the delegate of the calendar.
  */
 @property (weak, nonatomic) IBOutlet id<FSCalendarDelegate> delegate;
