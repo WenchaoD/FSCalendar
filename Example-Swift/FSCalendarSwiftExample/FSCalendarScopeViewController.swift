@@ -42,10 +42,20 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         self.view.addGestureRecognizer(self.scopeGesture)
         self.tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
         self.calendar.scope = .week
+        self.calendar.numbersWeekOfMonth = 2
+        self.calendar.appearance.separators = .interRows
+        self.calendar.appearance.borderRadius = 0
+        self.calendar.appearance.eventOffset = CGPoint(x: 0, y: -40)
+        self.calendar.rowHeight = 56
+        self.calendar.ratioContentInCell = 1
+        self.calendar.setSectionInsetCollectionView(.zero)
+        self.calendar.preferPaddingRow = 0
         
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
-        
+        self.calendar.reloadData()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecome), name: Notification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     deinit {
@@ -64,6 +74,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
             case .week:
                 return velocity.y > 0
             }
+            
         }
         return shouldBegin
     }
@@ -77,15 +88,33 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         print("did select date \(self.dateFormatter.string(from: date))")
         let selectedDates = calendar.selectedDates.map({self.dateFormatter.string(from: $0)})
         print("selected dates is \(selectedDates)")
-        if monthPosition == .next || monthPosition == .previous {
-            calendar.setCurrentPage(date, animated: true)
+        if calendar.scope == .month {
+            if monthPosition == .next || monthPosition == .previous {
+                calendar.setCurrentPage(date, animated: true)
+            }
         }
     }
 
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
-    
+
+    func calendarCurrentPageFinished(_ calendar: FSCalendar) {
+        print("calendarCurrentPageFinished \(self.dateFormatter.string(from: calendar.currentPage))")
+    }
+
+    func calendar(_ calendar: FSCalendar, beganLongPressforCell cell: FSCalendarCell, date: Date, at indexPath: IndexPath) {
+
+        print("beganLongPressforell \(self.dateFormatter.string(from: date))")
+    }
+
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        if date.compare(Date()) == .orderedAscending {
+            return 0
+        }
+        return 1
+    }
+
     // MARK:- UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -93,7 +122,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return [2,20][section]
+        return [2,80][section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -103,6 +132,7 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+           
             return cell
         }
     }
@@ -132,4 +162,27 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var component = DateComponents()
+        component.day = Int(scrollView.contentOffset.y) / 44
+        let newDate = Calendar.current.date(byAdding: component, to: Date())!
+        
+        let timeCurrentDate = calendar.currentPage.timeIntervalSince1970
+        let timeNewDate = newDate.timeIntervalSince1970
+//                    if timeCurrentDate > timeNewDate {
+//                        component.day = -14
+//                        let oldDate = Calendar.current.date(byAdding: component, to: Date())!
+//                        calendar.setCurrentPage(oldDate, animated: false)
+//                    } else if timeNewDate - timeCurrentDate >= 1209600 {
+//                        calendar.setCurrentPage(newDate, animated: false)
+//                    }
+            calendar.select(newDate, scrollToDate: true)
+    }
+    @objc func didBecome() {
+        print("Time : \(String(describing: self.calendar.today))")
+
+        self.calendar.today = Date()
+        print("New time : \(String(describing: self.calendar.today))")
+
+    }
 }

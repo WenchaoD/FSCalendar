@@ -153,6 +153,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 
+
+/**
+ Tells the delegate the calendar is about to finish change current page
+ */
+- (void)calendarCurrentPageFinished:(FSCalendar *)calendar;
+
+/**
+ Tells the delegate the cell began long press at cell
+ */
+- (void)calendar:(FSCalendar *)calendar beganLongPressforCell:(FSCalendarCell *)cell date:(NSDate *)date at:(NSIndexPath *)indexPath ;
+/**
+  Tells the delegate the cell ended long press at cell
+ */
+- (void)calendar:(FSCalendar *)calendar endLongPressforCell:(FSCalendarCell *)cell date:(NSDate *)date at:(NSIndexPath *)indexPath ;
+
+
 /**
  These functions are deprecated
  */
@@ -312,6 +328,12 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScope scope;
 
 /**
+ * Change number week in month user want display when change week to month or month to week
+ *
+ */
+@property (nonatomic) NSInteger numbersWeekOfMonth;
+
+/**
  A UIPanGestureRecognizer instance which enables the control of scope on the whole day-area. Not available if the scrollDirection is vertical.
  
  @deprecated Use -handleScopeGesture: instead
@@ -415,6 +437,18 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat rowHeight;
 
 /**
+ * Padding each rows, default is 5
+ *
+ */
+@property  (assign, nonatomic) IBInspectable CGFloat preferPaddingRow;
+
+/**
+ * Change ratio cell with contents, default is 5/6
+ *
+ */
+@property  (assign, nonatomic) IBInspectable CGFloat ratioContentInCell;
+
+/**
  The calendar appearance used to control the global fonts、colors .etc
  */
 @property (readonly, nonatomic) FSCalendarAppearance *appearance;
@@ -453,6 +487,11 @@ IB_DESIGNABLE
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated;
 
 /**
+ * Change content inset of collection calendar. Default is top 5, bottom 5
+ *
+ */
+- (void)setSectionInsetCollectionView:(UIEdgeInsets)edgeInset;
+/**
  Selects a given date in the calendar.
  
  @param date A date in the calendar.
@@ -481,6 +520,14 @@ IB_DESIGNABLE
  @param animated YES if you want to animate the change in position; NO if it should be immediate.
  */
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated;
+
+/**
+ Register a class for use in creating new calendar cells.
+
+ @param name nib of a cell that you want to use in the calendar.
+ @param identifier The reuse identifier to associate with the specified class. This parameter must not be nil and must not be an empty string.
+ */
+- (void)registerNib:(NSString *)nibName forCellReuseIdentifier:(NSString *)identifier;
 
 /**
  Register a class for use in creating new calendar cells.
@@ -547,6 +594,13 @@ IB_DESIGNABLE
  */
 - (void)handleScopeGesture:(UIPanGestureRecognizer *)sender;
 
+- (void)setGregorian:(NSCalendar *) gregorian;
+
+- (void)updateTimeZone:(NSTimeZone *)newTimeZone;
+
+- (void)orientationDidChange ;
+
+- (BOOL)isDateInDifferentPage:(NSDate *)date;
 @end
 
 

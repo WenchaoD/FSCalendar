@@ -1,4 +1,4 @@
-//
+
 //  FSCalendarAnimationLayout.m
 //  FSCalendar
 //
@@ -68,7 +68,7 @@
         self.headerAttributes = [NSMutableDictionary dictionary];
         self.rowSeparatorAttributes = [NSMutableDictionary dictionary];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
         [self registerClass:[FSCalendarSeparator class] forDecorationViewOfKind:kFSCalendarSeparatorInterRows];
@@ -79,7 +79,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     free(self.widths);
     free(self.heights);
@@ -107,13 +107,13 @@
     self.headerReferenceSize = ({
         CGSize headerSize = CGSizeZero;
         if (self.calendar.floatingMode) {
-            CGFloat headerHeight = self.calendar.preferredWeekdayHeight*1.5+self.calendar.preferredHeaderHeight;
+            CGFloat headerHeight = self.calendar.preferredWeekdayHeight * 1.5 + self.calendar.preferredHeaderHeight;
             headerSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
         }
         headerSize;
     });
     self.estimatedItemSize = ({
-        CGFloat width = (self.collectionView.fs_width-self.sectionInsets.left-self.sectionInsets.right)/7.0;
+        CGFloat width = (self.collectionView.fs_width - self.sectionInsets.left - self.sectionInsets.right)/7.0;
         CGFloat height = ({
             CGFloat height = FSCalendarStandardRowHeight;
             if (!self.calendar.floatingMode) {
@@ -123,7 +123,7 @@
                         break;
                     }
                     case FSCalendarScopeWeek: {
-                        height = (self.collectionView.fs_height-self.sectionInsets.top-self.sectionInsets.bottom);
+                        height = (self.collectionView.fs_height-self.sectionInsets.top-self.sectionInsets.bottom)/self.calendar.numbersWeekOfMonth;
                         break;
                     }
                     default:
@@ -164,7 +164,7 @@
     // Calculate item heights and tops
     free(self.heights);
     self.heights = ({
-        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? 1 : 6;
+        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? self.calendar.numbersWeekOfMonth: 6;
         size_t rowSize = sizeof(CGFloat)*rowCount;
         CGFloat *heights = malloc(rowSize);
         if (!self.calendar.floatingMode) {
@@ -180,7 +180,7 @@
     
     free(self.tops);
     self.tops = ({
-        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? 1 : 6;
+        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ?  self.calendar.numbersWeekOfMonth : 6;
         size_t rowSize = sizeof(CGFloat)*rowCount;
         CGFloat *tops = malloc(rowSize);
         tops[0] = self.sectionInsets.top;
@@ -289,7 +289,7 @@
                     endColumn;
                 });
                 
-                NSInteger numberOfRows = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth ? 6 : 1;
+                NSInteger numberOfRows = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth ? 6 :  self.calendar.numbersWeekOfMonth;
                 
                 for (NSInteger column = startColumn; column <= endColumn; column++) {
                     for (NSInteger row = 0; row < numberOfRows; row++) {

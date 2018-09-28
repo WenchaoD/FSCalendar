@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class FSCalendar, FSCalendarAppearance, FSCalendarEventIndicator;
+@class FSCalendar, FSCalendarAppearance, FSCalendarEventIndicator, FSCalendarCell;
 
 typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
+
+@protocol FSCalendarCellDelegate <NSObject>
+@optional
+-(void)calendarCell:(FSCalendarCell *)cell beganLongPressCell:(NSDate *)date atIndexPath:(NSIndexPath *)indexPath;
+-(void)calendarCell:(FSCalendarCell *)cell endedLongPressCell:(NSDate *)date atIndexPath:(NSIndexPath *)indexPath;
+@end
 
 @interface FSCalendarCell : UICollectionViewCell
 
@@ -49,6 +55,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
  */
 @property (assign, nonatomic, getter=isPlaceholder) BOOL placeholder;
 
+/**
+ A boolean value indicates that whether the cell is "placeholder". Default is NO.
+ */
+@property (weak, nonatomic) id<FSCalendarCellDelegate> delegateCell;
+
 #pragma mark - Private properties
 
 @property (weak, nonatomic) FSCalendar *calendar;
@@ -56,6 +67,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 
 @property (strong, nonatomic) NSString *subtitle;
 @property (strong, nonatomic) UIImage  *image;
+@property (strong, nonatomic) NSDate  *date;
+@property (strong, nonatomic) NSIndexPath  *indexPath;
 @property (assign, nonatomic) FSCalendarMonthPosition monthPosition;
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
@@ -92,6 +105,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 
 @end
 
+
 @interface FSCalendarEventIndicator : UIView
 
 @property (assign, nonatomic) NSInteger numberOfEvents;
@@ -104,4 +118,3 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 - (void)configureAppearance;
 
 @end
-
