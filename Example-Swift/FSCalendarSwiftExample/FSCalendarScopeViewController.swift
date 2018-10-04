@@ -16,6 +16,10 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
+    fileprivate var gregorian: NSCalendar! = NSCalendar(calendarIdentifier: .gregorian)
+    fileprivate var scope: FSCalendarScope = .month
+    fileprivate var numberOfWeeks = 1
+    
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
@@ -41,7 +45,8 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         
         self.view.addGestureRecognizer(self.scopeGesture)
         self.tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
-        self.calendar.scope = .week
+        self.calendar.placeholderType = .fillHeadTail
+        self.calendar.appearance.headerMinimumDissolvedAlpha = 0
         
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
@@ -80,6 +85,9 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         if monthPosition == .next || monthPosition == .previous {
             calendar.setCurrentPage(date, animated: true)
         }
+        
+        //Reload calendar header view
+        calendar.calendarHeaderView.reloadData()
     }
 
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
@@ -87,24 +95,33 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     }
     
     // MARK:- UITableViewDataSource
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return [2,20][section]
+        if self.scope == .month {
+            return 2
+        } else {
+            return 3
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let identifier = ["cell_month", "cell_week"][indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        let identifier = ["cell_month", "cell_week", "cell_weeks_number"][indexPath.row]
+        
+        if indexPath.row == 2 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? FSWeeksSelectionCell else {
+                return UITableViewCell()
+            }
+            
+            cell.weeksLabel.text = "\(self.numberOfWeeks)"
+            cell.delegate = self
             return cell
         }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
+        return cell
     }
     
     
@@ -113,8 +130,25 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
-            let scope: FSCalendarScope = (indexPath.row == 0) ? .month : .week
-            self.calendar.setScope(scope, animated: self.animationSwitch.isOn)
+            if indexPath.row == 0 && self.scope != .month {
+                self.scope = .month
+                self.calendar.setScope(self.scope, animated: self.animationSwitch.isOn)
+                
+                //
+                tableView.beginUpdates()
+                tableView.deleteRows(at: [IndexPath(row: 2, section: 0) ], with: .automatic)
+                tableView.endUpdates()
+                
+            } else if indexPath.row == 1 && self.scope != .week {
+                self.calendar.numberOfWeeks = self.numberOfWeeks
+                self.scope = .week
+                self.calendar.setScope(self.scope, animated: self.animationSwitch.isOn)
+                
+                //
+                tableView.beginUpdates()
+                tableView.insertRows(at: [IndexPath(row: 2, section: 0) ], with: .automatic)
+                tableView.endUpdates()
+            }
         }
     }
     
@@ -123,13 +157,57 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
     }
     
     // MARK:- Target actions
-    
     @IBAction func toggleClicked(sender: AnyObject) {
-        if self.calendar.scope == .month {
-            self.calendar.setScope(.week, animated: self.animationSwitch.isOn)
+        if self.scope == .month {
+            self.calendar.numberOfWeeks = self.numberOfWeeks
+            self.scope = .week
+            self.calendar.setScope(self.scope, animated: self.animationSwitch.isOn)
+            
+            //
+            tableView.beginUpdates()
+            tableView.insertRows(at: [IndexPath(row: 2, section: 0) ], with: .automatic)
+            tableView.endUpdates()
         } else {
-            self.calendar.setScope(.month, animated: self.animationSwitch.isOn)
+            self.scope = .month
+            self.calendar.setScope(self.scope, animated: self.animationSwitch.isOn)
+            
+            //
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [IndexPath(row: 2, section: 0) ], with: .automatic)
+            tableView.endUpdates()
+        }
+    }
+}
+
+extension FSCalendarScopeExampleViewController: FSWeeksSelectionCellDelegate {
+    func increaseButtonPressed(cell: FSWeeksSelectionCell) {
+        if self.numberOfWeeks < 4 {
+            self.numberOfWeeks += 1
+            cell.weeksLabel.text = "\(self.numberOfWeeks)"
+            if self.numberOfWeeks == 1 {
+                cell.decreaseButton.isEnabled = false
+            } else {
+                cell.decreaseButton.isEnabled = true
+            }
+            
+            //
+            self.calendar.numberOfWeeks = self.numberOfWeeks
         }
     }
     
+    func decreaseButtonPressed(cell: FSWeeksSelectionCell) {
+        if self.numberOfWeeks > 1 {
+            self.numberOfWeeks -= 1
+            cell.weeksLabel.text = "\(self.numberOfWeeks)"
+            if self.numberOfWeeks == 1 {
+                cell.decreaseButton.isEnabled = false
+            } else {
+                cell.decreaseButton.isEnabled = true
+            }
+            
+            //
+            self.calendar.numberOfWeeks = self.numberOfWeeks
+            self.calendar.reloadData()
+        }
+    }
 }

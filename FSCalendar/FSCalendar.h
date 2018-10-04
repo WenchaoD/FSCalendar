@@ -440,6 +440,11 @@ IB_DESIGNABLE
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
 
 /**
+ The number of weeks to display when scope of the calendar is set to week.
+ */
+@property (assign, nonatomic) NSInteger numberOfWeeks;
+
+/**
  Reload the dates and appearance of the calendar.
  */
 - (void)reloadData;

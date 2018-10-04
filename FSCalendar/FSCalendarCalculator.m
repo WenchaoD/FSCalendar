@@ -128,7 +128,8 @@
             break;
         }
         case FSCalendarScopeWeek: {
-            section = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:[self.gregorian fs_firstDayOfWeek:date] options:0].weekOfYear;
+            NSInteger weekOfYear = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:[self.gregorian fs_firstDayOfWeek:date] options:0].weekOfYear;
+            section = weekOfYear/self.calendar.numberOfWeeks;
             item = (([self.gregorian component:NSCalendarUnitWeekday fromDate:date] - self.gregorian.firstWeekday) + 7) % 7;
             break;
         }
@@ -190,7 +191,7 @@
     NSNumber *key = @(section);
     NSDate *week = self.weeks[key];
     if (!week) {
-        week = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:section toDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] options:0];
+        week = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:(section*self.calendar.numberOfWeeks) toDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] options:0];
         self.weeks[key] = week;
     }
     return week;
@@ -240,7 +241,7 @@
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
 {
-    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) return 1;
+    if (self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek) return self.calendar.numberOfWeeks;
     NSDate *month = [self monthForSection:section];
     return [self numberOfRowsInMonth:month];
 }

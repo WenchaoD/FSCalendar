@@ -207,9 +207,22 @@
             if ((indexPath.item == 0 || indexPath.item == [self.collectionView numberOfItemsInSection:0] - 1)) {
                 text = nil;
             } else {
-                NSDate *firstPage = [self.calendar.gregorian fs_middleDayOfWeek:self.calendar.minimumDate];
-                NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:indexPath.item-1 toDate:firstPage options:0];
-                text = [_calendar.formatter stringFromDate:date];
+                //Get first day of the first page
+                NSDate *firstPageHeadDate = [self.calendar.gregorian fs_firstDayOfWeek:self.calendar.minimumDate];
+                
+                //Get first day of the current page
+                NSDate *currentPageHeadDate = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear
+                                                                                  value:(indexPath.item-1) * self.calendar.numberOfWeeks
+                                                                                 toDate:firstPageHeadDate
+                                                                                options:0];
+                
+                //Get mid day of the current page
+                NSDate *currentPageMidDate = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay
+                                                                                  value:((self.calendar.numberOfWeeks*7)/2)
+                                                                                 toDate:currentPageHeadDate
+                                                                                options:0];
+                
+                text = [_calendar.formatter stringFromDate:currentPageMidDate];
             }
             break;
         }

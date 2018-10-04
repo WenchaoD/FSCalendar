@@ -434,11 +434,13 @@
                 date;
             });
             NSInteger focusedRow = [self.calendar.calculator coordinateForIndexPath:[self.calendar.calculator indexPathForDate:focusedDate scope:FSCalendarScopeMonth]].row;
-            
-            NSDate *currentPage = self.calendar.currentPage;
-            NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:currentPage scope:FSCalendarScopeMonth];
-            NSDate *monthHead = [self.calendar.calculator monthHeadForSection:indexPath.section];
-            NSDate *targetPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:focusedRow*7 toDate:monthHead options:0];
+           
+            NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:focusedDate scope:FSCalendarScopeWeek];
+            NSDate *minimumPage = [self.calendar.gregorian fs_firstDayOfWeek:self.calendar.minimumDate];
+            NSDate *targetPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear
+                                                                     value:(indexPath.section*self.calendar.numberOfWeeks)
+                                                                    toDate:minimumPage
+                                                                   options:0];
             
             attributes.focusedRowNumber = focusedRow;
             attributes.focusedDate = focusedDate;
