@@ -305,6 +305,11 @@
     
 }
 
+- (BOOL)flipsHorizontallyInOppositeLayoutDirection
+{
+    return YES;
+}
+
 @end
 
 @implementation FSCalendarHeaderTouchDeliver

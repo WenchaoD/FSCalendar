@@ -495,6 +495,11 @@
     return nil;
 }
 
+- (BOOL)flipsHorizontallyInOppositeLayoutDirection
+{
+    return YES;
+}
+
 #pragma mark - Notifications
 
 - (void)didReceiveNotifications:(NSNotification *)notification
