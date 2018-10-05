@@ -153,12 +153,6 @@
     NSLog(@"did change to page %@",[self.dateFormatter1 stringFromDate:calendar.currentPage]);
 }
 
-- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
-{
-    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
-    [self.view layoutIfNeeded];
-}
-
 - (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleOffsetForDate:(NSDate *)date
 {
     if ([self calendar:calendar subtitleForDate:date]) {

@@ -41,6 +41,7 @@
 @property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *rowSeparatorAttributes;
 
 - (void)didReceiveNotifications:(NSNotification *)notification;
+- (CGFloat)calculateRowOffset:(NSInteger)row totalRows:(NSInteger)totalRows;
 
 @end
 
@@ -404,21 +405,26 @@
     FSCalendarCoordinate coordinate = [self.calendar.calculator coordinateForIndexPath:indexPath];
     NSInteger column = coordinate.column;
     NSInteger row = coordinate.row;
+    NSInteger numberOfRows = [self.calendar.calculator numberOfRowsInSection:indexPath.section];
     UICollectionViewLayoutAttributes *attributes = self.itemAttributes[indexPath];
     if (!attributes) {
         attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
         CGRect frame = ({
+            CGFloat width = self.widths[column];
+            CGFloat height = self.heights[row];
             CGFloat x, y;
             switch (self.scrollDirection) {
                 case UICollectionViewScrollDirectionHorizontal: {
                     x = self.lefts[column] + indexPath.section * self.collectionView.fs_width;
-                    y = self.tops[row];
+                    y = [self calculateRowOffset:row totalRows:numberOfRows];
                     break;
                 }
                 case UICollectionViewScrollDirectionVertical: {
                     x = self.lefts[column];
                     if (!self.calendar.floatingMode) {
-                        y = self.tops[row] + indexPath.section * self.collectionView.fs_height;
+                        CGFloat sectionTop = indexPath.section * self.collectionView.fs_height;
+                        CGFloat rowOffset = [self calculateRowOffset:row totalRows:numberOfRows];
+                        y = sectionTop + rowOffset;
                     } else {
                         y = self.sectionTops[indexPath.section] + self.headerReferenceSize.height + self.tops[row];
                     }
@@ -427,8 +433,6 @@
                 default:
                     break;
             }
-            CGFloat width = self.widths[column];
-            CGFloat height = self.heights[row];
             CGRect frame = CGRectMake(x, y, width, height);
             frame;
         });
@@ -466,15 +470,16 @@
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:kFSCalendarSeparatorInterRows withIndexPath:indexPath];
             CGFloat x, y;
             if (!self.calendar.floatingMode) {
+                CGFloat rowOffset = [self calculateRowOffset:coordinate.row totalRows:[self.calendar.calculator numberOfRowsInSection:indexPath.section]] + self.heights[coordinate.row];
                 switch (self.scrollDirection) {
                     case UICollectionViewScrollDirectionHorizontal: {
                         x = self.lefts[coordinate.column] + indexPath.section * self.collectionView.fs_width;
-                        y = self.tops[coordinate.row]+self.heights[coordinate.row];
+                        y = rowOffset;
                         break;
                     }
                     case UICollectionViewScrollDirectionVertical: {
                         x = 0;
-                        y = self.tops[coordinate.row]+self.heights[coordinate.row] + indexPath.section * self.collectionView.fs_height;
+                        y = indexPath.section * self.collectionView.fs_height + rowOffset;
                         break;
                     }
                     default:
@@ -525,6 +530,25 @@
 }
 
 #pragma mark - Private functions
+
+- (CGFloat)calculateRowOffset:(NSInteger)row totalRows:(NSInteger)totalRows
+{
+    if (self.calendar.adjustsBoundingRectWhenChangingMonths) {
+        return self.tops[row];
+    }
+    CGFloat height = self.heights[row];
+    switch (totalRows) {
+        case 4:
+        case 5: {
+            CGFloat contentHeight = self.collectionView.fs_height - self.sectionInsets.top - self.sectionInsets.bottom;
+            CGFloat rowSpan = contentHeight/totalRows;
+            return (row + 0.5) * rowSpan - height * 0.5 + self.sectionInsets.top;
+        }
+        case 6:
+        default:
+            return self.tops[row];
+    }
+}
 
 - (NSInteger)searchStartSection:(CGRect)rect :(NSInteger)left :(NSInteger)right
 {

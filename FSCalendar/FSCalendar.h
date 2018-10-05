@@ -367,6 +367,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable BOOL allowsMultipleSelection;
 
 /**
+ A Boolean value that determines whether the bounding rect changes when the displayed month of the calendar is changed.
+ */
+@property (assign, nonatomic) IBInspectable BOOL adjustsBoundingRectWhenChangingMonths;
+
+/**
  A Boolean value that determines whether paging is enabled for the calendar.
  */
 @property (assign, nonatomic) IBInspectable BOOL pagingEnabled;
