@@ -161,7 +161,7 @@
     switch (self.transition) {
         case FSCalendarTransitionMonthToWeek: {
             CGFloat progress = ({
-                CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds);
+                CGFloat minTranslation = CGRectGetHeight(self.pendingAttributes.targetBounds) - CGRectGetHeight(self.pendingAttributes.sourceBounds) * 2;
                 translation = MAX(minTranslation, translation);
                 translation = MIN(0, translation);
                 CGFloat progress = translation/minTranslation;
