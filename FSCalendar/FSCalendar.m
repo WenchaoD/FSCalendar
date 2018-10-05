@@ -1666,6 +1666,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.calendarWeekdayView configureAppearance];
 }
 
+- (BOOL)updateBoundingRect {
+    if(self.transitionCoordinator.state == FSCalendarTransitionStateIdle) {
+        self.transitionCoordinator.state = FSCalendarTransitionStateChanging;
+        CGRect bounds = (CGRect){CGPointZero,[self sizeThatFits:self.frame.size scope:FSCalendarScopeMonth]};
+        self.needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+        [self.transitionCoordinator boundingRectWillChange:bounds animated:NO];
+        self.transitionCoordinator.state = FSCalendarTransitionStateIdle;
+        return YES;
+    }
+    return NO;
+   
+}
+
 @end
 
 
