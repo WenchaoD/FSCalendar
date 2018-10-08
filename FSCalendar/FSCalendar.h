@@ -102,11 +102,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSInteger)calendar:(FSCalendar *)calendar numberOfEventsForDate:(NSDate *)date;
 
-/**
- * This function is deprecated
- */
-- (BOOL)calendar:(FSCalendar *)calendar hasEventForDate:(NSDate *)date FSCalendarDeprecated(-calendar:numberOfEventsForDate:);
-
 @end
 
 
