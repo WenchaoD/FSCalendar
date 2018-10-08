@@ -34,6 +34,7 @@
     self.calendar.today = nil;
     self.calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
     self.calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+//    self.calendar.adjustsBoundingRectWhenChangingMonths = NO;
     
     self.lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     self.lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
@@ -54,6 +55,7 @@
     } else if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
         [self.calendar setScope:FSCalendarScopeMonth animated:YES];
     }
+    self.preferredContentSize = CGSizeMake(320, self.calendarHeight.constant);
 }
 
 - (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler
@@ -96,7 +98,6 @@
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     self.calendarHeight.constant = CGRectGetHeight(bounds);
-    self.preferredContentSize = CGSizeMake(320, self.calendarHeight.constant);
     [self.view layoutIfNeeded];
 }
 

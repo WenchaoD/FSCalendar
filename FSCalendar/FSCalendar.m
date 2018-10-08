@@ -56,8 +56,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
-@property (weak  , nonatomic) UIView                     *topBorder;
-@property (weak  , nonatomic) UIView                     *bottomBorder;
 @property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
 @property (weak  , nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 
@@ -221,22 +219,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     self.collectionView = collectionView;
     self.collectionViewLayout = collectionViewLayout;
     
-    if (!FSCalendarInAppExtension) {
-        
-        UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardLineColor;
-        view.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin; // Stick to top
-        [self addSubview:view];
-        self.topBorder = view;
-        
-        view = [[UIView alloc] initWithFrame:CGRectZero];
-        view.backgroundColor = FSCalendarStandardLineColor;
-        view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin; // Stick to bottom
-        [self addSubview:view];
-        self.bottomBorder = view;
-        
-    }
-    
     [self invalidateLayout];
     
     // Assistants
@@ -349,8 +331,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             
         }
         _collectionView.fs_height = FSCalendarHalfFloor(_collectionView.fs_height);
-        _topBorder.frame = CGRectMake(0, -1, self.fs_width, 1);
-        _bottomBorder.frame = CGRectMake(0, self.fs_height, self.fs_width, 1);
     }
     
 }
@@ -1024,14 +1004,17 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (self.floatingMode) return;
     if (self.transitionCoordinator.state != FSCalendarTransitionStateIdle) return;
     
+    void(^execute)(void) = ^{
+        [self.transitionCoordinator performScopeTransitionFromScope:self.scope toScope:scope animated:animated];
+    };
     BOOL hasLayout = self.hasValidateVisibleLayout;
     if (!hasLayout) {
         [self setNeedsLayout];
         [self.collectionViewLayout invalidateLayout];
-        [self layoutIfNeeded];
+        dispatch_async(dispatch_get_main_queue(), execute);
+        return;
     }
-    BOOL needsAnimate = hasLayout && animated;
-    [self.transitionCoordinator performScopeTransitionFromScope:self.scope toScope:scope animated:needsAnimate];
+    execute();
 }
 
 - (void)setPlaceholderType:(FSCalendarPlaceholderType)placeholderType

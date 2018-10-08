@@ -57,6 +57,7 @@
         self.prevButton.hidden = YES;
         self.nextButton.hidden = YES;
     }
+    self.preferredContentSize = CGSizeMake(320, self.calendarHeight.constant);
 }
 
 - (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler
@@ -78,7 +79,6 @@
 - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
 {
     self.calendarHeight.constant = CGRectGetHeight(bounds);
-    self.preferredContentSize = CGSizeMake(320, self.calendarHeight.constant);
     [self.view layoutIfNeeded];
 }
 
@@ -108,6 +108,21 @@
     if (monthPosition != FSCalendarMonthPositionCurrent) {
         [calendar setCurrentPage:date animated:YES];
     }
+}
+
+- (IBAction)prevClicked:(id)sender
+{
+    NSCalendarUnit unit = (self.calendar.scope==FSCalendarScopeMonth) ? NSCalendarUnitMonth : NSCalendarUnitWeekOfYear;
+    NSDate *prevPage = [self.gregorian dateByAddingUnit:unit value:-1 toDate:self.calendar.currentPage options:0];
+    [self.calendar setCurrentPage:prevPage animated:YES];
+    
+}
+
+- (IBAction)nextClicked:(id)sender
+{
+    NSCalendarUnit unit = (self.calendar.scope==FSCalendarScopeMonth) ? NSCalendarUnitMonth : NSCalendarUnitWeekOfYear;
+    NSDate *nextPage = [self.gregorian dateByAddingUnit:unit value:1 toDate:self.calendar.currentPage options:0];
+    [self.calendar setCurrentPage:nextPage animated:YES];
 }
 
 @end
