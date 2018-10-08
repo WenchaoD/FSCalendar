@@ -320,11 +320,7 @@ IB_DESIGNABLE
  *
  *    calendar.placeholderType = FSCalendarPlaceholderTypeNone;
  */
-#if TARGET_INTERFACE_BUILDER
-@property (assign, nonatomic) IBInspectable NSUInteger placeholderType;
-#else
 @property (assign, nonatomic) FSCalendarPlaceholderType placeholderType;
-#endif
 
 /**
  The index of the first weekday of the calendar. Give a '2' to make Monday in the first column.

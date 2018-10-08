@@ -52,10 +52,11 @@
     }
 #if TARGET_INTERFACE_BUILDER
     return [NSObject methodSignatureForSelector:@selector(init)];
-#endif
+#else
     struct objc_method_description desc = protocol_getMethodDescription(self.protocol, sel, NO, YES);
     const char *types = desc.types;
     return types?[NSMethodSignature signatureWithObjCTypes:types]:[NSObject methodSignatureForSelector:@selector(init)];
+#endif
 }
 
 - (SEL)deprecatedSelectorOfSelector:(SEL)selector
