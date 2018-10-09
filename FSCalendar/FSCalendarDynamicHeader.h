@@ -34,7 +34,6 @@
 @property (readonly, nonatomic) UIView *bottomBorder;
 
 @property (readonly, nonatomic) NSCalendar *gregorian;
-@property (readonly, nonatomic) NSDateComponents *components;
 @property (readonly, nonatomic) NSDateFormatter *formatter;
 
 @property (readonly, nonatomic) UIView *contentView;

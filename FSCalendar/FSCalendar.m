@@ -864,8 +864,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredWeekdayHeight = FSCalendarAutomaticDimension;
         _preferredRowHeight = FSCalendarAutomaticDimension;
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
-        _calendarHeaderView.needsAdjustingMonthPosition = YES;
-        _calendarHeaderView.needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
     }
 }
@@ -1506,7 +1504,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
     
-    [self.calendarHeaderView setNeedsAdjustingViewFrame:YES];
     [self setNeedsLayout];
     
 }
@@ -1527,7 +1524,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self requestBoundingDatesIfNecessary];
     NSDate *targetPage = self.pagingEnabled?self.currentPage:(self.currentPage?:self.selectedDate);
     [self scrollToPageForDate:targetPage animated:NO];
-    self.calendarHeaderView.needsAdjustingMonthPosition = YES;
 }
 
 - (BOOL)requestBoundingDatesIfNecessary
