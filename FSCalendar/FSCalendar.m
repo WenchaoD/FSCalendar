@@ -15,7 +15,6 @@
 #import "FSCalendarExtensions.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarCollectionView.h"
-
 #import "FSCalendarTransitionCoordinator.h"
 #import "FSCalendarCalculator.h"
 #import "FSCalendarDelegationFactory.h"

@@ -387,7 +387,6 @@
 - (void)prepareWeekToMonthTransition
 {
     [self.calendar fs_setVariable:self.transitionAttributes.targetPage forKey:@"_currentPage"];
-    
     self.calendar.contentView.fs_height = CGRectGetHeight(self.transitionAttributes.targetBounds);
     self.collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.calendar.scrollDirection;
     self.calendar.calendarHeaderView.scrollDirection = self.collectionViewLayout.scrollDirection;
