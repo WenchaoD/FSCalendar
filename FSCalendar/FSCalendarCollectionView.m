@@ -14,19 +14,20 @@
 
 @interface FSCalendarCollectionView ()
 
-- (void)initialize;
+- (void)commonInit;
 
 @end
 
 @implementation FSCalendarCollectionView
 
 @synthesize scrollsToTop = _scrollsToTop, contentInset = _contentInset;
+@dynamic dataSource, delegate;
 
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
 {
     self = [super initWithFrame:frame collectionViewLayout:layout];
     if (self) {
-        [self initialize];
+        [self commonInit];
     }
     return self;
 }
@@ -35,17 +36,25 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self initialize];
+        [self commonInit];
     }
     return self;
 }
 
-- (void)initialize
+- (void)commonInit
 {
     self.scrollsToTop = NO;
     self.contentInset = UIEdgeInsetsZero;
     if (@available(iOS 10.0, *)) self.prefetchingEnabled = NO;
     if (@available(iOS 11.0, *)) self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(collectionViewDidFinishLayoutSubviews:)]) {
+        [self.delegate collectionViewDidFinishLayoutSubviews:self];
+    }
 }
 
 - (void)setContentInset:(UIEdgeInsets)contentInset
@@ -59,25 +68,6 @@
 - (void)setScrollsToTop:(BOOL)scrollsToTop
 {
     [super setScrollsToTop:NO];
-}
-
-@end
-
-
-@implementation FSCalendarSeparator
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.backgroundColor = FSCalendarStandardSeparatorColor;
-    }
-    return self;
-}
-
-- (void)applyLayoutAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes
-{
-    self.frame = layoutAttributes.frame;
 }
 
 @end

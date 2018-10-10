@@ -31,15 +31,17 @@
     // Do any additional setup after loading the view from its nib.
     self.calendar.today = nil;
     self.calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+    self.calendar.adjustsBoundingRectWhenChangingMonths = NO;
+    self.calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+    self.calendar.appearance.headerMinimumDissolvedAlpha = 0;
     self.lunarCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
     self.lunarCalendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
     self.lunarChars = @[@"初一",@"初二",@"初三",@"初四",@"初五",@"初六",@"初七",@"初八",@"初九",@"初十",@"十一",@"十二",@"十三",@"十四",@"十五",@"十六",@"十七",@"十八",@"十九",@"二十",@"二一",@"二二",@"二三",@"二四",@"二五",@"二六",@"二七",@"二八",@"二九",@"三十"];
     self.gregorian = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    
     if ([self.extensionContext respondsToSelector:@selector(setWidgetLargestAvailableDisplayMode:)]) {
         self.extensionContext.widgetLargestAvailableDisplayMode = NCWidgetDisplayModeExpanded;
     } else {
-        self.preferredContentSize = CGSizeMake(320, self.calendarHeight.constant);
+        self.preferredContentSize = CGSizeMake(0, self.calendarHeight.constant);
     }
     
 }
@@ -48,16 +50,11 @@
 {
     if (activeDisplayMode == NCWidgetDisplayModeCompact) {
         [self.calendar setScope:FSCalendarScopeWeek animated:YES];
-        self.calendar.appearance.headerMinimumDissolvedAlpha = 0;
-        self.prevButton.hidden = NO;
-        self.nextButton.hidden = NO;
+        self.preferredContentSize = maxSize;
     } else if (activeDisplayMode == NCWidgetDisplayModeExpanded) {
         [self.calendar setScope:FSCalendarScopeMonth animated:YES];
-        self.calendar.appearance.headerMinimumDissolvedAlpha = 0.5;
-        self.prevButton.hidden = YES;
-        self.nextButton.hidden = YES;
+        self.preferredContentSize = CGSizeMake(maxSize.width, self.calendarHeight.constant);
     }
-    self.preferredContentSize = CGSizeMake(320, self.calendarHeight.constant);
 }
 
 - (void)widgetPerformUpdateWithCompletionHandler:(void (^)(NCUpdateResult))completionHandler
@@ -80,6 +77,7 @@
 {
     self.calendarHeight.constant = CGRectGetHeight(bounds);
     [self.view layoutIfNeeded];
+    self.preferredContentSize = CGSizeMake(calendar.frame.size.width, self.calendarHeight.constant);
 }
 
 - (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderDefaultColorForDate:(NSDate *)date

@@ -12,6 +12,7 @@
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarExtensions.h"
 #import "FSCalendarConstants.h"
+#import "FSCalendarSeparatorDecorationView.h"
 
 #define kFSCalendarSeparatorInterRows @"FSCalendarSeparatorInterRows"
 #define kFSCalendarSeparatorInterColumns @"FSCalendarSeparatorInterColumns"
@@ -65,14 +66,14 @@
         self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         self.sectionInsets = UIEdgeInsetsMake(5, 0, 5, 0);
         
-        self.itemAttributes = [NSMutableDictionary dictionary];
-        self.headerAttributes = [NSMutableDictionary dictionary];
-        self.rowSeparatorAttributes = [NSMutableDictionary dictionary];
+        self.itemAttributes = NSMutableDictionary.dictionary;
+        self.headerAttributes = NSMutableDictionary.dictionary;
+        self.rowSeparatorAttributes = NSMutableDictionary.dictionary;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
-        [self registerClass:[FSCalendarSeparator class] forDecorationViewOfKind:kFSCalendarSeparatorInterRows];
+        [self registerClass:FSCalendarSeparatorDecorationView.class forDecorationViewOfKind:kFSCalendarSeparatorInterRows];
     }
     return self;
 }
