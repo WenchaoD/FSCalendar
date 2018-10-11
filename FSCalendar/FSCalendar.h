@@ -154,6 +154,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 
 /**
+ Tells the delegate the calendar has finished the scroll animation.
+ */
+- (void)calendarCurrentPageDidScroll:(FSCalendar *)calendar;
+
+/**
  These functions are deprecated
  */
 - (void)calendarCurrentScopeWillChange:(FSCalendar *)calendar animated:(BOOL)animated FSCalendarDeprecated(-calendar:boundingRectWillChange:animated:);
