@@ -240,8 +240,9 @@
     if (self) {
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLabel.textAlignment = NSTextAlignmentCenter;
-        titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         titleLabel.numberOfLines = 0;
+        titleLabel.adjustsFontSizeToFitWidth = true;
+        titleLabel.minimumScaleFactor = 0.5;
         [self.contentView addSubview:titleLabel];
         self.titleLabel = titleLabel;
     }
