@@ -33,6 +33,7 @@
 
 @property (assign, nonatomic) CGSize contentSize;
 @property (assign, nonatomic) CGSize collectionViewSize;
+@property (assign, nonatomic) CGSize headerReferenceSize;
 @property (assign, nonatomic) NSInteger numberOfSections;
 
 @property (assign, nonatomic) FSCalendarSeparators separators;
