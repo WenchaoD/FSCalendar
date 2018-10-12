@@ -12,7 +12,7 @@
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarDynamicHeader.h"
 
-@interface FSCalendarHeaderView ()<FSCalendarCollectionViewDataSource,FSCalendarCollectionViewDelegate>
+@interface FSCalendarHeaderView ()<UICollectionViewDataSource,UICollectionViewDelegate,FSCalendarCollectionViewInternalDelegate>
 
 - (void)scrollToOffset:(CGFloat)scrollOffset animated:(BOOL)animated;
 - (void)configureCell:(FSCalendarHeaderCell *)cell atIndexPath:(NSIndexPath *)indexPath;

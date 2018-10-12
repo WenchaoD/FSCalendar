@@ -43,7 +43,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarOrientationPortrait
 };
 
-@interface FSCalendar ()<FSCalendarCollectionViewDataSource,FSCalendarCollectionViewDelegate,UIGestureRecognizerDelegate>
+@interface FSCalendar ()<UICollectionViewDataSource,UICollectionViewDelegate,FSCalendarCollectionViewInternalDelegate,UIGestureRecognizerDelegate>
 {
     NSMutableArray  *_selectedDates;
 }
@@ -208,6 +208,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                                                                           collectionViewLayout:collectionViewLayout];
     collectionView.dataSource = self;
     collectionView.delegate = self;
+    collectionView.internalDelegate = self;
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.pagingEnabled = YES;
     collectionView.showsHorizontalScrollIndicator = NO;

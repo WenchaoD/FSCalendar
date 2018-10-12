@@ -9,11 +9,8 @@
 #import <UIKit/UIKit.h>
 @class FSCalendarCollectionView;
 
-@protocol FSCalendarCollectionViewDataSource <UICollectionViewDataSource>
 
-@end
-
-@protocol FSCalendarCollectionViewDelegate <UICollectionViewDelegate>
+@protocol FSCalendarCollectionViewInternalDelegate <UICollectionViewDelegate>
 
 @optional
 - (void)collectionViewDidFinishLayoutSubviews:(FSCalendarCollectionView *)collectionView;
@@ -22,7 +19,6 @@
 
 @interface FSCalendarCollectionView : UICollectionView
 
-@property (assign, nonatomic) id<FSCalendarCollectionViewDataSource> dataSource;
-@property (assign, nonatomic) id<FSCalendarCollectionViewDelegate> delegate;
+@property (weak, nonatomic) id<FSCalendarCollectionViewInternalDelegate> internalDelegate;
 
 @end

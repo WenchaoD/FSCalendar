@@ -21,7 +21,6 @@
 @implementation FSCalendarCollectionView
 
 @synthesize scrollsToTop = _scrollsToTop, contentInset = _contentInset;
-@dynamic dataSource, delegate;
 
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
 {
@@ -52,8 +51,8 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if (self.delegate && [self.delegate respondsToSelector:@selector(collectionViewDidFinishLayoutSubviews:)]) {
-        [self.delegate collectionViewDidFinishLayoutSubviews:self];
+    if (self.internalDelegate && [self.internalDelegate respondsToSelector:@selector(collectionViewDidFinishLayoutSubviews:)]) {
+        [self.internalDelegate collectionViewDidFinishLayoutSubviews:self];
     }
 }
 
