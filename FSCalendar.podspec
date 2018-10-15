@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/WenchaoD/FSCalendar.git", :tag => s.version.to_s }
 
   s.platform     = :ios
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
   s.requires_arc = true
   s.framework    = 'UIKit', 'QuartzCore'
   s.source_files = 'FSCalendar/*.{h,m}'
