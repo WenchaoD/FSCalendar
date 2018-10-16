@@ -153,12 +153,6 @@
     NSLog(@"did change to page %@",[self.dateFormatter1 stringFromDate:calendar.currentPage]);
 }
 
-- (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated
-{
-    _calendarHeightConstraint.constant = CGRectGetHeight(bounds);
-    [self.view layoutIfNeeded];
-}
-
 - (CGPoint)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleOffsetForDate:(NSDate *)date
 {
     if ([self calendar:calendar subtitleForDate:date]) {
@@ -214,12 +208,8 @@
     if (self.calendar.firstWeekday != config.firstWeekday) {
         self.calendar.firstWeekday = config.firstWeekday;
     }
-    
     if (self.calendar.scrollDirection != config.scrollDirection) {
         self.calendar.scrollDirection = config.scrollDirection;
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"FSCalendar" message:[NSString stringWithFormat:@"Now swipe %@",@[@"Vertically", @"Horizontally"][self.calendar.scrollDirection]] preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 

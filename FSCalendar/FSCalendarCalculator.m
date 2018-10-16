@@ -198,16 +198,12 @@
 
 - (NSInteger)numberOfSections
 {
-    if (self.calendar.transitionCoordinator.transition == FSCalendarTransitionWeekToMonth) {
-        return self.numberOfMonths;
-    } else {
-        switch (self.calendar.transitionCoordinator.representingScope) {
-            case FSCalendarScopeMonth: {
-                return self.numberOfMonths;
-            }
-            case FSCalendarScopeWeek: {
-                return self.numberOfWeeks;
-            }
+    switch (self.calendar.transitionCoordinator.representingScope) {
+        case FSCalendarScopeMonth: {
+            return self.numberOfMonths;
+        }
+        case FSCalendarScopeWeek: {
+            return self.numberOfWeeks;
         }
     }
 }

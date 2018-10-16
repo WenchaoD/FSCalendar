@@ -7,12 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+@class FSCalendarCollectionView;
 
-@interface FSCalendarCollectionView : UICollectionView
+
+@protocol FSCalendarCollectionViewInternalDelegate <UICollectionViewDelegate>
+
+@optional
+- (void)collectionViewDidFinishLayoutSubviews:(FSCalendarCollectionView *)collectionView;
 
 @end
 
+@interface FSCalendarCollectionView : UICollectionView
 
-@interface FSCalendarSeparator : UICollectionReusableView
+@property (weak, nonatomic) id<FSCalendarCollectionViewInternalDelegate> internalDelegate;
 
 @end
