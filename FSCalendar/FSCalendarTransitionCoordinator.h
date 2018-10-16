@@ -9,13 +9,7 @@
 #import "FSCalendar.h"
 #import "FSCalendarCollectionView.h"
 #import "FSCalendarCollectionViewLayout.h"
-#import "FSCalendarScopeHandle.h"
 
-typedef NS_ENUM(NSUInteger, FSCalendarTransition) {
-    FSCalendarTransitionNone,
-    FSCalendarTransitionMonthToWeek,
-    FSCalendarTransitionWeekToMonth
-};
 typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
     FSCalendarTransitionStateIdle,
     FSCalendarTransitionStateChanging,
@@ -24,11 +18,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 
 @interface FSCalendarTransitionCoordinator : NSObject <UIGestureRecognizerDelegate>
 
-@property (weak, nonatomic) FSCalendar *calendar;
-@property (weak, nonatomic) FSCalendarCollectionView *collectionView;
-@property (weak, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
-
-@property (assign, nonatomic) FSCalendarTransition transition;
 @property (assign, nonatomic) FSCalendarTransitionState state;
 
 @property (assign, nonatomic) CGSize cachedMonthSize;
@@ -39,6 +28,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 
 - (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
 - (void)performBoundingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
+- (CGRect)boundingRectForScope:(FSCalendarScope)scope page:(NSDate *)page;
 
 - (void)handleScopeGesture:(id)sender;
 
@@ -51,9 +41,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 @property (assign, nonatomic) CGRect targetBounds;
 @property (strong, nonatomic) NSDate *sourcePage;
 @property (strong, nonatomic) NSDate *targetPage;
-@property (assign, nonatomic) NSInteger focusedRowNumber;
-@property (assign, nonatomic) NSDate *focusedDate;
-@property (strong, nonatomic) NSDate *firstDayOfMonth;
+@property (assign, nonatomic) NSInteger focusedRow;
+@property (strong, nonatomic) NSDate *focusedDate;
+@property (assign, nonatomic) FSCalendarScope targetScope;
 
+- (void)revert;
+    
 @end
 

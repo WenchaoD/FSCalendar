@@ -62,8 +62,8 @@ NS_ASSUME_NONNULL_END
     calendar.backgroundColor = [UIColor whiteColor];
     calendar.dataSource = self;
     calendar.delegate = self;
-//    calendar.placeholderType = FSCalendarPlaceholderTypeFillHeadTail;
     calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+    calendar.adjustsBoundingRectWhenChangingMonths = YES;
     calendar.currentPage = [self.dateFormatter dateFromString:@"2016-06-01"];
     calendar.firstWeekday = 2;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
