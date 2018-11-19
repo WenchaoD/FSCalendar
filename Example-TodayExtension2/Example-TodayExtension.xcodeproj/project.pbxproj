@@ -27,7 +27,6 @@
 		3052336D1D8170E50070AAFE /* FSCalendarCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 305233541D8170E50070AAFE /* FSCalendarCollectionView.m */; };
 		305233721D8170E50070AAFE /* FSCalendarScopeHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3052335F1D8170E50070AAFE /* FSCalendarScopeHandle.m */; };
 		305233731D8170E50070AAFE /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 305233611D8170E50070AAFE /* FSCalendarStickyHeader.m */; };
-		305233741D8170E50070AAFE /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 305233621D8170E50070AAFE /* Info.plist */; };
 		3055B1CB1DA933AD002AFA13 /* FSCalendarExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3055B1CA1DA933AD002AFA13 /* FSCalendarExtensions.m */; };
 		30623F701DC1F46800FA31B3 /* FSCalendarCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 30623F6F1DC1F46800FA31B3 /* FSCalendarCollectionViewLayout.m */; };
 		30A07C041DCAF7F30071F025 /* FSCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30A07C031DCAF7F30071F025 /* FSCalendarHeaderView.m */; };
@@ -35,7 +34,6 @@
 		30F4C95A1E07C48500D2EC4D /* FSCalendarDelegationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F4C9571E07C48500D2EC4D /* FSCalendarDelegationFactory.m */; };
 		30F4C95B1E07C48500D2EC4D /* FSCalendarDelegationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F4C9591E07C48500D2EC4D /* FSCalendarDelegationProxy.m */; };
 		F9E5546B1E1E587300CBA753 /* FSCalendarTransitionCoordinator.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E5546A1E1E587300CBA753 /* FSCalendarTransitionCoordinator.m */; };
-		F9E5546D1E1E5A5600CBA753 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F9E5546C1E1E5A5600CBA753 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -285,7 +283,7 @@
 		305233061D8170480070AAFE /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = dingwenchao;
 				TargetAttributes = {
 					3052330D1D8170480070AAFE = {
@@ -321,7 +319,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9E5546D1E1E5A5600CBA753 /* Info.plist in Resources */,
 				305233211D8170480070AAFE /* LaunchScreen.storyboard in Resources */,
 				3052331E1D8170480070AAFE /* Assets.xcassets in Resources */,
 				3052331C1D8170480070AAFE /* Main.storyboard in Resources */,
@@ -334,7 +331,6 @@
 			files = (
 				305233361D81706E0070AAFE /* MainInterface.storyboard in Resources */,
 				305233431D8170C60070AAFE /* Image.xcassets in Resources */,
-				305233741D8170E50070AAFE /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,12 +422,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -479,12 +477,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
