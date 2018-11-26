@@ -27,6 +27,7 @@
 		30F4C9471E07C3AD00D2EC4D /* FSCalendarStickyHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F4C9351E07C3AD00D2EC4D /* FSCalendarStickyHeader.m */; };
 		30F4C9481E07C3AD00D2EC4D /* FSCalendarWeekdayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F4C9371E07C3AD00D2EC4D /* FSCalendarWeekdayView.m */; };
 		50F2ADFA216DA21000CC481F /* FSCalendarSeparatorDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F2ADF8216DA20F00CC481F /* FSCalendarSeparatorDecorationView.m */; };
+		CC7D16F72135D56100445693 /* FSWeeksSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7D16F62135D56100445693 /* FSWeeksSelectionCell.swift */; };
 		EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */; };
 		EE0954AF1B97DDE0007F6964 /* InterfaceBuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0954AE1B97DDE0007F6964 /* InterfaceBuilderViewController.swift */; };
 		EE0954B21B97DDE0007F6964 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE0954B01B97DDE0007F6964 /* Main.storyboard */; };
@@ -84,6 +85,7 @@
 		30F4C9361E07C3AD00D2EC4D /* FSCalendarWeekdayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarWeekdayView.h; sourceTree = "<group>"; };
 		30F4C9371E07C3AD00D2EC4D /* FSCalendarWeekdayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarWeekdayView.m; sourceTree = "<group>"; };
 		30F4C9381E07C3AD00D2EC4D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC7D16F62135D56100445693 /* FSWeeksSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSWeeksSelectionCell.swift; sourceTree = "<group>"; };
 		50F2ADF8216DA20F00CC481F /* FSCalendarSeparatorDecorationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSCalendarSeparatorDecorationView.m; sourceTree = "<group>"; };
 		50F2ADF9216DA21000CC481F /* FSCalendarSeparatorDecorationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSCalendarSeparatorDecorationView.h; sourceTree = "<group>"; };
 		EE0954A71B97DDE0007F6964 /* FSCalendarSwiftExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FSCalendarSwiftExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,6 +193,7 @@
 				30031AA91DCEA83200FC34FE /* DIYCalendarCell.swift */,
 				3024AF161E164F8C008B6001 /* DelegateAppearanceViewController.swift */,
 				305282C81E1608A100CC2877 /* FSCalendarScopeViewController.swift */,
+				CC7D16F62135D56100445693 /* FSWeeksSelectionCell.swift */,
 				EE0954AE1B97DDE0007F6964 /* InterfaceBuilderViewController.swift */,
 				F9DE053A1E3CCAE800902F7D /* CalendarConfigViewController.swift */,
 				30D458E81DB4E2DB00B163C7 /* LoadViewExampleViewController.swift */,
@@ -271,7 +274,7 @@
 				TargetAttributes = {
 					EE0954A61B97DDE0007F6964 = {
 						CreatedOnToolsVersion = 6.4;
-						DevelopmentTeam = HZF422TY46;
+						DevelopmentTeam = SW5SL8G723;
 						LastSwiftMigration = 0900;
 					};
 					F9CB483C1E406A9200C92065 = {
@@ -348,6 +351,7 @@
 				30F4C9481E07C3AD00D2EC4D /* FSCalendarWeekdayView.m in Sources */,
 				30F4C93E1E07C3AD00D2EC4D /* FSCalendarCell.m in Sources */,
 				30D458E91DB4E2DB00B163C7 /* LoadViewExampleViewController.swift in Sources */,
+				CC7D16F72135D56100445693 /* FSWeeksSelectionCell.swift in Sources */,
 				30031AAA1DCEA83200FC34FE /* DIYCalendarCell.swift in Sources */,
 				EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */,
 				EE0954AF1B97DDE0007F6964 /* InterfaceBuilderViewController.swift in Sources */,
@@ -497,11 +501,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = HZF422TY46;
+				DEVELOPMENT_TEAM = SW5SL8G723;
 				INFOPLIST_FILE = "$(SRCROOT)/FSCalendarSwiftExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wenchaod.FSCalendarSwiftExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dipendra.FSCalendarSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "FSCalendarSwiftExample/Objc-Bridge-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -514,11 +518,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = HZF422TY46;
+				DEVELOPMENT_TEAM = SW5SL8G723;
 				INFOPLIST_FILE = "$(SRCROOT)/FSCalendarSwiftExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wenchaod.FSCalendarSwiftExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dipendra.FSCalendarSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "FSCalendarSwiftExample/Objc-Bridge-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

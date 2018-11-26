@@ -403,6 +403,11 @@ IB_DESIGNABLE
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
 
 /**
+ The number of weeks to display when scope of the calendar is set to week.
+ */
+@property (assign, nonatomic) NSInteger numberOfWeeks;
+
+/**
  Reload the dates and appearance of the calendar.
  */
 - (void)reloadData;
@@ -414,6 +419,14 @@ IB_DESIGNABLE
  @param animated YES if you want to animate the scoping; NO if the change should be immediate.
  */
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated;
+
+/**
+ Change the number of weeks of the calendar while scope is FSCalendarScopeWeek. Make sure `-calendar:boundingRectWillChange:animated` is correctly adopted.
+ 
+ @param numberOfWeeks The target number of weeks to change.
+ @param animated YES if you want to animate the change; NO if the change should be immediate.
+ */
+- (void)setNumberOfWeeks:(NSInteger)numberOfWeeks animated:(BOOL)animated;
 
 /**
  Selects a given date in the calendar.

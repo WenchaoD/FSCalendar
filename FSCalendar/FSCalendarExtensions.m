@@ -73,6 +73,20 @@
 
 @end
 
+@implementation NSDate (FSCalendarExtensions)
+
+- (BOOL)isInRange:(NSDate *)startDate endDate:(NSDate *)endDate
+{
+    if ([self compare:startDate] == NSOrderedAscending)
+        return NO;
+    
+    if ([self compare:endDate] == NSOrderedDescending)
+        return NO;
+    
+    return YES;
+}
+
+@end
 
 @implementation CALayer (FSCalendarExtensions)
 
@@ -209,6 +223,12 @@
                                         inUnit:NSCalendarUnitMonth
                                        forDate:month];
     return days.length;
+}
+
+- (nullable NSDate *)fs_dayByAddingWeeks:(NSInteger)weeks toDate:(NSDate *)date
+{
+    if (!date) return nil;
+    return [self dateByAddingUnit:NSCalendarUnitWeekOfYear value:weeks toDate:date options:0];
 }
 
 - (NSDateComponents *)fs_privateComponents

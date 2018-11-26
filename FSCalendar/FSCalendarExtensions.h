@@ -23,6 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface NSDate (FSCalendarExtensions)
+
+- (BOOL)isInRange:(NSDate *)startDate endDate:(NSDate *)endDate;
+
+@end
+
 
 @interface CALayer (FSCalendarExtensions)
 
@@ -44,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDate *)fs_firstDayOfWeek:(NSDate *)week;
 - (nullable NSDate *)fs_lastDayOfWeek:(NSDate *)week;
 - (nullable NSDate *)fs_middleDayOfWeek:(NSDate *)week;
+- (nullable NSDate *)fs_dayByAddingWeeks:(NSInteger)weeks toDate:(NSDate *)date;
 - (NSInteger)fs_numberOfDaysInMonth:(NSDate *)month;
 
 @end
