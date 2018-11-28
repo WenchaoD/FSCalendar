@@ -487,6 +487,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self enqueueSelectedDate:selectedDate];
     [self.delegateProxy calendar:self didSelectDate:selectedDate atMonthPosition:monthPosition];
     [self selectCounterpartDate:selectedDate];
+    _isLongPressGesture = NO;
+}
+- (void)endLongPress {
+    _isLongPressGesture = NO;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
@@ -1416,6 +1420,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     switch (pressGesture.state) {
         case UIGestureRecognizerStateBegan:
+            _isLongPressGesture = YES;
         case UIGestureRecognizerStateChanged: {
             NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[pressGesture locationInView:self.collectionView]];
             if (indexPath && ![indexPath isEqual:self.lastPressedIndexPath]) {
