@@ -278,28 +278,81 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="cell" textLabel="fGJ-HR-nLa" imageView="aHn-NP-iqx" style="IBUITableViewCellStyleDefault" id="mEc-Yq-s56">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell_weeks_number" id="BOn-2g-TEq" customClass="FSWeeksSelectionCell" customModule="FSCalendarSwiftExample" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mEc-Yq-s56" id="Sz2-Op-ikR">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" tableViewCell="BOn-2g-TEq" id="g8C-Vq-AUS">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Lorem ipsum dolor sit er elit lamet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fGJ-HR-nLa">
-                                                    <rect key="frame" x="48" y="0.0" width="312" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week(s)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SzV-hA-k6t">
+                                                    <rect key="frame" x="15" y="10.5" width="70" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="70" id="JQ1-Ua-2wz"/>
+                                                        <constraint firstAttribute="height" constant="21" id="gWe-yI-EzF"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="icon_cat" id="aHn-NP-iqx">
-                                                    <rect key="frame" x="15" y="14" width="18" height="15"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JKb-qi-PzU">
+                                                    <rect key="frame" x="330" y="7.5" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="Xi8-H6-zGT"/>
+                                                        <constraint firstAttribute="height" constant="30" id="mtu-hy-nX4"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                    <state key="normal" title="+">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="increaseButtonPressedWithSender:" destination="BOn-2g-TEq" eventType="touchUpInside" id="gZH-NH-KQJ"/>
+                                                    </connections>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZF-jG-qtn">
+                                                    <rect key="frame" x="301" y="11.5" width="21" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="21" id="U0i-mw-uLj"/>
+                                                        <constraint firstAttribute="height" constant="21" id="aqK-F7-IL5"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJp-M4-Z65">
+                                                    <rect key="frame" x="263" y="7.5" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="62m-8w-vlE"/>
+                                                        <constraint firstAttribute="height" constant="30" id="Usj-yo-VEX"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                    <state key="normal" title="-">
+                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="decreaseButtonPressedWithSender:" destination="BOn-2g-TEq" eventType="touchUpInside" id="fq9-Kk-b75"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="WJp-M4-Z65" firstAttribute="centerY" secondItem="g8C-Vq-AUS" secondAttribute="centerY" id="2TS-Pq-G91"/>
+                                                <constraint firstItem="SzV-hA-k6t" firstAttribute="leading" secondItem="g8C-Vq-AUS" secondAttribute="leading" constant="15" id="6BF-BJ-n8z"/>
+                                                <constraint firstItem="JKb-qi-PzU" firstAttribute="leading" secondItem="iZF-jG-qtn" secondAttribute="trailing" constant="8" id="IJA-3v-bix"/>
+                                                <constraint firstItem="iZF-jG-qtn" firstAttribute="centerY" secondItem="g8C-Vq-AUS" secondAttribute="centerY" id="QJz-20-xa3"/>
+                                                <constraint firstItem="JKb-qi-PzU" firstAttribute="centerY" secondItem="g8C-Vq-AUS" secondAttribute="centerY" id="nDZ-hd-57N"/>
+                                                <constraint firstItem="SzV-hA-k6t" firstAttribute="centerY" secondItem="g8C-Vq-AUS" secondAttribute="centerY" id="rnY-sl-Xfw"/>
+                                                <constraint firstAttribute="trailing" secondItem="JKb-qi-PzU" secondAttribute="trailing" constant="15" id="t4p-jD-j3p"/>
+                                                <constraint firstItem="iZF-jG-qtn" firstAttribute="leading" secondItem="WJp-M4-Z65" secondAttribute="trailing" constant="8" id="wE5-OG-EoD"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="decreaseButton" destination="WJp-M4-Z65" id="jF0-S8-kPw"/>
+                                            <outlet property="increaseButton" destination="JKb-qi-PzU" id="12U-sn-g7t"/>
+                                            <outlet property="weeksLabel" destination="iZF-jG-qtn" id="pjg-Yd-b6w"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <sections/>
                                 <connections>
                                     <outlet property="dataSource" destination="E9E-eQ-Fo2" id="U76-Sy-x7x"/>
                                     <outlet property="delegate" destination="E9E-eQ-Fo2" id="NsD-lC-L5v"/>
@@ -333,7 +386,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ref-0a-lFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="844" y="-225"/>
+            <point key="canvasLocation" x="844" y="-225.33733133433284"/>
         </scene>
         <!--Configuration-->
         <scene sceneID="EaG-2r-dag">
@@ -496,7 +549,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Click to select" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Soy-1d-VzB">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -649,7 +702,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon_cat" width="18" height="15"/>
         <image name="icon_setting" width="24" height="24"/>
     </resources>
 </document>

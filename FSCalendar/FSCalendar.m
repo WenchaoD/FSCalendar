@@ -184,6 +184,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _orientation = self.currentCalendarOrientation;
     _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
     
+    _numberOfWeeks = 1;
+    
     _dataSourceProxy = [FSCalendarDelegationFactory dataSourceProxy];
     _delegateProxy = [FSCalendarDelegationFactory delegateProxy];
     
@@ -314,7 +316,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                     break;
                 }
                 case FSCalendarScopeWeek: {
-                    CGFloat contentHeight = rowHeight + padding*2;
+                    CGFloat contentHeight = rowHeight*self.numberOfWeeks + padding*2;
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, contentHeight);
                     _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight);
                     break;
@@ -362,7 +364,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 return CGSizeMake(size.width, height);
             }
             case FSCalendarScopeWeek: {
-                CGFloat height = weekdayHeight + headerHeight + rowHeight + paddings;
+                CGFloat height = weekdayHeight + headerHeight + rowHeight*self.numberOfWeeks + paddings;
                 return CGSizeMake(size.width, height);
             }
         }
@@ -391,7 +393,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             return 42;
         }
         case FSCalendarScopeWeek: {
-            return 7;
+            return self.numberOfWeeks*7;
         }
     }
     return 7;
@@ -613,7 +615,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         }
         case FSCalendarScopeWeek: {
             NSDate *minimumPage = [self.gregorian fs_firstDayOfWeek:_minimumDate];
-            targetPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:sections toDate:minimumPage options:0];
+            targetPage = [self.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear value:(sections*self.numberOfWeeks) toDate:minimumPage options:0];
             break;
         }
     }
@@ -676,6 +678,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 + (BOOL)automaticallyNotifiesObserversOfScope
 {
     return NO;
+}
+
+- (void)setNumberOfWeeks:(NSInteger)numberOfWeeks
+{
+    [self setNumberOfWeeks:numberOfWeeks animated:NO];
 }
 
 - (void)setScope:(FSCalendarScope)scope
@@ -999,6 +1006,16 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.collectionView reloadData];
 }
 
+- (void)setNumberOfWeeks:(NSInteger)numberOfWeeks animated:(BOOL)animated
+{
+    _numberOfWeeks = numberOfWeeks;
+    
+    if (_scope == FSCalendarScopeWeek) {
+        if (self.transitionCoordinator.state != FSCalendarTransitionStateIdle) return;
+        [self.transitionCoordinator performBoundingRectTransitionForScope:self.scope animated:animated];
+    }
+}
+
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
 {
     if (self.floatingMode) return;
@@ -1251,7 +1268,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         case FSCalendarScopeMonth:
             return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitMonth];
         case FSCalendarScopeWeek:
-            return ![self.gregorian isDate:date equalToDate:_currentPage toUnitGranularity:NSCalendarUnitWeekOfYear];
+            return ![date isInRange:_currentPage endDate:[self.gregorian fs_lastDayOfWeek:[self.gregorian fs_dayByAddingWeeks:(_numberOfWeeks - 1) toDate:_currentPage]]];
     }
 }
 

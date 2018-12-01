@@ -215,6 +215,37 @@
     }
 }
 
+- (void)performBoundingRectTransitionForScope:(FSCalendarScope)scope animated:(BOOL)animated
+{
+    CGFloat animationDuration = (animated) ? 0.25 : 0;
+    
+    FSCalendarTransitionAttributes *attr = [self createTransitionAttributesTargetingScope:FSCalendarScopeWeek];
+    self.transitionAttributes = attr;
+    
+    [self.calendar fs_setVariable:attr.targetPage forKey:@"_currentPage"];
+    CGRect bounds = [self boundingRectForScope:scope page:self.calendar.currentPage];
+    self.state = FSCalendarTransitionStateChanging;
+    void (^completion)(BOOL) = ^(BOOL finished) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.state = FSCalendarTransitionStateIdle;
+            self.calendar.needsAdjustingViewFrame = YES;
+            [self.collectionView reloadData];
+            [self.calendar.calendarHeaderView reloadData];
+            [self.calendar setNeedsLayout];
+            [self.calendar layoutIfNeeded];
+        });
+    };
+    if (FSCalendarInAppExtension) {
+        // Detect today extension: http://stackoverflow.com/questions/25048026/ios-8-extension-how-to-detect-running
+        [self boundingRectWillChange:bounds animated:YES];
+        completion(YES);
+    } else {
+        [UIView animateWithDuration:animationDuration delay:0  options:UIViewAnimationOptionAllowUserInteraction animations:^{
+            [self boundingRectWillChange:bounds animated:YES];
+        } completion:completion];
+    }
+}
+
 #pragma mark - Private properties
 
 - (void)performTransitionCompletionAnimated:(BOOL)animated
@@ -256,7 +287,14 @@
             if (targetScope == FSCalendarScopeWeek) {
                 [dates addObject:self.calendar.currentPage];
             } else {
-                [dates addObject:[self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay value:3 toDate:self.calendar.currentPage options:0]];
+                //Moving from Week to Month Scope
+                //Get mid day of the current page
+                NSDate *currentPageMidDate = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitDay
+                                                                                 value:((self.calendar.numberOfWeeks*7)/2)
+                                                                                toDate:self.calendar.currentPage
+                                                                               options:0];
+                
+                [dates addObject:currentPageMidDate];
             }
             dates.copy;
         });
@@ -274,7 +312,21 @@
         coordinate.row;
     });
     attributes.targetPage = ({
-        NSDate *targetPage = targetScope == FSCalendarScopeMonth ? [self.calendar.gregorian fs_firstDayOfMonth:attributes.focusedDate] : [self.calendar.gregorian fs_middleDayOfWeek:attributes.focusedDate];
+        NSDate *targetPage;
+        
+        if (targetScope == FSCalendarScopeMonth) {
+            targetPage = [self.calendar.gregorian fs_firstDayOfMonth:attributes.focusedDate];
+        } else {
+            //Moving from Month to Week Scope
+            //This should be the first day of the page
+            NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:attributes.focusedDate scope:FSCalendarScopeWeek];
+            NSDate *minimumPage = [self.calendar.gregorian fs_firstDayOfWeek:self.calendar.minimumDate];
+            targetPage = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitWeekOfYear
+                                                                     value:(indexPath.section*self.calendar.numberOfWeeks)
+                                                                    toDate:minimumPage
+                                                                   options:0];
+        }
+        
         targetPage;
     });
     attributes.targetBounds = [self boundingRectForScope:attributes.targetScope page:attributes.targetPage];
