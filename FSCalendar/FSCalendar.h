@@ -438,6 +438,12 @@ IB_DESIGNABLE
 - (void)deselectDate:(NSDate *)date;
 
 /**
+ Deselects all dates in the calendar.
+ 
+ */
+- (void)deselectAllDates;
+
+/**
  Changes the current page of the calendar.
  
  @param currentPage Representing weekOfYear in week mode, or month in month mode.
