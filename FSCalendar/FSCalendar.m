@@ -50,7 +50,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *formatter;
-@property (strong, nonatomic) NSTimeZone *timeZone;
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
@@ -881,6 +880,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (NSArray *)selectedDates
 {
     return [NSArray arrayWithArray:_selectedDates];
+}
+
+- (void)setTimeZone:(NSTimeZone *)timeZone
+{
+    if (![_timeZone isEqual:timeZone]) {
+        _timeZone = timeZone;
+        [self invalidateDateTools];
+        [self setNeedsConfigureAppearance];
+        if (self.hasValidateVisibleLayout) {
+            [self invalidateHeaders];
+        }
+    }
 }
 
 - (CGFloat)preferredHeaderHeight

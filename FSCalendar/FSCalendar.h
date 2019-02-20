@@ -274,6 +274,15 @@ IB_DESIGNABLE
 @property (copy, nonatomic) NSLocale *locale;
 
 /**
+ * Change timeZone to specific time zone.
+ *
+ * e.g. To make time zone as UTC:
+ *
+ *    calendar.timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
+ */
+@property (strong, nonatomic) NSTimeZone *timeZone;
+
+/**
  * The scroll direction of FSCalendar. 
  *
  * e.g. To make the calendar scroll vertically
