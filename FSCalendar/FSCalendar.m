@@ -887,7 +887,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (![_timeZone isEqual:timeZone]) {
         _timeZone = timeZone;
         [self invalidateDateTools];
-        [self setNeedsConfigureAppearance];
+        [self configureAppearance];
         if (self.hasValidateVisibleLayout) {
             [self invalidateHeaders];
         }
