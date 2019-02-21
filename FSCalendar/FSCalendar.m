@@ -989,8 +989,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 }
 
 #pragma mark - Public methods
-
-- (void)setTimeZone:(NSTimeZone *)tz
+- (void)updateTimeZone:(NSTimeZone *)tz
 {
     _timeZone = tz;
     [self invalidateDateTools];
