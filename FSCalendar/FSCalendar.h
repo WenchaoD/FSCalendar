@@ -407,11 +407,6 @@ IB_DESIGNABLE
 @property (nullable, readonly, nonatomic) NSDate *selectedDate;
 
 /**
- A helper function to change timezone
- */
-- (void)setTimeZone:(NSTimeZone *)timeZone;
-
-/**
  The dates representing the selected dates. (read-only)
  */
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
@@ -420,6 +415,11 @@ IB_DESIGNABLE
  Reload the dates and appearance of the calendar.
  */
 - (void)reloadData;
+
+/**
+ A helper function to change timezone
+ */
+- (void)setTimeZone:(NSTimeZone *)timeZone;
 
 /**
  Change the scope of the calendar. Make sure `-calendar:boundingRectWillChange:animated` is correctly adopted.

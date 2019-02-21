@@ -882,18 +882,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     return [NSArray arrayWithArray:_selectedDates];
 }
 
-- (void)setTimeZone:(NSTimeZone *)timeZone
-{
-    if (![_timeZone isEqual:timeZone]) {
-        _timeZone = timeZone;
-        [self invalidateDateTools];
-        [self configureAppearance];
-        if (self.hasValidateVisibleLayout) {
-            [self invalidateHeaders];
-        }
-    }
-}
-
 - (CGFloat)preferredHeaderHeight
 {
     if (_headerHeight == FSCalendarAutomaticDimension) {
@@ -1000,6 +988,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 }
 
 #pragma mark - Public methods
+
+- (void)setTimeZone:(NSTimeZone *)timeZone
+{
+    if (![_timeZone isEqual:timeZone]) {
+        _timeZone = timeZone;
+        [self invalidateDateTools];
+        [self configureAppearance];
+        if (self.hasValidateVisibleLayout) {
+            [self invalidateHeaders];
+        }
+    }
+}
 
 - (void)reloadData
 {
