@@ -407,6 +407,11 @@ IB_DESIGNABLE
 @property (nullable, readonly, nonatomic) NSDate *selectedDate;
 
 /**
+ A helper function to change timezone
+ */
+- (void)setTimeZone:(NSTimeZone *)timeZone;
+
+/**
  The dates representing the selected dates. (read-only)
  */
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;
