@@ -701,6 +701,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     } else {
         FSCalendarAssertDateInBounds(today,self.gregorian,self.minimumDate,self.maximumDate);
         _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:today options:0];
+        [self updateToday];
     }
     if (self.hasValidateVisibleLayout) {
         [self.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:nil];
@@ -989,16 +990,21 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 #pragma mark - Public methods
 
-- (void)setTimeZone:(NSTimeZone *)timeZone
+- (void)setTimeZone:(NSTimeZone *)tz
 {
-    if (![_timeZone isEqual:timeZone]) {
-        _timeZone = timeZone;
-        [self invalidateDateTools];
-        [self configureAppearance];
-        if (self.hasValidateVisibleLayout) {
-            [self invalidateHeaders];
-        }
-    }
+    _timeZone = tz;
+    [self invalidateDateTools];
+}
+
+- (void)updateToday
+{
+    NSDateComponents *dateComponents = [self.gregorian components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay) fromDate:[NSDate date]];
+    dateComponents.hour = 0;
+    dateComponents.minute = 0;
+    dateComponents.second = 0;
+    dateComponents.timeZone = self.timeZone;
+    
+    _today = [self.gregorian dateFromComponents:dateComponents];
 }
 
 - (void)reloadData
@@ -1283,6 +1289,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _formatter.calendar = _gregorian;
     _formatter.timeZone = _timeZone;
     _formatter.locale = _locale;
+    
+    [self updateToday];
 }
 
 - (void)invalidateLayout

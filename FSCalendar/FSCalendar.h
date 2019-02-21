@@ -417,11 +417,6 @@ IB_DESIGNABLE
 - (void)reloadData;
 
 /**
- A helper function to change timezone
- */
-- (void)setTimeZone:(NSTimeZone *)timeZone;
-
-/**
  Change the scope of the calendar. Make sure `-calendar:boundingRectWillChange:animated` is correctly adopted.
  
  @param scope The target scope to change.
