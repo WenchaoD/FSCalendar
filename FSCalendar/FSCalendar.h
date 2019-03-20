@@ -468,6 +468,14 @@ IB_DESIGNABLE
 - (void)selectDate:(nullable NSDate *)date scrollToDate:(BOOL)scrollToDate;
 
 /**
+ Scrolls to the visible area of the given date
+
+ @param date A date in the calendar.
+ @param animated YES if you want to animate the change in position; NO if it should be immediate.
+ */
+- (void)scrollToDate:(NSDate *)date animated:(BOOL)animated;
+
+/**
  Deselects a given date of the calendar.
  
  @param date A date in the calendar.
