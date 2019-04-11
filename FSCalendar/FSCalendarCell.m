@@ -263,6 +263,9 @@
     if (self.dateIsToday && [[dictionary allKeys] containsObject:@(FSCalendarCellStateToday)]) {
         return dictionary[@(FSCalendarCellStateToday)];
     }
+    if (self.weekends && [[dictionary allKeys] containsObject:@(FSCalendarCellStateWeekendPlaceholder)]) {
+        return dictionary[@(FSCalendarCellStateWeekendPlaceholder)];
+    }
     if (self.placeholder && [[dictionary allKeys] containsObject:@(FSCalendarCellStatePlaceholder)]) {
         return dictionary[@(FSCalendarCellStatePlaceholder)];
     }

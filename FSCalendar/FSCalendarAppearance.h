@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, FSCalendarCellState) {
     FSCalendarCellStateDisabled    = 1 << 2,
     FSCalendarCellStateToday       = 1 << 3,
     FSCalendarCellStateWeekend     = 1 << 4,
+    FSCalendarCellStateWeekendPlaceholder = 1 << 5,
     FSCalendarCellStateTodaySelected = FSCalendarCellStateToday|FSCalendarCellStateSelected
 };
 
@@ -137,6 +138,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * The day text color for weekend.
  */
 @property (strong, nonatomic) UIColor  *titleWeekendColor;
+
+/**
+ * The day text color for weekend.
+ */
+@property (strong, nonatomic) UIColor  *titleWeekendPlaceholderColor;
 
 /**
  * The subtitle text color for unselected state.

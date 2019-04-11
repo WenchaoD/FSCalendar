@@ -218,6 +218,21 @@
     return _titleColors[@(FSCalendarCellStateWeekend)];
 }
 
+- (void)setTitleWeekendPlaceholderColor:(UIColor *)color
+{
+    if (color) {
+        _titleColors[@(FSCalendarCellStateWeekendPlaceholder)] = color;
+    } else {
+        [_titleColors removeObjectForKey:@(FSCalendarCellStateWeekendPlaceholder)];
+    }
+    [self.calendar setNeedsConfigureAppearance];
+}
+
+- (UIColor *)titleWeekendPlaceholderColor
+{
+    return _titleColors[@(FSCalendarCellStateWeekendPlaceholder)];
+}
+
 - (void)setSubtitleDefaultColor:(UIColor *)color
 {
     if (color) {
