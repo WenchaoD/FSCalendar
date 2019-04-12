@@ -225,7 +225,7 @@
     } else {
         [_titleColors removeObjectForKey:@(FSCalendarCellStateWeekendPlaceholder)];
     }
-    [self.calendar setNeedsConfigureAppearance];
+    [self.calendar configureAppearance];
 }
 
 - (UIColor *)titleWeekendPlaceholderColor
