@@ -283,6 +283,11 @@ IB_DESIGNABLE
 @property (strong, nonatomic) NSTimeZone *timeZone;
 
 /**
+ * Change formatter to specific date format.
+ */
+@property (strong, nonatomic) NSDateFormatter *formatter;
+
+/**
  * The scroll direction of FSCalendar. 
  *
  * e.g. To make the calendar scroll vertically

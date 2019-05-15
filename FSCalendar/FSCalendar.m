@@ -49,7 +49,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 }
 
 @property (strong, nonatomic) NSCalendar *gregorian;
-@property (strong, nonatomic) NSDateFormatter *formatter;
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
