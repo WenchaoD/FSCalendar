@@ -149,9 +149,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     _gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     _formatter = [[NSDateFormatter alloc] init];
-    _formatter.dateFormat = @"yyyy-MM-dd";
+    _formatter = self.formatter;
     _locale = [NSLocale currentLocale];
-    _timeZone = [NSTimeZone localTimeZone];
+    _timeZone = self.timeZone;
     _firstWeekday = 1;
     [self invalidateDateTools];
     
