@@ -128,8 +128,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.formatter.dateFormat = @"yyyy-MM-dd";
-        self.timeZone = [NSTimeZone localTimeZone];
+        [self initialize];
     }
     return self;
 }
@@ -138,22 +137,21 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.formatter.dateFormat = @"yyyy-MM-dd";
-        self.timeZone = [NSTimeZone localTimeZone];
+        [self initialize];
     }
     return self;
 }
 
-- (void)initialize:(NSDateFormatter*)dateFormatter timeZone:(NSTimeZone*)timeZone
+- (void)initialize
 {   
     _appearance = [[FSCalendarAppearance alloc] init];
     _appearance.calendar = self;
     
     _gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     _formatter = [[NSDateFormatter alloc] init];
-    _formatter = dateFormatter;
+    _formatter.dateFormat = @"yyyy-MM-dd";
     _locale = [NSLocale currentLocale];
-    _timeZone = timeZone;
+    _timeZone = [NSTimeZone localTimeZone];
     _firstWeekday = 1;
     [self invalidateDateTools];
     
@@ -231,6 +229,100 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
+}
+
+- (instancetype)initWithFormatter:(NSDateFormatter*)dateFormatter timeZone:(NSTimeZone*)timeZone
+{
+    self = [super initWithFrame:CGRectZero];
+    
+    if (self) {
+        _appearance = [[FSCalendarAppearance alloc] init];
+        _appearance.calendar = self;
+        
+        _gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        _formatter = [[NSDateFormatter alloc] init];
+        _formatter = dateFormatter;
+        _locale = [NSLocale currentLocale];
+        _timeZone = timeZone;
+        _firstWeekday = 1;
+        [self invalidateDateTools];
+        
+        _today = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:[NSDate date] options:0];
+        _currentPage = [self.gregorian fs_firstDayOfMonth:_today];
+        
+        
+        _minimumDate = [self.formatter dateFromString:@"1970-01-01"];
+        _maximumDate = [self.formatter dateFromString:@"2099-12-31"];
+        
+        _headerHeight     = FSCalendarAutomaticDimension;
+        _weekdayHeight    = FSCalendarAutomaticDimension;
+        _rowHeight        = FSCalendarStandardRowHeight*MAX(1, FSCalendarDeviceIsIPad*1.5);
+        
+        _preferredHeaderHeight  = FSCalendarAutomaticDimension;
+        _preferredWeekdayHeight = FSCalendarAutomaticDimension;
+        _preferredRowHeight     = FSCalendarAutomaticDimension;
+        
+        _scrollDirection = FSCalendarScrollDirectionHorizontal;
+        _scope = FSCalendarScopeMonth;
+        _selectedDates = [NSMutableArray arrayWithCapacity:1];
+        _visibleSectionHeaders = [NSMapTable weakToWeakObjectsMapTable];
+        
+        _pagingEnabled = YES;
+        _scrollEnabled = YES;
+        _needsAdjustingViewFrame = YES;
+        _needsRequestingBoundingDates = YES;
+        _orientation = self.currentCalendarOrientation;
+        _placeholderType = FSCalendarPlaceholderTypeFillSixRows;
+        
+        _dataSourceProxy = [FSCalendarDelegationFactory dataSourceProxy];
+        _delegateProxy = [FSCalendarDelegationFactory delegateProxy];
+        
+        self.didLayoutOperations = NSMutableArray.array;
+        
+        UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
+        contentView.backgroundColor = [UIColor clearColor];
+        contentView.clipsToBounds = YES;
+        [self addSubview:contentView];
+        self.contentView = contentView;
+        
+        UIView *daysContainer = [[UIView alloc] initWithFrame:CGRectZero];
+        daysContainer.backgroundColor = [UIColor clearColor];
+        daysContainer.clipsToBounds = YES;
+        [contentView addSubview:daysContainer];
+        self.daysContainer = daysContainer;
+        
+        FSCalendarCollectionViewLayout *collectionViewLayout = [[FSCalendarCollectionViewLayout alloc] init];
+        collectionViewLayout.calendar = self;
+        
+        FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
+                                                                              collectionViewLayout:collectionViewLayout];
+        collectionView.dataSource = self;
+        collectionView.delegate = self;
+        collectionView.internalDelegate = self;
+        collectionView.backgroundColor = [UIColor clearColor];
+        collectionView.pagingEnabled = YES;
+        collectionView.showsHorizontalScrollIndicator = NO;
+        collectionView.showsVerticalScrollIndicator = NO;
+        collectionView.allowsMultipleSelection = NO;
+        collectionView.clipsToBounds = YES;
+        [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier];
+        [collectionView registerClass:[FSCalendarBlankCell class] forCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier];
+        [collectionView registerClass:[FSCalendarStickyHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
+        [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"placeholderHeader"];
+        [daysContainer addSubview:collectionView];
+        self.collectionView = collectionView;
+        self.collectionViewLayout = collectionViewLayout;
+        
+        [self invalidateLayout];
+        
+        // Assistants
+        self.transitionCoordinator = [[FSCalendarTransitionCoordinator alloc] initWithCalendar:self];
+        self.calculator = [[FSCalendarCalculator alloc] initWithCalendar:self];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
+    }
+    return self;
 }
 
 - (void)dealloc
