@@ -522,8 +522,6 @@ IB_DESIGNABLE
  @param sender A UIPanGestureRecognizer instance which controls the scope of the calendar
  */
 - (void)handleScopeGesture:(UIPanGestureRecognizer *)sender;
-    
-- (instancetype)initWithFormatter:(NSDateFormatter*)dateFormatter timeZone:(NSTimeZone*)timeZone;
 
 @end
 
