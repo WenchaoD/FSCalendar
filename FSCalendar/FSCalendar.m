@@ -1058,7 +1058,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     FSCalendarAssertDateInBounds(date,self.gregorian,self.minimumDate,self.maximumDate);
     
-    NSDate *targetDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
+    NSDate *targetDate = date;
     NSIndexPath *targetIndexPath = [self.calculator indexPathForDate:targetDate];
     
     BOOL shouldSelect = YES;
