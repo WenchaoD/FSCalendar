@@ -150,7 +150,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     _formatter = [[NSDateFormatter alloc] init];
     _formatter.dateFormat = @"yyyy-MM-dd'T'00:00:00-0700";
-    _locale = [NSLocale currentLocale];
+    _locale = [NSLocale localeWithLocaleIdentifier: @"en_US"];
     _timeZone = [NSTimeZone timeZoneWithName: @"America/Phoenix"]; 
     _firstWeekday = 1;
     [self invalidateDateTools];
@@ -1265,10 +1265,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)invalidateDateTools
 {
     _gregorian.locale = _locale;
-    _gregorian.timeZone = _timeZone;
+    _gregorian.timeZone = [NSTimeZone timeZoneWithName: @"America/Phoenix"];
     _gregorian.firstWeekday = _firstWeekday;
     _formatter.calendar = _gregorian;
-    _formatter.timeZone = _timeZone;
+    _formatter.timeZone = [NSTimeZone timeZoneWithName: @"America/Phoenix"];
     _formatter.locale = _locale;
 }
 
