@@ -235,6 +235,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (CGFloat)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderRadiusForDate:(NSDate *)date;
 
+/**
+ * Asks the delegate for a border size for the specific date.
+ */
+- (CGSize)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSizeForDate:(NSDate *)date;
+
 @end
 
 #pragma mark - Primary
