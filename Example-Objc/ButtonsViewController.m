@@ -41,8 +41,9 @@
     self.view = view;
     
     // 450 for iPad and 300 for iPhone
+    CGFloat baseOriginY = UIApplication.sharedApplication.statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, view.frame.size.width, height)];
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, baseOriginY, view.frame.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.backgroundColor = [UIColor whiteColor];
@@ -50,9 +51,9 @@
     calendar.appearance.caseOptions = FSCalendarCaseOptionsHeaderUsesUpperCase;
     [self.view addSubview:calendar];
     self.calendar = calendar;
-    
+    CGFloat btnY = baseOriginY + 5;
     UIButton *previousButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    previousButton.frame = CGRectMake(0, 64+5, 95, 34);
+    previousButton.frame = CGRectMake(0, btnY, 95, 34);
     previousButton.backgroundColor = [UIColor whiteColor];
     previousButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [previousButton setImage:[UIImage imageNamed:@"icon_prev"] forState:UIControlStateNormal];
@@ -61,7 +62,7 @@
     self.previousButton = previousButton;
     
     UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    nextButton.frame = CGRectMake(CGRectGetWidth(self.view.frame)-95, 64+5, 95, 34);
+    nextButton.frame = CGRectMake(CGRectGetWidth(self.view.frame)-95, btnY, 95, 34);
     nextButton.backgroundColor = [UIColor whiteColor];
     nextButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [nextButton setImage:[UIImage imageNamed:@"icon_next"] forState:UIControlStateNormal];

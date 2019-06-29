@@ -41,9 +41,12 @@ class DelegateAppearanceViewController: UIViewController, FSCalendarDataSource, 
         let view = UIView(frame: UIScreen.main.bounds)
         view.backgroundColor = UIColor.groupTableViewBackground
         self.view = view
-        
+        var originY: CGFloat = 64
+        if let navigationController = navigationController{
+            originY = UIApplication.shared.statusBarFrame.size.height + navigationController.navigationBar.frame.size.height
+        }
         let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 450 : 300
-        let calendar = FSCalendar(frame: CGRect(x:0, y:64, width:self.view.bounds.size.width, height:height))
+        let calendar = FSCalendar(frame: CGRect(x:0, y: originY , width:self.view.bounds.size.width, height:height))
         calendar.dataSource = self
         calendar.delegate = self
         calendar.allowsMultipleSelection = true

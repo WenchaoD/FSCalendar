@@ -588,7 +588,7 @@
 			};
 			buildConfigurationList = EE0D7FC21B89C5D3003C287B /* Build configuration list for PBXProject "FSCalendar" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
