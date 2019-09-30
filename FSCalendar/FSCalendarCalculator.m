@@ -178,7 +178,8 @@
     if (!monthHead) {
         NSDate *month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] options:0];
         NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
-        monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
+        monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:
+                     - (numberOfHeadPlaceholders % 7) toDate:month options:0];
         self.months[key] = month;
         self.monthHeads[key] = monthHead;
     }
