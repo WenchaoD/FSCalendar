@@ -21,6 +21,7 @@
 #import "FSCalendarCell.h"
 #import "FSCalendarWeekdayView.h"
 #import "FSCalendarHeaderView.h"
+#import "FSCalendarMonthPosition.h"
 
 //! Project version number for FSCalendar.
 FOUNDATION_EXPORT double FSCalendarVersionNumber;
@@ -42,14 +43,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarPlaceholderType) {
     FSCalendarPlaceholderTypeNone          = 0,
     FSCalendarPlaceholderTypeFillHeadTail  = 1,
     FSCalendarPlaceholderTypeFillSixRows   = 2
-};
-
-typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition) {
-    FSCalendarMonthPositionPrevious,
-    FSCalendarMonthPositionCurrent,
-    FSCalendarMonthPositionNext,
-    
-    FSCalendarMonthPositionNotFound = NSNotFound
 };
 
 NS_ASSUME_NONNULL_BEGIN
