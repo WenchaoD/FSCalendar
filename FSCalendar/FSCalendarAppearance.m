@@ -482,22 +482,22 @@
 
 - (void)setTitleTextSize:(CGFloat)titleTextSize
 {
-    self.titleFont = [UIFont fontWithName:self.titleFont.fontName size:titleTextSize];
+    self.titleFont = [self.titleFont fontWithSize:titleTextSize];
 }
 
 - (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
 {
-    self.subtitleFont = [UIFont fontWithName:self.subtitleFont.fontName size:subtitleTextSize];
+    self.subtitleFont = [self.subtitleFont fontWithSize:subtitleTextSize];
 }
 
 - (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
 {
-    self.weekdayFont = [UIFont fontWithName:self.weekdayFont.fontName size:weekdayTextSize];
+    self.weekdayFont = [self.weekdayFont fontWithSize:weekdayTextSize];
 }
 
 - (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
 {
-    self.headerTitleFont = [UIFont fontWithName:self.headerTitleFont.fontName size:headerTitleTextSize];
+    self.headerTitleFont = [self.headerTitleFont fontWithSize:headerTitleTextSize];
 }
 
 - (void)invalidateAppearance
