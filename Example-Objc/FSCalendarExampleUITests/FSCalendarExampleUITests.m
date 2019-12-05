@@ -64,8 +64,8 @@
 {
     XCUIApplication *application = [[XCUIApplication alloc] init];
     [[application.tables elementBoundByIndex:0].cells[@"Prev-Next Buttons"] tap];
-    XCUIElement *prevButton = [application.buttons elementBoundByIndex:2];
-    XCUIElement *nextButton = [application.buttons elementBoundByIndex:3];
+    XCUIElement *prevButton = [application.buttons elementBoundByIndex:1];
+    XCUIElement *nextButton = [application.buttons elementBoundByIndex:2];
     NSInteger count = 3;
     for (int i = 0; i < count; i++) {
         [prevButton tap];
@@ -199,7 +199,7 @@
     CGVector vector1 = CGVectorMake(columnWidth * 3.5, cellStart + rowHeight * 2.5);
     CGVector vector2 = CGVectorMake(columnWidth * 4.5, cellStart + rowHeight * 2.5);
     
-    XCUIElement *configureButton = [application.buttons elementBoundByIndex:2];
+    XCUIElement *configureButton = [application.buttons elementBoundByIndex:1];
     
     [NSThread sleepForTimeInterval:0.5];
     [configureButton tap];
