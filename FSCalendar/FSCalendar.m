@@ -1052,6 +1052,13 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)deselectAllDates
+{
+    for (NSDate* date in [self selectedDates]) {
+        [self deselectDate: date];
+    }
+}
+
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     if (!self.allowsSelection || !date) return;
