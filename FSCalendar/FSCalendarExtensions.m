@@ -226,6 +226,39 @@
     return components;
 }
 
+
+- (NSString *)replaceMonthNameWithStandaloneInText:(NSString *)text withFormat:(NSString *)format {
+    if ([format containsString:@"d"]) {
+        return text; // Format contains day, so replacement to standalone month name does not needed
+    }
+    NSArray<NSString *> *monthNames = nil;
+    NSArray<NSString *> *standaloneMonthNames = nil;
+    if ([format containsString:@"MMMMM"]) { // very short month name replacement
+        monthNames = [self veryShortMonthSymbols];
+        standaloneMonthNames = [self veryShortStandaloneMonthSymbols];
+    }
+    else if ([format containsString:@"MMMM"]) { // full month name replacement
+        monthNames = [self monthSymbols];
+        standaloneMonthNames = [self standaloneMonthSymbols];
+    }
+    else if ([format containsString:@"MMM"]) { // short month name replacement
+        monthNames = [self shortMonthSymbols];
+        standaloneMonthNames = [self shortStandaloneMonthSymbols];
+    }
+    if (monthNames != nil && standaloneMonthNames != nil) {
+        for (uint i = 0; i < 12; i++) {
+            NSString *monthName = monthNames[i];
+            NSRange range = [text.uppercaseString rangeOfString:monthName.uppercaseString];
+            if (range.location != NSNotFound) {
+                NSString *standaloneMonthName = standaloneMonthNames[i];
+                text = [text stringByReplacingCharactersInRange:range withString:standaloneMonthName.capitalizedString];
+                break;
+            }
+        }
+    }
+    return text;
+}
+
 @end
 
 @implementation NSMapTable (FSCalendarExtensions)

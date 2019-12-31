@@ -189,6 +189,7 @@
             break;
         }
     }
+	text = [[_calendar gregorian] replaceMonthNameWithStandaloneInText:text withFormat:appearance.headerDateFormat];
     text = usesUpperCase ? text.uppercaseString : text;
     cell.titleLabel.text = text;
     [cell setNeedsLayout];
