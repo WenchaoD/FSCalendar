@@ -84,6 +84,13 @@
     }
 }
 
+- (void) setSeparatorLineColor:(UIColor *)separatorLineColor
+{
+    if(self.bottomBorder) {
+        self.bottomBorder.backgroundColor = separatorLineColor;
+    }
+}
+
 #pragma mark - Private methods
 
 - (void)configureAppearance
@@ -96,11 +103,18 @@
 - (void)setMonth:(NSDate *)month
 {
     _month = month;
-    _calendar.formatter.dateFormat = self.calendar.appearance.headerDateFormat;
-    BOOL usesUpperCase = (self.calendar.appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
-    NSString *text = [_calendar.formatter stringFromDate:_month];
-    text = usesUpperCase ? text.uppercaseString : text;
-    self.titleLabel.text = text;
+    if(self.calendar.appearance.isHeaderCustomTitle) {
+        NSDateComponents *components = [[NSCalendar currentCalendar] components: NSCalendarUnitMonth fromDate:_month];
+        NSInteger monthNumber = [components month] - 1;
+        NSString *text = (self.calendar.appearance.headerTitles && [self.calendar.appearance.headerTitles count] > monthNumber) ? self.calendar.appearance.headerTitles[monthNumber] : @"";
+        self.titleLabel.text = text;
+    } else {
+        _calendar.formatter.dateFormat = self.calendar.appearance.headerDateFormat;
+        BOOL usesUpperCase = (self.calendar.appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+        NSString *text = [_calendar.formatter stringFromDate:_month];
+        text = usesUpperCase ? text.uppercaseString : text;
+        self.titleLabel.text = text;
+    }
 }
 
 @end

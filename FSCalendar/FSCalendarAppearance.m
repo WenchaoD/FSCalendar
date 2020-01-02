@@ -38,6 +38,7 @@
         _headerTitleColor = FSCalendarStandardTitleTextColor;
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;
+        _isHeaderCustomTitle = NO;
         _weekdayTextColor = FSCalendarStandardTitleTextColor;
         _caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesDefaultCase;
         
@@ -70,6 +71,8 @@
         _eventSelectionColor = FSCalendarStandardEventDotColor;
         
         _borderColors = [NSMutableDictionary dictionaryWithCapacity:2];
+        
+        _stickyHeaderSeparatorColor = FSCalendarStandardLineColor;
         
 #if TARGET_INTERFACE_BUILDER
         _fakeEventDots = YES;
@@ -410,6 +413,21 @@
     }
 }
 
+- (void)setIsHeaderCustomTitle:(BOOL)isHeaderCustomTitle
+{
+    if (_isHeaderCustomTitle != isHeaderCustomTitle) {
+        _isHeaderCustomTitle = isHeaderCustomTitle;
+        [self.calendar configureAppearance];
+    }
+}
+
+- (void) setHeaderTitles:(NSArray *)headerTitles {
+    if (![_headerTitles isEqual:headerTitles]) {
+        _headerTitles = headerTitles;
+        [self.calendar configureAppearance];
+    }
+}
+
 - (void)setHeaderDateFormat:(NSString *)headerDateFormat
 {
     if (![_headerDateFormat isEqual:headerDateFormat]) {
@@ -430,6 +448,14 @@
 {
     if (_separators != separators) {
         _separators = separators;
+        [_calendar.collectionView.collectionViewLayout invalidateLayout];
+    }
+}
+
+- (void)setStickyHeaderSeparatorColor:(UIColor *)stickyHeaderSeparatorColor
+{
+    if (_stickyHeaderSeparatorColor != stickyHeaderSeparatorColor) {
+        _stickyHeaderSeparatorColor = stickyHeaderSeparatorColor;
         [_calendar.collectionView.collectionViewLayout invalidateLayout];
     }
 }

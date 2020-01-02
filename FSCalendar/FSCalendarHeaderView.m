@@ -167,11 +167,23 @@
                     text = nil;
                 } else {
                     NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item-1 toDate:self.calendar.minimumDate options:0];
-                    text = [_calendar.formatter stringFromDate:date];
+                    if (self.calendar.appearance.isHeaderCustomTitle) {
+                        NSDateComponents *components = [[NSCalendar currentCalendar] components: NSCalendarUnitMonth fromDate:date];
+                        NSInteger monthNumber = [components month] - 1;
+                        text = (self.calendar.appearance.headerTitles && [self.calendar.appearance.headerTitles count] > monthNumber) ? self.calendar.appearance.headerTitles[monthNumber] : @"";
+                    } else {
+                        text = [_calendar.formatter stringFromDate:date];
+                    }
                 }
             } else {
                 NSDate *date = [self.calendar.gregorian dateByAddingUnit:NSCalendarUnitMonth value:indexPath.item toDate:self.calendar.minimumDate options:0];
-                text = [_calendar.formatter stringFromDate:date];
+                if (self.calendar.appearance.isHeaderCustomTitle) {
+                    NSDateComponents *components = [[NSCalendar currentCalendar] components: NSCalendarUnitMonth fromDate:date];
+                    NSInteger monthNumber = [components month] - 1;
+                    text = (self.calendar.appearance.headerTitles && [self.calendar.appearance.headerTitles count] > monthNumber) ? self.calendar.appearance.headerTitles[monthNumber] : @"";
+                } else {
+                    text = [_calendar.formatter stringFromDate:date];
+                }
             }
             break;
         }
