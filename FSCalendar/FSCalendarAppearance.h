@@ -29,7 +29,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarSeparators) {
 
 typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsHeaderUsesDefaultCase      = 0,
-    FSCalendarCaseOptionsHeaderUsesUpperCase        = 1,
+    FSCalendarCaseOptionsHeaderUsesUpperCase        = 1 << 0,
+    FSCalendarCaseOptionsHeaderUsesCapitalized      = 1 << 1,
     
     FSCalendarCaseOptionsWeekdayUsesDefaultCase     = 0 << 4,
     FSCalendarCaseOptionsWeekdayUsesUpperCase       = 1 << 4,
