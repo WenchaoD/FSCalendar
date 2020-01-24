@@ -425,6 +425,14 @@
     }
 }
 
+- (void)setHeaderTitleAlignment:(NSTextAlignment)headerTitleAlignment
+{
+    if (_headerTitleAlignment != headerTitleAlignment) {
+        _headerTitleAlignment = headerTitleAlignment;
+        [self.calendar configureAppearance];
+    }
+}
+
 - (void)setCaseOptions:(FSCalendarCaseOptions)caseOptions
 {
     if (_caseOptions != caseOptions) {

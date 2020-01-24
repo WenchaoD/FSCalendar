@@ -114,6 +114,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) NSString *headerDateFormat;
 
 /**
+ * The text alignment of the month header.
+ */
+@property (assign, nonatomic) NSTextAlignment headerTitleAlignment;
+
+/**
  * The alpha value of month label staying on the fringes.
  */
 @property (assign, nonatomic) CGFloat  headerMinimumDissolvedAlpha;
