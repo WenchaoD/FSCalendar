@@ -95,6 +95,7 @@
     _titleLabel.font = self.calendar.appearance.headerTitleFont;
     _titleLabel.textColor = self.calendar.appearance.headerTitleColor;
     _titleLabel.textAlignment = self.calendar.appearance.headerTitleAlignment;
+    _bottomBorder.backgroundColor = self.calendar.appearance.headerSeparatorColor;
     [self.weekdayView configureAppearance];
 }
 
