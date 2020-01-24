@@ -229,8 +229,11 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    self.titleLabel.frame = self.contentView.bounds;
+
+    CGPoint titleHeaderOffset = self.header.calendar.appearance.headerTitleOffset;
+    self.titleLabel.frame = CGRectOffset(self.contentView.bounds,
+                                         titleHeaderOffset.x,
+                                         titleHeaderOffset.y);
     
     if (self.header.scrollDirection == UICollectionViewScrollDirectionHorizontal) {
         CGFloat position = [self.contentView convertPoint:CGPointMake(CGRectGetMidX(self.contentView.bounds), CGRectGetMidY(self.contentView.bounds)) toView:self.header].x;

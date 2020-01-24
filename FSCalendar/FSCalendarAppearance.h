@@ -64,6 +64,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIFont   *headerTitleFont;
 
 /**
+ * The offset of the month header from default position.
+ */
+@property (assign, nonatomic) CGPoint  headerTitleOffset;
+
+/**
  * The offset of the day text from default position.
  */
 @property (assign, nonatomic) CGPoint  titleOffset;

@@ -111,6 +111,13 @@
     }
 }
 
+- (void)setHeaderTitleOffset:(CGPoint)headerTitleOffset {
+    if (!CGPointEqualToPoint(_headerTitleOffset, headerTitleOffset)) {
+        _headerTitleOffset = headerTitleOffset;
+        [self.calendar configureAppearance];
+    }
+}
+
 - (void)setTitleOffset:(CGPoint)titleOffset
 {
     if (!CGPointEqualToPoint(_titleOffset, titleOffset)) {
