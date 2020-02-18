@@ -158,6 +158,7 @@
     cell.titleLabel.textColor = appearance.headerTitleColor;
     _calendar.formatter.dateFormat = appearance.headerDateFormat;
     BOOL usesUpperCase = (appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesUpperCase;
+    BOOL usesSingleUpperCase = (appearance.caseOptions & 15) == FSCalendarCaseOptionsHeaderUsesSingleUpperCase;
     NSString *text = nil;
     switch (self.calendar.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {
@@ -189,7 +190,18 @@
             break;
         }
     }
-    text = usesUpperCase ? text.uppercaseString : text;
+    
+    FSCalendarCaseOptions caseOptions = appearance.caseOptions;
+    
+    if ((caseOptions & FSCalendarCaseOptionsHeaderUsesUpperCase) == FSCalendarCaseOptionsHeaderUsesUpperCase) {
+        text = text.uppercaseString;
+    } if ((caseOptions & FSCalendarCaseOptionsHeaderUsesSingleUpperCase) == FSCalendarCaseOptionsHeaderUsesSingleUpperCase) {
+        NSMutableString *result = [text lowercaseString].mutableCopy;
+        [result replaceCharactersInRange:NSMakeRange(0, 1) withString:[[result substringToIndex:1] capitalizedString]];
+        
+        text = result;
+    }
+    
     cell.titleLabel.text = text;
     [cell setNeedsLayout];
 }
