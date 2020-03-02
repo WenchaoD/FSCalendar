@@ -718,11 +718,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)setCurrentPage:(NSDate *)currentPage animated:(BOOL)animated
 {
     [self requestBoundingDatesIfNecessary];
-    if (self.floatingMode || [self isDateInDifferentPage:currentPage]) {
-        currentPage = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:currentPage options:0];
-        if ([self isPageInRange:currentPage]) {
-            [self scrollToPageForDate:currentPage animated:animated];
-        }
+    currentPage = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:currentPage options:0];
+    if ([self isPageInRange:currentPage]) {
+        [self scrollToPageForDate:currentPage animated:animated];
     }
 }
 
@@ -1140,7 +1138,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     animated &= _scrollEnabled; // No animation if _scrollEnabled == NO;
     
-    date = [self.calculator safeDateForDate:date];
     NSInteger scrollOffset = [self.calculator indexPathForDate:date atMonthPosition:FSCalendarMonthPositionCurrent].section;
     
     if (!self.floatingMode) {
@@ -1178,16 +1175,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if ([self isDateInDifferentPage:date]) {
             [self willChangeValueForKey:@"currentPage"];
             NSDate *lastPage = _currentPage;
-            switch (self.transitionCoordinator.representingScope) {
-                case FSCalendarScopeMonth: {
-                    _currentPage = [self.gregorian fs_firstDayOfMonth:date];
-                    break;
-                }
-                case FSCalendarScopeWeek: {
-                    _currentPage = [self.gregorian fs_firstDayOfWeek:date];
-                    break;
-                }
-            }
+            _currentPage = [self.gregorian fs_firstDayOfMonth:date];
             if (self.hasValidateVisibleLayout) {
                 [self.delegateProxy calendarCurrentPageDidChange:self];
                 if (_placeholderType != FSCalendarPlaceholderTypeFillSixRows && self.transitionCoordinator.state == FSCalendarTransitionStateIdle) {
@@ -1196,7 +1184,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             }
             [self didChangeValueForKey:@"currentPage"];
         }
-        [self scrollToDate:_currentPage animated:animated];
+        [self scrollToDate:[self.gregorian fs_firstDayOfMonth:date] animated:animated];
     } else {
         [self scrollToDate:[self.gregorian fs_firstDayOfMonth:date] animated:animated];
     }
