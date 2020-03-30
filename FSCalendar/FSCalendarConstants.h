@@ -29,6 +29,7 @@ CG_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 CG_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
 
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
+UIKIT_EXTERN NSInteger const FSCalendarMaximumNumberOfEvents;
 
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
 UIKIT_EXTERN NSString * const FSCalendarBlankCellReuseIdentifier;
