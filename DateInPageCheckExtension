@@ -1,0 +1,24 @@
+extension FSCalendar {
+    
+    func isDayInCurrentPage(date: Date) -> Bool? {
+        let gregCalendar = Calendar(identifier: .gregorian)
+        let dateComponent = gregCalendar.dateComponents([.day], from: date, to: self.currentPage)
+        
+        if let days = dateComponent.day {
+            if abs(days) > 31 {
+                return false
+            }
+        }
+        
+        if self.scope == .week {
+            let currentComponents = gregCalendar.dateComponents([.weekOfYear], from: self.currentPage)
+            let dateComponents = gregCalendar.dateComponents([.weekOfYear], from: date)
+            return currentComponents.weekOfYear == dateComponents.weekOfYear
+        } else if self.scope == .month {
+            let currentComponents = gregCalendar.dateComponents([.month], from: self.currentPage)
+            let dateComponents = gregCalendar.dateComponents([.month], from: date)
+            return currentComponents.month == dateComponents.month
+        }
+        return nil
+    }
+}
