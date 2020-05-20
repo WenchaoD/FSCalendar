@@ -333,6 +333,11 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat headerHeight;
 
 /**
+ The count of rows, Give '1' for week scope.
+ */
+@property (assign, nonatomic) IBInspectable CGFloat rowsCount;
+
+/**
  The height of weekday header of the calendar.
  */
 @property (assign, nonatomic) IBInspectable CGFloat weekdayHeight;
