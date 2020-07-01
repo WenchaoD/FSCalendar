@@ -42,7 +42,9 @@
 
 - (void)commonInit
 {
+#if !TARGET_OS_TV
     self.scrollsToTop = NO;
+#endif
     self.contentInset = UIEdgeInsetsZero;
     if (@available(iOS 10.0, *)) self.prefetchingEnabled = NO;
     if (@available(iOS 11.0, *)) self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;

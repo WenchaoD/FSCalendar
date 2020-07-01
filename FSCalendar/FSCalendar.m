@@ -210,7 +210,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     collectionView.delegate = self;
     collectionView.internalDelegate = self;
     collectionView.backgroundColor = [UIColor clearColor];
+#if !TARGET_OS_TV
     collectionView.pagingEnabled = YES;
+#endif
     collectionView.showsHorizontalScrollIndicator = NO;
     collectionView.showsVerticalScrollIndicator = NO;
     collectionView.allowsMultipleSelection = NO;
@@ -228,17 +230,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     // Assistants
     self.transitionCoordinator = [[FSCalendarTransitionCoordinator alloc] initWithCalendar:self];
     self.calculator = [[FSCalendarCalculator alloc] initWithCalendar:self];
-    
+
+#if !TARGET_OS_TV
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+#endif
 }
 
 - (void)dealloc
 {
     self.collectionView.delegate = nil;
     self.collectionView.dataSource = nil;
-    
+
+#if !TARGET_OS_TV
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+#endif
 }
 
 #pragma mark - Overriden methods
@@ -944,8 +949,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     if (!_scopeGesture) {
         UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.transitionCoordinator action:@selector(handleScopeGesture:)];
         panGesture.delegate = self.transitionCoordinator;
+#if !TARGET_OS_TV
         panGesture.minimumNumberOfTouches = 1;
         panGesture.maximumNumberOfTouches = 2;
+#endif
         panGesture.enabled = NO;
         [self.daysContainer addGestureRecognizer:panGesture];
         _scopeGesture = panGesture;
@@ -959,7 +966,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         UILongPressGestureRecognizer *pressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeToChoose:)];
         pressGesture.enabled = NO;
         pressGesture.numberOfTapsRequired = 0;
+#if !TARGET_OS_TV
         pressGesture.numberOfTouchesRequired = 1;
+#endif
         pressGesture.minimumPressDuration = 0.7;
         [self.daysContainer addGestureRecognizer:pressGesture];
         [self.collectionView.panGestureRecognizer requireGestureRecognizerToFail:pressGesture];
@@ -1306,8 +1315,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         } else if (_deliver) {
             [_deliver removeFromSuperview];
         }
-        
+
+#if !TARGET_OS_TV
         _collectionView.pagingEnabled = YES;
+#endif
         _collectionViewLayout.scrollDirection = (UICollectionViewScrollDirection)self.scrollDirection;
         
     } else {
@@ -1315,8 +1326,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         [self.calendarHeaderView removeFromSuperview];
         [self.deliver removeFromSuperview];
         [self.calendarWeekdayView removeFromSuperview];
-        
+
+#if !TARGET_OS_TV
         _collectionView.pagingEnabled = NO;
+#endif
         _collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
         
     }
