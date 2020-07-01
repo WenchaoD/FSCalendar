@@ -46,8 +46,8 @@
     self.scrollsToTop = NO;
 #endif
     self.contentInset = UIEdgeInsetsZero;
-    if (@available(iOS 10.0, *)) self.prefetchingEnabled = NO;
-    if (@available(iOS 11.0, *)) self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    if (@available(iOS 10.0, tvOS 10.0, *)) self.prefetchingEnabled = NO;
+    if (@available(iOS 11.0, tvOS 11.0, *)) self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 }
 
 - (void)layoutSubviews
@@ -66,10 +66,12 @@
     }
 }
 
+#if !TARGET_OS_TV
 - (void)setScrollsToTop:(BOOL)scrollsToTop
 {
     [super setScrollsToTop:NO];
 }
+#endif
 
 @end
 
