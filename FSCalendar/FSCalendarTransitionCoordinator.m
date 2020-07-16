@@ -136,7 +136,7 @@
         CGFloat maxTranslation = ABS(CGRectGetHeight(self.transitionAttributes.targetBounds) - CGRectGetHeight(self.transitionAttributes.sourceBounds));
         translation = MIN(maxTranslation, translation);
         translation = MAX(0, translation);
-        CGFloat progress = translation/maxTranslation;
+        CGFloat progress = maxTranslation==0? 0 : translation/maxTranslation;
         progress;
     });
     [self performAlphaAnimationWithProgress:progress];
