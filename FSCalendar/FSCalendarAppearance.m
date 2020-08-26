@@ -480,34 +480,24 @@
     return self.eventDefaultColor;
 }
 
-- (void)setCellShape:(FSCalendarCellShape)cellShape
-{
-    self.borderRadius = 1-cellShape;
-}
-
-- (FSCalendarCellShape)cellShape
-{
-    return self.borderRadius==1.0?FSCalendarCellShapeCircle:FSCalendarCellShapeRectangle;
-}
-
 - (void)setTitleTextSize:(CGFloat)titleTextSize
 {
-    self.titleFont = [UIFont fontWithName:self.titleFont.fontName size:titleTextSize];
+    self.titleFont = [self.titleFont fontWithSize:titleTextSize];
 }
 
 - (void)setSubtitleTextSize:(CGFloat)subtitleTextSize
 {
-    self.subtitleFont = [UIFont fontWithName:self.subtitleFont.fontName size:subtitleTextSize];
+    self.subtitleFont = [self.subtitleFont fontWithSize:subtitleTextSize];
 }
 
 - (void)setWeekdayTextSize:(CGFloat)weekdayTextSize
 {
-    self.weekdayFont = [UIFont fontWithName:self.weekdayFont.fontName size:weekdayTextSize];
+    self.weekdayFont = [self.weekdayFont fontWithSize:weekdayTextSize];
 }
 
 - (void)setHeaderTitleTextSize:(CGFloat)headerTitleTextSize
 {
-    self.headerTitleFont = [UIFont fontWithName:self.headerTitleFont.fontName size:headerTitleTextSize];
+    self.headerTitleFont = [self.headerTitleFont fontWithSize:headerTitleTextSize];
 }
 
 - (void)invalidateAppearance
@@ -515,9 +505,5 @@
     [self.calendar configureAppearance];
 }
 
-- (void)setAdjustsFontSizeToFitContentSize:(BOOL)adjustsFontSizeToFitContentSize {}
-- (BOOL)adjustsFontSizeToFitContentSize { return YES; }
-
 @end
-
 

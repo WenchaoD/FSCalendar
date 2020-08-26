@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,6 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8cI-R5-ARn" customClass="FSCalendar">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="vdS-18-fsM"/>
@@ -46,7 +50,6 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="subtitleWeekendColor">
                                         <color key="value" red="0.90196078430000004" green="0.86274509799999999" blue="0.56862745100000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adjustsFontSizeToFitContentSize" value="NO"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="fakedSelectedDay">
                                         <integer key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
@@ -56,7 +59,8 @@
                                     <outlet property="delegate" destination="M4Y-Lb-cyx" id="fbj-GS-VOb"/>
                                 </connections>
                             </view>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cQJ-NX-RmL">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cQJ-NX-RmL">
+                                <rect key="frame" x="28" y="8" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="qMi-C1-Iy1"/>
                                     <constraint firstAttribute="width" constant="30" id="tPJ-LN-m43"/>
@@ -67,7 +71,8 @@
                                     <action selector="prevClicked:" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="vFe-pk-Hqs"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xc-iY-5SS">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xc-iY-5SS">
+                                <rect key="frame" x="262" y="8" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="lAc-cg-RCf"/>
                                     <constraint firstAttribute="width" constant="30" id="uS2-Ah-QIQ"/>
@@ -105,16 +110,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="516" y="285"/>
+            <point key="canvasLocation" x="825.60000000000002" y="256.37181409295357"/>
         </scene>
     </scenes>
     <resources>
         <image name="circle_next" width="42" height="42"/>
         <image name="circle_prev" width="42" height="42"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

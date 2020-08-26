@@ -27,9 +27,9 @@ CG_EXTERN CGFloat const FSCalendarStandardSubtitleTextSize;
 CG_EXTERN CGFloat const FSCalendarStandardWeekdayTextSize;
 CG_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 CG_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
-CG_EXTERN CGFloat const FSCalendarStandardScopeHandleHeight;
 
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
+UIKIT_EXTERN NSInteger const FSCalendarMaximumNumberOfEvents;
 
 UIKIT_EXTERN NSString * const FSCalendarDefaultCellReuseIdentifier;
 UIKIT_EXTERN NSString * const FSCalendarBlankCellReuseIdentifier;
@@ -51,7 +51,6 @@ CG_EXTERN CGSize const CGSizeAutomatic;
 
 #define FSCalendarStandardLineColor        [[UIColor lightGrayColor] colorWithAlphaComponent:0.30]
 #define FSCalendarStandardSeparatorColor   [[UIColor lightGrayColor] colorWithAlphaComponent:0.60]
-#define FSCalendarStandardScopeHandleColor [[UIColor lightGrayColor] colorWithAlphaComponent:0.50]
 
 #define FSColorRGBA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define FSCalendarInAppExtension [[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"]
@@ -72,18 +71,6 @@ CG_EXTERN CGSize const CGSizeAutomatic;
 #pragma mark - Deprecated
 
 #define FSCalendarDeprecated(instead) DEPRECATED_MSG_ATTRIBUTE(" Use " # instead " instead")
-
-FSCalendarDeprecated('borderRadius')
-typedef NS_ENUM(NSUInteger, FSCalendarCellShape) {
-    FSCalendarCellShapeCircle    = 0,
-    FSCalendarCellShapeRectangle = 1
-};
-
-typedef NS_ENUM(NSUInteger, FSCalendarUnit) {
-    FSCalendarUnitMonth = NSCalendarUnitMonth,
-    FSCalendarUnitWeekOfYear = NSCalendarUnitWeekOfYear,
-    FSCalendarUnitDay = NSCalendarUnitDay
-};
 
 static inline void FSCalendarSliceCake(CGFloat cake, NSInteger count, CGFloat *pieces) {
     CGFloat total = cake;
