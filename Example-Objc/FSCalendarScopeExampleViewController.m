@@ -50,8 +50,6 @@ NS_ASSUME_NONNULL_END
         self.calendarHeightConstraint.constant = 400;
     }
     
-    [self.calendar selectDate:[NSDate date] scrollToDate:YES];
-    
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.calendar action:@selector(handleScopeGesture:)];
     panGesture.delegate = self;
     panGesture.minimumNumberOfTouches = 1;
@@ -63,8 +61,10 @@ NS_ASSUME_NONNULL_END
     [self.tableView.panGestureRecognizer requireGestureRecognizerToFail:panGesture];
     
     [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:_KVOContext];
-    
+    self.calendar.placeholderType = FSCalendarPlaceholderTypeNone;
     self.calendar.scope = FSCalendarScopeWeek;
+    
+    [self.calendar selectDate:[NSDate date] scrollToDate:YES];
     
     // For UITest
     self.calendar.accessibilityIdentifier = @"calendar";

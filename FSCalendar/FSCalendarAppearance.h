@@ -217,20 +217,5 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 
 @end
 
-/**
- * These functions and attributes are deprecated.
- */
-@interface FSCalendarAppearance (Deprecated)
-
-@property (assign, nonatomic) BOOL useVeryShortWeekdaySymbols FSCalendarDeprecated('caseOptions');
-@property (assign, nonatomic) CGFloat titleVerticalOffset FSCalendarDeprecated('titleOffset');
-@property (assign, nonatomic) CGFloat subtitleVerticalOffset FSCalendarDeprecated('subtitleOffset');
-@property (strong, nonatomic) UIColor *eventColor FSCalendarDeprecated('eventDefaultColor');
-@property (assign, nonatomic) FSCalendarCellShape cellShape FSCalendarDeprecated('borderRadius');
-@property (assign, nonatomic) BOOL adjustsFontSizeToFitContentSize DEPRECATED_MSG_ATTRIBUTE("The attribute \'adjustsFontSizeToFitContentSize\' is not neccesary anymore.");
-- (void)invalidateAppearance FSCalendarDeprecated('FSCalendar setNeedsConfigureAppearance');
-
-@end
-
 
 
