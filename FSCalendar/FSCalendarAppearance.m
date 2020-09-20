@@ -53,7 +53,8 @@
             _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor labelColor];
         } else {
             _titleColors[@(FSCalendarCellStateNormal)]      = [UIColor blackColor];
-        }        _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
+        }        
+        _titleColors[@(FSCalendarCellStateSelected)]    = [UIColor whiteColor];
         _titleColors[@(FSCalendarCellStateDisabled)]    = [UIColor grayColor];
         _titleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
         _titleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
