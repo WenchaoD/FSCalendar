@@ -29,7 +29,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarSeparators) {
 
 typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
     FSCalendarCaseOptionsHeaderUsesDefaultCase      = 0,
-    FSCalendarCaseOptionsHeaderUsesUpperCase        = 1,
+    FSCalendarCaseOptionsHeaderUsesUpperCase        = 1 << 0,
+    FSCalendarCaseOptionsHeaderUsesCapitalized      = 1 << 1,
     
     FSCalendarCaseOptionsWeekdayUsesDefaultCase     = 0 << 4,
     FSCalendarCaseOptionsWeekdayUsesUpperCase       = 1 << 4,
@@ -62,6 +63,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * The font of the month text.
  */
 @property (strong, nonatomic) UIFont   *headerTitleFont;
+
+/**
+ * The offset of the month header from default position.
+ */
+@property (assign, nonatomic) CGPoint  headerTitleOffset;
 
 /**
  * The offset of the day text from default position.
@@ -104,9 +110,19 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *headerTitleColor;
 
 /**
+ * The color oh month header separator
+ */
+@property (strong, nonatomic) UIColor  *headerSeparatorColor;
+
+/**
  * The date format of the month header.
  */
 @property (strong, nonatomic) NSString *headerDateFormat;
+
+/**
+ * The text alignment of the month header.
+ */
+@property (assign, nonatomic) NSTextAlignment headerTitleAlignment;
 
 /**
  * The alpha value of month label staying on the fringes.
