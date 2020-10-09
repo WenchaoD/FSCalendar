@@ -7,12 +7,12 @@ let package = Package(
     products: [
         .library(
             name: "FSCalendar",
-            targets: ["FSCalendar-ObjC"]
+            targets: ["FSCalendar"]
         ),
     ],
     targets: [
         .target(
-            name: "FSCalendar-ObjC",
+            name: "FSCalendar",
             dependencies: [],
             path: "FSCalendar/"
         )
