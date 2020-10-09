@@ -4,13 +4,19 @@ import PackageDescription
 let package = Package(
     name: "FSCalendar",
     platforms: [.iOS(.v8)],
+    products: [
+        .library(
+            name: "FSCalendar",
+            targets: ["FSCalendar-ObjC"]
+        ),
+    ],
     targets: [
         .target(
-            name: "FSCalendar-ObjC", // 1
-            dependencies: [], // 2
-            path: "FSCalendar/", // 3
+            name: "FSCalendar-ObjC",
+            dependencies: [],
+            path: "FSCalendar/",
             cSettings: [
-                .headerSearchPath("Internal") // 5
+                .headerSearchPath("Internal")
             ]
         )
     ]
