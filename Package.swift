@@ -14,10 +14,7 @@ let package = Package(
         .target(
             name: "FSCalendar-ObjC",
             dependencies: [],
-            path: "FSCalendar/",
-            cSettings: [
-                .headerSearchPath("Internal")
-            ]
+            path: "FSCalendar/"
         )
     ]
 )
