@@ -43,14 +43,14 @@
     [[application.tables elementBoundByIndex:0].cells[@"DIY Example, Feature!"] tap];
     XCUIElement *calendar = application.otherElements[@"calendar"];
     
-    XCUICoordinate *swipeStart = [calendar coordinateWithNormalizedOffset:CGVectorMake(0.5/7.0, 0.5)];
+    XCUICoordinate *swipeStart = [calendar coordinateWithNormalizedOffset:CGVectorMake(0.8/7.0, 0.5)];
     XCUICoordinate *swipeEnd = [calendar coordinateWithNormalizedOffset:CGVectorMake(6.5/7.0, 0.5)];
     [swipeStart pressForDuration:0.8 thenDragToCoordinate:swipeEnd];
     
     [calendar swipeUp];
     [calendar swipeLeft];
     
-    swipeStart = [calendar coordinateWithNormalizedOffset:CGVectorMake(0.5/7.0, 0.75)];
+    swipeStart = [calendar coordinateWithNormalizedOffset:CGVectorMake(0.8/7.0, 0.75)];
     swipeEnd = [calendar coordinateWithNormalizedOffset:CGVectorMake(6.5/7.0, 0.75)];
     [swipeStart pressForDuration:0.8 thenDragToCoordinate:swipeEnd];
     [calendar swipeDown];

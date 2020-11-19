@@ -42,68 +42,68 @@ NS_ASSUME_NONNULL_END
     if (self) {
         self.title = @"FSCalendar";
         
-        self.fillDefaultColors = @{@"2015/10/08":[UIColor purpleColor],
-                                     @"2015/10/06":[UIColor greenColor],
-                                     @"2015/10/18":[UIColor cyanColor],
-                                     @"2015/10/22":[UIColor yellowColor],
-                                     @"2015/11/08":[UIColor purpleColor],
-                                     @"2015/11/06":[UIColor greenColor],
-                                     @"2015/11/18":[UIColor cyanColor],
-                                     @"2015/11/22":[UIColor yellowColor],
-                                     @"2015/12/08":[UIColor purpleColor],
-                                     @"2015/12/06":[UIColor greenColor],
-                                     @"2015/12/18":[UIColor cyanColor],
-                                     @"2015/12/22":[UIColor magentaColor]};
+        self.fillDefaultColors = @{@"2020/10/08":[UIColor purpleColor],
+                                     @"2020/10/06":[UIColor greenColor],
+                                     @"2020/10/18":[UIColor cyanColor],
+                                     @"2020/10/22":[UIColor yellowColor],
+                                     @"2020/11/08":[UIColor purpleColor],
+                                     @"2020/11/06":[UIColor greenColor],
+                                     @"2020/11/18":[UIColor cyanColor],
+                                     @"2020/11/22":[UIColor yellowColor],
+                                     @"2020/12/08":[UIColor purpleColor],
+                                     @"2020/12/06":[UIColor greenColor],
+                                     @"2020/12/18":[UIColor cyanColor],
+                                     @"2020/12/22":[UIColor magentaColor]};
         
-        self.fillSelectionColors = @{@"2015/10/08":[UIColor greenColor],
-                                 @"2015/10/06":[UIColor purpleColor],
-                                 @"2015/10/17":[UIColor grayColor],
-                                 @"2015/10/21":[UIColor cyanColor],
-                                 @"2015/11/08":[UIColor greenColor],
-                                 @"2015/11/06":[UIColor purpleColor],
-                                 @"2015/11/17":[UIColor grayColor],
-                                 @"2015/11/21":[UIColor cyanColor],
-                                 @"2015/12/08":[UIColor greenColor],
-                                 @"2015/12/06":[UIColor purpleColor],
-                                 @"2015/12/17":[UIColor grayColor],
-                                 @"2015/12/21":[UIColor cyanColor]};
+        self.fillSelectionColors = @{@"2020/10/08":[UIColor greenColor],
+                                 @"2020/10/06":[UIColor purpleColor],
+                                 @"2020/10/17":[UIColor grayColor],
+                                 @"2020/10/21":[UIColor cyanColor],
+                                 @"2020/11/08":[UIColor greenColor],
+                                 @"2020/11/06":[UIColor purpleColor],
+                                 @"2020/11/17":[UIColor grayColor],
+                                 @"2020/11/21":[UIColor cyanColor],
+                                 @"2020/12/08":[UIColor greenColor],
+                                 @"2020/12/06":[UIColor purpleColor],
+                                 @"2020/12/17":[UIColor grayColor],
+                                 @"2020/12/21":[UIColor cyanColor]};
         
-        self.borderDefaultColors = @{@"2015/10/08":[UIColor brownColor],
-                                     @"2015/10/17":[UIColor magentaColor],
-                                     @"2015/10/21":FSCalendarStandardSelectionColor,
-                                     @"2015/10/25":[UIColor blackColor],
-                                     @"2015/11/08":[UIColor brownColor],
-                                     @"2015/11/17":[UIColor magentaColor],
-                                     @"2015/11/21":FSCalendarStandardSelectionColor,
-                                     @"2015/11/25":[UIColor blackColor],
-                                     @"2015/12/08":[UIColor brownColor],
-                                     @"2015/12/17":[UIColor magentaColor],
-                                     @"2015/12/21":FSCalendarStandardSelectionColor,
-                                     @"2015/12/25":[UIColor blackColor]};
+        self.borderDefaultColors = @{@"2020/10/08":[UIColor brownColor],
+                                     @"2020/10/17":[UIColor magentaColor],
+                                     @"2020/10/21":FSCalendarStandardSelectionColor,
+                                     @"2020/10/25":[UIColor blackColor],
+                                     @"2020/11/08":[UIColor brownColor],
+                                     @"2020/11/17":[UIColor magentaColor],
+                                     @"2020/11/21":FSCalendarStandardSelectionColor,
+                                     @"2020/11/25":[UIColor blackColor],
+                                     @"2020/12/08":[UIColor brownColor],
+                                     @"2020/12/17":[UIColor magentaColor],
+                                     @"2020/12/21":FSCalendarStandardSelectionColor,
+                                     @"2020/12/25":[UIColor blackColor]};
         
-        self.borderSelectionColors = @{@"2015/10/08":[UIColor redColor],
-                                       @"2015/10/17":[UIColor purpleColor],
-                                       @"2015/10/21":FSCalendarStandardSelectionColor,
-                                       @"2015/10/25":FSCalendarStandardTodayColor,
-                                       @"2015/11/08":[UIColor redColor],
-                                       @"2015/11/17":[UIColor purpleColor],
-                                       @"2015/11/21":FSCalendarStandardSelectionColor,
-                                       @"2015/11/25":FSCalendarStandardTodayColor,
-                                       @"2015/12/08":[UIColor redColor],
-                                       @"2015/12/17":[UIColor purpleColor],
-                                       @"2015/12/21":FSCalendarStandardSelectionColor,
-                                       @"2015/12/25":FSCalendarStandardTodayColor};
+        self.borderSelectionColors = @{@"2020/10/08":[UIColor redColor],
+                                       @"2020/10/17":[UIColor purpleColor],
+                                       @"2020/10/21":FSCalendarStandardSelectionColor,
+                                       @"2020/10/25":FSCalendarStandardTodayColor,
+                                       @"2020/11/08":[UIColor redColor],
+                                       @"2020/11/17":[UIColor purpleColor],
+                                       @"2020/11/21":FSCalendarStandardSelectionColor,
+                                       @"2020/11/25":FSCalendarStandardTodayColor,
+                                       @"2020/12/08":[UIColor redColor],
+                                       @"2020/12/17":[UIColor purpleColor],
+                                       @"2020/12/21":FSCalendarStandardSelectionColor,
+                                       @"2020/12/25":FSCalendarStandardTodayColor};
         
         
-        self.datesWithEvent = @[@"2015-10-03",
-                            @"2015-10-06",
-                            @"2015-10-12",
-                            @"2015-10-25"];
+        self.datesWithEvent = @[@"2020-10-03",
+                            @"2020-10-06",
+                            @"2020-10-12",
+                            @"2020-10-25"];
         
-        self.datesWithMultipleEvents = @[@"2015-10-08",
-                                     @"2015-10-16",
-                                     @"2015-10-20",
-                                     @"2015-10-28"];
+        self.datesWithMultipleEvents = @[@"2020-10-08",
+                                     @"2020-10-16",
+                                     @"2020-10-20",
+                                     @"2020-10-28"];
         
         
         self.gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -134,7 +134,7 @@ NS_ASSUME_NONNULL_END
     [self.view addSubview:calendar];
     self.calendar = calendar;
     
-    [calendar setCurrentPage:[self.dateFormatter1 dateFromString:@"2015/10/03"] animated:NO];
+    [calendar setCurrentPage:[self.dateFormatter1 dateFromString:@"2020/10/03"] animated:NO];
     
     UIBarButtonItem *todayItem = [[UIBarButtonItem alloc] initWithTitle:@"TODAY" style:UIBarButtonItemStylePlain target:self action:@selector(todayItemClicked:)];
     self.navigationItem.rightBarButtonItem = todayItem;
