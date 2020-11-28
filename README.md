@@ -87,6 +87,13 @@ end
 github "WenchaoD/FSCalendar"
 ```
 
+## SPM:
+
+Add dependency:
+```swift
+.package(url: "https://github.com/WenchaoD/FSCalendar.git", from: "2.8.2")
+```
+
 ## Manually:
 * Drag all files under `FSCalendar` folder into your project. 👍
 
