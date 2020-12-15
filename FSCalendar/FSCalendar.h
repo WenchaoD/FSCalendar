@@ -52,6 +52,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition) {
     FSCalendarMonthPositionNotFound = NSNotFound
 };
 
+#import "FSCalendarTransitionCoordinator.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class FSCalendar;
@@ -241,6 +243,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 IB_DESIGNABLE
 @interface FSCalendar : UIView
+@property (strong, nonatomic) FSCalendarTransitionCoordinator *transitionCoordinator;
 
 /**
  * The object that acts as the delegate of the calendar.

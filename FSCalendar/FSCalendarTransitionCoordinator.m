@@ -6,32 +6,8 @@
 //  Copyright © 2016 Wenchao Ding. All rights reserved.
 //
 
-#import "FSCalendarTransitionCoordinator.h"
 #import "FSCalendarExtensions.h"
 #import "FSCalendarDynamicHeader.h"
-
-@interface FSCalendarTransitionCoordinator ()
-
-@property (weak, nonatomic) FSCalendarCollectionView *collectionView;
-@property (weak, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
-@property (weak, nonatomic) FSCalendar *calendar;
-
-@property (strong, nonatomic) FSCalendarTransitionAttributes *transitionAttributes;
-
-- (FSCalendarTransitionAttributes *)createTransitionAttributesTargetingScope:(FSCalendarScope)targetScope;
-
-- (void)performTransitionCompletionAnimated:(BOOL)animated;
-
-- (void)performAlphaAnimationWithProgress:(CGFloat)progress;
-- (void)performPathAnimationWithProgress:(CGFloat)progress;
-
-- (void)scopeTransitionDidBegin:(UIPanGestureRecognizer *)panGesture;
-- (void)scopeTransitionDidUpdate:(UIPanGestureRecognizer *)panGesture;
-- (void)scopeTransitionDidEnd:(UIPanGestureRecognizer *)panGesture;
-
-- (void)boundingRectWillChange:(CGRect)targetBounds animated:(BOOL)animated;
-
-@end
 
 @implementation FSCalendarTransitionCoordinator
 

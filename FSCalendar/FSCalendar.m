@@ -57,7 +57,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 @property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
 @property (weak  , nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 
-@property (strong, nonatomic) FSCalendarTransitionCoordinator *transitionCoordinator;
 @property (strong, nonatomic) FSCalendarCalculator       *calculator;
 
 @property (weak  , nonatomic) FSCalendarHeaderTouchDeliver *deliver;

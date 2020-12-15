@@ -16,25 +16,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
     FSCalendarTransitionStateFinishing,
 };
 
-@interface FSCalendarTransitionCoordinator : NSObject <UIGestureRecognizerDelegate>
-
-@property (assign, nonatomic) FSCalendarTransitionState state;
-
-@property (assign, nonatomic) CGSize cachedMonthSize;
-
-@property (readonly, nonatomic) FSCalendarScope representingScope;
-
-- (instancetype)initWithCalendar:(FSCalendar *)calendar;
-
-- (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
-- (void)performBoundingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
-- (CGRect)boundingRectForScope:(FSCalendarScope)scope page:(NSDate *)page;
-
-- (void)handleScopeGesture:(id)sender;
-
-@end
-
-
 @interface FSCalendarTransitionAttributes : NSObject
 
 @property (assign, nonatomic) CGRect sourceBounds;
@@ -46,6 +27,47 @@ typedef NS_ENUM(NSUInteger, FSCalendarTransitionState) {
 @property (assign, nonatomic) FSCalendarScope targetScope;
 
 - (void)revert;
-    
+
 @end
 
+@interface FSCalendarTransitionCoordinator : NSObject <UIGestureRecognizerDelegate>
+
+@property (assign, nonatomic) FSCalendarTransitionState state;
+
+@property (assign, nonatomic) CGSize cachedMonthSize;
+
+@property (readonly, nonatomic) FSCalendarScope representingScope;
+
+@property (weak, nonatomic) FSCalendarCollectionView *collectionView;
+
+@property (weak, nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
+
+@property (weak, nonatomic) FSCalendar *calendar;
+
+@property (strong, nonatomic) FSCalendarTransitionAttributes *transitionAttributes;
+
+- (FSCalendarTransitionAttributes *)createTransitionAttributesTargetingScope:(FSCalendarScope)targetScope;
+
+- (instancetype)initWithCalendar:(FSCalendar *)calendar;
+
+- (void)performScopeTransitionFromScope:(FSCalendarScope)fromScope toScope:(FSCalendarScope)toScope animated:(BOOL)animated;
+- (void)performBoundingRectTransitionFromMonth:(NSDate *)fromMonth toMonth:(NSDate *)toMonth duration:(CGFloat)duration;
+- (void)performTransition:(FSCalendarScope)targetScope fromProgress:(CGFloat)fromProgress toProgress:(CGFloat)toProgress animated:(BOOL)animated;
+- (void)performTransitionCompletionAnimated:(BOOL)animated;
+
+- (void)performAlphaAnimationWithProgress:(CGFloat)progress;
+- (void)performPathAnimationWithProgress:(CGFloat)progress;
+
+- (CGRect)boundingRectForScope:(FSCalendarScope)scope page:(NSDate *)page;
+
+- (void)handleScopeGesture:(id)sender;
+
+- (void)scopeTransitionDidBegin:(UIPanGestureRecognizer *)panGesture;
+- (void)scopeTransitionDidUpdate:(UIPanGestureRecognizer *)panGesture;
+- (void)scopeTransitionDidEnd:(UIPanGestureRecognizer *)panGesture;
+
+- (void)boundingRectWillChange:(CGRect)targetBounds animated:(BOOL)animated;
+
+- (void)prepareWeekToMonthTransition;
+
+@end
