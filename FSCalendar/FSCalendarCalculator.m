@@ -221,7 +221,7 @@
     if (self.calendar.placeholderType == FSCalendarPlaceholderTypeFillSixRows) return 6;
     
     NSNumber *rowCount = self.rowCounts[month];
-    if (!rowCount) {
+    if (rowCount == nil) {
         NSDate *firstDayOfMonth = [self.gregorian fs_firstDayOfMonth:month];
         NSInteger weekdayOfFirstDay = [self.gregorian component:NSCalendarUnitWeekday fromDate:firstDayOfMonth];
         NSInteger numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month];

@@ -171,7 +171,7 @@
     components.day = - (weekdayComponents.weekday - self.firstWeekday);
     components.day = (components.day-7) % 7;
     NSDate *firstDayOfWeek = [self dateByAddingComponents:components toDate:week options:0];
-    firstDayOfWeek = [self dateBySettingHour:0 minute:0 second:0 ofDate:firstDayOfWeek options:0];
+    firstDayOfWeek = [self startOfDayForDate:firstDayOfWeek];
     components.day = NSIntegerMax;
     return firstDayOfWeek;
 }
@@ -184,7 +184,7 @@
     components.day = - (weekdayComponents.weekday - self.firstWeekday);
     components.day = (components.day-7) % 7 + 6;
     NSDate *lastDayOfWeek = [self dateByAddingComponents:components toDate:week options:0];
-    lastDayOfWeek = [self dateBySettingHour:0 minute:0 second:0 ofDate:lastDayOfWeek options:0];
+    lastDayOfWeek = [self startOfDayForDate:lastDayOfWeek];
     components.day = NSIntegerMax;
     return lastDayOfWeek;
 }
@@ -195,6 +195,11 @@
     NSDateComponents *weekdayComponents = [self components:NSCalendarUnitWeekday fromDate:week];
     NSDateComponents *componentsToSubtract = self.fs_privateComponents;
     componentsToSubtract.day = - (weekdayComponents.weekday - self.firstWeekday) + 3;
+    // Fix https://github.com/WenchaoD/FSCalendar/issues/1100 and https://github.com/WenchaoD/FSCalendar/issues/1102
+    // If firstWeekday is not 1, and weekday is less than firstWeekday, the middleDayOfWeek will be the middle day of next week
+    if (weekdayComponents.weekday < self.firstWeekday) {
+        componentsToSubtract.day = componentsToSubtract.day - 7;
+    }
     NSDate *middleDayOfWeek = [self dateByAddingComponents:componentsToSubtract toDate:week options:0];
     NSDateComponents *components = [self components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:middleDayOfWeek];
     middleDayOfWeek = [self dateFromComponents:components];

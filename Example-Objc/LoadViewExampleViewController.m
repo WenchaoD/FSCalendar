@@ -31,10 +31,10 @@ NS_ASSUME_NONNULL_END
     self = [super init];
     if (self) {
         self.title = @"FSCalendar";
-        self.images = @{@"2016/11/01":[UIImage imageNamed:@"icon_cat"],
-                        @"2016/11/05":[UIImage imageNamed:@"icon_footprint"],
-                        @"2016/11/20":[UIImage imageNamed:@"icon_cat"],
-                        @"2016/11/07":[UIImage imageNamed:@"icon_footprint"]};
+        self.images = @{@"2020/11/01":[UIImage imageNamed:@"icon_cat"],
+                        @"2020/11/05":[UIImage imageNamed:@"icon_footprint"],
+                        @"2020/11/20":[UIImage imageNamed:@"icon_cat"],
+                        @"2020/11/07":[UIImage imageNamed:@"icon_footprint"]};
     }
     return self;
 }
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_END
     self.dateFormatter.dateFormat = @"yyyy/MM/dd";
     
     
-    // [self.calendar selectDate:[self.dateFormatter dateFromString:@"2016/02/03"]];
+    // [self.calendar selectDate:[self.dateFormatter dateFromString:@"2020/02/03"]];
 
     /*
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -115,12 +115,12 @@ NS_ASSUME_NONNULL_END
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2016/10/01"];
+    return [self.dateFormatter dateFromString:@"2020/10/01"];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2017/10/10"];
+    return [self.dateFormatter dateFromString:@"2023/10/10"];
 }
 
 

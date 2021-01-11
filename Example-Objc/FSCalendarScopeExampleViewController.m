@@ -49,7 +49,6 @@ NS_ASSUME_NONNULL_END
     if ([[UIDevice currentDevice].model hasPrefix:@"iPad"]) {
         self.calendarHeightConstraint.constant = 400;
     }
-    [self.calendar selectDate:[NSDate date] scrollToDate:YES];
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.calendar action:@selector(handleScopeGesture:)];
     panGesture.delegate = self;
@@ -64,6 +63,8 @@ NS_ASSUME_NONNULL_END
     [self.calendar addObserver:self forKeyPath:@"scope" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:_KVOContext];
     self.calendar.placeholderType = FSCalendarPlaceholderTypeNone;
     self.calendar.scope = FSCalendarScopeWeek;
+    
+    [self.calendar selectDate:[NSDate date] scrollToDate:YES];
     
     // For UITest
     self.calendar.accessibilityIdentifier = @"calendar";
