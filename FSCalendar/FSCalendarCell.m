@@ -195,7 +195,7 @@
     if (![textColor isEqual:_titleLabel.textColor]) {
         _titleLabel.textColor = textColor;
     }
-    UIFont *titleFont = self.calendar.appearance.titleFont;
+    UIFont *titleFont = self.fontForTitleLabel;
     if (![titleFont isEqual:_titleLabel.font]) {
         _titleLabel.font = titleFont;
     }
@@ -204,7 +204,7 @@
         if (![textColor isEqual:_subtitleLabel.textColor]) {
             _subtitleLabel.textColor = textColor;
         }
-        titleFont = self.calendar.appearance.subtitleFont;
+        titleFont = self.fontForSubtitleLabel;
         if (![titleFont isEqual:_subtitleLabel.font]) {
             _subtitleLabel.font = titleFont;
         }
@@ -317,6 +317,16 @@
 - (CGFloat)borderRadius
 {
     return _preferredBorderRadius >= 0 ? _preferredBorderRadius : _appearance.borderRadius;
+}
+ 
+- (UIFont *)fontForTitleLabel
+{
+    return self.selected ? self.calendar.appearance.titleSelectionFont : self.calendar.appearance.titleFont;
+}
+
+- (UIFont *)fontForSubtitleLabel
+{
+    return self.selected ? self.calendar.appearance.subtitleSelectionFont : self.calendar.appearance.subtitleFont;
 }
 
 #define OFFSET_PROPERTY(NAME,CAPITAL,ALTERNATIVE) \
