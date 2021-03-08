@@ -70,8 +70,10 @@
         self.itemAttributes = NSMutableDictionary.dictionary;
         self.headerAttributes = NSMutableDictionary.dictionary;
         self.rowSeparatorAttributes = NSMutableDictionary.dictionary;
-        
+
+#if !TARGET_OS_TV
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
+#endif
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
         [self registerClass:FSCalendarSeparatorDecorationView.class forDecorationViewOfKind:kFSCalendarSeparatorInterRows];
@@ -82,7 +84,9 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+#if !TARGET_OS_TV
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+#endif
     
     free(self.widths);
     free(self.heights);
@@ -511,9 +515,11 @@
 
 - (void)didReceiveNotifications:(NSNotification *)notification
 {
+#if !TARGET_OS_TV
     if ([notification.name isEqualToString:UIDeviceOrientationDidChangeNotification]) {
         [self invalidateLayout];
     }
+#endif
     if ([notification.name isEqualToString:UIApplicationDidReceiveMemoryWarningNotification]) {
         [self.itemAttributes removeAllObjects];
         [self.headerAttributes removeAllObjects];

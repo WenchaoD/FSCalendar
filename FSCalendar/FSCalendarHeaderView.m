@@ -269,14 +269,18 @@
         self.minimumLineSpacing = 0;
         self.sectionInset = UIEdgeInsetsZero;
         self.itemSize = CGSizeMake(1, 1);
+#if !TARGET_OS_TV
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveOrientationChangeNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
+#endif
     }
     return self;
 }
 
 - (void)dealloc
 {
+#if !TARGET_OS_TV
     [NSNotificationCenter.defaultCenter removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+#endif
 }
 
 - (void)prepareLayout
