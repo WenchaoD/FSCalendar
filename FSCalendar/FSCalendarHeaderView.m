@@ -292,7 +292,7 @@
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    return self.collectionView ? !CGRectEqualToRect(self.collectionView.bounds, newBounds) : false;
+    return self.collectionView != nil ? !CGRectEqualToRect(self.collectionView.bounds, newBounds) : NO;
 }
 
 - (void)didReceiveOrientationChangeNotification:(NSNotification *)notificatino
