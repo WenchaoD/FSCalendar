@@ -91,7 +91,7 @@ github "WenchaoD/FSCalendar"
 
 Add dependency:
 ```swift
-.package(url: "https://github.com/WenchaoD/FSCalendar.git", from: "2.8.2")
+.package(url: "https://github.com/WenchaoD/FSCalendar.git", from: "2.8.3")
 ```
 
 ## Manually:
