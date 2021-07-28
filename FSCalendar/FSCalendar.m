@@ -110,8 +110,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (void)selectCounterpartDate:(NSDate *)date;
 - (void)deselectCounterpartDate:(NSDate *)date;
 
-- (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath;
-
 - (void)adjustMonthPosition;
 - (BOOL)requestBoundingDatesIfNecessary;
 - (void)executePendingOperationsIfNeeded;
