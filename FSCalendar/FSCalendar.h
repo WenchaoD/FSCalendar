@@ -408,6 +408,11 @@ IB_DESIGNABLE
 - (void)reloadData;
 
 /**
+Reload data of the calendar cell.
+*/
+- (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+
+/**
  Change the scope of the calendar. Make sure `-calendar:boundingRectWillChange:animated` is correctly adopted.
  
  @param scope The target scope to change.
