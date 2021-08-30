@@ -63,6 +63,8 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
                 return velocity.y < 0
             case .week:
                 return velocity.y > 0
+            @unknown default:
+                fatalError()
             }
         }
         return shouldBegin
