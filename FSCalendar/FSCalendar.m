@@ -1052,6 +1052,18 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void) deselectDates: (NSArray<NSDate *> *) dates
+{
+    for (NSDate * date in dates) {
+        NSDate * tmpDate = [self.gregorian dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
+        if (![_selectedDates containsObject:tmpDate]) {
+            continue;
+        }
+        [_selectedDates removeObject:tmpDate];
+    }
+    [self reloadData];
+}
+
 - (void)selectDate:(NSDate *)date scrollToDate:(BOOL)scrollToDate atMonthPosition:(FSCalendarMonthPosition)monthPosition
 {
     if (!self.allowsSelection || !date) return;
