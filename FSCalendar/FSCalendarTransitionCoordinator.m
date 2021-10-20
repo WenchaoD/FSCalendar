@@ -131,7 +131,37 @@
 {
     if (self.state != FSCalendarTransitionStateChanging) return;
     
-    CGFloat translation = ABS([panGesture translationInView:panGesture.view].y);
+    CGFloat y = [panGesture translationInView:panGesture.view].y;
+    
+    //
+    // Prevent from scrolling "overflow". This happens when we perform
+    //
+    // (1) Scroll down to switch from week view to month view.
+    // (2) Without releasing gesture, reverse scroll direction to up, to switch back week view.
+    // (3) Once we hit week view, and continue the scroll-up action, we can observe scrolling "overflow" behavior.
+    //
+    // or
+    //
+    // (1) Scroll up to switch from month view to week view.
+    // (2) Without releasing gesture, reverse scroll direction to down, to switch back month view.
+    // (3) Once we hit month view, and continue the scroll-down action, we can observe scrolling "overflow" behavior.
+    //
+    switch (self.calendar.scope) {
+        case FSCalendarScopeMonth: {
+            if (y > 0) {
+                y = 0;
+            }
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            if (y < 0) {
+                y = 0;
+            }
+            break;
+        }
+    }
+    
+    CGFloat translation = ABS(y);
     CGFloat progress = ({
         CGFloat maxTranslation = ABS(CGRectGetHeight(self.transitionAttributes.targetBounds) - CGRectGetHeight(self.transitionAttributes.sourceBounds));
         translation = MIN(maxTranslation, translation);
