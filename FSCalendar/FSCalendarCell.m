@@ -46,11 +46,19 @@
 }
 
 - (void)commonInit
-{   
+{
+    UILabel *topLabel;
     UILabel *label;
     CAShapeLayer *shapeLayer;
     UIImageView *imageView;
     FSCalendarEventIndicator *eventIndicator;
+    
+    
+    topLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    topLabel.textAlignment = NSTextAlignmentCenter;
+    topLabel.textColor = [UIColor blackColor];
+    [self.contentView addSubview:topLabel];
+    self.topTitleLabel = topLabel;
     
     label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.textAlignment = NSTextAlignmentCenter;
@@ -88,9 +96,62 @@
     
 }
 
+- (UIColor *)getColorTopBackgroundTitle:(NSString *)colorStr {
+    if([colorStr isEqualToString:@"black"]) {
+        return UIColor.blackColor;
+    } else if([colorStr isEqualToString:@"orange"]) {
+        return UIColor.orangeColor;
+    } else if([colorStr isEqualToString:@"red"]) {
+        return UIColor.redColor;
+    } else if([colorStr isEqualToString:@"yellow"]) {
+        return UIColor.yellowColor;
+    }
+    return UIColor.blackColor;
+}
+
+- (UIColor *)getColorTopTitleColor:(NSString *)colorStr {
+    if([colorStr isEqualToString:@"brown"]) {
+        return UIColor.brownColor;
+    } else if([colorStr isEqualToString:@"white"]) {
+        return UIColor.whiteColor;
+    } else if([colorStr isEqualToString:@"black"]) {
+        return UIColor.blackColor;
+    }
+    return UIColor.whiteColor;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    
+    if(_topTitle){
+        _topTitleLabel.text = _topTitle[@"title"];
+        _topTitleLabel.textColor = [self getColorTopTitleColor:_topTitle[@"titleColor"]];
+        _topTitleLabel.backgroundColor = [self getColorTopBackgroundTitle:_topTitle[@"color"]];
+        if (_topTitleLabel.hidden) {
+            _topTitleLabel.hidden = NO;
+        }
+    } else {
+        if (!_topTitleLabel.hidden) {
+            _topTitleLabel.hidden = YES;
+        }
+    }
+    
+    
+    if(_topTitle){
+        _topTitleLabel.frame = CGRectMake(
+                                          0,
+                                          0,
+                                          self.contentView.frame.size.width * 0.4,
+                                          self.calendar.appearance.headerCellFont.lineHeight
+                                          );
+        
+    } else {
+        _topTitleLabel.frame = CGRectZero;
+    }
+
+    
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
         if (_subtitleLabel.hidden) {
@@ -120,21 +181,31 @@
                                           subtitleHeight
                                           );
     } else {
-        _titleLabel.frame = CGRectMake(
-                                       self.preferredTitleOffset.x,
-                                       self.preferredTitleOffset.y,
-                                       self.contentView.fs_width,
-                                       floor(self.contentView.fs_height*5.0/6.0)
-                                       );
+        if(_topTitle){
+            _titleLabel.frame = CGRectMake(
+                                           self.preferredTitleOffset.x,
+                                           _topTitleLabel.font.pointSize,
+                                           self.contentView.fs_width,
+                                           floor(self.contentView.fs_height*5.0/6.0) - self.calendar.appearance.headerCellFont.lineHeight
+                                           );
+        } else {
+            _titleLabel.frame = CGRectMake(
+                                           self.preferredTitleOffset.x,
+                                           self.preferredTitleOffset.y,
+                                           self.contentView.fs_width,
+                                           floor(self.contentView.fs_height*5.0/6.0)
+                                           );
+        }
+        
     }
     
     _imageView.frame = CGRectMake(self.preferredImageOffset.x, self.preferredImageOffset.y, self.contentView.fs_width, self.contentView.fs_height);
     
     CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
-    CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
+    CGFloat diameter = MIN(self.bounds.size.height*3.0/6.0,self.bounds.size.width);
     diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
     _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
-                                   (titleHeight-diameter)/2,
+                                   (titleHeight-diameter)/2 + 5,
                                    diameter,
                                    diameter);
     
@@ -144,13 +215,16 @@
         _shapeLayer.path = path;
     }
     
-    CGFloat eventSize = _shapeLayer.frame.size.height/6.0;
+    CGFloat eventSize = self.contentView.frame.size.height/6.0;
     _eventIndicator.frame = CGRectMake(
                                        self.preferredEventOffset.x,
                                        CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17+self.preferredEventOffset.y,
                                        self.fs_width,
                                        eventSize*0.83
                                       );
+    
+    self.contentView.layer.borderColor = [UIColor.grayColor CGColor];
+    self.contentView.layer.borderWidth = 1.0f;
     
 }
 
@@ -187,10 +261,19 @@
     
 }
 
+- (BOOL)isWeekend:(NSDate *)date{
+    return [[NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian] isDateInWeekend:date];
+}
+
 #pragma mark - Private
 
 - (void)configureAppearance
 {
+    
+    if(_topTitle){
+        _topTitleLabel.font = self.calendar.appearance.headerCellFont;
+    }
+    
     UIColor *textColor = self.colorForTitleLabel;
     if (![textColor isEqual:_titleLabel.textColor]) {
         _titleLabel.textColor = textColor;
@@ -199,6 +282,12 @@
     if (![titleFont isEqual:_titleLabel.font]) {
         _titleLabel.font = titleFont;
     }
+    
+    if(self.weekend){
+        _titleLabel.font = self.calendar.appearance.weekdayFont;
+        _titleLabel.textColor = UIColor.redColor;
+    }
+    
     if (_subtitle) {
         textColor = self.colorForSubtitleLabel;
         if (![textColor isEqual:_subtitleLabel.textColor]) {
@@ -231,7 +320,7 @@
         }
         
         CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
-                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius].CGPath;
+                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius*0.7].CGPath;
         if (!CGPathEqualToPath(_shapeLayer.path, path)) {
             _shapeLayer.path = path;
         }

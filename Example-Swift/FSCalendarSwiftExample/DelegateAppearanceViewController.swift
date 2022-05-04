@@ -42,7 +42,7 @@ class DelegateAppearanceViewController: UIViewController, FSCalendarDataSource, 
         view.backgroundColor = UIColor.groupTableViewBackground
         self.view = view
         
-        let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 450 : 300
+        let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 600 : 500
         let calendar = FSCalendar(frame: CGRect(x:0, y:64, width:self.view.bounds.size.width, height:height))
         calendar.dataSource = self
         calendar.delegate = self

@@ -34,7 +34,9 @@ class FSCalendarScopeExampleViewController: UIViewController, UITableViewDataSou
         super.viewDidLoad()
         
         if UIDevice.current.model.hasPrefix("iPad") {
-            self.calendarHeightConstraint.constant = 400
+            self.calendarHeightConstraint.constant = 600
+        } else {
+            self.calendarHeightConstraint.constant = 500
         }
         
         self.calendar.select(Date())

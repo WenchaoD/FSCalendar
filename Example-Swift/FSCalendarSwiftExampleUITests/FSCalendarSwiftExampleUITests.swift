@@ -49,7 +49,7 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         application.tables.element(boundBy: 0).staticTexts["Delegate Appearance"].tap()
         
         let calendar: XCUIElement = application.otherElements["calendar"]
-        let calendarHeight: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 400 : 300
+        let calendarHeight: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 600 : 500
         let cellStart: CGFloat = (FSCalendarStandardHeaderHeight+FSCalendarStandardWeekdayHeight)/calendarHeight
         let rowHeight: CGFloat = (1.0-cellStart)/6.0
         let columnWidth: CGFloat = 1.0/7
@@ -109,7 +109,7 @@ class FSCalendarSwiftExampleUITests: XCTestCase {
         let application = XCUIApplication()
         application.tables.element(boundBy: 0).staticTexts["Interface Builder"].tap()
         let calendar = application.otherElements["calendar"]
-        let calendarHeight: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 400 : 300
+        let calendarHeight: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 600 : 500
         let cellStart: CGFloat = (FSCalendarStandardHeaderHeight+FSCalendarStandardWeekdayHeight)/calendarHeight
         let rowHeight: CGFloat = (1.0-cellStart)/6.0
         let columnWidth: CGFloat = 1.0/7
