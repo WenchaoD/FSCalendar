@@ -105,6 +105,8 @@
         return UIColor.redColor;
     } else if([colorStr isEqualToString:@"yellow"]) {
         return UIColor.yellowColor;
+    } else if([colorStr isEqualToString:@"blue"]) {
+        return UIColor.blueColor;
     }
     return UIColor.blackColor;
 }
@@ -150,7 +152,9 @@
     } else {
         _topTitleLabel.frame = CGRectZero;
     }
-
+    
+    self.contentView.layer.borderColor = [[UIColor colorWithRed:51/255.0f green:51/255.0f blue:51/255.0f alpha:1] CGColor];
+    self.contentView.layer.borderWidth = 0.5f;
     
     if (_subtitle) {
         _subtitleLabel.text = _subtitle;
@@ -181,31 +185,21 @@
                                           subtitleHeight
                                           );
     } else {
-        if(_topTitle){
-            _titleLabel.frame = CGRectMake(
-                                           self.preferredTitleOffset.x,
-                                           _topTitleLabel.font.pointSize,
-                                           self.contentView.fs_width,
-                                           floor(self.contentView.fs_height*5.0/6.0) - self.calendar.appearance.headerCellFont.lineHeight
-                                           );
-        } else {
-            _titleLabel.frame = CGRectMake(
-                                           self.preferredTitleOffset.x,
-                                           self.preferredTitleOffset.y,
-                                           self.contentView.fs_width,
-                                           floor(self.contentView.fs_height*5.0/6.0)
-                                           );
-        }
-        
+        _titleLabel.frame = CGRectMake(
+                                       self.preferredTitleOffset.x,
+                                       _topTitleLabel.font.pointSize + self.preferredTitleOffset.y,
+                                       self.contentView.fs_width,
+                                       floor(self.contentView.fs_height*5.0/6.0) - _topTitleLabel.font.pointSize
+                                       );
     }
     
     _imageView.frame = CGRectMake(self.preferredImageOffset.x, self.preferredImageOffset.y, self.contentView.fs_width, self.contentView.fs_height);
     
-    CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
-    CGFloat diameter = MIN(self.bounds.size.height*3.0/6.0,self.bounds.size.width);
+    CGFloat titleHeight = self.titleLabel.frame.size.height*6.0/6.0;
+    CGFloat diameter = MIN(titleHeight,self.titleLabel.frame.size.width);
     diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
     _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
-                                   (titleHeight-diameter)/2 + 5,
+                                   self.titleLabel.frame.origin.y + (titleHeight-diameter)/2,
                                    diameter,
                                    diameter);
     
@@ -215,16 +209,13 @@
         _shapeLayer.path = path;
     }
     
-    CGFloat eventSize = self.contentView.frame.size.height/6.0;
+    CGFloat eventSize = _shapeLayer.frame.size.height/6.0;
     _eventIndicator.frame = CGRectMake(
                                        self.preferredEventOffset.x,
                                        CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17+self.preferredEventOffset.y,
                                        self.fs_width,
                                        eventSize*0.83
                                       );
-    
-    self.contentView.layer.borderColor = [UIColor.grayColor CGColor];
-    self.contentView.layer.borderWidth = 1.0f;
     
 }
 
@@ -285,7 +276,7 @@
     
     if(self.weekend){
         _titleLabel.font = self.calendar.appearance.weekdayFont;
-        _titleLabel.textColor = UIColor.redColor;
+        _titleLabel.textColor = self.colorForWeekend;
     }
     
     if (_subtitle) {
@@ -320,7 +311,7 @@
         }
         
         CGPathRef path = [UIBezierPath bezierPathWithRoundedRect:_shapeLayer.bounds
-                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius*0.7].CGPath;
+                                                    cornerRadius:CGRectGetWidth(_shapeLayer.bounds)*0.5*self.borderRadius*0.5].CGPath;
         if (!CGPathEqualToPath(_shapeLayer.path, path)) {
             _shapeLayer.path = path;
         }
@@ -369,6 +360,14 @@
         return self.preferredFillSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
     }
     return self.preferredFillDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
+}
+
+- (UIColor *)colorForWeekend
+{
+    if (self.selected) {
+        return UIColor.whiteColor;
+    }
+    return self.placeholder ? FSCalendarWeekendTextDisableColor : FSCalendarWeekendTextColor;
 }
 
 - (UIColor *)colorForTitleLabel
