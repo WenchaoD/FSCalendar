@@ -37,6 +37,10 @@
 		F9CB48401E406A9200C92065 /* FSCalendarSwiftExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CB483F1E406A9200C92065 /* FSCalendarSwiftExampleUITests.swift */; };
 		F9CB48481E406B7300C92065 /* FSCalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 30F4C9281E07C3AD00D2EC4D /* FSCalendarConstants.m */; };
 		F9DE053B1E3CCAE800902F7D /* CalendarConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DE053A1E3CCAE800902F7D /* CalendarConfigViewController.swift */; };
+		FA1B318A2824AF86001860DC /* WorkTypeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1B31882824AF86001860DC /* WorkTypeVC.swift */; };
+		FA1B318B2824AF86001860DC /* WorkTypeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1B31892824AF86001860DC /* WorkTypeVC.xib */; };
+		FA1B31932824B675001860DC /* WorkGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1B31912824B675001860DC /* WorkGroupVC.swift */; };
+		FA1B31942824B675001860DC /* WorkGroupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1B31922824B675001860DC /* WorkGroupVC.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +106,10 @@
 		F9CB48411E406A9200C92065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9CB48471E406AB700C92065 /* Objc-Bridge-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Objc-Bridge-Header.h"; sourceTree = "<group>"; };
 		F9DE053A1E3CCAE800902F7D /* CalendarConfigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarConfigViewController.swift; sourceTree = "<group>"; };
+		FA1B31882824AF86001860DC /* WorkTypeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkTypeVC.swift; sourceTree = "<group>"; };
+		FA1B31892824AF86001860DC /* WorkTypeVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkTypeVC.xib; sourceTree = "<group>"; };
+		FA1B31912824B675001860DC /* WorkGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkGroupVC.swift; sourceTree = "<group>"; };
+		FA1B31922824B675001860DC /* WorkGroupVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkGroupVC.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +192,7 @@
 		EE0954A91B97DDE0007F6964 /* FSCalendarSwiftExample */ = {
 			isa = PBXGroup;
 			children = (
+				FA1B318C2824B1FE001860DC /* WorkType */,
 				EE0954AC1B97DDE0007F6964 /* AppDelegate.swift */,
 				303478381DB520C8007BBD2E /* TableViewController.swift */,
 				F95394791F26BF07005B83E5 /* LunarFormatter.swift */,
@@ -219,6 +228,17 @@
 				F9CB48411E406A9200C92065 /* Info.plist */,
 			);
 			path = FSCalendarSwiftExampleUITests;
+			sourceTree = "<group>";
+		};
+		FA1B318C2824B1FE001860DC /* WorkType */ = {
+			isa = PBXGroup;
+			children = (
+				FA1B31882824AF86001860DC /* WorkTypeVC.swift */,
+				FA1B31892824AF86001860DC /* WorkTypeVC.xib */,
+				FA1B31912824B675001860DC /* WorkGroupVC.swift */,
+				FA1B31922824B675001860DC /* WorkGroupVC.xib */,
+			);
+			name = WorkType;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,6 +329,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE0954B21B97DDE0007F6964 /* Main.storyboard in Resources */,
+				FA1B31942824B675001860DC /* WorkGroupVC.xib in Resources */,
+				FA1B318B2824AF86001860DC /* WorkTypeVC.xib in Resources */,
 				EE0954B71B97DDE0007F6964 /* LaunchScreen.xib in Resources */,
 				EE0954B41B97DDE0007F6964 /* Images.xcassets in Resources */,
 			);
@@ -329,6 +351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9DE053B1E3CCAE800902F7D /* CalendarConfigViewController.swift in Sources */,
+				FA1B31932824B675001860DC /* WorkGroupVC.swift in Sources */,
 				30F4C9441E07C3AD00D2EC4D /* FSCalendarExtensions.m in Sources */,
 				30F4C93D1E07C3AD00D2EC4D /* FSCalendarCalculator.m in Sources */,
 				30F4C9411E07C3AD00D2EC4D /* FSCalendarConstants.m in Sources */,
@@ -351,6 +374,7 @@
 				30D458E91DB4E2DB00B163C7 /* LoadViewExampleViewController.swift in Sources */,
 				30031AAA1DCEA83200FC34FE /* DIYCalendarCell.swift in Sources */,
 				EE0954AD1B97DDE0007F6964 /* AppDelegate.swift in Sources */,
+				FA1B318A2824AF86001860DC /* WorkTypeVC.swift in Sources */,
 				EE0954AF1B97DDE0007F6964 /* InterfaceBuilderViewController.swift in Sources */,
 				30F4C9421E07C3AD00D2EC4D /* FSCalendarDelegationFactory.m in Sources */,
 			);
@@ -500,7 +524,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9689HPSFXL;
 				INFOPLIST_FILE = "$(SRCROOT)/FSCalendarSwiftExample/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wenchaod.FSCalendarSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -517,7 +541,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9689HPSFXL;
 				INFOPLIST_FILE = "$(SRCROOT)/FSCalendarSwiftExample/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wenchaod.FSCalendarSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";

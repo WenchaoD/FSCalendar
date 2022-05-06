@@ -1375,6 +1375,22 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
 }
 
+- (FSCalendarCellDay)getDayType:(NSDate *) date{
+    NSDateComponents *component = [[NSCalendar currentCalendar] components:NSCalendarUnitWeekday fromDate:date];
+
+    switch ([component weekday]) {
+        case 1:
+            return FSCalendarSunday;
+            break;
+        case 7:
+            return FSCalendarSaturday;
+            break;
+        default:
+            break;
+    }
+    return FSCalendarNormalDay;
+}
+
 - (void)reloadDataForCell:(FSCalendarCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.calendar = self;
@@ -1388,6 +1404,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     cell.dateIsToday = self.today?[self.gregorian isDate:date inSameDayAsDate:self.today]:NO;
     cell.weekend = [self.gregorian isDateInWeekend:date];
     cell.monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
+    cell.dayType = [self getDayType:date];
     
     switch (self.transitionCoordinator.representingScope) {
         case FSCalendarScopeMonth: {

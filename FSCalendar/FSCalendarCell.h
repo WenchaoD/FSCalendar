@@ -11,6 +11,11 @@
 @class FSCalendar, FSCalendarAppearance, FSCalendarEventIndicator;
 
 typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
+typedef NS_ENUM(NSUInteger, FSCalendarCellDay) {
+    FSCalendarNormalDay,
+    FSCalendarSunday,
+    FSCalendarSaturday,
+};
 
 @interface FSCalendarCell : UICollectionViewCell
 
@@ -65,6 +70,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (assign, nonatomic) BOOL dateIsToday;
 @property (assign, nonatomic) BOOL weekend;
+@property (assign, nonatomic) FSCalendarCellDay dayType;
 
 @property (strong, nonatomic) UIColor *preferredFillDefaultColor;
 @property (strong, nonatomic) UIColor *preferredFillSelectionColor;

@@ -97,29 +97,31 @@
 }
 
 - (UIColor *)getColorTopBackgroundTitle:(NSString *)colorStr {
+    UIColor *color = UIColor.blackColor;
     if([colorStr isEqualToString:@"black"]) {
-        return UIColor.blackColor;
+        color = UIColor.blackColor;
     } else if([colorStr isEqualToString:@"orange"]) {
-        return UIColor.orangeColor;
+        color = UIColor.orangeColor;
     } else if([colorStr isEqualToString:@"red"]) {
-        return UIColor.redColor;
+        color = UIColor.redColor;
     } else if([colorStr isEqualToString:@"yellow"]) {
-        return UIColor.yellowColor;
+        color = UIColor.yellowColor;
     } else if([colorStr isEqualToString:@"blue"]) {
-        return UIColor.blueColor;
+        color = UIColor.blueColor;
     }
-    return UIColor.blackColor;
+    return self.placeholder ? [color colorWithAlphaComponent:0.5] : color;
 }
 
 - (UIColor *)getColorTopTitleColor:(NSString *)colorStr {
+    UIColor *color = UIColor.whiteColor;
     if([colorStr isEqualToString:@"brown"]) {
-        return UIColor.brownColor;
+        color = UIColor.brownColor;
     } else if([colorStr isEqualToString:@"white"]) {
-        return UIColor.whiteColor;
+        color = UIColor.whiteColor;
     } else if([colorStr isEqualToString:@"black"]) {
-        return UIColor.blackColor;
+        color = UIColor.blackColor;
     }
-    return UIColor.whiteColor;
+    return self.placeholder ? [color colorWithAlphaComponent:0.5] : color;
 }
 
 - (void)layoutSubviews
@@ -274,9 +276,12 @@
         _titleLabel.font = titleFont;
     }
     
-    if(self.weekend){
+    if(self.dayType == FSCalendarSunday){
         _titleLabel.font = self.calendar.appearance.weekdayFont;
-        _titleLabel.textColor = self.colorForWeekend;
+        _titleLabel.textColor = [self colorForWeekend:self.dayType];
+    } else if(self.dayType == FSCalendarSaturday){
+        _titleLabel.font = self.calendar.appearance.weekdayFont;
+        _titleLabel.textColor = [self colorForWeekend:self.dayType];
     }
     
     if (_subtitle) {
@@ -362,12 +367,18 @@
     return self.preferredFillDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.backgroundColors];
 }
 
-- (UIColor *)colorForWeekend
+- (UIColor *)colorForWeekend:(FSCalendarCellDay)dayType
 {
     if (self.selected) {
         return UIColor.whiteColor;
     }
-    return self.placeholder ? FSCalendarWeekendTextDisableColor : FSCalendarWeekendTextColor;
+    
+    if(dayType == FSCalendarSunday){
+        return self.placeholder ? [self.calendar.appearance.sundayColor colorWithAlphaComponent:0.5] : self.calendar.appearance.sundayColor;
+    } else {
+        return self.placeholder ? [self.calendar.appearance.saturdayColor colorWithAlphaComponent:0.5] : self.calendar.appearance.saturdayColor;
+    }
+    
 }
 
 - (UIColor *)colorForTitleLabel

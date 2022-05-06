@@ -96,6 +96,9 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * The color of event dots.
  */
 @property (strong, nonatomic) UIColor  *eventDefaultColor;
+//tienth
+@property (strong, nonatomic) UIColor  *sundayColor;
+@property (strong, nonatomic) UIColor  *saturdayColor;
 
 /**
  * The color of event dots.

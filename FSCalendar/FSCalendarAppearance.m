@@ -37,7 +37,8 @@
 //       _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize];
         _headerTitleFont = [UIFont systemFontOfSize:FSCalendarStandardHeaderTextSize];
         _headerCellFont = [UIFont systemFontOfSize:FSCalendarStandardSubtitleTextSize];
-        
+        _sundayColor = FSCalendarSundayTextColor;
+        _saturdayColor = FSCalendarSaturdayTextColor;
         _headerTitleColor = FSCalendarStandardTitleTextColor;
         _headerSeparatorColor = FSCalendarStandardLineColor;
         _headerDateFormat = @"MMMM yyyy";
