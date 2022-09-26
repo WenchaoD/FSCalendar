@@ -89,6 +89,10 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @property (assign, nonatomic) CGPoint imageOffset;
 
+
+@property (assign, nonatomic) UIColor *normalColor;
+@property (assign, nonatomic) UIColor *placeholderColor;
+
 /**
  * The color of event dots.
  */

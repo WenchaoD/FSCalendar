@@ -348,6 +348,24 @@
     return _backgroundColors[@(FSCalendarCellStateToday|FSCalendarCellStateSelected)];
 }
 
+- (void)setNormalColor:(UIColor *)normalColor {
+  if (normalColor) {
+      _backgroundColors[@(FSCalendarCellStateNormal)] = normalColor;
+  } else {
+      [_backgroundColors removeObjectForKey:@(FSCalendarCellStateNormal)];
+  }
+  [self.calendar configureAppearance];
+}
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor {
+  if (placeholderColor) {
+      _backgroundColors[@(FSCalendarCellStatePlaceholder)] = placeholderColor;
+  } else {
+      [_backgroundColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
+  }
+  [self.calendar configureAppearance];
+}
+
 - (void)setEventDefaultColor:(UIColor *)eventDefaultColor
 {
     if (![_eventDefaultColor isEqual:eventDefaultColor]) {
