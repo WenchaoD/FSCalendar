@@ -357,6 +357,10 @@
   [self.calendar configureAppearance];
 }
 
+- (UIColor *)normalColor {
+  return _backgroundColors[@(FSCalendarCellStateNormal)];
+}
+
 - (void)setPlaceholderColor:(UIColor *)placeholderColor {
   if (placeholderColor) {
       _backgroundColors[@(FSCalendarCellStatePlaceholder)] = placeholderColor;
@@ -364,6 +368,10 @@
       [_backgroundColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
   }
   [self.calendar configureAppearance];
+}
+
+- (UIColor *)placeholderColor {
+  return _backgroundColors[@(FSCalendarCellStatePlaceholder)];
 }
 
 - (void)setEventDefaultColor:(UIColor *)eventDefaultColor

@@ -89,8 +89,14 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @property (assign, nonatomic) CGPoint imageOffset;
 
-
+/**
+ * The background color of normal date.
+ */
 @property (assign, nonatomic) UIColor *normalColor;
+
+/**
+ * The background color of placeholder date.
+ */
 @property (assign, nonatomic) UIColor *placeholderColor;
 
 /**
