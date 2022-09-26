@@ -397,6 +397,19 @@
     return _borderColors[@(FSCalendarCellStateNormal)];
 }
 
+- (void)setBorderTodayColor:(UIColor *)color {
+  if (color) {
+      _borderColors[@(FSCalendarCellStateToday)] = color;
+  } else {
+      [_borderColors removeObjectForKey:@(FSCalendarCellStateToday)];
+  }
+  [self.calendar configureAppearance];
+}
+
+- (UIColor *)borderTodayColor {
+  return _borderColors[@(FSCalendarCellStateToday)];
+}
+
 - (void)setBorderSelectionColor:(UIColor *)color
 {
     if (color) {
