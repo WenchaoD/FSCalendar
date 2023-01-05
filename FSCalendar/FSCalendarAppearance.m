@@ -31,6 +31,7 @@
     if (self) {
         
         _titleFont = [UIFont systemFontOfSize:FSCalendarStandardTitleTextSize];
+        _titleSelectedFont = [UIFont systemFontOfSize:FSCalendarStandardSelectedTitleTextSize];
         _subtitleFont = [UIFont systemFontOfSize:FSCalendarStandardSubtitleTextSize];
         _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize];
         _headerTitleFont = [UIFont systemFontOfSize:FSCalendarStandardHeaderTextSize];
@@ -86,6 +87,14 @@
 {
     if (![_titleFont isEqual:titleFont]) {
         _titleFont = titleFont;
+        [self.calendar configureAppearance];
+    }
+}
+
+- (void)setTitleSelectionFont:(UIFont *)titleSelectedFont
+{
+    if (![_titleSelectedFont isEqual:titleSelectedFont]) {
+        _titleSelectedFont = titleSelectedFont;
         [self.calendar configureAppearance];
     }
 }

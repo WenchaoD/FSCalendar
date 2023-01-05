@@ -20,6 +20,7 @@ CGFloat const FSCalendarAutomaticDimension = -1;
 CGFloat const FSCalendarDefaultBounceAnimationDuration = 0.15;
 CGFloat const FSCalendarStandardRowHeight = 38;
 CGFloat const FSCalendarStandardTitleTextSize = 13.5;
+CGFloat const FSCalendarStandardSelectedTitleTextSize = 13.5;
 CGFloat const FSCalendarStandardSubtitleTextSize = 10;
 CGFloat const FSCalendarStandardWeekdayTextSize = 14;
 CGFloat const FSCalendarStandardHeaderTextSize = 16.5;
