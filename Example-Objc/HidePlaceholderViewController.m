@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_END
     calendar.delegate = self;
     calendar.placeholderType = FSCalendarPlaceholderTypeNone;
     calendar.adjustsBoundingRectWhenChangingMonths = YES;
-    calendar.currentPage = [self.dateFormatter dateFromString:@"2016-06-01"];
+    calendar.currentPage = [self.dateFormatter dateFromString:@"2020-06-01"];
     calendar.firstWeekday = 2;
     calendar.scrollDirection = FSCalendarScrollDirectionVertical;
     [self.view addSubview:calendar];
@@ -126,12 +126,12 @@ NS_ASSUME_NONNULL_END
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2016-01-08"];
+    return [self.dateFormatter dateFromString:@"2020-01-08"];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2018-10-08"];
+    return [self.dateFormatter dateFromString:@"2023-10-08"];
 }
 
 - (void)dealloc

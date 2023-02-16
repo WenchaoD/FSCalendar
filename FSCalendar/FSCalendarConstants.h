@@ -1,5 +1,5 @@
 //
-//  FSCalendarConstane.h
+//  FSCalendarConstants.h
 //  FSCalendar
 //
 //  Created by dingwenchao on 8/28/15.

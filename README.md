@@ -8,6 +8,7 @@
 [![Version](https://img.shields.io/cocoapods/v/FSCalendar.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Platform](https://img.shields.io/badge/platform-iOS%207%2B-blue.svg?style=flat)](http://cocoadocs.org/docsets/FSCalendar)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![SwiftPM](https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat)](https://swift.org/package-manager/)
 <br>
 [![Languages](https://img.shields.io/badge/language-objc%20|%20swift-FF69B4.svg?style=plastic)](#)
 
@@ -85,6 +86,13 @@ end
 
 ```ruby
 github "WenchaoD/FSCalendar"
+```
+
+## SPM:
+
+Add dependency:
+```swift
+.package(url: "https://github.com/WenchaoD/FSCalendar.git", from: "2.8.3")
 ```
 
 ## Manually:

@@ -283,7 +283,7 @@
     [self.rowCounts removeAllObjects];
 }
 
-#pragma mark - Private functinos
+#pragma mark - Private functions
 
 - (void)didReceiveNotifications:(NSNotification *)notification
 {

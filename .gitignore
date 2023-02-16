@@ -19,6 +19,7 @@ DerivedData
 *.hmap
 *.ipa
 *.idea
+.swiftpm/
 
 # Bundler
 .bundle
