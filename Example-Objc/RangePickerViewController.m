@@ -91,7 +91,7 @@
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2016-07-08"];
+    return [self.dateFormatter dateFromString:@"2020-07-08"];
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar

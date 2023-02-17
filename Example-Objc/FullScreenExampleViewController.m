@@ -114,20 +114,13 @@ NS_ASSUME_NONNULL_END
     self.dateFormatter = [[NSDateFormatter alloc] init];
     self.dateFormatter.dateFormat = @"yyyy-MM-dd";
     
-    self.minimumDate = [self.dateFormatter dateFromString:@"2016-02-03"];
-    self.maximumDate = [self.dateFormatter dateFromString:@"2021-04-10"];
+    self.minimumDate = [self.dateFormatter dateFromString:@"2020-02-03"];
+    self.maximumDate = [self.dateFormatter dateFromString:@"2023-04-10"];
 
     self.calendar.accessibilityIdentifier = @"calendar";
     
     [self loadCalendarEvents];
     
-    /*
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.minimumDate = [self.dateFormatter dateFromString:@"2015-02-01"];
-        self.maximumDate = [self.dateFormatter dateFromString:@"2015-06-10"];
-        [self.calendar reloadData];
-    });
-    */
 }
 
 - (void)didReceiveMemoryWarning
