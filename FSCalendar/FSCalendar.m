@@ -636,6 +636,20 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    // Recover all disabled gestures
+    [scrollView.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj != scrollView.panGestureRecognizer) {
+            obj.enabled = YES;
+        }
+    }];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(calendarDidEndDecelerating:)]) {
+        [self.delegate calendarDidEndDecelerating:self];
+    }
+}
+
 #pragma mark - <UIGestureRecognizerDelegate>
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer

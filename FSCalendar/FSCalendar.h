@@ -148,6 +148,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 
+/**
+ Tells the delegate the calendar is about to be decelerating.
+ */
+- (void)calendarDidEndDecelerating:(FSCalendar *)calendar;
+
 @end
 
 /**
