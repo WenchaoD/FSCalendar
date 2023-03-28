@@ -7,6 +7,7 @@
 //
 
 #import "FSCalendarExtensions.h"
+#import "FSCalendarConstants.h"
 #import <objc/runtime.h>
 
 @implementation UIView (FSCalendarExtensions)
@@ -169,7 +170,7 @@
     NSDateComponents *weekdayComponents = [self components:NSCalendarUnitWeekday fromDate:week];
     NSDateComponents *components = self.fs_privateComponents;
     components.day = - (weekdayComponents.weekday - self.firstWeekday);
-    components.day = (components.day-7) % 7;
+    components.day = (components.day-7) % FSCalendarNumberOfDaysInWeek;
     NSDate *firstDayOfWeek = [self dateByAddingComponents:components toDate:week options:0];
     firstDayOfWeek = [self startOfDayForDate:firstDayOfWeek];
     components.day = NSIntegerMax;
@@ -182,7 +183,7 @@
     NSDateComponents *weekdayComponents = [self components:NSCalendarUnitWeekday fromDate:week];
     NSDateComponents *components = self.fs_privateComponents;
     components.day = - (weekdayComponents.weekday - self.firstWeekday);
-    components.day = (components.day-7) % 7 + 6;
+    components.day = (components.day-7) % FSCalendarNumberOfDaysInWeek + 6;
     NSDate *lastDayOfWeek = [self dateByAddingComponents:components toDate:week options:0];
     lastDayOfWeek = [self startOfDayForDate:lastDayOfWeek];
     components.day = NSIntegerMax;

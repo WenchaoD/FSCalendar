@@ -14,8 +14,8 @@
 @interface FSCalendarWeekdayView()
 
 @property (strong, nonatomic) NSPointerArray *weekdayPointers;
-@property (weak  , nonatomic) UIView *contentView;
-@property (weak  , nonatomic) FSCalendar *calendar;
+@property (weak, nonatomic) UIView *contentView;
+@property (weak, nonatomic) FSCalendar *calendar;
 
 - (void)commonInit;
 
@@ -48,7 +48,7 @@
     _contentView = contentView;
     
     _weekdayPointers = [NSPointerArray weakObjectsPointerArray];
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < FSCalendarNumberOfDaysInWeek; i++) {
         UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         weekdayLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:weekdayLabel];
@@ -103,8 +103,8 @@
     BOOL useDefaultWeekdayCase = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
     
     for (NSInteger i = 0; i < self.weekdayPointers.count; i++) {
-        NSInteger index = (i + self.calendar.firstWeekday-1) % 7;
-        UILabel *label = [self.weekdayPointers pointerAtIndex:i];
+        NSInteger index = (i + self.calendar.firstWeekday-1) % FSCalendarNumberOfDaysInWeek;
+        UILabel *label = [self.weekdayPointers pointerAtIndex:index];
         label.font = self.calendar.appearance.weekdayFont;
         label.textColor = self.calendar.appearance.weekdayTextColor;
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];

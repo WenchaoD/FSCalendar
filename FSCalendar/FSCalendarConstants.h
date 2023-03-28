@@ -28,6 +28,7 @@ CG_EXTERN CGFloat const FSCalendarStandardWeekdayTextSize;
 CG_EXTERN CGFloat const FSCalendarStandardHeaderTextSize;
 CG_EXTERN CGFloat const FSCalendarMaximumEventDotDiameter;
 
+UIKIT_EXTERN NSInteger const FSCalendarNumberOfDaysInWeek;
 UIKIT_EXTERN NSInteger const FSCalendarDefaultHourComponent;
 UIKIT_EXTERN NSInteger const FSCalendarMaximumNumberOfEvents;
 
@@ -81,6 +82,8 @@ static inline void FSCalendarSliceCake(CGFloat cake, NSInteger count, CGFloat *p
         pieces[i] = piece;
     }
 }
+
+
 
 
 
