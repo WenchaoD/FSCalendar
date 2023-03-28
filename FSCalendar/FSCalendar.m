@@ -534,7 +534,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
     FSCalendarMonthPosition monthPosition = [self.calculator monthPositionForIndexPath:indexPath];
-    [self.delegateProxy calendar:self willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:monthPosition];
+    [self.delegateProxy calendar:self willDisplayCell:(FSCalendarCell *)cell forDate:date atMonthPosition:monthPosition atIndexPath:indexPath];
 }
 
 - (void)collectionViewDidFinishLayoutSubviews:(FSCalendarCollectionView *)collectionView
