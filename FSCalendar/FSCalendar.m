@@ -1004,6 +1004,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [self.collectionView reloadData];
 }
 
+- (void)reloadCellForDate:(NSDate *)date {
+    NSIndexPath *indexPath = [self.calculator indexPathForDate:date];
+    if (indexPath) {
+        FSCalendarCell *cell = (FSCalendarCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
+        if (cell) [self reloadDataForCell:cell atIndexPath:indexPath];
+    }
+}
+
 - (void)setScope:(FSCalendarScope)scope animated:(BOOL)animated
 {
     if (self.floatingMode) return;

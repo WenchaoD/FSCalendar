@@ -411,6 +411,7 @@ IB_DESIGNABLE
  Reload the dates and appearance of the calendar.
  */
 - (void)reloadData;
+- (void)reloadCellForDate:(NSDate *)date;
 
 /**
  Change the scope of the calendar. Make sure `-calendar:boundingRectWillChange:animated` is correctly adopted.
