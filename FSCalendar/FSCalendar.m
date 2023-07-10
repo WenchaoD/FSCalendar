@@ -291,10 +291,8 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     if (_needsAdjustingViewFrame) {
         _needsAdjustingViewFrame = NO;
-        
-        if (CGSizeEqualToSize(_transitionCoordinator.cachedMonthSize, CGSizeZero)) {
-            _transitionCoordinator.cachedMonthSize = self.frame.size;
-        }
+
+        _transitionCoordinator.cachedMonthSize = self.frame.size;
         
         _contentView.frame = self.bounds;
         CGFloat headerHeight = self.preferredHeaderHeight;
@@ -876,6 +874,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _preferredWeekdayHeight = FSCalendarAutomaticDimension;
         _preferredRowHeight = FSCalendarAutomaticDimension;
         _preferredHeaderHeight = FSCalendarAutomaticDimension;
+        
         [self setNeedsLayout];
     }
 }
