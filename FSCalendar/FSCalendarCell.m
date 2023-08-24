@@ -46,7 +46,7 @@
 }
 
 - (void)commonInit
-{   
+{
     UILabel *label;
     CAShapeLayer *shapeLayer;
     UIImageView *imageView;
@@ -150,7 +150,7 @@
                                        CGRectGetMaxY(_shapeLayer.frame)+eventSize*0.17+self.preferredEventOffset.y,
                                        self.fs_width,
                                        eventSize*0.83
-                                      );
+                                       );
     
 }
 
@@ -169,7 +169,7 @@
 - (void)performSelecting
 {
     _shapeLayer.opacity = 1;
-        
+    
     CAAnimationGroup *group = [CAAnimationGroup animation];
     CABasicAnimation *zoomOut = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     zoomOut.fromValue = @0.3;
@@ -249,7 +249,7 @@
     
     _eventIndicator.numberOfEvents = self.numberOfEvents;
     _eventIndicator.color = self.colorsForEvents;
-
+    
 }
 
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
@@ -301,9 +301,11 @@
 - (UIColor *)colorForCellBorder
 {
     if (self.selected) {
-        return _preferredBorderSelectionColor ?: _appearance.borderSelectionColor;
+        return self.preferredBorderSelectionColor ?: [self colorForCurrentStateInDictionary:_appearance.borderColors];
     }
-    return _preferredBorderDefaultColor ?: _appearance.borderDefaultColor;
+    return self.preferredBorderDefaultColor ?: [self colorForCurrentStateInDictionary:_appearance.borderColors];
+    
+    
 }
 
 - (NSArray<UIColor *> *)colorsForEvents
@@ -325,16 +327,16 @@
 \
 - (void)set##CAPITAL:(CGPoint)NAME \
 { \
-    BOOL diff = !CGPointEqualToPoint(NAME, self.NAME); \
-    _##NAME = NAME; \
-    if (diff) { \
-        [self setNeedsLayout]; \
-    } \
+BOOL diff = !CGPointEqualToPoint(NAME, self.NAME); \
+_##NAME = NAME; \
+if (diff) { \
+[self setNeedsLayout]; \
+} \
 } \
 \
 - (CGPoint)NAME \
 { \
-    return CGPointEqualToPoint(_##NAME, CGPointInfinity) ? ALTERNATIVE : _##NAME; \
+return CGPointEqualToPoint(_##NAME, CGPointInfinity) ? ALTERNATIVE : _##NAME; \
 }
 
 OFFSET_PROPERTY(preferredTitleOffset, PreferredTitleOffset, _appearance.titleOffset);

@@ -50,6 +50,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *formatter;
+@property (strong, nonatomic) NSTimeZone *timeZone;
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
@@ -144,7 +145,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 }
 
 - (void)initialize
-{   
+{
     _appearance = [[FSCalendarAppearance alloc] init];
     _appearance.calendar = self;
     
@@ -277,12 +278,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     return [super setValue:value forUndefinedKey:key];
     
-}
-
-- (void)setTimeZone:(NSTimeZone *)tz
-{
-    _timeZone = tz;
-    [self invalidateDateTools];
 }
 
 - (void)layoutSubviews
@@ -706,7 +701,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _today = nil;
     } else {
         FSCalendarAssertDateInBounds(today,self.gregorian,self.minimumDate,self.maximumDate);
-        [self updateToday];
+        _today = [self.gregorian startOfDayForDate:today];
     }
     if (self.hasValidateVisibleLayout) {
         [self.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:nil];
@@ -1277,19 +1272,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _formatter.calendar = _gregorian;
     _formatter.timeZone = _timeZone;
     _formatter.locale = _locale;
-    
-    [self updateToday];
-}
-
-- (void)updateToday
-{
-    NSDateComponents *dateComponents = [self.gregorian components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay) fromDate:[NSDate date]];
-    dateComponents.hour = 0;
-    dateComponents.minute = 0;
-    dateComponents.second = 0;
-    dateComponents.timeZone = self.timeZone;
-    
-    _today = [self.gregorian dateFromComponents:dateComponents];
 }
 
 - (void)invalidateLayout
@@ -1475,7 +1457,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
     if (cell) {
         cell.selected = YES;
-        if (self.collectionView.allowsMultipleSelection) {   
+        if (self.collectionView.allowsMultipleSelection) {
             [self.collectionView selectItemAtIndexPath:[self.collectionView indexPathForCell:cell] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         }
     }

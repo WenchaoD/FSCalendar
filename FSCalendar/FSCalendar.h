@@ -4,7 +4,7 @@
 //
 //  Created by Wenchao Ding on 29/1/15.
 //  Copyright © 2016 Wenchao Ding. All rights reserved.
-// 
+//
 //  https://github.com/WenchaoD
 //
 //  FSCalendar is a superior awesome calendar control with high performance, high customizablility and very simple usage.
@@ -151,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- * FSCalendarDelegateAppearance determines the fonts and colors of components in the calendar, but more specifically. Basically, if you need to make a global customization of appearance of the calendar, use FSCalendarAppearance. But if you need different appearance for different days, use FSCalendarDelegateAppearance.
+ * FSCalendarDelegateAppearance determines the fonts and colors of components in the calendar, but more specificly. Basically, if you need to make a global customization of appearance of the calendar, use FSCalendarAppearance. But if you need different appearance for different days, use FSCalendarDelegateAppearance.
  *
  * @see FSCalendarAppearance
  */
@@ -243,11 +243,6 @@ IB_DESIGNABLE
 @interface FSCalendar : UIView
 
 /**
- * The timezone of the calendar. `defaultTimeZone` by default.
- */
-@property (strong, nonatomic) NSTimeZone *timeZone;
-
-/**
  * The object that acts as the delegate of the calendar.
  */
 @property (weak, nonatomic) IBOutlet id<FSCalendarDelegate> delegate;
@@ -273,13 +268,13 @@ IB_DESIGNABLE
  * The locale of month and weekday symbols. Change it to display them in your own language.
  *
  * e.g. To display them in Chinese:
- * 
+ *
  *    calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
  */
 @property (copy, nonatomic) NSLocale *locale;
 
 /**
- * The scroll direction of FSCalendar. 
+ * The scroll direction of FSCalendar.
  *
  * e.g. To make the calendar scroll vertically
  *
@@ -288,7 +283,7 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 
 /**
- * The scope of calendar, change scope will trigger an inner frame change, make sure the frame has been correctly adjusted in 
+ * The scope of calendar, change scope will trigger an inner frame change, make sure the frame has been correctly adjusted in
  *
  *    - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated;
  */
@@ -301,8 +296,8 @@ IB_DESIGNABLE
  
  e.g.
  
-    UIPanGestureRecognizer *scopeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:calendar action:@selector(handleScopeGesture:)];
-    [calendar addGestureRecognizer:scopeGesture];
+ UIPanGestureRecognizer *scopeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:calendar action:@selector(handleScopeGesture:)];
+ [calendar addGestureRecognizer:scopeGesture];
  
  @see DIYExample
  @see FSCalendarScopeExample
@@ -452,7 +447,7 @@ IB_DESIGNABLE
 
 /**
  Register a class for use in creating new calendar cells.
-
+ 
  @param cellClass The class of a cell that you want to use in the calendar.
  @param identifier The reuse identifier to associate with the specified class. This parameter must not be nil and must not be an empty string.
  */
@@ -460,7 +455,7 @@ IB_DESIGNABLE
 
 /**
  Returns a reusable calendar cell object located by its identifier.
-
+ 
  @param identifier The reuse identifier for the specified cell. This parameter must not be nil.
  @param date The specific date of the cell.
  @return A valid FSCalendarCell object.
@@ -469,7 +464,7 @@ IB_DESIGNABLE
 
 /**
  Returns the calendar cell for the specified date.
-
+ 
  @param date The date of the cell
  @param position The month position for the cell
  @return An object representing a cell of the calendar, or nil if the cell is not visible or date is out of range.
@@ -553,6 +548,7 @@ IB_DESIGNABLE
 @property (strong, nonatomic) IBInspectable UIColor  *todaySelectionColor;
 
 @property (strong, nonatomic) IBInspectable UIColor *borderDefaultColor;
+@property (strong, nonatomic) IBInspectable UIColor *borderTodayColor;
 @property (strong, nonatomic) IBInspectable UIColor *borderSelectionColor;
 
 @property (assign, nonatomic) IBInspectable CGFloat borderRadius;
