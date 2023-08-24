@@ -51,6 +51,7 @@
     calendar.pagingEnabled = NO;
     calendar.allowsMultipleSelection = YES;
     calendar.rowHeight = 60;
+    calendar.footerHeight = 50;
     calendar.placeholderType = FSCalendarPlaceholderTypeNone;
     [view addSubview:calendar];
     self.calendar = calendar;

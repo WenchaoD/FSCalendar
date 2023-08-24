@@ -338,6 +338,12 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat headerHeight;
 
 /**
+ The height of month footer of the calendar. Give a '0' to remove the footer.
+ */
+@property (assign, nonatomic) IBInspectable CGFloat footerHeight;
+
+
+/**
  The height of weekday header of the calendar.
  */
 @property (assign, nonatomic) IBInspectable CGFloat weekdayHeight;
