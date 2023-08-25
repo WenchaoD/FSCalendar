@@ -216,6 +216,29 @@
     return days.length;
 }
 
+
+- (NSInteger)fs_numberOfDaysInMonth:(NSDate *)month currentDay:(NSDate *)currentDate isRest:(BOOL)isRest
+{
+    NSInteger allDays;
+    if(isRest){
+        if (!month) return 0;
+        NSRange days = [self rangeOfUnit:NSCalendarUnitDay
+                                            inUnit:NSCalendarUnitMonth
+                                           forDate:month];
+        
+        // 计算当月当前天数
+        NSDateComponents *currentDateComponents = [self components:NSCalendarUnitDay fromDate:currentDate];
+        NSInteger currentDay = [currentDateComponents day];
+        allDays = days.length - currentDay + 1;
+    }else {
+        // 计算当月当前天数
+        NSDateComponents *currentDateComponents = [self components:NSCalendarUnitDay fromDate:currentDate];
+        NSInteger currentDay = [currentDateComponents day];
+        allDays = currentDay;
+    }
+    return allDays;
+}
+
 - (NSDateComponents *)fs_privateComponents
 {
     NSDateComponents *components = objc_getAssociatedObject(self, _cmd);

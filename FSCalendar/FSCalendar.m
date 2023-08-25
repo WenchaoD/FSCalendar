@@ -829,6 +829,14 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     }
 }
 
+- (void)setFloatingModeNotDisplayNonVisibleAreasDate:(BOOL)floatingModeNotDisplayNonVisibleAreasDate {
+    if (_floatingModeNotDisplayNonVisibleAreasDate != floatingModeNotDisplayNonVisibleAreasDate) {
+        _floatingModeNotDisplayNonVisibleAreasDate = floatingModeNotDisplayNonVisibleAreasDate;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
 - (void)setLocale:(NSLocale *)locale
 {
     if (![_locale isEqual:locale]) {

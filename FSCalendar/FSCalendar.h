@@ -343,6 +343,9 @@ IB_DESIGNABLE
 @property (assign, nonatomic) IBInspectable CGFloat footerHeight;
 
 
+//不展示当月不在日历区域的日期时间
+@property (assign, nonatomic) BOOL floatingModeNotDisplayNonVisibleAreasDate;
+
 /**
  The height of weekday header of the calendar.
  */
