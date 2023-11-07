@@ -21,6 +21,7 @@
 #import "FSCalendarCell.h"
 #import "FSCalendarWeekdayView.h"
 #import "FSCalendarHeaderView.h"
+#import "FSCalendarCollectionView.h"
 
 //! Project version number for FSCalendar.
 FOUNDATION_EXPORT double FSCalendarVersionNumber;
@@ -351,6 +352,8 @@ IB_DESIGNABLE
  The header view of the calendar
  */
 @property (strong, nonatomic) FSCalendarHeaderView *calendarHeaderView;
+
+@property (weak, nonatomic, readonly) FSCalendarCollectionView *collectionView;
 
 /**
  A Boolean value that determines whether users can select a date.
