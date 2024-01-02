@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FSCalendarMonthPosition.h"
 
 @class FSCalendar, FSCalendarAppearance, FSCalendarEventIndicator;
-
-typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 
 @interface FSCalendarCell : UICollectionViewCell
 
