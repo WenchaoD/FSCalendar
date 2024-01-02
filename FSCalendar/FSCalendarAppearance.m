@@ -67,6 +67,8 @@
         
         _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
         _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
+        _borderColors[@(FSCalendarCellStateToday)] = [UIColor clearColor];
+        _borderColors[@(FSCalendarCellStateDisabled)] = [UIColor clearColor];
         
         _borderRadius = 1.0;
         _eventDefaultColor = FSCalendarStandardEventDotColor;
@@ -370,6 +372,24 @@
 {
     return _borderColors[@(FSCalendarCellStateNormal)];
 }
+
+
+- (void)setBorderTodayColor:(UIColor *)color
+{
+    if (color) {
+        _borderColors[@(FSCalendarCellStateToday)] = color;
+    } else {
+        [_borderColors removeObjectForKey:@(FSCalendarCellStateToday)];
+    }
+    [self.calendar configureAppearance];
+}
+
+- (UIColor *)borderTodayColor
+{
+    return _borderColors[@(FSCalendarCellStateToday)];
+}
+
+
 
 - (void)setBorderSelectionColor:(UIColor *)color
 {

@@ -199,6 +199,13 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  */
 @property (strong, nonatomic) UIColor  *borderDefaultColor;
 
+
+/**
+ * The border color of the shape for today state.
+ */
+@property (strong, nonatomic) UIColor  *borderTodayColor;
+
+
 /**
  * The border color of the shape for selected state.
  */
