@@ -263,6 +263,13 @@ IB_DESIGNABLE
 @property (nullable, strong, nonatomic) NSDate *today;
 
 /**
+ Difference the tap or hold gesture date selection
+ When the value = YES is a UILongPressGestureRecognizer
+ When the value = NO is a tap selection
+ */
+
+@property (readonly, nonatomic) BOOL isLongPressGesture;
+/**
  * The current page of calendar
  *
  * @desc In week mode, current page represents the current visible week; In month mode, it means current visible month.
@@ -493,6 +500,11 @@ IB_DESIGNABLE
  */
 - (FSCalendarMonthPosition)monthPositionForCell:(FSCalendarCell *)cell;
 
+
+/**
+ * Ends the long press
+ */
+- (void) endLongPress;
 
 /**
  Returns an array of visible cells currently displayed by the calendar.
