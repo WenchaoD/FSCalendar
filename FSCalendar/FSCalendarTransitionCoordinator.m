@@ -274,7 +274,22 @@
         coordinate.row;
     });
     attributes.targetPage = ({
-        NSDate *targetPage = targetScope == FSCalendarScopeMonth ? [self.calendar.gregorian fs_firstDayOfMonth:attributes.focusedDate] : [self.calendar.gregorian fs_middleDayOfWeek:attributes.focusedDate];
+        __block NSDate *targetPage = nil;
+        if (targetScope == FSCalendarScopeMonth) {
+            targetPage = [self.calendar.gregorian fs_firstDayOfMonth:attributes.focusedDate];
+        }else{
+            NSDate *middleDay = [self.calendar.gregorian fs_middleDayOfWeek:attributes.focusedDate];
+            NSDate *firstDay = [self.calendar.gregorian fs_firstDayOfWeek:attributes.focusedDate];
+            NSDate *lastDay = [self.calendar.gregorian fs_lastDayOfWeek:attributes.focusedDate];
+            NSInteger focusedMonth = [self.calendar.gregorian component:NSCalendarUnitMonth fromDate:attributes.focusedDate];
+            [@[middleDay,firstDay,lastDay] enumerateObjectsUsingBlock:^(NSDate *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSInteger currentMonth = [self.calendar.gregorian component:NSCalendarUnitMonth fromDate:obj];
+                if (currentMonth == focusedMonth) {
+                    targetPage = obj;
+                    *stop = YES;
+                }
+            }];
+        }
         targetPage;
     });
     attributes.targetBounds = [self boundingRectForScope:attributes.targetScope page:attributes.targetPage];
