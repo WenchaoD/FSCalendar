@@ -148,21 +148,37 @@
     if (self.state != FSCalendarTransitionStateChanging) return;
     
     self.state = FSCalendarTransitionStateFinishing;
-
+    
+    // Our initial intention on what kind of view we want. +ve means we want month view initially. -ve means we want
+    // week view initially.
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
+    
+    // Our current gesture movement direction. +ve means we are moving toward month view direction. -ve means we are
+    // moving toward week view direction.
     CGFloat velocity = [panGesture velocityInView:panGesture.view].y;
     
-    CGFloat progress = ({
-        CGFloat maxTranslation = CGRectGetHeight(self.transitionAttributes.targetBounds) - CGRectGetHeight(self.transitionAttributes.sourceBounds);
-        translation = MAX(0, translation);
-        translation = MIN(maxTranslation, translation);
-        CGFloat progress = translation/maxTranslation;
-        progress;
-    });
-    if (velocity * translation < 0) {
+    // Please cross check in scopeTransitionDidUpdate, to understand what is scrolling "overflow".
+    bool scrollingOverflowRevertRequired = false;
+    
+    switch (self.calendar.scope) {
+        case FSCalendarScopeMonth: {
+            if (translation > 0) {
+                scrollingOverflowRevertRequired = true;
+            }
+            break;
+        }
+        case FSCalendarScopeWeek: {
+            if (translation < 0) {
+                scrollingOverflowRevertRequired = true;
+            }
+            break;
+        }
+    }
+    
+    if (velocity * translation < 0 || scrollingOverflowRevertRequired) {
         [self.transitionAttributes revert];
     }
-    [self performTransition:self.transitionAttributes.targetScope fromProgress:progress toProgress:1.0 animated:YES];
+    [self performTransition:self.transitionAttributes.targetScope fromProgress:-1 toProgress:1.0 animated:YES];
 }
 
 #pragma mark - Public methods
