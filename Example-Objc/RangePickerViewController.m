@@ -26,6 +26,9 @@
 
 - (void)configureCell:(__kindof FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position;
 
+@property (strong, nonatomic) NSDate *minDate;
+@property (strong, nonatomic) NSDate *maxDate;
+
 @end
 
 @implementation RangePickerViewController
@@ -51,6 +54,8 @@
     calendar.pagingEnabled = NO;
     calendar.allowsMultipleSelection = YES;
     calendar.rowHeight = 60;
+    calendar.footerHeight = 50;
+    calendar.floatingModeNotDisplayNonVisibleAreasDate = YES;
     calendar.placeholderType = FSCalendarPlaceholderTypeNone;
     [view addSubview:calendar];
     self.calendar = calendar;
@@ -80,6 +85,8 @@
     
     // For UITest
     self.calendar.accessibilityIdentifier = @"calendar";
+    self.minDate = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:-36 toDate:[NSDate date] options:0];
+    self.maxDate = [NSDate date];
 }
 
 - (void)dealloc
@@ -91,12 +98,14 @@
 
 - (NSDate *)minimumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.dateFormatter dateFromString:@"2020-07-08"];
+//    return [self.dateFormatter dateFromString:@"2020-07-08"];
+    return self.minDate;
 }
 
 - (NSDate *)maximumDateForCalendar:(FSCalendar *)calendar
 {
-    return [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:10 toDate:[NSDate date] options:0];
+//    return [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:10 toDate:[NSDate date] options:0];
+    return self.maxDate;
 }
 
 - (NSString *)calendar:(FSCalendar *)calendar titleForDate:(NSDate *)date
@@ -172,6 +181,35 @@
     }
     return @[appearance.eventDefaultColor];
 }
+
+
+- (nullable UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance titleDefaultColorForDate:(NSDate *)date {
+    if([self outofRangeDate:date]){
+        UIColor *color;
+        if(self.calendar.floatingModeNotDisplayNonVisibleAreasDate){
+            color = [UIColor clearColor];
+        }else {
+            color = [UIColor grayColor];
+        }
+        return color;
+    }
+    
+    UIColor *subColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:1.0];
+
+    return subColor;
+}
+
+- (BOOL)outofRangeDate:(NSDate *)date {
+    BOOL outof = NO;
+    if(([self.gregorian compareDate:date toDate:self.minDate toUnitGranularity:NSCalendarUnitDay] == NSOrderedAscending) ||
+       ([self.gregorian compareDate:date toDate:self.maxDate toUnitGranularity:NSCalendarUnitDay] == NSOrderedDescending)){
+        outof = YES;
+    }
+    return outof;
+}
+
+
+
 
 #pragma mark - Private methods
 

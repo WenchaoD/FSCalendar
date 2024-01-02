@@ -34,12 +34,16 @@
 @property (assign, nonatomic) CGSize contentSize;
 @property (assign, nonatomic) CGSize collectionViewSize;
 @property (assign, nonatomic) CGSize headerReferenceSize;
+@property (assign, nonatomic) CGSize footerReferenceSize;
+
 @property (assign, nonatomic) NSInteger numberOfSections;
 
 @property (assign, nonatomic) FSCalendarSeparators separators;
 
 @property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *itemAttributes;
 @property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *headerAttributes;
+@property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *footerAttributes;
+
 @property (strong, nonatomic) NSMutableDictionary<NSIndexPath *, UICollectionViewLayoutAttributes *> *rowSeparatorAttributes;
 
 - (void)didReceiveNotifications:(NSNotification *)notification;
@@ -69,6 +73,7 @@
         
         self.itemAttributes = NSMutableDictionary.dictionary;
         self.headerAttributes = NSMutableDictionary.dictionary;
+        self.footerAttributes = NSMutableDictionary.dictionary;
         self.rowSeparatorAttributes = NSMutableDictionary.dictionary;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotifications:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -105,12 +110,21 @@
     
     [self.itemAttributes removeAllObjects];
     [self.headerAttributes removeAllObjects];
+    [self.footerAttributes removeAllObjects];
     [self.rowSeparatorAttributes removeAllObjects];
     
     self.headerReferenceSize = ({
         CGSize headerSize = CGSizeZero;
         if (self.calendar.floatingMode) {
             CGFloat headerHeight = self.calendar.preferredWeekdayHeight*1.5+self.calendar.preferredHeaderHeight;
+            headerSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
+        }
+        headerSize;
+    });
+    self.footerReferenceSize = ({
+        CGSize headerSize = CGSizeZero;
+        if (self.calendar.floatingMode) {
+            CGFloat headerHeight = self.calendar.footerHeight;
             headerSize = CGSizeMake(self.collectionView.fs_width, headerHeight);
         }
         headerSize;
@@ -227,6 +241,7 @@
                 for (int j = 0; j < rowCount; j++) {
                     sectionHeight += self.heights[j];
                 }
+                sectionHeight += self.footerReferenceSize.height;
                 self.sectionHeights[i] = sectionHeight;
                 height += sectionHeight;
             }
@@ -394,6 +409,8 @@
                     }
                 }
             }
+            UICollectionViewLayoutAttributes *footerAttributes = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter atIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+            [layoutAttributes addObject:footerAttributes];
         }
         
     }
@@ -453,6 +470,16 @@
             attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:indexPath];
             attributes.frame = CGRectMake(0, self.sectionTops[indexPath.section], self.collectionView.fs_width, self.headerReferenceSize.height);
             self.headerAttributes[indexPath] = attributes;
+        }
+        return attributes;
+    }
+    
+    if ([elementKind isEqualToString:UICollectionElementKindSectionFooter]) {
+        UICollectionViewLayoutAttributes *attributes = self.footerAttributes[indexPath];
+        if (!attributes) {
+            attributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:indexPath];
+            attributes.frame = CGRectMake(0, self.sectionBottoms[indexPath.section]-self.footerReferenceSize.height, self.collectionView.fs_width, self.footerReferenceSize.height);
+            self.footerAttributes[indexPath] = attributes;
         }
         return attributes;
     }
@@ -517,6 +544,7 @@
     if ([notification.name isEqualToString:UIApplicationDidReceiveMemoryWarningNotification]) {
         [self.itemAttributes removeAllObjects];
         [self.headerAttributes removeAllObjects];
+        [self.footerAttributes removeAllObjects];
         [self.rowSeparatorAttributes removeAllObjects];
     }
 }

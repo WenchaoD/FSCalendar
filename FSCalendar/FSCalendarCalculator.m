@@ -117,7 +117,7 @@
     NSInteger section = 0;
     switch (scope) {
         case FSCalendarScopeMonth: {
-            section = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:[self.gregorian fs_firstDayOfMonth:date] options:0].month;
+            section = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:[self.gregorian fs_firstDayOfMonth:date] options:0].month;//这里只是为了判断当前的日期月份跟最小日期的月份之间的月份差有多少来判断section位置 所以不用调整 [self.gregorian fs_firstDayOfMonth:self.minimumDate] 为 [self currentMiniDate]
             if (position == FSCalendarMonthPositionPrevious) {
                 section++;
             } else if (position == FSCalendarMonthPositionNext) {
@@ -162,13 +162,39 @@
     NSNumber *key = @(section);
     NSDate *month = self.months[key];
     if (!month) {
-        month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] options:0];
-        NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
-        NSDate *monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
+        month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self currentMiniDate] options:0];
+        
+        NSInteger numberOfHeadPlaceholders;
+        NSDate *monthHead;
+        if(self.calendar.floatingModeNotDisplayNonVisibleAreasDate){
+            if([self isInSameMonth:month time2:self.minimumDate]){
+                numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
+                monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
+            }else {
+                NSDate *firstDate = [self.gregorian fs_firstDayOfMonth:month];
+                numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:firstDate];
+                monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:firstDate options:0];
+                month = firstDate;
+            }
+        }else {
+            numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
+            monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
+        }
+        
         self.months[key] = month;
         self.monthHeads[key] = monthHead;
     }
     return month;
+}
+
+- (NSDate *)currentMiniDate {
+    NSDate *miniDate;
+    if(self.calendar.floatingModeNotDisplayNonVisibleAreasDate){
+        miniDate = self.minimumDate;
+    }else {
+        miniDate = [self.gregorian fs_firstDayOfMonth:self.minimumDate];
+    }
+    return miniDate;
 }
 
 - (NSDate *)monthHeadForSection:(NSInteger)section
@@ -176,7 +202,7 @@
     NSNumber *key = @(section);
     NSDate *monthHead = self.monthHeads[key];
     if (!monthHead) {
-        NSDate *month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] options:0];
+        NSDate *month = [self.gregorian dateByAddingUnit:NSCalendarUnitMonth value:section toDate:[self currentMiniDate] options:0];
         NSInteger numberOfHeadPlaceholders = [self numberOfHeadPlaceholdersForMonth:month];
         monthHead = [self.gregorian dateByAddingUnit:NSCalendarUnitDay value:-numberOfHeadPlaceholders toDate:month options:0];
         self.months[key] = month;
@@ -224,7 +250,18 @@
     if (rowCount == nil) {
         NSDate *firstDayOfMonth = [self.gregorian fs_firstDayOfMonth:month];
         NSInteger weekdayOfFirstDay = [self.gregorian component:NSCalendarUnitWeekday fromDate:firstDayOfMonth];
-        NSInteger numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month];
+        NSInteger numberOfDaysInMonth;
+        if(self.calendar.floatingModeNotDisplayNonVisibleAreasDate){
+            if([self isInSameMonth:month time2:self.minimumDate]){
+                numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month currentDay:self.minimumDate isRest:YES];
+            }else if([self isInSameMonth:month time2:self.maximumDate]){
+                numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month currentDay:self.maximumDate isRest:NO];
+            }else {
+                numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month];
+            }
+        }else {
+            numberOfDaysInMonth = [self.gregorian fs_numberOfDaysInMonth:month];
+        }
         NSInteger numberOfPlaceholdersForPrev = ((weekdayOfFirstDay - self.gregorian.firstWeekday) + 7) % 7;
         NSInteger headDayCount = numberOfDaysInMonth + numberOfPlaceholdersForPrev;
         NSInteger numberOfRows = (headDayCount/7) + (headDayCount%7>0);
@@ -233,6 +270,28 @@
     }
     return rowCount.integerValue;
 }
+
+/**
+ 是否属于同一月
+
+ @param time1 time1
+ @param time2 time2
+ @return 同一月为真，否则为假
+ */
+- (BOOL)isInSameMonth:(NSDate *)time1 time2:(NSDate *)time2
+{
+    NSDate *date1 = time1;
+    NSDate *date2 = time2;
+
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    int unit = NSCalendarUnitMonth | NSCalendarUnitYear;
+
+    NSDateComponents *nowCmps = [calendar components:unit fromDate:date1];
+    NSDateComponents *selfCmps = [calendar components:unit fromDate:date2];
+
+    return (nowCmps.year == selfCmps.year)&&(nowCmps.month == selfCmps.month);
+}
+
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
 {
@@ -270,7 +329,7 @@
 
 - (void)reloadSections
 {
-    self.numberOfMonths = [self.gregorian components:NSCalendarUnitMonth fromDate:[self.gregorian fs_firstDayOfMonth:self.minimumDate] toDate:self.maximumDate options:0].month+1;
+    self.numberOfMonths = [self.gregorian components:NSCalendarUnitMonth fromDate:[self currentMiniDate] toDate:self.maximumDate options:0].month+1;
     self.numberOfWeeks = [self.gregorian components:NSCalendarUnitWeekOfYear fromDate:[self.gregorian fs_firstDayOfWeek:self.minimumDate] toDate:self.maximumDate options:0].weekOfYear+1;
     [self clearCaches];
 }

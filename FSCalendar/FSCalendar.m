@@ -217,6 +217,9 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     [collectionView registerClass:[FSCalendarCell class] forCellWithReuseIdentifier:FSCalendarDefaultCellReuseIdentifier];
     [collectionView registerClass:[FSCalendarBlankCell class] forCellWithReuseIdentifier:FSCalendarBlankCellReuseIdentifier];
     [collectionView registerClass:[FSCalendarStickyHeader class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
+    
+    [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer"];
+    
     [collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"placeholderHeader"];
     [daysContainer addSubview:collectionView];
     self.collectionView = collectionView;
@@ -445,6 +448,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
             self.visibleSectionHeaders[indexPath] = stickyHeader;
             [stickyHeader setNeedsLayout];
             return stickyHeader;
+        }
+        
+        
+        if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+            return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"footer" forIndexPath:indexPath];
         }
     }
     return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"placeholderHeader" forIndexPath:indexPath];
@@ -807,6 +815,23 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     if (_weekdayHeight != weekdayHeight) {
         _weekdayHeight = weekdayHeight;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setFooterHeight:(CGFloat)footerHeight
+{
+    if (_footerHeight != footerHeight) {
+        _footerHeight = footerHeight;
+        _needsAdjustingViewFrame = YES;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setFloatingModeNotDisplayNonVisibleAreasDate:(BOOL)floatingModeNotDisplayNonVisibleAreasDate {
+    if (_floatingModeNotDisplayNonVisibleAreasDate != floatingModeNotDisplayNonVisibleAreasDate) {
+        _floatingModeNotDisplayNonVisibleAreasDate = floatingModeNotDisplayNonVisibleAreasDate;
         _needsAdjustingViewFrame = YES;
         [self setNeedsLayout];
     }
