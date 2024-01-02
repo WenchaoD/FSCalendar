@@ -10,6 +10,7 @@
 #import "FSCalendar.h"
 #import "FSCalendarDynamicHeader.h"
 #import "FSCalendarExtensions.h"
+#import "FSCalendarCell.h"
 
 @interface FSCalendarWeekdayView()
 
@@ -106,10 +107,31 @@
         NSInteger index = (i + self.calendar.firstWeekday-1) % 7;
         UILabel *label = [self.weekdayPointers pointerAtIndex:i];
         label.font = self.calendar.appearance.weekdayFont;
-        label.textColor = self.calendar.appearance.weekdayTextColor;
+        label.textColor = [self getColor:weekdaySymbols[index]];
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
     }
 
+}
+
+- (UIColor *)getColor:(NSString *)day {
+    FSCalendarCellDay dayType = [self getDayType:day];
+    if(dayType == FSCalendarSunday) {
+        return self.calendar.appearance.sundayColor;
+    } else if(dayType == FSCalendarSaturday) {
+        return self.calendar.appearance.saturdayColor;
+    }
+    return self.calendar.appearance.titleDefaultColor;
+    
+}
+
+
+- (FSCalendarCellDay)getDayType:(NSString *)day {
+    if([day isEqualToString:@"일"]){
+        return FSCalendarSunday;
+    } else if([day isEqualToString:@"토"]){
+        return FSCalendarSaturday;
+    }
+    return FSCalendarNormalDay;
 }
 
 @end

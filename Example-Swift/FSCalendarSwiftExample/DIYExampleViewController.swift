@@ -28,7 +28,7 @@ class DIYExampleViewController: UIViewController, FSCalendarDataSource, FSCalend
         view.backgroundColor = UIColor.groupTableViewBackground
         self.view = view
         
-        let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 400 : 300
+        let height: CGFloat = UIDevice.current.model.hasPrefix("iPad") ? 600 : 500
         let calendar = FSCalendar(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.maxY, width: view.frame.size.width, height: height))
         calendar.dataSource = self
         calendar.delegate = self

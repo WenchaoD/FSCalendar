@@ -11,10 +11,18 @@
 @class FSCalendar, FSCalendarAppearance, FSCalendarEventIndicator;
 
 typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
+typedef NS_ENUM(NSUInteger, FSCalendarCellDay) {
+    FSCalendarNormalDay,
+    FSCalendarSunday,
+    FSCalendarSaturday,
+};
 
 @interface FSCalendarCell : UICollectionViewCell
 
 #pragma mark - Public properties
+
+
+@property (weak, nonatomic) UILabel  *topTitleLabel;
 
 /**
  The day text label of the cell
@@ -54,6 +62,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (weak, nonatomic) FSCalendar *calendar;
 @property (weak, nonatomic) FSCalendarAppearance *appearance;
 
+@property (strong, nonatomic) NSDictionary *topTitle;
 @property (strong, nonatomic) NSString *subtitle;
 @property (strong, nonatomic) UIImage  *image;
 @property (assign, nonatomic) FSCalendarMonthPosition monthPosition;
@@ -61,6 +70,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (assign, nonatomic) NSInteger numberOfEvents;
 @property (assign, nonatomic) BOOL dateIsToday;
 @property (assign, nonatomic) BOOL weekend;
+@property (assign, nonatomic) FSCalendarCellDay dayType;
 
 @property (strong, nonatomic) UIColor *preferredFillDefaultColor;
 @property (strong, nonatomic) UIColor *preferredFillSelectionColor;
@@ -78,6 +88,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventDefaultColors;
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventSelectionColors;
 @property (assign, nonatomic) CGFloat preferredBorderRadius;
+@property (assign, nonatomic) BOOL isCustom;
 
 // Add subviews to self.contentView and set up constraints
 - (instancetype)initWithFrame:(CGRect)frame NS_REQUIRES_SUPER;

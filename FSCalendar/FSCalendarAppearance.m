@@ -31,17 +31,21 @@
     if (self) {
         
         _titleFont = [UIFont systemFontOfSize:FSCalendarStandardTitleTextSize];
+//        _titleFont = [UIFont systemFontOfSize:FSCalendarStandardTitleTextSize weight:UIFontWeightBold];
         _subtitleFont = [UIFont systemFontOfSize:FSCalendarStandardSubtitleTextSize];
-        _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize];
+        _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize weight:UIFontWeightBold];
+//       _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize];
         _headerTitleFont = [UIFont systemFontOfSize:FSCalendarStandardHeaderTextSize];
-        
+        _headerCellFont = [UIFont systemFontOfSize:FSCalendarStandardSubtitleTextSize];
+        _sundayColor = FSCalendarSundayTextColor;
+        _saturdayColor = FSCalendarSaturdayTextColor;
         _headerTitleColor = FSCalendarStandardTitleTextColor;
         _headerSeparatorColor = FSCalendarStandardLineColor;
         _headerDateFormat = @"MMMM yyyy";
         _headerMinimumDissolvedAlpha = 0.2;
         _headerTitleOffset = CGPointZero;
         _headerTitleAlignment = NSTextAlignmentCenter;
-        _weekdayTextColor = FSCalendarStandardTitleTextColor;
+        _weekdayTextColor = FSCalendarWeekendTextColor;
         _caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesDefaultCase;
         
         _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:5];
@@ -64,6 +68,8 @@
         _subtitleColors[@(FSCalendarCellStateDisabled)]    = [UIColor lightGrayColor];
         _subtitleColors[@(FSCalendarCellStatePlaceholder)] = [UIColor lightGrayColor];
         _subtitleColors[@(FSCalendarCellStateToday)]       = [UIColor whiteColor];
+        
+        
         
         _borderColors[@(FSCalendarCellStateSelected)] = [UIColor clearColor];
         _borderColors[@(FSCalendarCellStateNormal)] = [UIColor clearColor];
