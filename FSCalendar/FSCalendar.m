@@ -891,7 +891,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 - (CGFloat)preferredHeaderHeight
 {
     if (_headerHeight == FSCalendarAutomaticDimension) {
-        if (_preferredWeekdayHeight == FSCalendarAutomaticDimension) {
+        if (_preferredHeaderHeight == FSCalendarAutomaticDimension) {
             if (!self.floatingMode) {
                 CGFloat DIYider = FSCalendarStandardMonthlyPageHeight;
                 CGFloat contentHeight = self.transitionCoordinator.cachedMonthSize.height;
