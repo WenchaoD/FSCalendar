@@ -461,7 +461,7 @@ OFFSET_PROPERTY(preferredEventOffset, PreferredEventOffset, _appearance.eventOff
 @implementation FSCalendarBlankCell
 
 - (void)configureAppearance {}
-
+- (void)performSelecting {}
 @end
 
 
