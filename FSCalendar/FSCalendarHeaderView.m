@@ -290,6 +290,11 @@
     
 }
 
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
+{
+    return self.collectionView != nil ? !CGRectEqualToRect(self.collectionView.bounds, newBounds) : NO;
+}
+
 - (void)didReceiveOrientationChangeNotification:(NSNotification *)notificatino
 {
     [self invalidateLayout];

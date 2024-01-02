@@ -1524,8 +1524,11 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _preferredWeekdayHeight = FSCalendarAutomaticDimension;
     _preferredRowHeight     = FSCalendarAutomaticDimension;
     
-    [self setNeedsLayout];
+    [self.collectionViewLayout invalidateLayout];
+    [self.calendarWeekdayView setNeedsLayout];
+    [self.calendarHeaderView setNeedsLayout];
     
+    [self setNeedsLayout];
 }
 
 // The best way to detect orientation
