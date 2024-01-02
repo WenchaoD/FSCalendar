@@ -16,6 +16,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FSCalendarCollectionView.h"
 #import "FSCalendarAppearance.h"
 #import "FSCalendarConstants.h"
 #import "FSCalendarCell.h"
@@ -241,6 +242,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 IB_DESIGNABLE
 @interface FSCalendar : UIView
+
+@property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
 
 /**
  * The timezone of the calendar. `defaultTimeZone` by default.

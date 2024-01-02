@@ -53,7 +53,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
-@property (weak  , nonatomic) FSCalendarCollectionView   *collectionView;
 @property (weak  , nonatomic) FSCalendarCollectionViewLayout *collectionViewLayout;
 
 @property (strong, nonatomic) FSCalendarTransitionCoordinator *transitionCoordinator;
