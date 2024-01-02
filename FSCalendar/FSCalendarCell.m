@@ -255,10 +255,19 @@
 - (UIColor *)colorForCurrentStateInDictionary:(NSDictionary *)dictionary
 {
     if (self.isSelected) {
+        UIFont *titleSelectedFont = self.calendar.appearance.titleSelectedFont;
+        if (![titleSelectedFont isEqual:_titleLabel.font]) {
+            _titleLabel.font = titleSelectedFont;
+        }
         if (self.dateIsToday) {
             return dictionary[@(FSCalendarCellStateSelected|FSCalendarCellStateToday)] ?: dictionary[@(FSCalendarCellStateSelected)];
         }
         return dictionary[@(FSCalendarCellStateSelected)];
+    } else {
+        UIFont *titleFont = self.calendar.appearance.titleFont;
+        if (![titleFont isEqual:_titleLabel.font]) {
+            _titleLabel.font = titleFont;
+        }
     }
     if (self.dateIsToday && [[dictionary allKeys] containsObject:@(FSCalendarCellStateToday)]) {
         return dictionary[@(FSCalendarCellStateToday)];
