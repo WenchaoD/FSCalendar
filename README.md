@@ -305,6 +305,27 @@ BOOL inSameUnit = [self.gregorian isDate:date1 equalToDate:date2 toUnitGranulari
 
 ```
 
+## How to change minimum and maximum Calendar
+
+* Set today to minimum
+
+```swift
+class MyViewController: FSCalendarDatasource {
+    func minimumDate(for calendar: FSCalendar) -> Date {
+        return Date()
+    }
+}
+```
+
+* Set today to maximum
+
+```swift
+class MyViewController: FSCalendarDatasource {
+    func maximumDate(for calendar: FSCalendar) -> Date {
+        return Date()
+    }
+}
+```
 
 ## <a id="support"></a>Support this repo
 * [**★Star**](#) this repo 
