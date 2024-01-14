@@ -122,9 +122,9 @@ NS_ASSUME_NONNULL_END
     UIView *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     self.view = view;
-    
+    CGFloat baseOriginY = UIApplication.sharedApplication.statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
     CGFloat height = [[UIDevice currentDevice].model hasPrefix:@"iPad"] ? 450 : 300;
-    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.bounds.size.width, height)];
+    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, baseOriginY, self.view.bounds.size.width, height)];
     calendar.dataSource = self;
     calendar.delegate = self;
     calendar.allowsMultipleSelection = YES;
