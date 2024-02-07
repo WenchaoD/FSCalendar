@@ -106,7 +106,11 @@
         NSInteger index = (i + self.calendar.firstWeekday-1) % 7;
         UILabel *label = [self.weekdayPointers pointerAtIndex:i];
         label.font = self.calendar.appearance.weekdayFont;
-        label.textColor = self.calendar.appearance.weekdayTextColor;
+        if (index == 0 || index == 6) {
+            label.textColor = self.calendar.appearance.weekendTextColor;
+        }else{
+            label.textColor = self.calendar.appearance.weekdayTextColor;
+        }
         label.text = useDefaultWeekdayCase ? weekdaySymbols[index] : [weekdaySymbols[index] uppercaseString];
     }
 
