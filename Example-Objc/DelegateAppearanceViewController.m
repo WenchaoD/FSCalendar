@@ -229,4 +229,8 @@ NS_ASSUME_NONNULL_END
     return 1.0;
 }
 
+- (CGSize)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance borderSizeForDate:(NSDate *)date {
+    return CGSizeMake(40, 40);
+}
+
 @end

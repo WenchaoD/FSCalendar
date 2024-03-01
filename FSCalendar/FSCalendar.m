@@ -1383,6 +1383,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     FSCalendarInvalidateCellAppearance(preferredBorderDefaultColor,borderDefaultColorForDate);
     FSCalendarInvalidateCellAppearance(preferredBorderSelectionColor,borderSelectionColorForDate);
     FSCalendarInvalidateCellAppearanceWithDefault(preferredBorderRadius,borderRadiusForDate,-1);
+    FSCalendarInvalidateCellAppearanceWithDefault(preferredBorderSize,borderSizeForDate,CGSizeZero);
 
     if (cell.image) {
         FSCalendarInvalidateCellAppearanceWithDefault(preferredImageOffset,imageOffsetForDate,CGPointInfinity);

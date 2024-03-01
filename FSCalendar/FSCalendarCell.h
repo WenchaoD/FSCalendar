@@ -74,6 +74,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarMonthPosition);
 @property (assign, nonatomic) CGPoint preferredSubtitleOffset;
 @property (assign, nonatomic) CGPoint preferredImageOffset;
 @property (assign, nonatomic) CGPoint preferredEventOffset;
+@property (assign, nonatomic) CGSize preferredBorderSize;
 
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventDefaultColors;
 @property (strong, nonatomic) NSArray<UIColor *> *preferredEventSelectionColors;

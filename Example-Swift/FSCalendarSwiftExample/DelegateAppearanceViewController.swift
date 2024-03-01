@@ -127,4 +127,8 @@ class DelegateAppearanceViewController: UIViewController, FSCalendarDataSource, 
         return 1.0
     }
     
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderSizeFor date: Date) -> CGSize {
+        return CGSize.init(width: 40, height: 40)
+    }
+    
 }
