@@ -75,8 +75,7 @@ CG_EXTERN CGSize const CGSizeAutomatic;
 static inline void FSCalendarSliceCake(CGFloat cake, NSInteger count, CGFloat *pieces) {
     CGFloat total = cake;
     for (int i = 0; i < count; i++) {
-        NSInteger remains = count - i;
-        CGFloat piece = FSCalendarRound(total/remains*2)*0.5;
+        CGFloat piece = FSCalendarRound(total / (count - i));
         total -= piece;
         pieces[i] = piece;
     }
