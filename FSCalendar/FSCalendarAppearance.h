@@ -100,9 +100,14 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (strong, nonatomic) UIColor  *eventSelectionColor;
 
 /**
- * The color of weekday text.
+ * The color of weekday text for weekend.
  */
 @property (strong, nonatomic) UIColor  *weekdayTextColor;
+
+/**
+ * The color of weekday text.
+ */
+@property (strong, nonatomic) UIColor  *weekdayWeekendTextColor;
 
 /**
  * The color of month header text.
@@ -143,6 +148,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * The day text color for today in the calendar.
  */
 @property (strong, nonatomic) UIColor  *titleTodayColor;
+
+/**
+ * The day text color for today selected in the calendar.
+ */
+@property (strong, nonatomic) UIColor  *titleTodaySelectedColor;
 
 /**
  * The day text color for days out of current month.

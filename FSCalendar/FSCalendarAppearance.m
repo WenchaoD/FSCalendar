@@ -42,6 +42,7 @@
         _headerTitleOffset = CGPointZero;
         _headerTitleAlignment = NSTextAlignmentCenter;
         _weekdayTextColor = FSCalendarStandardTitleTextColor;
+        _weekdayWeekendTextColor = FSCalendarStandardTitleTextColor;
         _caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesDefaultCase;
         
         _backgroundColors = [NSMutableDictionary dictionaryWithCapacity:5];
@@ -198,6 +199,21 @@
     return _titleColors[@(FSCalendarCellStateToday)];
 }
 
+- (void)setTitleTodaySelectedColor:(UIColor *)color
+{
+	if (color) {
+		_titleColors[@(FSCalendarCellStateTodaySelected)] = color;
+	} else {
+		[_titleColors removeObjectForKey:@(FSCalendarCellStateTodaySelected)];
+	}
+	[self.calendar configureAppearance];
+}
+
+- (UIColor *)titleTodaySelectedColor
+{
+	return _titleColors[@(FSCalendarCellStateTodaySelected)];
+}
+
 - (void)setTitlePlaceholderColor:(UIColor *)color
 {
     if (color) {
@@ -333,7 +349,7 @@
     return _backgroundColors[@(FSCalendarCellStateToday)];
 }
 
-- (void)setTodaySelectionColor:(UIColor *)todaySelectionColor
+- (void)setTodaySelectedColor:(UIColor *)todaySelectionColor
 {
     if (todaySelectionColor) {
         _backgroundColors[@(FSCalendarCellStateToday|FSCalendarCellStateSelected)] = todaySelectionColor;
@@ -343,7 +359,7 @@
     [self.calendar configureAppearance];
 }
 
-- (UIColor *)todaySelectionColor
+- (UIColor *)todaySelectedColor
 {
     return _backgroundColors[@(FSCalendarCellStateToday|FSCalendarCellStateSelected)];
 }
@@ -400,6 +416,14 @@
 {
     if (![_weekdayTextColor isEqual:weekdayTextColor]) {
         _weekdayTextColor = weekdayTextColor;
+        [self.calendar configureAppearance];
+    }
+}
+
+- (void)setWeekdayWeekendTextColor:(UIColor *)weekdayWeekendTextColor
+{
+    if (![_weekdayWeekendTextColor isEqual:weekdayWeekendTextColor]) {
+        _weekdayWeekendTextColor = weekdayWeekendTextColor;
         [self.calendar configureAppearance];
     }
 }
