@@ -380,7 +380,7 @@
     NSIndexPath *indexPath = [self.calendar.calculator indexPathForDate:self.transitionAttributes.focusedDate scope:FSCalendarScopeMonth];
     CGRect frame = [self.collectionViewLayout layoutAttributesForItemAtIndexPath:indexPath].frame;
     CGFloat ratio = self.transitionAttributes.targetScope == FSCalendarScopeWeek ? progress : (1 - progress);
-    CGFloat offset = (-frame.origin.y + self.collectionViewLayout.sectionInsets.top) * ratio;
+    CGFloat offset = (self.collectionViewLayout.collectionView.contentOffset.y - frame.origin.y +  self.collectionViewLayout.sectionInsets.top) * ratio;
     return offset;
 }
 
