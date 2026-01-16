@@ -130,13 +130,19 @@
 - (void)scopeTransitionDidUpdate:(UIPanGestureRecognizer *)panGesture
 {
     if (self.state != FSCalendarTransitionStateChanging) return;
-    
-    CGFloat translation = ABS([panGesture translationInView:panGesture.view].y);
+
+    CGFloat translation = [panGesture translationInView:panGesture.view].y;
     CGFloat progress = ({
-        CGFloat maxTranslation = ABS(CGRectGetHeight(self.transitionAttributes.targetBounds) - CGRectGetHeight(self.transitionAttributes.sourceBounds));
-        translation = MIN(maxTranslation, translation);
+        CGFloat maxTranslation = CGRectGetHeight(self.transitionAttributes.targetBounds) - CGRectGetHeight(self.transitionAttributes.sourceBounds);
+        // For week->month transition: maxTranslation is positive, translation should be positive (swipe down)
+        // For month->week transition: maxTranslation is negative, translation should be negative (swipe up)
+        // Normalize translation to be in the correct direction
+        if (self.transitionAttributes.targetScope == FSCalendarScopeWeek) {
+            translation = -translation; // Swipe up (negative) to collapse to week
+        }
+        translation = MIN(ABS(maxTranslation), translation);
         translation = MAX(0, translation);
-        CGFloat progress = translation/maxTranslation;
+        CGFloat progress = translation/ABS(maxTranslation);
         progress;
     });
     [self performAlphaAnimationWithProgress:progress];
@@ -146,20 +152,42 @@
 - (void)scopeTransitionDidEnd:(UIPanGestureRecognizer *)panGesture
 {
     if (self.state != FSCalendarTransitionStateChanging) return;
-    
+
     self.state = FSCalendarTransitionStateFinishing;
 
     CGFloat translation = [panGesture translationInView:panGesture.view].y;
     CGFloat velocity = [panGesture velocityInView:panGesture.view].y;
-    
+
+    // Save original translation for velocity check
+    CGFloat originalTranslation = translation;
+
     CGFloat progress = ({
         CGFloat maxTranslation = CGRectGetHeight(self.transitionAttributes.targetBounds) - CGRectGetHeight(self.transitionAttributes.sourceBounds);
+        // Match the logic in scopeTransitionDidUpdate:
+        // For week->month transition: maxTranslation is positive, translation should be positive (swipe down)
+        // For month->week transition: maxTranslation is negative, translation should be negative (swipe up)
+        if (self.transitionAttributes.targetScope == FSCalendarScopeWeek) {
+            translation = -translation; // Swipe up (negative) to collapse to week
+        }
+        translation = MIN(ABS(maxTranslation), translation);
         translation = MAX(0, translation);
-        translation = MIN(maxTranslation, translation);
-        CGFloat progress = translation/maxTranslation;
+        CGFloat progress = translation/ABS(maxTranslation);
         progress;
     });
-    if (velocity * translation < 0) {
+
+    // Determine whether to complete the transition based on progress and velocity
+    BOOL shouldComplete = progress > 0.5;
+
+    // If progress is small but velocity is fast in the correct direction, still complete
+    if (!shouldComplete && ABS(velocity) > 500) {
+        if (self.transitionAttributes.targetScope == FSCalendarScopeWeek) {
+            shouldComplete = velocity < 0; // Swipe up to collapse to week
+        } else {
+            shouldComplete = velocity > 0; // Swipe down to expand to month
+        }
+    }
+
+    if (!shouldComplete) {
         [self.transitionAttributes revert];
     }
     [self performTransition:self.transitionAttributes.targetScope fromProgress:progress toProgress:1.0 animated:YES];

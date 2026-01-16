@@ -120,11 +120,15 @@
                                           subtitleHeight
                                           );
     } else {
+        // 如果设置了自定义 shapeLayerDiameter，titleLabel 使用整个 cell 高度；否则使用 5/6 高度（保持原有逻辑）
+        CGFloat titleLabelHeight = (self.calendar && self.calendar.shapeLayerDiameter > 0)
+                                   ? self.contentView.fs_height
+                                   : floor(self.contentView.fs_height*5.0/6.0);
         _titleLabel.frame = CGRectMake(
                                        self.preferredTitleOffset.x,
                                        self.preferredTitleOffset.y,
                                        self.contentView.fs_width,
-                                       floor(self.contentView.fs_height*5.0/6.0)
+                                       titleLabelHeight
                                        );
     }
     
@@ -133,8 +137,32 @@
     CGFloat titleHeight = self.bounds.size.height*5.0/6.0;
     CGFloat diameter = MIN(self.bounds.size.height*5.0/6.0,self.bounds.size.width);
     diameter = diameter > FSCalendarStandardCellDiameter ? (diameter - (diameter-FSCalendarStandardCellDiameter)*0.5) : diameter;
-    _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2,
-                                   (titleHeight-diameter)/2,
+
+    // 1. 优先使用代理方法返回的直径
+    if (self.calendar && [self.calendar.delegate respondsToSelector:@selector(calendar:diameterForShapeLayerAtDate:)]) {
+        CGFloat delegateDiameter = [self.calendar.delegate calendar:self.calendar diameterForShapeLayerAtDate:self.date];
+        if (delegateDiameter > 0) {
+            diameter = delegateDiameter;
+        }
+    }
+    // 2. 如果没有代理方法，使用属性设置的直径
+    else if (self.calendar && self.calendar.shapeLayerDiameter > 0) {
+        diameter = self.calendar.shapeLayerDiameter;
+    }
+
+    // 获取 shapeLayer 的 insets（优先使用代理方法）
+    UIEdgeInsets shapeInsets = UIEdgeInsetsZero;
+    if (self.calendar && [self.calendar.delegate respondsToSelector:@selector(calendar:insetsForShapeLayerAtDate:)]) {
+        shapeInsets = [self.calendar.delegate calendar:self.calendar insetsForShapeLayerAtDate:self.date];
+    }
+
+    // 应用 insets 到 shapeLayer 的 frame
+    // 如果设置了自定义 shapeLayerDiameter，使用整个 cell 高度居中；否则使用 titleHeight 居中（保持原有逻辑）
+    CGFloat shapeLayerY = (self.calendar && self.calendar.shapeLayerDiameter > 0)
+                          ? (self.bounds.size.height - diameter) / 2
+                          : (titleHeight - diameter) / 2;
+    _shapeLayer.frame = CGRectMake((self.bounds.size.width-diameter)/2 + shapeInsets.left,
+                                   shapeLayerY + shapeInsets.top,
                                    diameter,
                                    diameter);
     

@@ -66,7 +66,7 @@
         
         self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         self.sectionInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-        
+
         self.itemAttributes = NSMutableDictionary.dictionary;
         self.headerAttributes = NSMutableDictionary.dictionary;
         self.rowSeparatorAttributes = NSMutableDictionary.dictionary;
@@ -102,7 +102,12 @@
     }
     self.collectionViewSize = self.collectionView.frame.size;
     self.separators = self.calendar.appearance.separators;
-    
+
+    // 使用 calendar.calendarContentInsets 来更新 sectionInsets
+    if (!UIEdgeInsetsEqualToEdgeInsets(self.calendar.calendarContentInsets, UIEdgeInsetsZero)) {
+        self.sectionInsets = self.calendar.calendarContentInsets;
+    }
+
     [self.itemAttributes removeAllObjects];
     [self.headerAttributes removeAllObjects];
     [self.rowSeparatorAttributes removeAllObjects];
@@ -167,7 +172,7 @@
     // Calculate item heights and tops
     free(self.heights);
     self.heights = ({
-        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? 1 : 6;
+        NSInteger rowCount = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeWeek ? 1 : [self getCalendarRow];
         size_t rowSize = sizeof(CGFloat)*rowCount;
         CGFloat *heights = malloc(rowSize);
         if (!self.calendar.floatingMode) {
@@ -187,8 +192,11 @@
         size_t rowSize = sizeof(CGFloat)*rowCount;
         CGFloat *tops = malloc(rowSize);
         tops[0] = self.sectionInsets.top;
+
+        // 应用 lineSpacing（行间距）
+        CGFloat lineSpacing = self.calendar.lineSpacing;
         for (int i = 1; i < rowCount; i++) {
-            tops[i] = tops[i-1] + self.heights[i-1];
+            tops[i] = tops[i-1] + self.heights[i-1] + lineSpacing;
         }
         tops;
     });
@@ -443,7 +451,18 @@
     }
     return attributes;
 }
-
+- (NSInteger)getCalendarRow
+{
+    ///获取本月第一天
+    NSDate *fristDate = [NSDate stringToDate:[NSString stringWithFormat:@"%ld%02ld01",self.calendar.currentPage.year,self.calendar.currentPage.month] formaterMode:NSDateFormaterModeDayTwo];
+    ///获取本月有几天
+    NSInteger daysInLastMonth = [[NSCalendar currentCalendar] rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:fristDate].length;
+    if (daysInLastMonth > 29 && fristDate.weekday >= 6) {
+        return 6;
+    }else{
+        return 5;
+    }
+}
 // Section headers
 - (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
 {
@@ -535,7 +554,8 @@
 
 - (CGFloat)calculateRowOffset:(NSInteger)row totalRows:(NSInteger)totalRows
 {
-    if (self.calendar.adjustsBoundingRectWhenChangingMonths) {
+    // 如果设置了 adjustsBoundingRectWhenChangingMonths 或者设置了自定义 lineSpacing，使用 tops 数组
+    if (self.calendar.adjustsBoundingRectWhenChangingMonths || self.calendar.lineSpacing > 0) {
         return self.tops[row];
     }
     CGFloat height = self.heights[row];

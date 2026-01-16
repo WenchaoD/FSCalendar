@@ -282,12 +282,12 @@
 - (void)prepareLayout
 {
     [super prepareLayout];
-    
+
     self.itemSize = CGSizeMake(
                                self.collectionView.fs_width*((self.scrollDirection==UICollectionViewScrollDirectionHorizontal)?0.5:1),
                                self.collectionView.fs_height
                               );
-    
+
 }
 
 - (void)didReceiveOrientationChangeNotification:(NSNotification *)notificatino

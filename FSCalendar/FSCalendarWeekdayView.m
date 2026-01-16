@@ -59,27 +59,37 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     self.contentView.frame = self.bounds;
-    
+
+    // 获取自定义的 insets（如果代理实现了）
+    UIEdgeInsets insets = UIEdgeInsetsZero;
+    if (self.calendar && [self.calendar.delegate respondsToSelector:@selector(calendar:insetsForHeaderLayoutAtSection:)]) {
+        insets = [self.calendar.delegate calendar:self.calendar insetsForHeaderLayoutAtSection:0];
+    }
+
     // Position Calculation
     NSInteger count = self.weekdayPointers.count;
     size_t size = sizeof(CGFloat)*count;
     CGFloat *widths = malloc(size);
-    CGFloat contentWidth = self.contentView.fs_width;
+
+    // 计算内容宽度（减去左右 insets）
+    CGFloat contentWidth = self.contentView.fs_width - insets.left - insets.right;
     FSCalendarSliceCake(contentWidth, count, widths);
-    
+
     BOOL opposite = NO;
     if (@available(iOS 9.0, *)) {
         UIUserInterfaceLayoutDirection direction = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.calendar.semanticContentAttribute];
         opposite = (direction == UIUserInterfaceLayoutDirectionRightToLeft);
     }
-    CGFloat x = 0;
+
+    // 从 insets.left 开始布局
+    CGFloat x = insets.left;
     for (NSInteger i = 0; i < count; i++) {
         CGFloat width = widths[i];
         NSInteger labelIndex = opposite ? count-1-i : i;
         UILabel *label = [self.weekdayPointers pointerAtIndex:labelIndex];
-        label.frame = CGRectMake(x, 0, width, self.contentView.fs_height);
+        label.frame = CGRectMake(x, insets.top, width, self.contentView.fs_height - insets.top - insets.bottom);
         x = CGRectGetMaxX(label.frame);
     }
     free(widths);
@@ -98,8 +108,7 @@
 
 - (void)configureAppearance
 {
-    BOOL useVeryShortWeekdaySymbols = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesSingleUpperCase;
-    NSArray *weekdaySymbols = useVeryShortWeekdaySymbols ? self.calendar.gregorian.veryShortStandaloneWeekdaySymbols : self.calendar.gregorian.shortStandaloneWeekdaySymbols;
+    NSArray *weekdaySymbols =  IS_CHINESE_LANGUAGE ? self.calendar.gregorian.veryShortWeekdaySymbols : self.calendar.gregorian.shortWeekdaySymbols;
     BOOL useDefaultWeekdayCase = (self.calendar.appearance.caseOptions & (15<<4) ) == FSCalendarCaseOptionsWeekdayUsesDefaultCase;
     
     for (NSInteger i = 0; i < self.weekdayPointers.count; i++) {

@@ -50,6 +50,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 @property (strong, nonatomic) NSCalendar *gregorian;
 @property (strong, nonatomic) NSDateFormatter *formatter;
+@property (strong, nonatomic) NSTimeZone *timeZone;
 
 @property (weak  , nonatomic) UIView                     *contentView;
 @property (weak  , nonatomic) UIView                     *daysContainer;
@@ -202,7 +203,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
     FSCalendarCollectionViewLayout *collectionViewLayout = [[FSCalendarCollectionViewLayout alloc] init];
     collectionViewLayout.calendar = self;
-    
+    collectionViewLayout.sectionInsets = UIEdgeInsetsMake(25, 0, 0, 0);
     FSCalendarCollectionView *collectionView = [[FSCalendarCollectionView alloc] initWithFrame:CGRectZero
                                                                           collectionViewLayout:collectionViewLayout];
     collectionView.dataSource = self;
@@ -279,12 +280,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     
 }
 
-- (void)setTimeZone:(NSTimeZone *)tz
-{
-    _timeZone = tz;
-    [self invalidateDateTools];
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -313,7 +308,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         if (!self.floatingMode) {
             switch (self.transitionCoordinator.representingScope) {
                 case FSCalendarScopeMonth: {
-                    CGFloat contentHeight = rowHeight*6 + padding*2;
+                    CGFloat contentHeight = self.collectionHeight > 0 ? self.collectionHeight : rowHeight*6 + padding*2;
                     _daysContainer.frame = CGRectMake(0, headerHeight+weekdayHeight, self.fs_width, contentHeight);
                     _collectionView.frame = CGRectMake(0, 0, _daysContainer.fs_width, contentHeight);
                     break;
@@ -359,7 +354,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     CGFloat weekdayHeight = self.preferredWeekdayHeight;
     CGFloat rowHeight = self.preferredRowHeight;
     CGFloat paddings = self.collectionViewLayout.sectionInsets.top + self.collectionViewLayout.sectionInsets.bottom;
-    
+
     if (!self.floatingMode) {
         switch (scope) {
             case FSCalendarScopeMonth: {
@@ -367,7 +362,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
                 return CGSizeMake(size.width, height);
             }
             case FSCalendarScopeWeek: {
-                CGFloat height = weekdayHeight + headerHeight + rowHeight + paddings;
+                // 修复：周视图应该使用实际设置的 rowHeight，而不是基于月视图计算的 preferredRowHeight
+                // 如果用户设置了 rowHeight，使用设置的值；否则使用 preferredRowHeight
+                CGFloat actualRowHeight = (_rowHeight != FSCalendarAutomaticDimension && _rowHeight > 0) ? _rowHeight : rowHeight;
+                CGFloat height = weekdayHeight + headerHeight + actualRowHeight + paddings;
                 return CGSizeMake(size.width, height);
             }
         }
@@ -546,6 +544,10 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    ///MARK: 自加传递滚动代理
+    if (self.delegate && [self.delegate respondsToSelector:@selector(calendarScrollViewDidScroll:)]) {
+        [self.delegate calendarScrollViewDidScroll:scrollView];
+    }
     if (!self.window) return;
     if (self.floatingMode && _collectionView.indexPathsForVisibleItems.count) {
         // Do nothing on bouncing
@@ -706,7 +708,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
         _today = nil;
     } else {
         FSCalendarAssertDateInBounds(today,self.gregorian,self.minimumDate,self.maximumDate);
-        [self updateToday];
+        _today = [self.gregorian startOfDayForDate:today];
     }
     if (self.hasValidateVisibleLayout) {
         [self.visibleCells makeObjectsPerformSelector:@selector(setDateIsToday:) withObject:nil];
@@ -1277,19 +1279,6 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
     _formatter.calendar = _gregorian;
     _formatter.timeZone = _timeZone;
     _formatter.locale = _locale;
-    
-    [self updateToday];
-}
-
-- (void)updateToday
-{
-    NSDateComponents *dateComponents = [self.gregorian components:(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay) fromDate:[NSDate date]];
-    dateComponents.hour = 0;
-    dateComponents.minute = 0;
-    dateComponents.second = 0;
-    dateComponents.timeZone = self.timeZone;
-    
-    _today = [self.gregorian dateFromComponents:dateComponents];
 }
 
 - (void)invalidateLayout
@@ -1397,6 +1386,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 {
     cell.calendar = self;
     NSDate *date = [self.calculator dateForIndexPath:indexPath];
+    cell.date = date;
     cell.image = [self.dataSourceProxy calendar:self imageForDate:date];
     cell.numberOfEvents = [self.dataSourceProxy calendar:self numberOfEventsForDate:date];
     cell.titleLabel.text = [self.dataSourceProxy calendar:self titleForDate:date] ?: @([self.gregorian component:NSCalendarUnitDay fromDate:date]).stringValue;

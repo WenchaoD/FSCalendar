@@ -148,10 +148,36 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)calendarCurrentPageDidChange:(FSCalendar *)calendar;
 
+- (void)calendarScrollViewDidScroll:(UIScrollView *)scrollView;
+
+/**
+ Asks the delegate for the diameter of shape layer for a specific date.
+ Return 0 to use default calculated diameter.
+ */
+- (CGFloat)calendar:(FSCalendar *)calendar diameterForShapeLayerAtDate:(NSDate *)date;
+
+/**
+ Asks the delegate for the insets of shape layer relative to cell's content view.
+ Return UIEdgeInsetsZero to use no insets.
+ */
+- (UIEdgeInsets)calendar:(FSCalendar *)calendar insetsForShapeLayerAtDate:(NSDate *)date;
+
+/**
+ Asks the delegate for the size of header item.
+ Return CGSizeZero to use default calculated size.
+ */
+- (CGSize)calendar:(FSCalendar *)calendar sizeForHeaderItemAtSection:(NSInteger)section;
+
+/**
+ Asks the delegate for the insets of header layout.
+ Return UIEdgeInsetsZero to use no insets.
+ */
+- (UIEdgeInsets)calendar:(FSCalendar *)calendar insetsForHeaderLayoutAtSection:(NSInteger)section;
+
 @end
 
 /**
- * FSCalendarDelegateAppearance determines the fonts and colors of components in the calendar, but more specifically. Basically, if you need to make a global customization of appearance of the calendar, use FSCalendarAppearance. But if you need different appearance for different days, use FSCalendarDelegateAppearance.
+ * FSCalendarDelegateAppearance determines the fonts and colors of components in the calendar, but more specificly. Basically, if you need to make a global customization of appearance of the calendar, use FSCalendarAppearance. But if you need different appearance for different days, use FSCalendarDelegateAppearance.
  *
  * @see FSCalendarAppearance
  */
@@ -243,11 +269,6 @@ IB_DESIGNABLE
 @interface FSCalendar : UIView
 
 /**
- * The timezone of the calendar. `defaultTimeZone` by default.
- */
-@property (strong, nonatomic) NSTimeZone *timeZone;
-
-/**
  * The object that acts as the delegate of the calendar.
  */
 @property (weak, nonatomic) IBOutlet id<FSCalendarDelegate> delegate;
@@ -288,11 +309,44 @@ IB_DESIGNABLE
 @property (assign, nonatomic) FSCalendarScrollDirection scrollDirection;
 
 /**
- * The scope of calendar, change scope will trigger an inner frame change, make sure the frame has been correctly adjusted in 
+ * The scope of calendar, change scope will trigger an inner frame change, make sure the frame has been correctly adjusted in
  *
  *    - (void)calendar:(FSCalendar *)calendar boundingRectWillChange:(CGRect)bounds animated:(BOOL)animated;
  */
 @property (assign, nonatomic) FSCalendarScope scope;
+
+/**
+ * The diameter of shape layer in calendar cell. Use this to control the size of date background circle.
+ *
+ * e.g. To set shape layer diameter to 30pt:
+ *
+ *    calendar.shapeLayerDiameter = 30.0;
+ *
+ * Default is 0 (auto calculated based on cell size).
+ */
+@property (assign, nonatomic) CGFloat shapeLayerDiameter;
+
+/**
+ * The line spacing between rows (vertical spacing between cells).
+ *
+ * e.g. To set 10pt spacing between rows:
+ *
+ *    calendar.lineSpacing = 10.0;
+ *
+ * Default is 0.
+ */
+@property (assign, nonatomic) CGFloat lineSpacing;
+
+/**
+ * The content insets of the calendar view.
+ *
+ * e.g. To add 10pt padding around the calendar:
+ *
+ *    calendar.calendarContentInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+ *
+ * Default is UIEdgeInsetsZero.
+ */
+@property (assign, nonatomic) UIEdgeInsets calendarContentInsets;
 
 /**
  A UIPanGestureRecognizer instance which enables the control of scope on the whole day-area. Not available if the scrollDirection is vertical.
@@ -342,6 +396,10 @@ IB_DESIGNABLE
  */
 @property (assign, nonatomic) IBInspectable CGFloat weekdayHeight;
 
+/**
+ collection的高度
+ */
+@property (assign, nonatomic) CGFloat collectionHeight;
 /**
  The weekday view of the calendar
  */
@@ -518,7 +576,7 @@ IB_DESIGNABLE
 @end
 
 
-IB_DESIGNABLE
+//IB_DESIGNABLE
 @interface FSCalendar (IBExtension)
 
 #if TARGET_INTERFACE_BUILDER
