@@ -58,6 +58,28 @@
     self.date = nil;
 }
 
+// 首周可以跨到公元前，占位日期重建必须保留纪元。
+- (void)testEraBoundaryDateHelpers
+{
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    gregorian.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    components.era = 1;
+    components.year = 1;
+    components.month = 1;
+    components.day = 1;
+    NSDate *minimum = [gregorian dateFromComponents:components];
+    NSDate *previousDay = [gregorian dateByAddingUnit:NSCalendarUnitDay value:-1 toDate:minimum options:0];
+    XCTAssertEqual([gregorian component:NSCalendarUnitEra fromDate:[gregorian fs_firstDayOfMonth:previousDay]], 0);
+    XCTAssertEqualObjects([gregorian fs_lastDayOfMonth:previousDay], previousDay);
+    for (NSUInteger weekday = 1; weekday <= 7; weekday++) {
+        gregorian.firstWeekday = weekday;
+        NSDate *first = [gregorian fs_firstDayOfWeek:minimum];
+        NSDate *middle = [gregorian dateByAddingUnit:NSCalendarUnitDay value:3 toDate:first options:0];
+        XCTAssertEqualObjects([gregorian fs_middleDayOfWeek:minimum], middle);
+    }
+}
+
 - (void)testOutOfBoundsException
 {
     XCTAssertThrows([self.calendar selectDate:[self.formatter dateFromString:@"1900-01-01"]]);

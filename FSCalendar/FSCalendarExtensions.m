@@ -149,7 +149,8 @@
 - (nullable NSDate *)fs_firstDayOfMonth:(NSDate *)month
 {
     if (!month) return nil;
-    NSDateComponents *components = [self components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
+    // 保留纪元，避免跨公元边界的占位日期被重建为公元后的同名日期。
+    NSDateComponents *components = [self components:NSCalendarUnitEra|NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
     components.day = 1;
     return [self dateFromComponents:components];
 }
@@ -157,7 +158,8 @@
 - (nullable NSDate *)fs_lastDayOfMonth:(NSDate *)month
 {
     if (!month) return nil;
-    NSDateComponents *components = [self components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
+    // 保留纪元，避免跨公元边界的占位日期被重建为公元后的同名日期。
+    NSDateComponents *components = [self components:NSCalendarUnitEra|NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:month];
     components.month++;
     components.day = 0;
     return [self dateFromComponents:components];
@@ -201,7 +203,8 @@
         componentsToSubtract.day = componentsToSubtract.day - 7;
     }
     NSDate *middleDayOfWeek = [self dateByAddingComponents:componentsToSubtract toDate:week options:0];
-    NSDateComponents *components = [self components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:middleDayOfWeek];
+    // 保留纪元，避免跨公元边界的占位日期被重建为公元后的同名日期。
+    NSDateComponents *components = [self components:NSCalendarUnitEra|NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:middleDayOfWeek];
     middleDayOfWeek = [self dateFromComponents:components];
     componentsToSubtract.day = NSIntegerMax;
     return middleDayOfWeek;
