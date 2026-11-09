@@ -403,6 +403,11 @@ IB_DESIGNABLE
 @property (nullable, readonly, nonatomic) NSDate *selectedDate;
 
 /**
+ A date for publisher
+ */
+@property (nullable, nonatomic) NSDate *addedDate;
+
+/**
  The dates representing the selected dates. (read-only)
  */
 @property (readonly, nonatomic) NSArray<NSDate *> *selectedDates;

@@ -1503,6 +1503,7 @@ typedef NS_ENUM(NSUInteger, FSCalendarOrientation) {
 
 - (void)enqueueSelectedDate:(NSDate *)date
 {
+    self.addedDate = date;
     if (!self.allowsMultipleSelection) {
         [_selectedDates removeAllObjects];
     }

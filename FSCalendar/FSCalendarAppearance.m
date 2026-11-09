@@ -348,6 +348,32 @@
     return _backgroundColors[@(FSCalendarCellStateToday|FSCalendarCellStateSelected)];
 }
 
+- (void)setNormalColor:(UIColor *)normalColor {
+  if (normalColor) {
+      _backgroundColors[@(FSCalendarCellStateNormal)] = normalColor;
+  } else {
+      [_backgroundColors removeObjectForKey:@(FSCalendarCellStateNormal)];
+  }
+  [self.calendar configureAppearance];
+}
+
+- (UIColor *)normalColor {
+  return _backgroundColors[@(FSCalendarCellStateNormal)];
+}
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor {
+  if (placeholderColor) {
+      _backgroundColors[@(FSCalendarCellStatePlaceholder)] = placeholderColor;
+  } else {
+      [_backgroundColors removeObjectForKey:@(FSCalendarCellStatePlaceholder)];
+  }
+  [self.calendar configureAppearance];
+}
+
+- (UIColor *)placeholderColor {
+  return _backgroundColors[@(FSCalendarCellStatePlaceholder)];
+}
+
 - (void)setEventDefaultColor:(UIColor *)eventDefaultColor
 {
     if (![_eventDefaultColor isEqual:eventDefaultColor]) {
@@ -369,6 +395,19 @@
 - (UIColor *)borderDefaultColor
 {
     return _borderColors[@(FSCalendarCellStateNormal)];
+}
+
+- (void)setBorderTodayColor:(UIColor *)color {
+  if (color) {
+      _borderColors[@(FSCalendarCellStateToday)] = color;
+  } else {
+      [_borderColors removeObjectForKey:@(FSCalendarCellStateToday)];
+  }
+  [self.calendar configureAppearance];
+}
+
+- (UIColor *)borderTodayColor {
+  return _borderColors[@(FSCalendarCellStateToday)];
 }
 
 - (void)setBorderSelectionColor:(UIColor *)color

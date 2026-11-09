@@ -90,6 +90,16 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
 @property (assign, nonatomic) CGPoint imageOffset;
 
 /**
+ * The background color of normal date.
+ */
+@property (assign, nonatomic) UIColor *normalColor;
+
+/**
+ * The background color of placeholder date.
+ */
+@property (assign, nonatomic) UIColor *placeholderColor;
+
+/**
  * The color of event dots.
  */
 @property (strong, nonatomic) UIColor  *eventDefaultColor;
@@ -198,6 +208,11 @@ typedef NS_OPTIONS(NSUInteger, FSCalendarCaseOptions) {
  * The border color of the shape for unselected state.
  */
 @property (strong, nonatomic) UIColor  *borderDefaultColor;
+
+/**
+ * The border color of the shape for today.
+ */
+@property (strong, nonatomic) UIColor  *borderTodayColor;
 
 /**
  * The border color of the shape for selected state.

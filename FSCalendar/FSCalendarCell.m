@@ -303,7 +303,7 @@
     if (self.selected) {
         return _preferredBorderSelectionColor ?: _appearance.borderSelectionColor;
     }
-    return _preferredBorderDefaultColor ?: _appearance.borderDefaultColor;
+    return [self colorForCurrentStateInDictionary:_appearance.borderColors] ?: _preferredBorderDefaultColor;
 }
 
 - (NSArray<UIColor *> *)colorsForEvents

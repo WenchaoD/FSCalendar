@@ -13,6 +13,7 @@
 #import "FSCalendarExtensions.h"
 #import "FSCalendarConstants.h"
 #import "FSCalendarSeparatorDecorationView.h"
+#import <float.h>
 
 #define kFSCalendarSeparatorInterRows @"FSCalendarSeparatorInterRows"
 #define kFSCalendarSeparatorInterColumns @"FSCalendarSeparatorInterColumns"
@@ -264,100 +265,30 @@
     
     if (!self.calendar.floatingMode) {
         
-        switch (self.scrollDirection) {
-            case UICollectionViewScrollDirectionHorizontal: {
-                
-                NSInteger startColumn = ({
-                    NSInteger startSection = rect.origin.x/self.collectionView.fs_width;
-                    CGFloat widthDelta = FSCalendarMod(CGRectGetMinX(rect), self.collectionView.fs_width)-self.sectionInsets.left;
-                    widthDelta = MIN(MAX(0, widthDelta), self.collectionView.fs_width-self.sectionInsets.left);
-                    NSInteger countDelta = FSCalendarFloor(widthDelta/self.estimatedItemSize.width);
-                    NSInteger startColumn = startSection*7 + countDelta;
-                    startColumn;
-                });
-                
-                NSInteger endColumn = ({
-                    NSInteger endColumn;
-                    CGFloat section = CGRectGetMaxX(rect)/self.collectionView.fs_width;
-                    CGFloat remainder = FSCalendarMod(section, 1);
-                    // https://stackoverflow.com/a/10335601/2398107
-                    if (remainder <= MAX(100*FLT_EPSILON*ABS(remainder), FLT_MIN)) {
-                        endColumn = FSCalendarFloor(section)*7 - 1;
-                    } else {
-                        CGFloat widthDelta = FSCalendarMod(CGRectGetMaxX(rect), self.collectionView.fs_width)-self.sectionInsets.left;
-                        widthDelta = MIN(MAX(0, widthDelta), self.collectionView.fs_width - self.sectionInsets.left);
-                        NSInteger countDelta = FSCalendarCeil(widthDelta/self.estimatedItemSize.width);
-                        endColumn = FSCalendarFloor(section)*7 + countDelta - 1;
-                    }
-                    endColumn;
-                });
-                
-                NSInteger numberOfRows = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth ? 6 : 1;
-                
-                for (NSInteger column = startColumn; column <= endColumn; column++) {
-                    for (NSInteger row = 0; row < numberOfRows; row++) {
-                        NSInteger section = column / 7;
-                        NSInteger item = column % 7 + row * 7;
-                        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-                        UICollectionViewLayoutAttributes *itemAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
-                        [layoutAttributes addObject:itemAttributes];
-                        
-                        UICollectionViewLayoutAttributes *rowSeparatorAttributes = [self layoutAttributesForDecorationViewOfKind:kFSCalendarSeparatorInterRows atIndexPath:indexPath];
-                        if (rowSeparatorAttributes) {
-                            [layoutAttributes addObject:rowSeparatorAttributes];
-                        }
-                    }
+        BOOL horizontal = self.scrollDirection == UICollectionViewScrollDirectionHorizontal;
+        CGFloat pageLength = horizontal ? self.collectionView.fs_width : self.collectionView.fs_height;
+        if (pageLength <= 0 || self.numberOfSections == 0) return layoutAttributes;
+
+        CGFloat minimum = horizontal ? CGRectGetMinX(rect) : CGRectGetMinY(rect);
+        CGFloat maximum = horizontal ? CGRectGetMaxX(rect) : CGRectGetMaxY(rect);
+        // 历史日期会产生数千万点的滚动坐标，不能用 fmodf 降低 CGFloat 精度。
+        // 多检查相邻页，再按实际矩形筛选，兼容非整数宽度及页面边界误差。
+        NSInteger startSection = MAX(0, (NSInteger)floor(minimum / pageLength) - 1);
+        NSInteger endSection = MIN(self.numberOfSections - 1, (NSInteger)floor(maximum / pageLength) + 1);
+        NSInteger numberOfRows = self.calendar.transitionCoordinator.representingScope == FSCalendarScopeMonth ? 6 : 1;
+
+        for (NSInteger section = startSection; section <= endSection; section++) {
+            for (NSInteger item = 0; item < numberOfRows * 7; item++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+                UICollectionViewLayoutAttributes *itemAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
+                if (CGRectIntersectsRect(itemAttributes.frame, rect)) {
+                    [layoutAttributes addObject:itemAttributes];
                 }
-                
-                break;
-            }
-            case UICollectionViewScrollDirectionVertical: {
-                
-                NSInteger startRow = ({
-                    NSInteger startSection = rect.origin.y/self.collectionView.fs_height;
-                    CGFloat heightDelta = FSCalendarMod(CGRectGetMinY(rect), self.collectionView.fs_height)-self.sectionInsets.top;
-                    heightDelta = MIN(MAX(0, heightDelta), self.collectionView.fs_height-self.sectionInsets.top);
-                    NSInteger countDelta = FSCalendarFloor(heightDelta/self.estimatedItemSize.height);
-                    NSInteger startRow = startSection*6 + countDelta;
-                    startRow;
-                });
-                
-                NSInteger endRow = ({
-                    NSInteger endRow;
-                    CGFloat section = CGRectGetMaxY(rect)/self.collectionView.fs_height;
-                    CGFloat remainder = FSCalendarMod(section, 1);
-                    // https://stackoverflow.com/a/10335601/2398107
-                    if (remainder <= MAX(100*FLT_EPSILON*ABS(remainder), FLT_MIN)) {
-                        endRow = FSCalendarFloor(section)*6 - 1;
-                    } else {
-                        CGFloat heightDelta = FSCalendarMod(CGRectGetMaxY(rect), self.collectionView.fs_height)-self.sectionInsets.top;
-                        heightDelta = MIN(MAX(0, heightDelta), self.collectionView.fs_height-self.sectionInsets.top);
-                        NSInteger countDelta = FSCalendarCeil(heightDelta/self.estimatedItemSize.height);
-                        endRow = FSCalendarFloor(section)*6 + countDelta-1;
-                    }
-                    endRow;
-                });
-                
-                for (NSInteger row = startRow; row <= endRow; row++) {
-                    for (NSInteger column = 0; column < 7; column++) {
-                        NSInteger section = row / 6;
-                        NSInteger item = column + (row % 6) * 7;
-                        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-                        UICollectionViewLayoutAttributes *itemAttributes = [self layoutAttributesForItemAtIndexPath:indexPath];
-                        [layoutAttributes addObject:itemAttributes];
-                        
-                        UICollectionViewLayoutAttributes *rowSeparatorAttributes = [self layoutAttributesForDecorationViewOfKind:kFSCalendarSeparatorInterRows atIndexPath:indexPath];
-                        if (rowSeparatorAttributes) {
-                            [layoutAttributes addObject:rowSeparatorAttributes];
-                        }
-                        
-                    }
+                UICollectionViewLayoutAttributes *separatorAttributes = [self layoutAttributesForDecorationViewOfKind:kFSCalendarSeparatorInterRows atIndexPath:indexPath];
+                if (separatorAttributes && CGRectIntersectsRect(separatorAttributes.frame, rect)) {
+                    [layoutAttributes addObject:separatorAttributes];
                 }
-                
-                break;
             }
-            default:
-                break;
         }
         
     } else {
@@ -436,6 +367,21 @@
                     break;
             }
             CGRect frame = CGRectMake(x, y, width, height);
+            if (!self.calendar.floatingMode) {
+                BOOL horizontal = self.scrollDirection == UICollectionViewScrollDirectionHorizontal;
+                CGFloat pageLength = horizontal ? self.collectionView.fs_width : self.collectionView.fs_height;
+                CGFloat pageOrigin = indexPath.section * pageLength;
+                CGRect pageBounds = horizontal
+                    ? CGRectMake(pageOrigin, 0, pageLength, self.collectionView.fs_height)
+                    : CGRectMake(0, pageOrigin, self.collectionView.fs_width, pageLength);
+                // 半点取整可能让末格越过所属页，滚动位置的像素对齐还会露出邻页的极细边缘。
+                // 页面边缘留出半个像素，并吸收大坐标的浮点误差，避免把相邻周的一格算作可见。
+                CGFloat scale = self.collectionView.traitCollection.displayScale;
+                if (scale <= 0) scale = UIScreen.mainScreen.scale;
+                CGFloat tolerance = 0.5 / scale + 8 * DBL_EPSILON * MAX(fabs(pageOrigin), pageLength);
+                pageBounds = CGRectInset(pageBounds, horizontal ? tolerance : 0, horizontal ? 0 : tolerance);
+                frame = CGRectIntersection(frame, pageBounds);
+            }
             frame;
         });
         attributes.frame = frame;
