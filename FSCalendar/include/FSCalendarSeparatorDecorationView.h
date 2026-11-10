@@ -1,1 +1,1 @@
-../FSCalendarSeparatorDecorationView.h
+#import "../FSCalendarSeparatorDecorationView.h"
