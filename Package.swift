@@ -15,7 +15,8 @@ let package = Package(
             name: "FSCalendar",
             dependencies: [],
             path: "FSCalendar/",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            publicHeadersPath: "."
         )
     ]
 )
